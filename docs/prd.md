@@ -73,13 +73,6 @@ A brief vision of the project: a blog that’s both a documentation tool and a t
 - Automated CI pipeline converts markdown to HTML and deploys to `gh-pages`.
 - Publish trigger is a commit push (or PR merge) that updates the live site.
 
----
-
-The outline above captures the baseline structure and themes that the expanded sections refine.
-```
-
----
-
 ## 1. Introduction (Expanded)
 
 In this section, we’re setting the stage for the entire project. The vision is to create a blog that serves two major purposes: first, it’s a comprehensive documentation tool for capturing technical processes, ideas, and experiences. Second, it acts as a testbed where we experiment with AI-driven content creation and classic web design principles.
@@ -89,6 +82,16 @@ The core philosophy of this blog is to embrace the original spirit of the web: c
 We’re also leaning into a mobile-first approach, ensuring the blog looks and works great on smaller screens before scaling up gracefully to larger ones. This sets the tone for the entire project: a timeless, user-friendly, and AI-assisted platform that showcases both your technical journey and the enduring values of the web.
 
 Scope and audience are explicit: the primary reader is the author and technically curious peers who need a durable record of decisions. AI support is advisory; final edits, publication timing, and accountability remain with the human author.
+
+The blog is also a technical diary. Posts should be easy to create on demand, often in the 500-word range, with enough structure to carry links, code, and images when needed. The aim is to document daily work in a way that remains useful later, both to the author and to readers who want a concise, high-quality view into the process.
+
+The project is also an experiment in public voice and discoverability. It should be friendly to search engines and to other AI systems that ingest and summarize content, which means clarity, stable structure, and predictable metadata.
+
+Owning the domain is a non-negotiable requirement. The publishing stack can evolve, but DNS and canonical URLs should remain under the author's control to keep content portable. Over time, the system should support multiple subject streams (for example, retrocomputing and Z80 work alongside modern AI tooling) without fragmenting the archive.
+
+The long-term purpose goes beyond blogging. Entries are intended to seed other formats such as talks, videos, and longer-form writing, which means clarity, durable metadata, and stable URLs matter from day one.
+
+The first public content should document the build itself. This spec should translate into a narrative series that shows the decisions, tradeoffs, and implementation steps behind the blog.
 
 ## 2. Design Foundations (Expanded)
 
@@ -106,6 +109,10 @@ In short, this section is all about the foundational principles that will guide 
 
 Accessibility should target WCAG 2.1 AA where applicable, with regular contrast checks and keyboard testing. Performance expectations should include a defined budget for total page weight and image sizes to keep initial loads fast on mobile connections.
 
+The site should reflect the classic, server-rendered web. HTML should be legible without JavaScript, URLs should remain stable and human-readable, and CSS should improve readability rather than compete with the content.
+
+This document is written to brief an AI while remaining readable as a narrative. Each section should stand on its own as a potential future blog post, with a linear flow from principles to implementation so the process can be published as a series without heavy rewriting.
+
 ## 3. Content Creation Workflow (Expanded)
 
 This section breaks down how each blog post comes to life, from the initial conversation to the final published piece.
@@ -119,6 +126,12 @@ Once you’ve got all that figured out, the AI will generate a **folder-based ou
 Finally, the **script evolution** part means that repetitive tasks—like creating a new post, adding images, or linking related articles—will gradually become reusable scripts. These scripts will live in a dedicated folder, and over time, the AI will get better at handling these tasks automatically. That way, you can focus on the creative side while the AI takes care of the routine work.
 
 Each post should follow a consistent naming scheme with lowercase slugs and hyphens, and assets should be named to match their use (for example, diagram-architecture.png). Frontmatter is required for every post to make indexing deterministic and tooling reliable.
+
+The workflow should support a simple instruction-driven path: specify a topic, supply references or asset paths, and let the AI draft a complete post that can be reviewed in one pass. Editing levels should range from a quick polish to a full revision, but the default experience should be fast enough to keep a daily cadence.
+
+The system should also support capture-first writing, where a rough note or dictated outline is expanded into a structured post. This keeps the barrier to entry low while preserving the ability to refine tone and depth later.
+
+Prompts should accept explicit parameters such as target length, required links, and optional image generation, so the AI can produce consistent output without repeated manual guidance.
 
 ## 4. Draft Lifecycle (Expanded)
 
@@ -134,6 +147,10 @@ This lifecycle gives clear, metadata-driven control over visibility from draft t
 
 Status changes are reversible and should be captured through version control rather than a separate audit system. A post returning from archived to draft should re-enter review before publication.
 
+Not every entry needs to be public. Drafts can serve as private diary notes or raw material until they are ready for a wider audience, and the status system should preserve that intent without requiring duplicate content.
+
+Scheduling can remain simple: publication should be triggered by status changes and commit history, not by separate scheduling tools. If a future scheduler is needed, it should be metadata-driven and compatible with static workflows.
+
 ## 5. Metadata & Tagging Rules (Expanded)
 
 This section is all about the backbone of how we organize and categorize each piece of content—through metadata and tags. The metadata lives in the frontmatter of each markdown file and acts as the single source of truth for the blog’s organization. It includes fields like the title, date, status, summary, and tags. Each of these fields helps determine where and how the post appears across the site.
@@ -145,6 +162,10 @@ We’ll choose a canonical form for each tag—typically all lowercase and free 
 In short, the metadata and tagging rules are here to keep everything organized and consistent. The metadata drives the visibility and categorization of each post, and the tagging rules ensure that your tags remain meaningful and easy to manage over time.
 
 Define whether `date` reflects creation or publication; if both are needed, add `created` and `published` fields rather than overloading a single value. Summaries should be short and factual to support index pages and previews.
+
+Tags and metadata should be rich enough to support multiple thematic tracks, from AI workflow experimentation to retrocomputing projects, while staying normalized and searchable. Over time, this metadata should also support reuse in other formats, such as compiling a series into a talk outline or grouping posts into a longer narrative.
+
+A lightweight series or stream identifier may be useful to keep multi-topic work organized without splitting the site into separate systems. This should remain optional so the default path stays simple.
 
 ## 6. Internal Linking Conventions (Expanded)
 
@@ -172,6 +193,8 @@ The asset model prioritizes organization, durability, and portability by co-loca
 
 Assets should be optimized before commit (compressed images, trimmed PDFs), and every image should include accessible alt text in the markdown. Asset paths should remain relative so posts stay portable across environments.
 
+Thumbnails are optional but supported. If used, they should be small, lightweight images intended for index views or social sharing, and they should be generated or selected deliberately rather than inferred automatically.
+
 ## 8. Review Gate (Expanded)
 
 In this section, we’ll flesh out the idea of the review gate—the final checkpoint before a post goes from “review” to “published.” The review gate is not about creating bureaucratic hurdles; it’s about ensuring quality and consistency before a post goes live.
@@ -183,6 +206,8 @@ The review gate is intended to be a lightweight, human-friendly process. It can 
 The review gate is a lightweight final check that protects quality before publication.
 
 The review step should verify factual accuracy, link integrity, and metadata completeness, and confirm that the summary and title match the content. A short sign-off note in the commit message can document the review pass.
+
+Review can be lightweight or deep depending on the post, but the default should be quick enough that publishing remains frictionless. When AI drafts are used, the review step is where tone, accuracy, and intent are confirmed.
 
 ## 9. AI Vocabulary (Expanded)
 
@@ -196,6 +221,8 @@ In short, the AI vocabulary is the bridge between conversational authoring and a
 
 Verbs should map to deterministic actions: create generates a folder and stub, revise edits content without status changes, and status updates only metadata. The vocabulary should remain stable so scripts can depend on it.
 
+These verbs should be usable from the command line or a minimal UI, so an instruction like "create a 500-word post with these links and images" can map cleanly to scripted behavior without manual UI work.
+
 ## 10. CI and Publishing Process (Expanded)
 
 In this final section, we’re going to expand on how the continuous integration (CI) pipeline and publishing process will work. The CI pipeline is like the behind-the-scenes engine that takes your markdown files and turns them into a fully functional website.
@@ -207,6 +234,12 @@ Along the way, the CI pipeline can also handle things like regenerating indexes,
 The CI pipeline automates markdown conversion, deployment, and basic validation to reduce manual publishing effort.
 
 CI should run in a clean environment with pinned tool versions to keep output stable. Build artifacts should be reproducible and stored in the gh-pages branch without manual edits.
+
+Platform selection remains open between a WordPress workflow and a static workflow, but the preference is for a markdown-first system that keeps the content programmable and portable. If WordPress is used, publishing should happen through the REST API or wp-cli with application passwords so the UI is optional. If GitHub Pages is used, the pipeline should remain free and automated, with the option to bind a custom domain that the author owns.
+
+The system must support archives by date, topic, and tag, and provide a simple search experience without requiring server-side infrastructure. If search is client-side, it should be lightweight and optional so the site remains usable without JavaScript.
+
+Builds should be efficient, with incremental regeneration where possible so new posts do not require rebuilding the entire site. If a static generator is used, it should take advantage of caching or partial builds to keep iteration fast.
 
 ## 10. CI and Publishing Process (Revisited and Expanded)
 
@@ -232,6 +265,9 @@ We’ll aim to write as many of these tools as possible in-house, with the AI ge
 
 Template rendering should separate content from layout, and indexes should be generated from frontmatter rather than file system heuristics to avoid drift.
 
+This project should avoid heavy frameworks where simple scripts can suffice. If a static site generator is used, it should remain a thin layer, and if not, the AI can generate and maintain small Python or shell scripts for indexing, rendering, and deployment. The scripts should live in the repository so the workflow remains transparent and reproducible.
+
+When tasks exceed simple shell scripts, Python is an acceptable default, but the scripts should remain small, readable, and focused on a single responsibility. The goal is to keep the toolchain approachable while still powerful enough for automation.
 ## 11. CSS and Styling (Expanded)
 
 In this section, we’ll dive into the philosophy and practices that will shape the visual design of the blog. Our goal is to create a clean, responsive, and accessible design using a minimalist toolchain. We want to avoid heavyweight CSS frameworks and instead rely on native CSS features and best practices.
@@ -254,6 +290,7 @@ Our CSS will be optimized for performance, keeping file sizes small and load tim
 
 Styling should define a typography scale, spacing rhythm, and a small set of tokens for color and layout to keep the UI consistent. The system should degrade gracefully if JavaScript is disabled.
 
+The visual design should reinforce the classic-web values in the content: fast loading, readable typography, durable layouts, and a sense that the site is authored rather than templated. The same system can support a resume section or other personal pages without breaking the editorial tone.
 
 ## Conclusion
 
@@ -264,3 +301,5 @@ This project isn’t just about building a blog; it’s about creating a testbed
 In the end, this is about more than just blogging—it’s about capturing your unique perspective and sharing it with the world, all while leveraging the power of AI to make the process as seamless as possible.
 
 A short roadmap can capture which pieces are immediate (content model, publishing pipeline) and which are iterative (automation scripts, design refinements). The concluding aim is a durable, maintainable system that remains readable and useful over time.
+
+Content from the blog should be easy to repurpose into talks, videos, and longer-form writing, which means structure and metadata are part of the creative output, not just technical overhead. The blog itself becomes the first case study in the process it documents.
