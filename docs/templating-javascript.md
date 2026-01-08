@@ -157,7 +157,7 @@ JavaScript must not:
 * repeat or stamp content
 * read `data-query` attributes
 
-All `<template>` processing is build-time only.
+All `<template>` processing occurs at build time only.
 
 At runtime, `<template>` elements must not exist in output HTML.
 
@@ -189,7 +189,7 @@ This applies to:
 * navigation
 * archives
 * tags
-* series
+* stream
 * articles
 * assets
 

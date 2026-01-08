@@ -380,7 +380,7 @@ Frontmatter may include:
 
 * `status`
 * `tags`
-* `series`
+* `stream`
 
 Frontmatter is:
 
@@ -392,7 +392,7 @@ Frontmatter is:
 
 ## 8. Query Application Model
 
-Queries are JSON POJOs.
+Queries are JSON data structures.
 
 Templates never inspect or interpret query contents.
 
@@ -524,7 +524,7 @@ Build must fail if:
 
 Build may warn if:
 
-Forward references are allowed: templates may reference queries that resolve to zero results, and queries may target tags, series, or dates that do not yet exist. These conditions warn but do not fail.
+Forward references are allowed: templates may reference queries that resolve to zero results, and queries may target tags, stream names, or dates that do not yet exist. These conditions warn but do not fail.
 
 * a query returns zero results
 * a query is defined but unused

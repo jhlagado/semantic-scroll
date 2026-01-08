@@ -31,7 +31,7 @@ This is a deliberately *boring*, *legible*, *durable* web system.
 
 ### 1.1 Self-Documenting Build
 
-The first published content series should document the construction of the system itself.
+The first published content stream should document the construction of the system itself.
 
 * Each architectural decision should be representable as a post.
 * Spec documents should map cleanly to publishable narratives.
@@ -58,10 +58,10 @@ Where:
 
 **Day and article ordinal are separate directories. They must never be conflated.**
 
-### 2.2 Example
+### 2.2 Article Example
 
 ```
-blog/2026/01/08/02/02-z80-disassembly/
+blog/2026/01/08/01/01-first-post/
   article.md
   assets/
     diagram.png
@@ -108,7 +108,7 @@ Frontmatter exists **only** to support:
 * querying
 * build-time decisions
 
-Metadata is **never** accessed by templates at render time.
+No metadata access at render time. Visible metadata (title, date, etc.) must be authored directly in the Markdown body.
 
 ### 4.2 Published Content Rule
 
@@ -171,13 +171,11 @@ Templates never embed query logic.
 
 ---
 
-## 7. Query System (Only DSL in the System)
-
-Queries are the **only** DSL in the architecture and are deliberately constrained.
+## 7. Query System
 
 ### 7.1 Storage Format
 
-* Queries are stored as **named POJOs in JSON config**
+* Queries are stored as **JSON-compatible data structures** in the system configuration.
 * Example location:
 
   ```
@@ -208,8 +206,8 @@ Templates only ever reference `"latest-posts"`.
 Allowed for:
 
 * `status`
+* `stream`
 * `tag` (set membership)
-* `series`
 * `year`
 * `month`
 * `day`
@@ -354,7 +352,7 @@ These must never erode:
 
 The system permits forward references during authoring.
 
-* Queries may reference tags, series names, or dates that do not yet exist.
+* Queries may reference tags, stream names, or dates that do not yet exist.
 * Templates may reference queries that currently resolve to zero results.
 
 These conditions must produce warnings, not build failures. Forward references become active automatically once matching content exists.

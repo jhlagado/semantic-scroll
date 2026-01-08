@@ -120,9 +120,12 @@ These invariants must never be eroded:
 
 5. **Filesystem layout is canonical**
 
-   ```
-   blog/YYYY/MM/DD/NN/num-slug/
-   ```
+    ```
+    blog/YYYY/MM/DD/NN/num-slug/
+    ```
+
+    Where `NN` is a mandatory 2-digit ordinal folder, followed by a human-readable slug folder. Day and ordinal are **separate directories**.
+    Any attempt to flatten or conflate these is an architectural violation.
 
 If a proposed change weakens any of these, it is invalid.
 

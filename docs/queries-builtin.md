@@ -161,11 +161,11 @@ Select all published posts with a given tag.
 
 ---
 
-## 3.5 `posts-by-series`
+## 3.5 `posts-by-stream`
 
 ### Purpose
 
-Select all published posts in a named series.
+Select all published posts in a named stream.
 
 ### Definition (parameterized)
 
@@ -173,7 +173,7 @@ Select all published posts in a named series.
 {
   "source": "blog",
   "status": "published",
-  "series": "<series>",
+  "stream": "<stream>",
   "sort": "date-asc"
 }
 ```
@@ -181,7 +181,7 @@ Select all published posts in a named series.
 ### Notes
 
 * Ordering is chronological by design
-* Series semantics are author-defined
+* Stream semantics are author-defined
 
 ### Usage
 
@@ -254,7 +254,7 @@ Select all published posts in a given year.
   * `month`
   * `day`
   * `tag`
-  * `series`
+  * `stream`
 * Parameter substitution occurs at build time.
 * Parameters must resolve to concrete values before execution.
 * Templates reference the **query name**, not the parameters directly.

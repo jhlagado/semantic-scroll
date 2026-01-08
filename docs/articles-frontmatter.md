@@ -88,10 +88,10 @@ Tags are used **only** for querying and indexing.
 
 ---
 
-### 3.2 Series
+### 3.2 Stream
 
 ```yaml
-series: build-log
+stream: build-log
 ```
 
 Rules:
@@ -100,45 +100,41 @@ Rules:
 * single value only
 * exact match semantics
 
+Used to categorize content into thematic tracks (e.g., retrocomputing, AI-tooling) while remaining in the same repository.
+
 ---
-
-## 4. Derived Fields (From Filesystem Path)
-
-From the canonical article path:
 
 ```
 blog/YYYY/MM/DD/NN/num-slug/
 ```
 
-The build system derives the following fields automatically:
+Derived fields:
 
-* `year`
-* `month`
-* `day`
-* `ordinal` (from `NN`)
-* `slug` (from `num-slug`, numeric prefix removed)
-* `path` (full relative path)
+*   `year`, `month`, `day` (from directory structure)
+*   `ordinal` (from the `NN` directory)
+*   `slug` (the `num-slug` directory, with the `NN-` prefix removed)
 
 ### Rules
 
-* Derived fields must **not** appear in frontmatter
-* Frontmatter values must never override derived values
-* Filesystem structure is authoritative
+* **Filesystem Authority**: The folder path define the creation date and permanent URL.
+* **Modified Articles**: When an article is updated, it **must** remain in its original folder hierarchy. Its chronological relationship is defined by its creation location, not its modification time.
+* **No Redundancy**: Derived fields must **not** appear in frontmatter.
+* **Ignores and Overrides**: Any `date` fields found in frontmatter are ignored to prevent metadata drift.
 
 ---
 
-## 5. Rendering Rule (Hard Constraint)
+## 5. Rendering Rule: The Mirroring Requirement
 
-Frontmatter is **not visible** to templates.
+Frontmatter is **not visible** to templates and is **never** used for rendering.
 
-If the rendered page needs to show:
+If a value needs to be visible on the page:
 
-* a date
-* a tag
-* a series label
-* any other metadata
+* a title
+* a date (e.g., "January 9, 2026")
+* a tag list
+* a stream label
 
-…it must be written explicitly in the Markdown body.
+…it **must** be written explicitly in the Markdown body. Frontmatter is an index for machines; Markdown is the document for humans.
 
 Frontmatter duplication is allowed and expected when values must be visible.
 

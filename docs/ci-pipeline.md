@@ -114,7 +114,7 @@ Build an **article index** used by queries.
 Each article index record includes:
 
 * path-derived fields
-* frontmatter fields (status, tags, series)
+* frontmatter fields (status, tags, stream)
 * absolute source path to article directory
 * path to Markdown file
 
@@ -323,7 +323,7 @@ The build **may warn** but continue if:
 Forward references are allowed; queries or templates that target not-yet-existing content should warn but not fail.
 
 * query returns zero results
-* query references tags, series, or dates that do not yet exist
+* query references tags, stream, or dates that do not yet exist
 * article has no tags
 * unused query definitions exist
 * unused templates exist

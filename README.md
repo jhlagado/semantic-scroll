@@ -4,10 +4,9 @@ AI-driven blogging setup and documentation for a personal technical diary and pu
 
 ## Docs
 - `docs/prd.md` - Product requirements and workflow design
+- `docs/article-spec.md` - Technical specification for the Article Unit
 - `docs/notes.md` - Source notes and transcripts
 
 ## Status
-Work in progress. Content and tooling will evolve as the publishing workflow is built out.
-
 ## License
 MIT. See `LICENSE`.

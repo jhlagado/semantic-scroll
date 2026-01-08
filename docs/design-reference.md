@@ -104,7 +104,7 @@ for each template:
   emit final HTML document
 ```
 
-No metadata access at render time.
+No metadata access at render time. Visible metadata (title, date, etc.) must be authored directly in the Markdown body.
 
 ---
 
@@ -212,7 +212,7 @@ Scripts must not:
 | Structure | Ordinal mismatch        | ❌ Fail    |
 | Metadata  | Missing status          | ❌ Fail    |
 | Queries   | Unknown key             | ❌ Fail    |
-| Queries   | Zero results            | ⚠ Warning |
+| Metadata  | Missing stream          | ⚠ Warning |
 | Templates | Unknown query           | ❌ Fail    |
 | Templates | No slots                | ⚠ Warning |
 | Assets    | Missing referenced file | ❌ Fail    |

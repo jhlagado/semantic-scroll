@@ -30,7 +30,7 @@ We’re also leaning into a mobile-first approach, ensuring the blog looks and w
 
 Scope and audience are explicit: the primary reader is the author and technically curious peers who need a durable record of decisions. AI support is advisory; final edits, publication timing, and accountability remain with the human author.
 
-The blog also serves as a primary source for a broader content strategy. Material captured here in the form of a technical diary is intended to be repurposed for future media, including YouTube videos, Tiktoks, or long-form books.
+The blog also serves as a primary source for a broader content strategy. Material captured here in the form of a technical diary is intended to be repurposed for future media, including YouTube videos, Tiktoks, or longer-form books. This long-term purpose means that clarity, durable metadata, and stable URLs matter from day one, as these entries are intended to seed a broader content strategy that transcends the blog itself.
 
 Ease of capture is critical. A post should be draftable in minutes, with the AI handling structure and presentation while the author supplies intent and raw material. The system should feel closer to narrating a workday than to running a publishing project.
 
@@ -44,9 +44,9 @@ Freshness matters for the author’s momentum and for external visibility. The s
 
 Owning the domain is a non-negotiable requirement. The publishing stack can evolve, but DNS and canonical URLs should remain under the author's control to keep content portable. Over time, the system should support multiple subject streams (for example, retrocomputing and Z80 work alongside modern AI tooling) without fragmenting the archive.
 
-The long-term purpose goes beyond blogging. Entries are intended to seed other formats such as talks, videos, and longer-form writing, which means clarity, durable metadata, and stable URLs matter from day one.
+Each section should read as a standalone piece that can be published with minimal rewriting when the build story goes live.
 
-The first public content should document the build itself. This spec should translate into a narrative series that shows the decisions, tradeoffs, and implementation steps behind the blog.
+The first public content should document the build itself. This spec should translate into a narrative **stream** that shows the decisions, tradeoffs, and implementation steps behind the blog.
 
 Each section should read as a standalone piece that can be published with minimal rewriting when the build story goes live.
 
@@ -62,7 +62,7 @@ This section dives into the core principles that will shape the blog’s design 
 
 Finally, our **mobile-first approach** ensures that the site is designed to look great on smaller screens first and then gracefully adapts to larger screens. This means we’ll start with a clean, readable layout on mobile devices and then expand to take advantage of larger screens without adding unnecessary complexity.
 
-A key UX goal is **Smooth Navigation Transitions**. Conventional blogs often suffer from "undisciplined navigation flashes" during page loads. We aim to mitigate this by using the History API and XHR/Fetch to create a seamless, SPA-like experience for internal navigation while remaining a strictly static site at its core.
+A key UX goal is **Smooth Navigation Transitions**. Conventional blogs often suffer from "undisciplined navigation flashes" during page loads. We aim to mitigate this by using the History API and XHR/Fetch to create a seamless, SPA-like experience for internal navigation while remaining a strictly static site at its core. This mitigated "navigation flicker" brings the responsiveness users expect from modern apps back to the static document, proving that classic web values can deliver a premium experience without the overhead of heavy client-side state management.
 
 This behavior is strictly optional progressive enhancement. If JavaScript is disabled or the enhancement fails, standard link navigation should remain the default and should not feel broken or degraded.
 
@@ -74,7 +74,7 @@ Accessibility should target WCAG 2.1 AA where applicable, with regular contrast 
 
 The site should reflect the classic, server-rendered web. HTML should be legible without JavaScript, URLs should remain stable and human-readable, and CSS should improve readability rather than compete with the content.
 
-This document is written to brief an AI while remaining readable as a narrative. Each section should stand on its own as a potential future blog post, with a linear flow from principles to implementation so the process can be published as a series without heavy rewriting.
+This document is written to brief an AI while remaining readable as a narrative. Each section should stand on its own as a potential future blog post, with a linear flow from principles to implementation so the process can be published as a **stream** without heavy rewriting.
 
 ## 3. Content Creation Workflow
 
@@ -82,7 +82,7 @@ This section breaks down how each blog post comes to life, from the initial conv
 
 **Conversational Drafting** is at the heart of this workflow. Instead of starting with a blank page, you’ll have a dialogue with the AI. During this chat, the AI will help you figure out what the post is about, suggest a human-readable title, and identify relevant tags. It’ll also clarify the post’s status—whether it’s a draft, ready for review, or good to go live. Along the way, the AI will help you gather any necessary assets, like code snippets, images, or links, and figure out where they fit into the post.
 
-Once you’ve got all that figured out, the AI will generate a **folder-based output**. Each post will live in its own date-based folder (like `/blog/YYYY/MM/DD/slug/`) and include a single markdown file along with any co-located assets like images or code. The markdown file will have embedded frontmatter metadata—things like the title, date, tags, summary, and status—so everything stays neatly organized and portable.
+Once you’ve got all that figured out, the AI will generate a **folder-based output**. Each post will live in its own date-based folder (like `/blog/YYYY/MM/DD/NN/num-slug/`) and include a single markdown file along with any co-located assets like images or code. The markdown file will have embedded frontmatter metadata—things like the title, date, tags, summary, and status—so everything stays neatly organized and portable.
 
 **Linking and referencing** are also built into this workflow. You’ll be able to add internal links to other posts using relative paths or shortcodes and include external links that the AI can help curate. Eventually, we might wrap these links in semantic tags or add unobtrusive JavaScript enhancements like tooltips, but the core idea is to keep linking straightforward and reliable.
 
@@ -130,15 +130,19 @@ We’ll choose a canonical form for each tag—typically all lowercase and free 
 
 In short, the metadata and tagging rules are here to keep everything organized and consistent. The metadata drives the visibility and categorization of each post, and the tagging rules ensure that your tags remain meaningful and easy to manage over time.
 
+**The Mirroring Requirement**: Because our templates are intentionally "dumb" and have zero access to frontmatter, any metadata that must be visible on the page (like the title, date, or tags) must be explicitly authored in the Markdown body. This "mirroring" preserves the durability and self-contained nature of our documents.
+
+**Filesystem Authority**: The folder hierarchy (`/blog/YYYY/MM/DD/NN/num-slug/`) is the definitive source of truth for an article's creation date and its unique identity. Every post is contained in an **Article Unit** (see [article-spec.md](file:///Users/johnhardy/Documents/projects/jhardy.work/docs/article-spec.md)) which ensures that even multiple posts on the same day are sorted correctly by placing them in their own ordinal folders (`NN/`). If an article is updated, it keeps its chronological relationship with the folder hierarchy. Frontmatter `date` fields should be avoided to prevent drift; the system derives all temporal metadata from the path itself.
+
 Define whether `date` reflects creation or publication; if both are needed, add `created` and `published` fields rather than overloading a single value. Summaries should be short and factual to support index pages and previews.
 
-Tags and metadata should be rich enough to support multiple thematic tracks, from AI workflow experimentation to retrocomputing projects, while staying normalized and searchable. Over time, this metadata should also support reuse in other formats, such as compiling a series into a talk outline or grouping posts into a longer narrative.
+Tags and metadata should be rich enough to support multiple thematic tracks, from AI workflow experimentation to retrocomputing projects, while staying normalized and searchable. Over time, this metadata should also support reuse in other formats, such as compiling a **stream** into a talk outline or grouping posts into a longer narrative.
 
-A lightweight series or stream identifier may be useful to keep multi-topic work organized without splitting the site into separate systems. This should remain optional so the default path stays simple.
+A lightweight **stream** identifier is baked into the metadata to keep multi-topic work organized without splitting the site into separate systems. We prefer the term "stream" over "series" because a series implies a linear, finite sequence of parts, whereas a stream suggests an ongoing, thematic flow of content. This allows retrocomputing projects and modern AI tooling to coexist as distinct thematic channels in the same archive while remaining filterable by their respective tracks. This remains optional so the default path stays simple.
 
 If separate blogs are eventually needed, the system should allow a clean split without rewriting content or breaking URLs. The default, however, is a single domain with multiple streams and clear metadata boundaries.
 
-Tag vocabulary should be curated over time. When new tags are introduced, they should either map to existing canonical tags or be added deliberately, so that long-term archives remain coherent and searchable.
+Tag vocabulary should be curated over time. When new tags are introduced, they should either map to existing canonical tags or be added deliberately, so that long-term archives remain coherent and searchable. During the drafting process, the AI Agent is responsible for normalizing tags within the Markdown prose to ensure the visible content remains consistent with the searchable index.
 
 ## 6. Internal Linking Conventions
 
@@ -146,7 +150,7 @@ In this section, we’ll outline how internal links are handled to ensure that y
 
 We’ll use **relative paths** for internal links, meaning that links will point to other posts based on their folder structure rather than hard-coded URLs. This makes the system more flexible. If you need to move or rename a post, you can update the link paths without breaking the overall structure.
 
-We’ll also allow **forward references**, which means you can create links to posts that haven’t been written yet. This is especially useful when you’re planning a series of related posts and want to link them together in advance. If a forward reference doesn’t resolve right away, that’s okay—it will just be a warning rather than an error. The link will become active as soon as the target post is created. This supports exploratory writing without being constrained by what has already been published.
+We’ll also allow **forward references**, which means you can create links to posts that haven’t been written yet. This is especially useful when you’re planning a **stream** of related posts and want to link them together in advance. If a forward reference doesn’t resolve right away, that’s okay—it will just be a warning rather than an error. The link will become active as soon as the target post is created. This supports exploratory writing without being constrained by what has already been published.
 
 Overall, the goal is to keep internal linking intuitive and robust. By using a consistent linking convention and allowing for flexible references, we make it easy to maintain a well-connected and easy-to-navigate blog as it grows.
 
@@ -302,7 +306,7 @@ Phase Two delivers a working pipeline that converts markdown to HTML, generates 
 
 ### Phase Three: Authoring and Review Automation
 
-Phase Three focuses on authoring ergonomics and review safeguards. The AI vocabulary maps to CLI commands that create posts, revise content, set status, and attach assets. Review checks for metadata completeness, link integrity, and summary accuracy become part of the pre-publish flow so quality remains consistent without slowing daily capture.
+Once the machine of the publishing pipeline is proven in Phase Two, the focus shifts in Phase Three to the ergonomics of the author. Here, the AI vocabulary moves from concept to command, mapping our shared language to the CLI tools that will enable the rapid, narrative capture defined in our vision. The AI vocabulary maps to CLI commands that create posts, revise content, set status, and attach assets. Review checks for metadata completeness, link integrity, and summary accuracy become part of the pre-publish flow so quality remains consistent without slowing daily capture.
 
 ### Phase Four: Design, Accessibility, and Progressive Enhancement
 
@@ -310,7 +314,7 @@ Phase Four brings the visual system to its intended quality. Typography, spacing
 
 ### Phase Five: Content Rollout and Iteration
 
-Phase Five scales real publishing. The initial build-log series is released, the daily diary cadence is tested, tags and topic streams are refined, and the system is tuned based on friction observed in actual use. This phase also defines how posts are repurposed into talks, videos, or longer-form writing so the workflow supports the broader content strategy.
+Phase Five scales real publishing. The initial build-log **stream** is released, the daily diary cadence is tested, tags and topic streams are refined, and the system is tuned based on friction observed in actual use. This phase also defines how posts are repurposed into talks, videos, or longer-form writing so the workflow supports the broader content strategy.
 
 ## Conclusion
 
