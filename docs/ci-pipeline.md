@@ -167,6 +167,16 @@ For each query:
 
 * map of `query-name → ordered article record list`
 
+### 6.5 Status Visibility Contract
+
+Article `status` affects indexing and selection only, not rendering semantics.
+
+* `published` articles may appear in query results.
+* `draft`, `review`, and `archived` articles must never appear in rendered output unless a query explicitly selects them.
+* Templates do not and cannot detect article status.
+
+Visibility is determined solely by query definitions, not template logic.
+
 ---
 
 ## 7. Stage 5: Template Rendering
@@ -203,6 +213,16 @@ For each article record used:
 
 Templates **never** access frontmatter or derived metadata.
 
+### 7.5 Index Pages as First-Class Artifacts
+
+Index pages (home, tag pages, day/month/year archives) are first-class rendered outputs, not derived views.
+
+* each index page is rendered from an explicit template
+* each index page has a stable output path
+* no index page is generated implicitly
+
+If an index page exists, it exists because a template explicitly rendered it.
+
 ---
 
 ## 8. Stage 6: Asset Copying
@@ -235,6 +255,16 @@ Verify the generated output is internally consistent.
 * all referenced assets exist
 * no duplicate output paths
 * no missing HTML outputs for required templates
+
+### 9.3 Canonical URL Ownership
+
+Output URLs are owned by the filesystem layout and template mapping.
+
+* slugs are durable identifiers
+* changing a slug is a deliberate migration
+* redirects, if required, must be explicitly authored
+
+The system must never silently rewrite or infer redirects.
 
 ---
 
@@ -290,7 +320,10 @@ The build **must fail** if any of the following occur:
 
 The build **may warn** but continue if:
 
+Forward references are allowed; queries or templates that target not-yet-existing content should warn but not fail.
+
 * query returns zero results
+* query references tags, series, or dates that do not yet exist
 * article has no tags
 * unused query definitions exist
 * unused templates exist
@@ -341,4 +374,3 @@ If a change requires:
 This pipeline specification is **locked**.
 
 Any deviation requires explicit architectural review.
-

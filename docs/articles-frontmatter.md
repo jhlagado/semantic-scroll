@@ -45,6 +45,26 @@ status: published
 
 Any other value is invalid and must fail the build.
 
+### 2.1 Author-Only Versioning
+
+The system does not expose revision history, edit timestamps, or version metadata to readers by default.
+
+* Git history is the sole source of historical truth.
+* Public HTML output represents the current authored state only.
+* No "last updated" badges, revision diffs, or edit timelines are generated unless explicitly authored as content.
+
+Status changes (`draft`, `review`, `published`, `archived`) are reversible and tracked only via version control.
+
+### 2.2 Status Visibility Contract
+
+Article `status` affects indexing and selection only, not rendering semantics.
+
+* `published` articles may appear in query results.
+* `draft`, `review`, and `archived` articles must never appear in rendered output unless a query explicitly selects them.
+* Templates do not and cannot detect article status.
+
+Visibility is determined solely by query definitions, not template logic.
+
 ---
 
 ## 3. Optional Frontmatter Fields

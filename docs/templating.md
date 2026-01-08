@@ -465,6 +465,14 @@ Recommended mappings:
 
 Output paths must be deterministic and collision-free.
 
+Index pages (home, tag pages, day/month/year archives) are first-class rendered outputs, not derived views.
+
+* each index page is rendered from an explicit template
+* each index page has a stable output path
+* no index page is generated implicitly
+
+If an index page exists, it exists because a template explicitly rendered it.
+
 ---
 
 ### 10.2 Asset Handling
@@ -515,6 +523,8 @@ Build must fail if:
 ### 12.2 Warnings
 
 Build may warn if:
+
+Forward references are allowed: templates may reference queries that resolve to zero results, and queries may target tags, series, or dates that do not yet exist. These conditions warn but do not fail.
 
 * a query returns zero results
 * a query is defined but unused

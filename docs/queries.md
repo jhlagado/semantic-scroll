@@ -24,9 +24,17 @@ The system prioritizes clarity, durability, classic web principles, and strict s
 * Tooling exists to standardize and automate, **not** to compensate for lack of skill.
 * We favor **first-principles implementations** when the problem is simple and bounded.
 * External dependencies are allowed **only** when they provide clear, non-trivial value.
+* Default assumption is zero or near-zero operating cost; static hosting is preferred; paid services require explicit justification and long-term maintenance cost must be considered.
 * Avoid frameworks, DSL sprawl, and Turing-complete template systems.
 
 This is a deliberately *boring*, *legible*, *durable* web system.
+
+### 1.1 Self-Documenting Build
+
+The first published content series should document the construction of the system itself.
+
+* Each architectural decision should be representable as a post.
+* Spec documents should map cleanly to publishable narratives.
 
 ---
 
@@ -65,6 +73,16 @@ blog/2026/01/08/02/02-z80-disassembly/
 * `NN` **must match** the numeric prefix of `num-slug`.
 * This ordering is for filesystem sanity and human inspection.
 * Authoritative ordering can always be reconstructed from metadata.
+
+### 2.4 Canonical URL Ownership
+
+Output URLs are owned by the filesystem layout and template mapping.
+
+* slugs are durable identifiers
+* changing a slug is a deliberate migration
+* redirects, if required, must be explicitly authored
+
+The system must never silently rewrite or infer redirects.
 
 ---
 
@@ -332,7 +350,18 @@ These must never erode:
 
 ---
 
-## 15. Status
+## 15. Forward References
+
+The system permits forward references during authoring.
+
+* Queries may reference tags, series names, or dates that do not yet exist.
+* Templates may reference queries that currently resolve to zero results.
+
+These conditions must produce warnings, not build failures. Forward references become active automatically once matching content exists.
+
+---
+
+## 16. Status
 
 All decisions in this document are **locked** unless explicitly revised.
 
