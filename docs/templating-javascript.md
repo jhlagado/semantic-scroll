@@ -1,16 +1,6 @@
-Here is **(3) the Progressive Enhancement & JavaScript Boundary Specification**, written as a **fully normative Markdown document** you can paste directly into:
-
-```
-docs/progressive-enhancement.md
-```
-
-This locks down *exactly* what JavaScript may and may not do, so the system cannot slowly drift into an application framework.
-
----
-
 # Progressive Enhancement and JavaScript Boundary Specification
 
-This document defines the **strict boundaries** for JavaScript usage in the blog system.
+This document defines the **strict boundaries** for JavaScript usage in the blog system. It is derived from `docs/prd.md` and aligned with `docs/templating.md`.
 
 JavaScript is **optional**, **non-authoritative**, and **additive only**.
 The site must remain fully readable, navigable, and meaningful with JavaScript disabled.
@@ -273,13 +263,3 @@ The goal is:
 This specification is **locked**.
 
 Any JavaScript feature that violates this boundary is invalid, regardless of convenience.
-
----
-
-If you want to continue, the remaining clean steps are:
-
-1. template authoring conventions
-2. reference build pseudocode
-3. minimal script layout and responsibilities
-
-Say the number.

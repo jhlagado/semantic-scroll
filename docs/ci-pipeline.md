@@ -1,17 +1,6 @@
-Here is a **single, cohesive Markdown document** covering the **build pipeline end-to-end**, including **CI stages, validation rules, and the error / warning matrix**.
-It is written to be dropped directly into your repo as something like:
-
-```
-docs/pipeline.md
-```
-
-Everything here is consistent with the decisions already locked.
-
----
-
 # Build Pipeline and CI Specification
 
-This document defines the **end-to-end build pipeline** for the blog system, including discovery, indexing, querying, rendering, asset handling, and deployment.
+This document defines the **end-to-end build pipeline** for the blog system, including discovery, indexing, querying, rendering, asset handling, and deployment. It is derived from `docs/prd.md` and aligned with `docs/queries.md` and `docs/templating.md`.
 
 It also defines **CI validation rules**, including which conditions are **hard errors** versus **warnings**.
 
@@ -66,16 +55,16 @@ Discover all article directories and validate their filesystem structure.
 Articles must exist at:
 
 ```
-blog/YYYY/MM/DD/NN/num-slug/
+blog/YYYY/MM/DD/NN-slug/
 ```
 
 ### 3.3 Discovery Process
 
 For each directory under `blog/`:
 
-* verify `YYYY/MM/DD/NN/num-slug` structure
+* verify `YYYY/MM/DD/NN-slug` structure
 * verify all numeric components are zero-padded
-* verify `NN` matches numeric prefix of `num-slug`
+* verify `NN` matches numeric prefix of `NN-slug`
 * locate the article Markdown file (canonical name, e.g. `article.md`)
 
 ### 3.4 Discovery Outputs
@@ -291,8 +280,8 @@ The build **must fail** if any of the following occur:
 #### Filesystem & Structure
 
 * invalid article path structure
-* missing `NN` or `num-slug`
-* ordinal mismatch between `NN` and slug
+* missing `NN-slug`
+* ordinal mismatch between `NN` and `NN-slug`
 * missing article Markdown file
 
 #### Frontmatter

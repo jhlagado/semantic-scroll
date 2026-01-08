@@ -6,9 +6,9 @@ This document defines the **Article Unit**, the fundamental atomic unit of the b
 
 ## 1. Filesystem Identity and the Ordinal Invariant
 
-The identity of an article is rooted in the filesystem, which serves as the sole authoritative source for its chronological position and unique identity. We use a structured path hierarchy: `/blog/YYYY/MM/DD/NN/num-slug/article.md`.
+The identity of an article is rooted in the filesystem, which serves as the sole authoritative source for its chronological position and unique identity. We use a structured path hierarchy: `/blog/YYYY/MM/DD/NN-slug/article.md`.
 
-The most critical part of this path is the inclusion of the **NN** ordinal directory. This two-digit ordinal prefix (`NN`) is its own folder level to ensure that multiple articles created on the same day are sorted correctly by both human-centric tools and automated build scripts, preventing accidental alphabetical sorting of slugs. Within this ordinal folder, the article itself resides in a directory named with its human-readable **num-slug** (e.g., `01-first-post/`). Once an article is assigned to an ordinal folder, it remains there for its entire lifecycle; even if the content is revised years later, its birth folder remains its permanent home, preserving its place in history.
+The most critical part of this path is the **NN** ordinal prefix in the leaf directory. This two-digit ordinal prefix (`NN`) ensures that multiple articles created on the same day are sorted correctly by both human-centric tools and automated build scripts, preventing accidental alphabetical sorting of slugs. The leaf directory is named with its human-readable **NN-slug** (e.g., `01-first-post/`). Once an article is assigned to its folder, it remains there for its entire lifecycle; even if the content is revised years later, its birth folder remains its permanent home, preserving its place in history.
 
 ---
 
@@ -27,7 +27,7 @@ stream: rebuild-log
 ---
 ```
 
-Here, the `status` field controls visibility (e.g., preventing drafts from appearing in public feeds), while the `stream` field categorizes the post into an ongoing thematic flow (like a specific project log). We avoid placing titles or dates in frontmatter to prevent metadata drift; those values belong in the human-facing body.
+Here, the `status` field controls visibility (e.g., preventing drafts from appearing in public feeds), while the `stream` field categorizes the post into an ongoing thematic flow (like a specific project log). An optional `summary` may be included for indexing or external feeds, but it is not rendered. We avoid placing titles or dates in frontmatter to prevent metadata drift; those values belong in the human-facing body.
 
 ### 2.2 The Visible Document (The Mirroring Requirement)
 Because our rendering templates are intentionally "dumb" and cannot access frontmatter, the document body must be self-contained. Any information intended for the reader—such as the title, the date of creation, or the categorical tags—must be authored directly in the Markdown prose. This "mirroring" ensures that if the build system disappears tomorrow, the document remains perfectly legible to a human reader.
@@ -71,7 +71,6 @@ Reference docs are optimized for long-term lookup. They use objective prose, fre
 
 ---
 
-## 4. The Agent's Responsibility
+## 4. Authoring Responsibility
 
-AI Agents acting as expert collaborators are responsible for maintaining the integrity of the Article Unit. When creating or revising a post, the agent must ensure the `/NN/num-slug/` folder structure is enforced and that all relevant metadata is mirrored correctly in the body.
- Furthermore, the agent must normalize tags within the prose to ensure consistency with the searchable index, transforming informal mentions like "hardware" into their canonical forms like "#hardware". Above all, the agent must prioritize the narrative, human-oriented style of the document, ensuring it feels like a piece of crafted writing rather than a collection of data points.
+Anyone creating or revising a post must maintain the integrity of the Article Unit. The `/NN-slug/` folder structure must be enforced and all relevant metadata must be mirrored correctly in the body. Tags should be normalized within the prose to ensure consistency with the searchable index, transforming informal mentions like "hardware" into their canonical forms like "#hardware". Above all, the document should read as crafted writing rather than a collection of data points.

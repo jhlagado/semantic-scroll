@@ -18,6 +18,7 @@ This document defines the product requirements and operating principles for an A
 - [12. CSS and Styling](#12-css-and-styling)
 - [13. Explicit Non-Goals](#13-explicit-non-goals)
 - [14. Execution Plan](#14-execution-plan)
+- [15. Specifications Map](#15-specifications-map)
 - [Conclusion](#conclusion)
 
 ## 1. Introduction
@@ -82,7 +83,7 @@ This section breaks down how each blog post comes to life, from the initial conv
 
 **Conversational Drafting** is at the heart of this workflow. Instead of starting with a blank page, you’ll have a dialogue with the AI. During this chat, the AI will help you figure out what the post is about, suggest a human-readable title, and identify relevant tags. It’ll also clarify the post’s status—whether it’s a draft, ready for review, or good to go live. Along the way, the AI will help you gather any necessary assets, like code snippets, images, or links, and figure out where they fit into the post.
 
-Once you’ve got all that figured out, the AI will generate a **folder-based output**. Each post will live in its own date-based folder (like `/blog/YYYY/MM/DD/NN/num-slug/`) and include a single markdown file along with any co-located assets like images or code. The markdown file will have embedded frontmatter metadata—things like the title, date, tags, summary, and status—so everything stays neatly organized and portable.
+Once you’ve got all that figured out, the AI will generate a **folder-based output**. Each post will live in its own date-based folder (like `/blog/YYYY/MM/DD/NN-slug/`) and include a single markdown file along with any co-located assets like images or code. The markdown file will have embedded frontmatter metadata for status, tags, stream, and an optional summary so indexing stays consistent while visible titles and dates live in the body.
 
 **Linking and referencing** are also built into this workflow. You’ll be able to add internal links to other posts using relative paths or shortcodes and include external links that the AI can help curate. Eventually, we might wrap these links in semantic tags or add unobtrusive JavaScript enhancements like tooltips, but the core idea is to keep linking straightforward and reliable.
 
@@ -122,7 +123,7 @@ Scheduling can remain simple: publication should be triggered by status changes 
 
 ## 5. Metadata & Tagging Rules
 
-This section is all about the backbone of how we organize and categorize each piece of content—through metadata and tags. The metadata lives in the frontmatter of each markdown file and acts as the single source of truth for the blog’s organization. It includes fields like the title, date, status, summary, and tags. Each of these fields helps determine where and how the post appears across the site.
+This section is all about the backbone of how we organize and categorize each piece of content—through metadata and tags. The metadata lives in the frontmatter of each markdown file and acts as the single source of truth for discovery and indexing. It includes fields like status, tags, stream, and an optional summary, while dates are derived from the filesystem and titles live in the body. Each of these fields helps determine where and how the post appears across the site.
 
 When it comes to **tags**, we’re taking a controlled and normalized approach. Tags are case-insensitive, which means it doesn’t matter if you write “Z80” or “z80”—they’ll be treated the same. We also ignore minor variations like hyphens or underscores, so “Z-80” and “Z_80” also get folded into the same tag. This helps keep our tagging system clean and prevents tag sprawl, where you end up with a bunch of near-duplicate tags that all mean the same thing.
 
@@ -132,9 +133,9 @@ In short, the metadata and tagging rules are here to keep everything organized a
 
 **The Mirroring Requirement**: Because our templates are intentionally "dumb" and have zero access to frontmatter, any metadata that must be visible on the page (like the title, date, or tags) must be explicitly authored in the Markdown body. This "mirroring" preserves the durability and self-contained nature of our documents.
 
-**Filesystem Authority**: The folder hierarchy (`/blog/YYYY/MM/DD/NN/num-slug/`) is the definitive source of truth for an article's creation date and its unique identity. Every post is contained in an **Article Unit** (see [article-spec.md](file:///Users/johnhardy/Documents/projects/jhardy.work/docs/article-spec.md)) which ensures that even multiple posts on the same day are sorted correctly by placing them in their own ordinal folders (`NN/`). If an article is updated, it keeps its chronological relationship with the folder hierarchy. Frontmatter `date` fields should be avoided to prevent drift; the system derives all temporal metadata from the path itself.
+**Filesystem Authority**: The folder hierarchy (`/blog/YYYY/MM/DD/NN-slug/`) is the definitive source of truth for an article's creation date and its unique identity. Every post is contained in an **Article Unit** (see [article-spec.md](article-spec.md)) which ensures that even multiple posts on the same day are sorted correctly by the mandatory `NN-` ordinal prefix. If an article is updated, it keeps its chronological relationship with the folder hierarchy. Frontmatter `date` fields should be avoided to prevent drift; the system derives all temporal metadata from the path itself.
 
-Define whether `date` reflects creation or publication; if both are needed, add `created` and `published` fields rather than overloading a single value. Summaries should be short and factual to support index pages and previews.
+Dates are derived from the filesystem; if both creation and publication dates need to be explicit for readers, they should be authored in the body rather than inferred from metadata. Summaries should be short and factual to support index pages and previews.
 
 Tags and metadata should be rich enough to support multiple thematic tracks, from AI workflow experimentation to retrocomputing projects, while staying normalized and searchable. Over time, this metadata should also support reuse in other formats, such as compiling a **stream** into a talk outline or grouping posts into a longer narrative.
 
@@ -315,6 +316,12 @@ Phase Four brings the visual system to its intended quality. Typography, spacing
 ### Phase Five: Content Rollout and Iteration
 
 Phase Five scales real publishing. The initial build-log **stream** is released, the daily diary cadence is tested, tags and topic streams are refined, and the system is tuned based on friction observed in actual use. This phase also defines how posts are repurposed into talks, videos, or longer-form writing so the workflow supports the broader content strategy.
+
+## 15. Specifications Map
+
+This PRD sets the intent; the implementation details are specified in the derived documents.
+
+Frontmatter and status semantics are defined in [articles-frontmatter.md](articles-frontmatter.md). The Article Unit is defined in [article-spec.md](article-spec.md). Architectural invariants and the query-driven rendering model are defined in [queries.md](queries.md), with schema details in [queries-spec.md](queries-spec.md) and canonical query definitions in [queries-builtin.md](queries-builtin.md). Rendering and template rules are defined in [templating.md](templating.md) and [templating-conventions.md](templating-conventions.md), with the JavaScript boundary in [templating-javascript.md](templating-javascript.md). Pipeline and CI rules live in [ci-pipeline.md](ci-pipeline.md). The execution guide and reference pseudocode are in [design-reference.md](design-reference.md).
 
 ## Conclusion
 

@@ -104,19 +104,39 @@ Used to categorize content into thematic tracks (e.g., retrocomputing, AI-toolin
 
 ---
 
+### 3.3 Summary
+
+```yaml
+summary: Short, factual description of the article.
 ```
-blog/YYYY/MM/DD/NN/num-slug/
+
+Rules:
+
+* optional
+* short and descriptive, not promotional
+* used for indexing or external feeds, not rendering
+
+If a summary needs to be visible, it must also be written in the Markdown body.
+
+---
+
+## 4. Derived Fields (From Filesystem Path)
+
+From the canonical article path:
+
+```
+blog/YYYY/MM/DD/NN-slug/
 ```
 
 Derived fields:
 
-*   `year`, `month`, `day` (from directory structure)
-*   `ordinal` (from the `NN` directory)
-*   `slug` (the `num-slug` directory, with the `NN-` prefix removed)
+* `year`, `month`, `day` (from directory structure)
+* `ordinal` (from the `NN` prefix of the leaf directory)
+* `slug` (the slug portion of the leaf directory, with the `NN-` prefix removed)
 
 ### Rules
 
-* **Filesystem Authority**: The folder path define the creation date and permanent URL.
+* **Filesystem Authority**: The folder path defines the creation date and permanent URL.
 * **Modified Articles**: When an article is updated, it **must** remain in its original folder hierarchy. Its chronological relationship is defined by its creation location, not its modification time.
 * **No Redundancy**: Derived fields must **not** appear in frontmatter.
 * **Ignores and Overrides**: Any `date` fields found in frontmatter are ignored to prevent metadata drift.

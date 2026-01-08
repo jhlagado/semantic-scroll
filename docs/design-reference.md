@@ -1,12 +1,6 @@
-Alright — below is **all four**, written as **normative, copy-pasteable Markdown**, with no fluff and no contradictions to the specs you’ve already locked.
-
-I’ve kept each section clearly separated so you can either keep this as **one master doc** or split it later.
-
----
-
 # Reference Implementation and Execution Guide
 
-This document provides the **concrete, implementation-facing guidance** for the blog system, without committing to a specific language or framework.
+This document provides the **concrete, implementation-facing guidance** for the blog system, without committing to a specific language or framework. It is derived from `docs/prd.md`, `docs/queries.md`, `docs/templating.md`, and `docs/ci-pipeline.md`.
 
 It is strictly derived from the previously defined architecture and does not introduce new concepts.
 
@@ -32,9 +26,9 @@ initialize empty render plan
 
 ```
 for each directory under blog/:
-  validate path matches YYYY/MM/DD/NN/num-slug
+  validate path matches YYYY/MM/DD/NN-slug
   validate zero-padded numeric components
-  validate NN matches numeric prefix of num-slug
+  validate NN matches numeric prefix of NN-slug
   locate article markdown file
 ```
 
@@ -146,7 +140,7 @@ This layout is **canonical**.
 ```
 /
 ├─ blog/
-│  └─ YYYY/MM/DD/NN/num-slug/
+│  └─ YYYY/MM/DD/NN-slug/
 │     ├─ article.md
 │     └─ assets/
 │
@@ -168,9 +162,10 @@ This layout is **canonical**.
 ├─ docs/
 │  ├─ queries.md
 │  ├─ templating.md
-│  ├─ frontmatter.md
-│  ├─ pipeline.md
-│  ├─ template-authoring.md
+│  ├─ articles-frontmatter.md
+│  ├─ ci-pipeline.md
+│  ├─ templating-conventions.md
+│  ├─ templating-javascript.md
 │
 └─ build/
 ```
@@ -212,7 +207,7 @@ Scripts must not:
 | Structure | Ordinal mismatch        | ❌ Fail    |
 | Metadata  | Missing status          | ❌ Fail    |
 | Queries   | Unknown key             | ❌ Fail    |
-| Metadata  | Missing stream          | ⚠ Warning |
+| Metadata  | Article has no tags     | ⚠ Warning |
 | Templates | Unknown query           | ❌ Fail    |
 | Templates | No slots                | ⚠ Warning |
 | Assets    | Missing referenced file | ❌ Fail    |
@@ -261,7 +256,7 @@ Warnings must appear in CI logs but not fail the run.
 
 ---
 
-### Article (`blog/2026/01/08/01/01-first-post/article.md`)
+### Article (`blog/2026/01/08/01-first-post/article.md`)
 
 ```md
 ---
@@ -302,4 +297,3 @@ At this point you have:
 * strict template rules
 * explicit CI behavior
 * a clear implementation path
-

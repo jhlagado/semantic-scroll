@@ -1,17 +1,7 @@
-Below is a **single, authoritative Markdown document** capturing **all design decisions made today**, cleaned up, internally consistent, and written to live in your repo as a reference for both humans and AI agents.
-
-You can drop this straight in as something like:
-
-* `docs/design.md`
-* or `docs/architecture.md`
-* or `docs/agents.md` (with minor tone tweaks)
-
----
-
 # Blog Architecture & Design Decisions
 
 This document records the architectural and design decisions for the AI-assisted blog system.
-It is intended to be **normative**: if future work conflicts with this document, the future work is wrong unless this document is explicitly updated.
+It is derived from `docs/prd.md` and is **normative**: if future work conflicts with this document, the future work is wrong unless this document is explicitly updated.
 
 The system prioritizes clarity, durability, classic web principles, and strict separation of concerns.
 
@@ -45,7 +35,7 @@ The first published content stream should document the construction of the syste
 The canonical structure is:
 
 ```
-blog/YYYY/MM/DD/NN/num-slug/<files>
+blog/YYYY/MM/DD/NN-slug/<files>
 ```
 
 Where:
@@ -53,15 +43,12 @@ Where:
 * `YYYY` = 4-digit year
 * `MM` = 2-digit month, **leading zero required**
 * `DD` = 2-digit day, **leading zero required**
-* `NN` = 2-digit per-day ordinal folder, **leading zero required**
-* `num-slug` = human-readable slug **prefixed with the same ordinal**
-
-**Day and article ordinal are separate directories. They must never be conflated.**
+* `NN-slug` = leaf directory with a 2-digit ordinal prefix followed by a human-readable slug
 
 ### 2.2 Article Example
 
 ```
-blog/2026/01/08/01/01-first-post/
+blog/2026/01/08/01-first-post/
   article.md
   assets/
     diagram.png
@@ -70,7 +57,7 @@ blog/2026/01/08/01/01-first-post/
 ### 2.3 Ordinal Rules
 
 * `NN` determines ordering *within a day*.
-* `NN` **must match** the numeric prefix of `num-slug`.
+* `NN` **must match** the numeric prefix of the `NN-slug` directory.
 * This ordering is for filesystem sanity and human inspection.
 * Authoritative ordering can always be reconstructed from metadata.
 
@@ -364,14 +351,3 @@ These conditions must produce warnings, not build failures. Forward references b
 All decisions in this document are **locked** unless explicitly revised.
 
 Future work must conform to this design, not reinterpret it.
-
----
-
-If you want next, we can:
-
-* formalize the **JSON Schema**
-* define **canonical built-in queries**
-* specify **CI validation rules**
-* or sketch the **minimal build pipeline**
-
-Just say which one.

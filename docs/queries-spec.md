@@ -1,13 +1,6 @@
-Here is **(1) the Query JSON Schema**, written as a **clean, standalone Markdown spec** you can paste directly into
-`docs/query-schema.md`.
-
-It is deliberately strict and explicit.
-
----
-
 # Query JSON Schema Specification
 
-This document defines the **authoritative schema** for named queries used by the blog system.
+This document defines the **authoritative schema** for named queries used by the blog system. It is derived from `docs/queries.md` and `docs/prd.md`.
 
 Queries are **data**, not code.
 They are validated strictly at build time.
@@ -276,11 +269,3 @@ If a requirement cannot be expressed within this schema, it is out of scope by d
 This schema is **locked**.
 
 Any change to this document is an architectural change and must be deliberate.
-
----
-
-If you want next, the clean follow-on options are:
-
-* CI error vs warning matrix
-* canonical built-in queries
-* minimal build pipeline outline

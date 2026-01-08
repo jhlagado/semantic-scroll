@@ -1,18 +1,6 @@
-Here is a **fully specified, normative Markdown document** defining **Template Authoring Conventions**, written to slot cleanly alongside your other specs.
-
-You can paste this directly as:
-
-```
-docs/template-authoring.md
-```
-
-This document is intentionally detailed and prescriptive, because templates are where systems *quietly rot* if not constrained.
-
----
-
 # Template Authoring Conventions
 
-This document defines **mandatory conventions** for authoring HTML templates in the blog system.
+This document defines **mandatory conventions** for authoring HTML templates in the blog system. It is derived from `docs/templating.md` and `docs/prd.md`.
 
 Templates are structural documents, not programs.
 They must remain readable, predictable, and boring.
@@ -326,11 +314,3 @@ Templates should look like something Tim Berners-Lee would recognize, not someth
 These conventions are **locked**.
 
 Any template violating these rules is invalid, regardless of whether it “works”.
-
----
-
-If you want to proceed, the only remaining foundational document is:
-
-* **reference build pseudocode** (step-by-step, implementation-neutral)
-
-Say the word and we’ll write that next.

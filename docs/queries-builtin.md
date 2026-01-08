@@ -1,11 +1,6 @@
-Here is **(2) the Canonical Built-in Queries**, as a clean, standalone Markdown document you can paste directly as
-`docs/canonical-queries.md`.
-
----
-
 # Canonical Built-in Queries
 
-This document defines the **minimum, first-class set of named queries** that the blog system must support.
+This document defines the **minimum, first-class set of named queries** that the blog system must support. It is derived from `docs/queries.md` and `docs/queries-spec.md`.
 
 These queries form the backbone of navigation, indexing, and page generation.
 All other queries are considered **derived or custom** and must conform to the same schema.
@@ -311,11 +306,3 @@ Canonical queries define the **navigational grammar** of the blog.
 
 They are not implementation details.
 They are part of the public architecture.
-
----
-
-If you want to continue, the next clean step is:
-
-**(3) CI error vs warning matrix**
-or
-**minimal build pipeline outline**

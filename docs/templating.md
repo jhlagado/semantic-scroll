@@ -1,19 +1,6 @@
-Below is a **fully expanded, deeply detailed, single Markdown specification** that *extends* what you wrote without contradicting it.
-This is intended to be **final-form**, normative, and implementation-guiding rather than aspirational.
-
-You can drop this in as something like:
-
-```
-docs/templating.md
-```
-
-I have kept your structure and expanded **within it**, adding new subsections where needed rather than rewriting your intent.
-
----
-
 # Templating and Rendering Specification
 
-This section is **normative**. It defines how named queries select articles, how templates consume query results, and how Markdown becomes HTML inside templates.
+This document is **normative**. It defines how named queries select articles, how templates consume query results, and how Markdown becomes HTML inside templates. It is derived from `docs/prd.md` and `docs/queries.md`.
 
 The intent is to:
 
@@ -24,7 +11,7 @@ The intent is to:
 This specification is written to match the canonical content architecture:
 
 ```
-blog/YYYY/MM/DD/NN/num-slug/<files>
+blog/YYYY/MM/DD/NN-slug/<files>
 ```
 
 Any deviation from this specification is an architectural change and must be deliberate.
@@ -338,7 +325,7 @@ This index is the sole data source for queries.
 For each directory matching:
 
 ```
-blog/YYYY/MM/DD/NN/num-slug/
+blog/YYYY/MM/DD/NN-slug/
 ```
 
 the build must:
@@ -452,7 +439,7 @@ Recommended mappings:
 * Article pages:
 
   ```
-  build/blog/YYYY/MM/DD/NN/num-slug/index.html
+  build/blog/YYYY/MM/DD/NN-slug/index.html
   ```
 
 * Index pages:
