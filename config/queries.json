@@ -1,0 +1,23 @@
+{
+  "home-posts": {
+    "source": "blog",
+    "status": "published",
+    "sort": "date-desc"
+  },
+  "article-pages": {
+    "source": "blog",
+    "status": "published",
+    "sort": "date-asc"
+  },
+  "latest-posts": {
+    "source": "blog",
+    "status": "published",
+    "sort": "date-desc",
+    "limit": 10
+  },
+  "all-published-posts": {
+    "source": "blog",
+    "status": "published",
+    "sort": "date-asc"
+  }
+}

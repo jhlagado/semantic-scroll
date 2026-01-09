@@ -71,7 +71,7 @@ These invariants must never be eroded:
 5. **Filesystem layout is canonical**
 
    ```
-   blog/YYYY/MM/DD/NN-slug/
+   content/blog/YYYY/MM/DD/NN-slug/
    ```
 
    Where `NN` is a mandatory 2-digit ordinal prefix within the leaf directory. Any attempt to remove, flatten, or conflate this prefix is an architectural violation.
@@ -217,6 +217,10 @@ Before producing or modifying documentation, ask:
 > "Would a careful human reader understand not just what this does, but why it exists?"
 
 If the answer is no, expand the prose.
+
+### 9.7 Writing Style Compliance
+
+Any prose generation must comply with [AI_WRITING.md](docs/AI_WRITING.md).
 
 ---
 

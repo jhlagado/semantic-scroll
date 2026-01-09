@@ -12,18 +12,18 @@ This pipeline is deliberately simple, deterministic, and inspectable.
 
 The pipeline exists to:
 
-* convert Markdown articles into static HTML
-* generate index pages via named queries
-* validate structure and metadata rigorously
-* deploy a reproducible site artifact
+- convert Markdown articles into static HTML
+- generate index pages via named queries
+- validate structure and metadata rigorously
+- deploy a reproducible site artifact
 
 The pipeline must be:
 
-* deterministic
-* filesystem-driven
-* free of hidden state
-* runnable locally and in CI
-* boring by design
+- deterministic
+- filesystem-driven
+- free of hidden state
+- runnable locally and in CI
+- boring by design
 
 ---
 
@@ -55,30 +55,30 @@ Discover all article directories and validate their filesystem structure.
 Articles must exist at:
 
 ```
-blog/YYYY/MM/DD/NN-slug/
+content/blog/YYYY/MM/DD/NN-slug/
 ```
 
 ### 3.3 Discovery Process
 
-For each directory under `blog/`:
+For each directory under `content/blog/`:
 
-* verify `YYYY/MM/DD/NN-slug` structure
-* verify all numeric components are zero-padded
-* verify `NN` matches numeric prefix of `NN-slug`
-* locate the single canonical article Markdown file (canonical name, e.g. `article.md`)
-* fail if the article Markdown file is missing or ambiguous
+- verify `YYYY/MM/DD/NN-slug` structure
+- verify all numeric components are zero-padded
+- verify `NN` matches numeric prefix of `NN-slug`
+- locate the single canonical article Markdown file (canonical name, e.g. `article.md`)
+- fail if the article Markdown file is missing or ambiguous
 
 ### 3.4 Discovery Outputs
 
-* list of article directories
-* derived path fields:
+- list of article directories
+- derived path fields:
 
-  * year
-  * month
-  * day
-  * ordinal
-  * slug
-  * full relative path
+  - year
+  - month
+  - day
+  - ordinal
+  - slug
+  - full relative path
 
 ---
 
@@ -90,23 +90,23 @@ Build an **article index** used by queries.
 
 ### 4.2 Index Inputs
 
-* derived path fields
-* parsed frontmatter from article Markdown
+- derived path fields
+- parsed frontmatter from article Markdown
 
 ### 4.3 Frontmatter Rules
 
-* frontmatter is parsed but **not rendered**
-* frontmatter values supplement derived fields
-* derived fields are authoritative
+- frontmatter is parsed but **not rendered**
+- frontmatter values supplement derived fields
+- derived fields are authoritative
 
 ### 4.4 Index Record Contents
 
 Each article index record includes:
 
-* path-derived fields
-* frontmatter fields (status, title, tags, stream, summary, thumbnail)
-* absolute source path to article directory
-* path to Markdown file
+- path-derived fields
+- frontmatter fields (status, title, tags, stream, summary, thumbnail)
+- absolute source path to article directory
+- path to Markdown file
 
 Markdown body is **not read** at this stage.
 
@@ -122,12 +122,12 @@ Ensure all named queries are valid **before execution**.
 
 For each query in `config/queries.json`:
 
-* conforms to query schema
-* contains required `source`
-* contains no unknown keys
-* applies ranges only to allowed fields
-* uses valid `sort` values
-* uses valid `limit` values
+- conforms to query schema
+- contains required `source`
+- contains no unknown keys
+- applies ranges only to allowed fields
+- uses valid `sort` values
+- uses valid `limit` values
 
 Validation failures here **halt the build**.
 
@@ -150,20 +150,20 @@ For each query:
 
 ### 6.3 Determinism
 
-* execution must be stable
-* ties must resolve deterministically (e.g. path lexical order)
+- execution must be stable
+- ties must resolve deterministically (e.g. path lexical order)
 
 ### 6.4 Outputs
 
-* map of `query-name → ordered article record list`
+- map of `query-name → ordered article record list`
 
 ### 6.5 Status Visibility Contract
 
 Article `status` affects indexing and selection only, not rendering semantics.
 
-* `published` articles may appear in query results.
-* `draft`, `review`, and `archived` articles must never appear in rendered output unless a query explicitly selects them.
-* Templates do not and cannot detect article status.
+- `published` articles may appear in query results.
+- `draft`, `review`, and `archived` articles must never appear in rendered output unless a query explicitly selects them.
+- Templates do not and cannot detect article status.
 
 Visibility is determined solely by query definitions, not template logic.
 
@@ -189,16 +189,16 @@ Templates are valid HTML files containing one or more:
 
 For each `<template data-query="X">`:
 
-* zero results → render fallback body
-* one result → inject output once based on render mode
-* N results → inject output N times based on render mode
+- zero results → render fallback body
+- one result → inject output once based on render mode
+- N results → inject output N times based on render mode
 
 ### 7.4 Markdown Rendering
 
 Render mode determines output:
 
-* `article` renders the Markdown body to HTML
-* `summary` and `summary-list` render a built-in summary block using frontmatter and derived fields
+- `article` renders the Markdown body to HTML
+- `summary` and `summary-list` render a built-in summary block using frontmatter and derived fields
 
 Templates **never** access frontmatter or derived metadata directly.
 
@@ -206,9 +206,9 @@ Templates **never** access frontmatter or derived metadata directly.
 
 Index pages (home, tag pages, day/month/year archives) are first-class rendered outputs, not derived views.
 
-* each index page is rendered from an explicit template
-* each index page has a stable output path
-* no index page is generated implicitly
+- each index page is rendered from an explicit template
+- each index page has a stable output path
+- no index page is generated implicitly
 
 If an index page exists, it exists because a template explicitly rendered it.
 
@@ -224,9 +224,9 @@ Ensure all referenced assets are available in output.
 
 For each article directory:
 
-* copy `assets/` directory (if present)
-* preserve relative paths
-* output assets alongside rendered article HTML
+- copy `assets/` directory (if present)
+- preserve relative paths
+- output assets alongside rendered article HTML
 
 Assets are never deduplicated or optimized automatically at this stage.
 
@@ -240,19 +240,19 @@ Verify the generated output is internally consistent.
 
 ### 9.2 Checks
 
-* no unresolved query references
-* all referenced assets exist
-* no duplicate output paths
-* no missing HTML outputs for required templates
-* no `<template>` elements remain in output HTML
+- no unresolved query references
+- all referenced assets exist
+- no duplicate output paths
+- no missing HTML outputs for required templates
+- no `<template>` elements remain in output HTML
 
 ### 9.3 Canonical URL Ownership
 
 Output URLs are owned by the filesystem layout and template mapping.
 
-* slugs are durable identifiers
-* changing a slug is a deliberate migration
-* redirects, if required, must be explicitly authored
+- slugs are durable identifiers
+- changing a slug is a deliberate migration
+- redirects, if required, must be explicitly authored
 
 The system must never silently rewrite or infer redirects.
 
@@ -266,9 +266,9 @@ Publish the generated site artifact.
 
 ### 10.2 Deployment Model
 
-* build output placed in a clean directory (e.g. `build/`)
-* CI deploys output to `gh-pages` branch
-* no manual edits to deployment branch
+- build output placed in a clean directory (e.g. `build/`)
+- CI deploys output to `gh-pages` branch
+- no manual edits to deployment branch
 
 ---
 
@@ -280,32 +280,32 @@ The build **must fail** if any of the following occur:
 
 #### Filesystem & Structure
 
-* invalid article path structure
-* missing `NN-slug`
-* ordinal mismatch between `NN` and `NN-slug`
-* missing article Markdown file
-* multiple or ambiguous article Markdown files
+- invalid article path structure
+- missing `NN-slug`
+- ordinal mismatch between `NN` and `NN-slug`
+- missing article Markdown file
+- multiple or ambiguous article Markdown files
 
 #### Frontmatter
 
-* missing frontmatter
-* missing or invalid `status`
-* frontmatter defines derived fields
+- missing frontmatter
+- missing or invalid `status`
+- frontmatter defines derived fields
 
 #### Queries
 
-* invalid query schema
-* unknown query keys
-* invalid range definitions
-* invalid sort values
-* template references unknown query
+- invalid query schema
+- unknown query keys
+- invalid range definitions
+- invalid sort values
+- template references unknown query
 
 #### Rendering
 
-* failure to render Markdown
-* duplicate output paths
-* unknown `data-view` value in templates
-* summary view rendered without a frontmatter `title`
+- failure to render Markdown
+- duplicate output paths
+- unknown `data-view` value in templates
+- summary view rendered without a frontmatter `title`
 
 ---
 
@@ -315,12 +315,12 @@ The build **may warn** but continue if:
 
 Forward references are allowed; queries or templates that target not-yet-existing content should warn but not fail.
 
-* query returns zero results
-* query references tags, stream, or dates that do not yet exist
-* article has no tags
-* unused query definitions exist
-* unused templates exist
-* asset directory exists but is unused
+- query returns zero results
+- query references tags, stream, or dates that do not yet exist
+- article has no tags
+- unused query definitions exist
+- unused templates exist
+- asset directory exists but is unused
 
 Warnings must be visible in CI output.
 
@@ -330,13 +330,13 @@ Warnings must be visible in CI output.
 
 Initial implementation may:
 
-* rebuild the entire site on every run
+- rebuild the entire site on every run
 
 Later optimizations may include:
 
-* incremental builds
-* cached index results
-* partial template re-rendering
+- incremental builds
+- cached index results
+- partial template re-rendering
 
 Correctness always takes priority over speed.
 
@@ -346,17 +346,17 @@ Correctness always takes priority over speed.
 
 This pipeline must remain:
 
-* linear
-* inspectable
-* deterministic
-* free of hidden state
-* independent of UI tooling
+- linear
+- inspectable
+- deterministic
+- free of hidden state
+- independent of UI tooling
 
 If a change requires:
 
-* dynamic runtime state
-* template logic
-* metadata rendering
+- dynamic runtime state
+- template logic
+- metadata rendering
 
 …it violates this specification.
 

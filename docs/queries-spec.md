@@ -72,7 +72,7 @@ Rules:
 
 * required
 * string
-* currently must be `"blog"`
+* currently must be `"blog"` (maps to `content/blog/`)
 * future sources may be added explicitly
 
 ---

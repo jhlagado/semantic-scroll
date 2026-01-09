@@ -49,6 +49,12 @@ Each section should read as a standalone piece that can be published with minima
 
 The first public content should document the build itself. This spec should translate into a narrative **stream** that shows the decisions, tradeoffs, and implementation steps behind the blog.
 
+This project is a deliberate trial of a new model of software development and content production. The repository is both the laboratory and the record, and the publishing system is expected to surface its own discoveries as they happen. The documentation process is the first subject, not a preface, and the earliest posts should show how the specs were shaped, how constraints were chosen, and why the system is being built this way.
+
+The opening publishing arc should be ten or more posts written in the author's voice. It should start with the documentation process itself and the reasons this experiment exists, then move through the philosophy and technical choices that define it: classic web values, the stance on toolchains and dependencies, the approach to design, performance, and accessibility, and the story of CI and deployment to GitHub Pages built inside the same repo. The series is intentionally self-referential, using the system to explain itself as it evolves.
+
+Everything needed to build, publish, and host the site lives here. CI, content, templates, and deployment are all part of the same artifact, and the output should point back to this repository as the canonical source.
+
 Each section should read as a standalone piece that can be published with minimal rewriting when the build story goes live.
 
 ## 2. Design Foundations
@@ -83,7 +89,7 @@ This section breaks down how each blog post comes to life, from the initial conv
 
 **Conversational Drafting** is at the heart of this workflow. Instead of starting with a blank page, you’ll have a dialogue with the AI. During this chat, the AI will help you figure out what the post is about, suggest a human-readable title, and identify relevant tags. It’ll also clarify the post’s status—whether it’s a draft, ready for review, or good to go live. Along the way, the AI will help you gather any necessary assets, like code snippets, images, or links, and figure out where they fit into the post.
 
-Once you’ve got all that figured out, the AI will generate a **folder-based output**. Each post will live in its own date-based folder (like `/blog/YYYY/MM/DD/NN-slug/`) and include a single markdown file along with any co-located assets like images or code. The markdown file will have embedded frontmatter metadata for status, tags, stream, title, optional summary, and optional thumbnail so index views are consistent while full article titles and dates remain authored in the body.
+Once you’ve got all that figured out, the AI will generate a **folder-based output**. Each post will live in its own date-based folder (like `/content/blog/YYYY/MM/DD/NN-slug/`) and include a single markdown file along with any co-located assets like images or code. The markdown file will have embedded frontmatter metadata for status, tags, stream, title, optional summary, and optional thumbnail so index views are consistent while full article titles and dates remain authored in the body.
 
 **Linking and referencing** are also built into this workflow. You’ll be able to add internal links to other posts using relative paths or shortcodes and include external links that the AI can help curate. Eventually, we might wrap these links in semantic tags or add unobtrusive JavaScript enhancements like tooltips, but the core idea is to keep linking straightforward and reliable.
 
@@ -133,7 +139,7 @@ In short, the metadata and tagging rules are here to keep everything organized a
 
 **The Mirroring Requirement**: Because our templates are intentionally "dumb" and have zero access to frontmatter, any metadata that must be visible on the page (like the title, date, or tags) must be explicitly authored in the Markdown body. This "mirroring" preserves the durability and self-contained nature of our documents.
 
-**Filesystem Authority**: The folder hierarchy (`/blog/YYYY/MM/DD/NN-slug/`) is the definitive source of truth for an article's creation date and its unique identity. Every post is contained in an **Article Unit** (see [article-spec.md](article-spec.md)) which ensures that even multiple posts on the same day are sorted correctly by the mandatory `NN-` ordinal prefix. If an article is updated, it keeps its chronological relationship with the folder hierarchy. Frontmatter `date` fields should be avoided to prevent drift; the system derives all temporal metadata from the path itself.
+**Filesystem Authority**: The folder hierarchy (`/content/blog/YYYY/MM/DD/NN-slug/`) is the definitive source of truth for an article's creation date and its unique identity. Every post is contained in an **Article Unit** (see [article-spec.md](article-spec.md)) which ensures that even multiple posts on the same day are sorted correctly by the mandatory `NN-` ordinal prefix. If an article is updated, it keeps its chronological relationship with the folder hierarchy. Frontmatter `date` fields should be avoided to prevent drift; the system derives all temporal metadata from the path itself.
 
 Dates are derived from the filesystem; if both creation and publication dates need to be explicit for readers, they should be authored in the body rather than inferred from metadata. Summaries should be short and factual to support index pages and previews.
 
