@@ -4,51 +4,57 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>jhardy.work</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
+  <link rel="icon" type="image/svg+xml" href="/assets/semantic-scroll.svg" />
+  <link rel="stylesheet" href="/assets/site.css" />
 </head>
 <body>
-  <header>
-    <h1>jhardy.work</h1>
-  </header>
-  <main>
-    <section>
-      <h2>Latest</h2>
-      <ul class="summary-list">
-        <li class="summary-item"><article class="summary">
-  <header class="summary-header">
-    <h2 class="summary-title"><a href="/content/blog/2026/01/09/02-why-im-building-this-in-public/">Why I'm Building This in Public</a></h2>
-    <time class="summary-date" datetime="2026-01-09">2026-01-09</time>
-  </header>
-  <p class="summary-text">Writing in public forces clarity, keeps the work tied to the code, and makes the AI constraints visible as the system grows.</p>
-  <dl class="summary-meta">
-    <dt>Tags</dt>
-    <dd><a rel="tag" href="/tags/publishing/">publishing</a></dd>
-    <dd><a rel="tag" href="/tags/writing/">writing</a></dd>
-    <dd><a rel="tag" href="/tags/process/">process</a></dd>
-    <dd><a rel="tag" href="/tags/ai/">ai</a></dd>
-    <dt>Stream</dt>
-    <dd>genesis</dd>
-  </dl>
-</article></li>
-<li class="summary-item"><article class="summary">
-  <header class="summary-header">
-    <h2 class="summary-title"><a href="/content/blog/2026/01/09/01-build-the-tool/">Build the Tool While Using It</a></h2>
-    <time class="summary-date" datetime="2026-01-09">2026-01-09</time>
-  </header>
-  <p class="summary-text">This project is a self-referential experiment in software development and content production, and this first post explains how the live Q/A workflow hardens into the system itself.</p>
-  <dl class="summary-meta">
-    <dt>Tags</dt>
-    <dd><a rel="tag" href="/tags/publishing/">publishing</a></dd>
-    <dd><a rel="tag" href="/tags/process/">process</a></dd>
-    <dd><a rel="tag" href="/tags/tooling/">tooling</a></dd>
-    <dt>Stream</dt>
-    <dd>genesis</dd>
-  </dl>
-</article></li>
-      </ul>
-    </section>
-  </main>
-  <footer>
-    <p>Published from the same repo that builds this site.</p>
-  </footer>
+  <div class="page">
+    <header class="site-header">
+      <a class="site-mark" href="/">
+        <img src="/assets/semantic-scroll.svg" alt="Semantic Scroll" width="160" height="160" />
+      </a>
+      <p class="site-name"><a href="/">jhardy.work</a></p>
+      <nav class="site-nav">
+        <a href="/content/blog/">Archive</a>
+      </nav>
+    </header>
+    <main>
+      <h1>Writing Fast Without Writing Sloppily</h1>
+<p><em>January 9, 2026</em> | Tags: #writing, #process, #tooling, #automation | Stream: genesis</p>
+<p>Writing quickly matters to this project. Without it I'd slow down and publish less. The pace is part of the experiment: ideas form in real time, I'm making decisions under pressure, and the value is in capturing them while they're still alive. That creates tension: speed pulls me toward shortcuts and familiar phrasing that drain the work of voice.</p>
+<p>It's easy to slide into that. Certain phrases arrive fully formed. Sentences drift into explanation and leave description behind. Paragraphs climb into commentary about the writing. Language has grooves, and when I'm moving fast, it's tempting to let the wheels fall into them.</p>
+<p>Automation helps here, even though it's awkward. I don't believe there's a reliable way to algorithmically judge good writing, and I'm not trying to invent one. What I do think is possible is to detect laziness: repetition, familiar scaffolding, verbal tics when attention drops, passive blur, and phrases that announce ideas before they arrive. These patterns show up quickly.</p>
+<p>Part of this project will involve writing local scripts that scan prose and score it for those habits. The scripts are friction: no rewrites, no house style, just a mirror. If a draft trips too many signals, that's my cue to slow down and look again. The tooling doesn't decide what's good.</p>
+<p>There's something slightly perverse about using code to guard against formulaic writing, but it fits the larger theme here. Staying awake is the point. Fast writing only helps when it still sounds like someone thinking, without the shape-filling feel of a system. A bit of automation that keeps me honest while I move quickly feels like a fair trade.</p>
+<p><em>In case it wasn't obvious, yes of course I will be employing AI to help me write and help me review my text content. Learning how to do this in a timely manner without producing soulless slop is one of the big challenges of this project and one of the design goals is to help me as the writer use the assistance of AI without ever putting it in the driver's seat.</em></p>
+<p><em>Steve Jobs once said &quot;the computer is like a bicycle for the mind&quot;. The way I've been thinking about it lately, AI is like an e-bike for mine. Let's hope it doesn't drive me into a ditch!</em></p>
+<h1>Why I'm Building This in Public</h1>
+<p><em>January 9, 2026</em> | Tags: #publishing, #writing, #process, #ai | Stream: genesis</p>
+<p>I'm building this in public because writing things down changes how I think. When ideas stay private they remain vague and provisional. When I write for others, even an imagined reader, the ideas sharpen. Assumptions surface, decisions harden, and gaps show.</p>
+<p>This repository is where I'm working things out and where those workings live. I want the notes, the specs, the half-decisions, and the revisions sitting beside the code they shape. I want them as part of the process, present while the code is being shaped.</p>
+<p>The writing is one of the tools I'm using to build the system. It affects the choices I make, and it keeps the work honest because it has to be readable to someone besides me.</p>
+<p>A large part of the experiment is how AI fits into this. I want AI as a constrained collaborator with clear boundaries about authority, intent, and what is allowed to change. Those constraints preserve the shape of the work while still letting me use speed and advantage when they help.</p>
+<p>The blog that will appear here is produced by the project and follows the same rules. As the repository grows, the system that publishes it will grow alongside it. Templates, queries, build scripts, and deployment will show up because the writing needs them.</p>
+<p>I am still working out my position, and I am taking my time with it. This is an attempt to think carefully, to design slowly, and to leave a readable trail behind. I want the trail to stand on its own, even if I am the only person who ever reads it end to end.</p>
+<h1>Start Here: Building the Tool While Using It</h1>
+<p><em>January 9, 2026</em> | Tags: #publishing, #process, #tooling | Stream: genesis</p>
+<p>This project exists to test a new model of software development and content production in public. The repository is both the lab and the record, and the system I am building will publish the discoveries that come out of its own construction.</p>
+<p>The first content is the documentation process itself. That is why I am writing this as I build: the conversation, the decisions, the constraints, and the contradictions are the raw material. The Q/A process I am working out here is the real work. It becomes the content.</p>
+<p>Over time, this back-and-forth will harden into scripts. Today it is a dialogue. Tomorrow it becomes a command. As it stabilizes, the workflow gets more consistent and the content aligns more closely with the system it describes. That is the point of doing it in the open: the system proves itself by publishing its own formation.</p>
+<p>I want to minimize imports and treat third-party tools as last resorts, not defaults. If the problem can be solved cleanly in a small amount of code, I do it myself and I understand it. If that stops being true, I bring in a dependency with intention and say why.</p>
+<p>On the publishing side, I am aiming for the most boring convention that still works: a home page index with the newest post at the top, and a dedicated article page for each post with a permalink that does not change. That is the shape of the site I want to live inside.</p>
+<p>This is the beginning of the genesis stream. The next posts will move through the philosophy and the mechanics, but they will stay grounded in the same principle: build the tool while using it, and let the system explain itself in real time.</p>
+    </main>
+    <footer class="site-footer">
+      <p>Published from the same repo that builds this site. <a href="https://github.com/jhlagado/jhardy.work">GitHub</a>.</p>
+    </footer>
+  </div>
+  <script>
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+      const es = new EventSource('/__reload');
+      es.onmessage = () => location.reload();
+    }
+  </script>
 </body>
 </html>

@@ -7,10 +7,15 @@ const ROOT = process.cwd();
 const CONTENT_ROOT = path.join(ROOT, 'content', 'blog');
 const TEMPLATE_DIR = path.join(ROOT, 'templates');
 const OUTPUT_DIR = path.join(ROOT, 'build');
+const ARCHIVE_OUTPUT_ROOT = path.join(OUTPUT_DIR, 'content', 'blog');
+const STATIC_ASSETS_DIR = path.join(ROOT, 'assets');
 const QUERIES_PATH = path.join(ROOT, 'config', 'queries.json');
 
 const ARTICLE_TEMPLATE = path.join(TEMPLATE_DIR, 'article.html');
 const HOME_TEMPLATE = path.join(TEMPLATE_DIR, 'home.html');
+const BLOG_TEMPLATE = path.join(TEMPLATE_DIR, 'blog.html');
+const YEAR_TEMPLATE = path.join(TEMPLATE_DIR, 'year.html');
+const SUMMARY_TEMPLATE = path.join(TEMPLATE_DIR, 'summary-index.html');
 
 const STATUS_VALUES = new Set(['draft', 'review', 'published', 'archived']);
 const INTERNAL_QUERY_NAMES = new Set(['article-page']);
@@ -27,6 +32,20 @@ const ALLOWED_QUERY_KEYS = new Set([
   'limit'
 ]);
 const ALLOWED_SORTS = new Set(['date-asc', 'date-desc', 'ordinal-asc', 'ordinal-desc']);
+const MONTH_NAMES = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
 
 function main() {
   const articles = discoverArticles(CONTENT_ROOT);
@@ -34,6 +53,7 @@ function main() {
   const queries = loadQueries(QUERIES_PATH);
   const queryResults = executeQueries(index, queries);
   renderSite(index, queryResults);
+  copyStaticAssets();
   copyAssets(index);
 }
 
@@ -301,6 +321,15 @@ function renderSite(index, queryResults) {
     ensureDir(outputDir);
     writeFile(outputFile, articleHtml);
   }
+
+  const published = queryResults['all-published-posts']
+    ? queryResults['all-published-posts'].slice()
+    : index.filter((item) => item.frontmatter.status === 'published').sort(makeSortFn('date-asc'));
+
+  renderArchiveRoot(published);
+  renderYearArchives(published);
+  renderMonthArchives(published);
+  renderTagArchives(published);
 }
 
 function copyAssets(index) {
@@ -311,6 +340,163 @@ function copyAssets(index) {
     }
     const destDir = path.join(OUTPUT_DIR, article.relDir, 'assets');
     copyDir(assetsDir, destDir);
+  }
+}
+
+function copyStaticAssets() {
+  if (!fs.existsSync(STATIC_ASSETS_DIR)) {
+    return;
+  }
+  const destDir = path.join(OUTPUT_DIR, 'assets');
+  copyDir(STATIC_ASSETS_DIR, destDir);
+}
+
+function renderArchiveRoot(published) {
+  const template = fs.readFileSync(BLOG_TEMPLATE, 'utf8');
+  const yearCounts = countBy(published, (item) => item.year);
+  const years = Object.keys(yearCounts).sort((a, b) => Number(b) - Number(a));
+
+  const yearList = years.length
+    ? years.map((year) => {
+      const count = yearCounts[year];
+      return `<li><a href="/content/blog/${year}/">${escapeHtml(year)}</a> (${count})</li>`;
+    }).join('\n')
+    : '<li class="archive-empty">No posts yet.</li>';
+
+  const html = renderTemplate(applyTokens(template, { year_list: yearList }), {});
+  writeFile(path.join(ARCHIVE_OUTPUT_ROOT, 'index.html'), html);
+}
+
+function renderYearArchives(published) {
+  const template = fs.readFileSync(YEAR_TEMPLATE, 'utf8');
+  const byYear = groupBy(published, (item) => item.year);
+  const years = Array.from(byYear.keys()).sort((a, b) => Number(b) - Number(a));
+
+  for (const year of years) {
+    const yearItems = sortItems(byYear.get(year), 'date-asc');
+    const byMonth = groupBy(yearItems, (item) => item.month);
+    const months = Array.from(byMonth.keys()).sort((a, b) => Number(a) - Number(b));
+    const queryResults = {};
+
+    const monthSections = months.map((month) => {
+      const monthItems = sortItems(byMonth.get(month), 'date-asc');
+      const queryName = `year-${year}-month-${month}`;
+      queryResults[queryName] = monthItems;
+
+      const monthLabel = `${monthName(month)} ${year}`;
+      const monthLink = `/content/blog/${year}/${month}/`;
+      return [
+        '<section class="archive-month">',
+        `  <h2><a href="${monthLink}">${escapeHtml(monthLabel)}</a></h2>`,
+        '  <ul class="summary-list">',
+        `    <template data-query="${queryName}" data-view="summary-list">`,
+        '      <li class="summary-empty">No posts yet.</li>',
+        '    </template>',
+        '  </ul>',
+        '</section>'
+      ].join('\n');
+    }).join('\n');
+
+    const content = monthSections || '<p class="summary-empty">No posts yet.</p>';
+    const html = applyTokens(template, {
+      year: escapeHtml(year),
+      month_sections: content
+    });
+    const rendered = renderTemplate(html, queryResults);
+    writeFile(path.join(ARCHIVE_OUTPUT_ROOT, year, 'index.html'), rendered);
+  }
+}
+
+function renderMonthArchives(published) {
+  const template = fs.readFileSync(SUMMARY_TEMPLATE, 'utf8');
+  const byMonth = groupBy(published, (item) => `${item.year}-${item.month}`);
+  const keys = Array.from(byMonth.keys()).sort((a, b) => b.localeCompare(a));
+
+  for (const key of keys) {
+    const [year, month] = key.split('-');
+    const monthItems = sortItems(byMonth.get(key), 'date-asc');
+    const label = `${monthName(month)} ${year}`;
+    const tokens = {
+      page_title: escapeHtml(`${label} - Archive - jhardy.work`),
+      page_heading: escapeHtml(label),
+      page_intro: '',
+      page_extra: '',
+      nav_extra: `<a href="/content/blog/${year}/">${escapeHtml(year)}</a>`
+    };
+    const html = renderTemplate(applyTokens(template, tokens), {
+      'page-posts': monthItems
+    });
+    writeFile(path.join(ARCHIVE_OUTPUT_ROOT, year, month, 'index.html'), html);
+  }
+}
+
+function renderTagArchives(published) {
+  const template = fs.readFileSync(SUMMARY_TEMPLATE, 'utf8');
+  const tagMap = new Map();
+
+  for (const article of published) {
+    const tags = article.frontmatter.tags || [];
+    for (const rawTag of tags) {
+      const tag = normalizeTag(rawTag);
+      if (!tag) {
+        continue;
+      }
+      if (!tagMap.has(tag)) {
+        tagMap.set(tag, []);
+      }
+      tagMap.get(tag).push(article);
+    }
+  }
+
+  const tags = Array.from(tagMap.keys()).sort();
+  for (const tag of tags) {
+    const items = tagMap.get(tag);
+    const itemsDesc = sortItems(items, 'date-desc');
+    const latest = itemsDesc.slice(0, 12);
+    const yearCounts = countBy(items, (item) => item.year);
+    const years = Object.keys(yearCounts).sort((a, b) => Number(b) - Number(a));
+
+    const yearList = years.length
+      ? [
+        '<section class="tag-years">',
+        '  <h2>Years</h2>',
+        '  <ul class="tag-year-list">',
+        years.map((year) => {
+          const count = yearCounts[year];
+          return `    <li><a href="/tags/${tag}/${year}/">${escapeHtml(year)}</a> (${count})</li>`;
+        }).join('\n'),
+        '  </ul>',
+        '</section>'
+      ].join('\n')
+      : '';
+
+    const tokens = {
+      page_title: escapeHtml(`Tag: ${tag} - jhardy.work`),
+      page_heading: escapeHtml(`Tag: ${tag}`),
+      page_intro: '',
+      page_extra: yearList,
+      nav_extra: ''
+    };
+
+    const html = renderTemplate(applyTokens(template, tokens), {
+      'page-posts': latest
+    });
+    writeFile(path.join(OUTPUT_DIR, 'tags', tag, 'index.html'), html);
+
+    for (const year of years) {
+      const yearItems = itemsDesc.filter((item) => item.year === year);
+      const yearTokens = {
+        page_title: escapeHtml(`Tag: ${tag} - ${year} - jhardy.work`),
+        page_heading: escapeHtml(`Tag: ${tag} - ${year}`),
+        page_intro: '',
+        page_extra: '',
+        nav_extra: `<a href="/tags/${tag}/">${escapeHtml(tag)}</a>`
+      };
+      const yearHtml = renderTemplate(applyTokens(template, yearTokens), {
+        'page-posts': yearItems
+      });
+      writeFile(path.join(OUTPUT_DIR, 'tags', tag, year, 'index.html'), yearHtml);
+    }
   }
 }
 
@@ -422,6 +608,45 @@ function renderSummary(article) {
 
   parts.push('</article>');
   return parts.join('\n');
+}
+
+function applyTokens(html, tokens) {
+  let output = html;
+  for (const [key, value] of Object.entries(tokens)) {
+    const token = `{{${key}}}`;
+    output = output.split(token).join(value);
+  }
+  return output;
+}
+
+function groupBy(items, keyFn) {
+  const map = new Map();
+  for (const item of items) {
+    const key = keyFn(item);
+    if (!map.has(key)) {
+      map.set(key, []);
+    }
+    map.get(key).push(item);
+  }
+  return map;
+}
+
+function countBy(items, keyFn) {
+  const counts = {};
+  for (const item of items) {
+    const key = keyFn(item);
+    counts[key] = (counts[key] || 0) + 1;
+  }
+  return counts;
+}
+
+function sortItems(items, sort) {
+  return items.slice().sort(makeSortFn(sort));
+}
+
+function monthName(month) {
+  const index = Number(month) - 1;
+  return MONTH_NAMES[index] || month;
 }
 
 function renderMarkdown(body) {

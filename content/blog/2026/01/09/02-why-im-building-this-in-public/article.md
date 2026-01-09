@@ -19,8 +19,8 @@ This repository is where I'm working things out and where those workings live. I
 
 The writing is one of the tools I'm using to build the system. It affects the choices I make, and it keeps the work honest because it has to be readable to someone besides me.
 
-A large part of the experiment is how AI fits into this. I want AI as a constrained collaborator with clear boundaries about authority, intent, and what is allowed to change. Those constraints preserve the shape of the work while still letting me use speed and leverage when they help.
+A large part of the experiment is how AI fits into this. I want AI as a constrained collaborator with clear boundaries about authority, intent, and what is allowed to change. Those constraints preserve the shape of the work while still letting me use speed and advantage when they help.
 
 The blog that will appear here is produced by the project and follows the same rules. As the repository grows, the system that publishes it will grow alongside it. Templates, queries, build scripts, and deployment will show up because the writing needs them.
 
-I am still working out my position, and I am taking my time with it. This is an attempt to think carefully, to design slowly, and to leave a readable trail behind. If that trail turns out to be useful to someone else, that's welcome. If it only serves me, it will still have done its job.
+I am still working out my position, and I am taking my time with it. This is an attempt to think carefully, to design slowly, and to leave a readable trail behind. I want the trail to stand on its own, even if I am the only person who ever reads it end to end.

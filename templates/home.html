@@ -4,23 +4,35 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>jhardy.work</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
+  <link rel="icon" type="image/svg+xml" href="/assets/semantic-scroll.svg" />
+  <link rel="stylesheet" href="/assets/site.css" />
 </head>
 <body>
-  <header>
-    <h1>jhardy.work</h1>
-  </header>
-  <main>
-    <section>
-      <h2>Latest</h2>
-      <ul class="summary-list">
-        <template data-query="home-posts" data-view="summary-list">
-          <li class="summary-empty">No posts yet.</li>
-        </template>
-      </ul>
-    </section>
-  </main>
-  <footer>
-    <p>Published from the same repo that builds this site.</p>
-  </footer>
+  <div class="page">
+    <header class="site-header">
+      <a class="site-mark" href="/">
+        <img src="/assets/semantic-scroll.svg" alt="Semantic Scroll" width="160" height="160" />
+      </a>
+      <p class="site-name"><a href="/">jhardy.work</a></p>
+      <nav class="site-nav">
+        <a href="/content/blog/">Archive</a>
+      </nav>
+    </header>
+    <main>
+      <template data-query="home-posts">
+        <p class="summary-empty">No posts yet.</p>
+      </template>
+    </main>
+    <footer class="site-footer">
+      <p>Published from the same repo that builds this site. <a href="https://github.com/jhlagado/jhardy.work">GitHub</a>.</p>
+    </footer>
+  </div>
+  <script>
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+      const es = new EventSource('/__reload');
+      es.onmessage = () => location.reload();
+    }
+  </script>
 </body>
 </html>

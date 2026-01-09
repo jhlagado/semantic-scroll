@@ -4,23 +4,41 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>jhardy.work</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
+  <link rel="icon" type="image/svg+xml" href="/assets/semantic-scroll.svg" />
+  <link rel="stylesheet" href="/assets/site.css" />
 </head>
 <body>
-  <header>
-    <p><a href="/">jhardy.work</a></p>
-  </header>
-  <main>
-    <h1>Why I'm Building This in Public</h1>
+  <div class="page">
+    <header class="site-header">
+      <a class="site-mark" href="/">
+        <img src="/assets/semantic-scroll.svg" alt="Semantic Scroll" width="160" height="160" />
+      </a>
+      <p class="site-name"><a href="/">jhardy.work</a></p>
+      <nav class="site-nav">
+        <a href="/">Home</a>
+        <a href="/content/blog/">Archive</a>
+      </nav>
+    </header>
+    <main>
+      <h1>Why I'm Building This in Public</h1>
 <p><em>January 9, 2026</em> | Tags: #publishing, #writing, #process, #ai | Stream: genesis</p>
 <p>I'm building this in public because writing things down changes how I think. When ideas stay private they remain vague and provisional. When I write for others, even an imagined reader, the ideas sharpen. Assumptions surface, decisions harden, and gaps show.</p>
 <p>This repository is where I'm working things out and where those workings live. I want the notes, the specs, the half-decisions, and the revisions sitting beside the code they shape. I want them as part of the process, present while the code is being shaped.</p>
 <p>The writing is one of the tools I'm using to build the system. It affects the choices I make, and it keeps the work honest because it has to be readable to someone besides me.</p>
-<p>A large part of the experiment is how AI fits into this. I want AI as a constrained collaborator with clear boundaries about authority, intent, and what is allowed to change. Those constraints preserve the shape of the work while still letting me use speed and leverage when they help.</p>
+<p>A large part of the experiment is how AI fits into this. I want AI as a constrained collaborator with clear boundaries about authority, intent, and what is allowed to change. Those constraints preserve the shape of the work while still letting me use speed and advantage when they help.</p>
 <p>The blog that will appear here is produced by the project and follows the same rules. As the repository grows, the system that publishes it will grow alongside it. Templates, queries, build scripts, and deployment will show up because the writing needs them.</p>
-<p>I am still working out my position, and I am taking my time with it. This is an attempt to think carefully, to design slowly, and to leave a readable trail behind. If that trail turns out to be useful to someone else, that's welcome. If it only serves me, it will still have done its job.</p>
-  </main>
-  <footer>
-    <p><a href="/">Back to home</a></p>
-  </footer>
+<p>I am still working out my position, and I am taking my time with it. This is an attempt to think carefully, to design slowly, and to leave a readable trail behind. I want the trail to stand on its own, even if I am the only person who ever reads it end to end.</p>
+    </main>
+    <footer class="site-footer">
+      <p><a href="/">Back to home</a></p>
+    </footer>
+  </div>
+  <script>
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+      const es = new EventSource('/__reload');
+      es.onmessage = () => location.reload();
+    }
+  </script>
 </body>
 </html>

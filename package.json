@@ -1,0 +1,16 @@
+{
+  "name": "jhardy-work",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "bash -c 'set -e; npm run build; npm run srv & srv_pid=$!; nodemon --watch content --watch templates --watch assets --watch config --ignore build --ext md,html,css,js,json,svg --exec \"npm run build\"; kill $srv_pid'",
+    "lint": "node scripts/prose-lint.js",
+    "lint:all": "node scripts/prose-lint.js --all",
+    "lint:gate": "node scripts/prose-lint.js --all --gate",
+    "srv": "node scripts/serve.js"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "potrace": "^2.1.8"
+  }
+}
