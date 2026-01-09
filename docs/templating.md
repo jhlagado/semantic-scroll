@@ -117,6 +117,7 @@ Rules:
 
 * `<template>` is valid anywhere in HTML and is inert by default
 * `data-query` names the query to execute
+* `data-query` values are names only; templates cannot pass arguments or modifiers
 * the **inner HTML** of the `<template>` element is the **fallback content**
 * fallback content is rendered **only** when the query returns zero results
 
@@ -529,6 +530,8 @@ Recommended mappings:
   ```
 
 Output paths must be deterministic and collision-free.
+
+Article pages are first-class outputs rendered through templates; there is no Markdown-to-HTML bypass.
 
 Index pages (home, tag pages, day/month/year archives) are first-class rendered outputs, not derived views.
 

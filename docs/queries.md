@@ -331,9 +331,11 @@ These must never erode:
 
 * templates stay dumb
 * queries stay declarative
-* metadata never leaks into presentation
+* metadata never leaks into full article presentation; summary views are a controlled exception
 * folder taxonomy remains stable
-* filesystem order always makes sense to a human
+* filesystem order always makes sense to a human, but traversal order has no semantic meaning
+
+If behavior matters, it must be specified explicitly. No smart defaults or silent guessing.
 
 ---
 

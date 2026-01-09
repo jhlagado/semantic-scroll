@@ -2,7 +2,7 @@
 
 This document defines **mandatory constraints and operating principles** for AI agents working in this repository. It is **normative**. If an AI-generated change conflicts with this document or referenced specs, the change is wrong.
 
-The AI is expected to read and internalize this document before proposing code, templates, queries, or structural changes.
+AGENTS.md is the required entry point for any AI or automation before proposing changes. The AI is expected to read and internalize this document before proposing code, templates, queries, or structural changes.
 
 ---
 
@@ -33,6 +33,7 @@ The following documents are authoritative and must not be contradicted:
 - `docs/templating.md`
 - `docs/templating-conventions.md`
 - `docs/templating-javascript.md`
+- `docs/styling.md`
 - `docs/ci-pipeline.md`
 - `docs/design-reference.md`
 
@@ -57,13 +58,13 @@ These invariants must never be eroded:
    - centralized
    - JSON only
 
-3. **Metadata is index-only**
+3. **Metadata is index and summary-only**
 
-   - never rendered
-   - never read by templates
-   - never leaked into presentation
+   - never used for full article rendering
+   - templates never read metadata directly
+   - summary views are built-in exceptions that render frontmatter
 
-4. **Markdown defines visible content**
+4. **Markdown defines visible content for full articles**
 
    - if it appears on the page, it must exist in the Markdown body
 
@@ -146,6 +147,7 @@ When proposing changes:
 4. Stop and ask if the change alters philosophy.
 
 Silent reinterpretation is not acceptable.
+If behavior matters, specify it explicitly. Do not introduce smart defaults or silent guessing.
 
 ---
 
@@ -169,7 +171,7 @@ Do not:
 
 ## 9. Documentation Style and Prose Expectations
 
-All documentation produced for this project must prioritize **human-oriented prose** over AI-optimized brevity.
+Documentation quality is part of the product and must be treated as a first-class deliverable. All documentation produced for this project must prioritize **human-oriented prose** over AI-optimized brevity.
 
 ### 9.1 Primary Audience
 

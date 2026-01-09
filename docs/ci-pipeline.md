@@ -65,7 +65,8 @@ For each directory under `blog/`:
 * verify `YYYY/MM/DD/NN-slug` structure
 * verify all numeric components are zero-padded
 * verify `NN` matches numeric prefix of `NN-slug`
-* locate the article Markdown file (canonical name, e.g. `article.md`)
+* locate the single canonical article Markdown file (canonical name, e.g. `article.md`)
+* fail if the article Markdown file is missing or ambiguous
 
 ### 3.4 Discovery Outputs
 
@@ -283,6 +284,7 @@ The build **must fail** if any of the following occur:
 * missing `NN-slug`
 * ordinal mismatch between `NN` and `NN-slug`
 * missing article Markdown file
+* multiple or ambiguous article Markdown files
 
 #### Frontmatter
 
