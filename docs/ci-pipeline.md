@@ -1,6 +1,6 @@
 # Build Pipeline and CI Specification
 
-This document defines the **end-to-end build pipeline** for the blog system, including discovery, indexing, querying, rendering, asset handling, and deployment. It is derived from `docs/prd.md` and aligned with `docs/queries.md` and `docs/templating.md`.
+This document defines the **end-to-end build pipeline** for the blog system, including discovery, indexing, querying, rendering, asset handling, and deployment. It is derived from `docs/PRD.md` and aligned with `docs/queries.md` and `docs/templating.md`.
 
 It also defines **CI validation rules**, including which conditions are **hard errors** versus **warnings**.
 
@@ -103,7 +103,7 @@ Build an **article index** used by queries.
 Each article index record includes:
 
 * path-derived fields
-* frontmatter fields (status, tags, stream, summary)
+* frontmatter fields (status, title, tags, stream, summary, thumbnail)
 * absolute source path to article directory
 * path to Markdown file
 
@@ -179,7 +179,7 @@ Generate HTML pages from templates and query results.
 Templates are valid HTML files containing one or more:
 
 ```html
-<template data-query="query-name">
+<template data-query="query-name" data-view="summary-list">
   fallback content
 </template>
 ```
@@ -189,18 +189,17 @@ Templates are valid HTML files containing one or more:
 For each `<template data-query="X">`:
 
 * zero results → render fallback body
-* one result → inject rendered Markdown once
-* N results → inject rendered Markdown N times
+* one result → inject output once based on render mode
+* N results → inject output N times based on render mode
 
 ### 7.4 Markdown Rendering
 
-For each article record used:
+Render mode determines output:
 
-* load Markdown body
-* convert to HTML fragment
-* inject fragment verbatim
+* `article` renders the Markdown body to HTML
+* `summary` and `summary-list` render a built-in summary block using frontmatter and derived fields
 
-Templates **never** access frontmatter or derived metadata.
+Templates **never** access frontmatter or derived metadata directly.
 
 ### 7.5 Index Pages as First-Class Artifacts
 
@@ -244,6 +243,7 @@ Verify the generated output is internally consistent.
 * all referenced assets exist
 * no duplicate output paths
 * no missing HTML outputs for required templates
+* no `<template>` elements remain in output HTML
 
 ### 9.3 Canonical URL Ownership
 
@@ -302,6 +302,8 @@ The build **must fail** if any of the following occur:
 
 * failure to render Markdown
 * duplicate output paths
+* unknown `data-view` value in templates
+* summary view rendered without a frontmatter `title`
 
 ---
 

@@ -1,6 +1,6 @@
 # Frontmatter and Metadata Specification
 
-This document defines how frontmatter metadata is used in the blog system. It is derived from `docs/prd.md` and aligned with `docs/queries.md`.
+This document defines how frontmatter metadata is used in the blog system. It is derived from `docs/PRD.md` and aligned with `docs/queries.md`.
 
 Frontmatter exists **only** to support discovery, indexing, and querying.
 It is **never** used directly for rendering HTML.
@@ -69,7 +69,23 @@ Visibility is determined solely by query definitions, not template logic.
 
 ## 3. Optional Frontmatter Fields
 
-### 3.1 Tags
+### 3.1 Title
+
+```yaml
+title: "Readable title for summary and index views."
+```
+
+Rules:
+
+* optional, but required for any article that appears in summary or index views
+* may differ from the Markdown body title
+* supports a minimal inline Markdown subset (see Summary)
+
+The frontmatter title is used only by summary renderers and never injected into full article pages.
+
+---
+
+### 3.2 Tags
 
 ```yaml
 tags:
@@ -88,7 +104,7 @@ Tags are used **only** for querying and indexing.
 
 ---
 
-### 3.2 Stream
+### 3.3 Stream
 
 ```yaml
 stream: build-log
@@ -104,7 +120,7 @@ Used to categorize content into thematic tracks (e.g., retrocomputing, AI-toolin
 
 ---
 
-### 3.3 Summary
+### 3.4 Summary
 
 ```yaml
 summary: Short, factual description of the article.
@@ -114,9 +130,28 @@ Rules:
 
 * optional
 * short and descriptive, not promotional
-* used for indexing or external feeds, not rendering
+* used for summary and index views or external feeds, not full article rendering
+* supports a minimal inline Markdown subset: bold, italic, and inline links only
+
+Other Markdown constructs and inline HTML are not supported in title or summary fields.
 
 If a summary needs to be visible, it must also be written in the Markdown body.
+
+---
+
+### 3.5 Thumbnail
+
+```yaml
+thumbnail: assets/thumbnail.jpg
+```
+
+Rules:
+
+* optional
+* relative path within the article directory
+* used for indexing or external feeds, not rendering
+
+If a thumbnail needs to be visible, it must also be authored in the Markdown body.
 
 ---
 
@@ -168,6 +203,7 @@ Frontmatter duplication is allowed and expected when values must be visible.
 * `status` is missing or invalid
 * `tags` is malformed
 * frontmatter attempts to define derived fields
+* a summary view is rendered without a frontmatter `title`
 
 ### Build may warn (non-fatal):
 

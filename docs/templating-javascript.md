@@ -1,6 +1,6 @@
 # Progressive Enhancement and JavaScript Boundary Specification
 
-This document defines the **strict boundaries** for JavaScript usage in the blog system. It is derived from `docs/prd.md` and aligned with `docs/templating.md`.
+This document defines the **strict boundaries** for JavaScript usage in the blog system. It is derived from `docs/PRD.md` and aligned with `docs/templating.md`.
 
 JavaScript is **optional**, **non-authoritative**, and **additive only**.
 The site must remain fully readable, navigable, and meaningful with JavaScript disabled.

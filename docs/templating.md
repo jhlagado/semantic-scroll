@@ -1,6 +1,6 @@
 # Templating and Rendering Specification
 
-This document is **normative**. It defines how named queries select articles, how templates consume query results, and how Markdown becomes HTML inside templates. It is derived from `docs/prd.md` and `docs/queries.md`.
+This document is **normative**. It defines how named queries select articles, how templates consume query results, and how Markdown becomes HTML inside templates. It is derived from `docs/PRD.md` and `docs/queries.md`.
 
 The intent is to:
 
@@ -129,6 +129,28 @@ The `<template>` element is chosen deliberately because it is:
 
 ---
 
+### 2.3 Render Modes
+
+Render modes define what kind of output is stamped into a slot.
+
+Example:
+
+```html
+<template data-query="latest-posts" data-view="summary-list">
+  <p class="empty">No posts yet.</p>
+</template>
+```
+
+Rules:
+
+* `data-view` is optional
+* default view is `article`
+* allowed values are `article`, `summary`, and `summary-list`
+
+`article` renders full Markdown bodies. `summary` renders a built-in summary block. `summary-list` renders the same summary block wrapped in a list item for use in `<ul>` or `<ol>` containers.
+
+---
+
 ## 3. Query Result Semantics in Templates
 
 Each `<template data-query="X">` slot is processed independently.
@@ -150,8 +172,9 @@ This allows authors to write friendly empty-state messaging directly in HTML.
 If query `X` returns exactly one article record:
 
 * fallback content is ignored
-* the article’s Markdown body is rendered to HTML
-* the resulting HTML fragment is inserted at the slot location
+* the output is determined by the render mode
+* `article` renders the Markdown body to HTML
+* `summary` and `summary-list` render a built-in summary block
 
 ---
 
@@ -165,7 +188,62 @@ If query `X` returns N article records:
 
 ---
 
-### 3.4 Ordering Guarantee
+### 3.4 Summary View Output
+
+Summary views are built-in and not user-definable. They are the only rendering mode that uses frontmatter values.
+
+Fields used:
+
+* `title` (frontmatter, required)
+* `summary` (frontmatter, optional)
+* `thumbnail` (frontmatter, optional)
+* `tags` and `stream` (frontmatter, optional)
+* `year`, `month`, `day`, and `path` (derived from the filesystem)
+
+Title and summary support a minimal inline Markdown subset: bold, italic, and inline links only. No other Markdown constructs or inline HTML are supported.
+
+`summary` output uses a fixed HTML structure with stable class names. A compact list item view is provided for list containers.
+
+Summary block:
+
+```html
+<article class="summary">
+  <header class="summary-header">
+    <h2 class="summary-title"><a href="/blog/YYYY/MM/DD/NN-slug/">Title</a></h2>
+    <time class="summary-date" datetime="YYYY-MM-DD">YYYY-MM-DD</time>
+  </header>
+  <figure class="summary-thumb">
+    <img src="assets/thumbnail.jpg" alt="Title">
+  </figure>
+  <p class="summary-text">Summary text...</p>
+  <dl class="summary-meta">
+    <dt>Tags</dt>
+    <dd><a rel="tag" href="/tags/tag/">tag</a></dd>
+    <dt>Stream</dt>
+    <dd>stream-name</dd>
+  </dl>
+</article>
+```
+
+Summary list item:
+
+```html
+<li class="summary-item">
+  <article class="summary">...</article>
+</li>
+```
+
+Elements are omitted when their values are missing (for example, no `<figure>` when `thumbnail` is absent). The `<dl>` structure keeps metadata visible but easily hidden via CSS.
+
+---
+
+### 3.5 Template Element Removal
+
+After stamping, the `<template data-query="X">` element itself must be removed from the output. Rendered HTML must not contain `<template>` elements.
+
+---
+
+### 3.6 Ordering Guarantee
 
 The order of rendered results is **entirely defined by the query**.
 
