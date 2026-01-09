@@ -1,29 +1,12 @@
-# jhardy.work
+# AI-Driven Blogging Setup
 
-AI-assisted technical diary and publishing system built on classic web values. The project defines a deterministic, query-driven static pipeline with strict separation of concerns, frontmatter-driven summary views, and durable filesystem-based identity. It favors human legibility, minimal tooling, and long-term portability over framework convenience.
+This repository defines an AI-assisted technical diary and publishing system built on classic web values. It is designed to capture daily technical work in durable, human-readable form without turning publishing into a chore. Posts are treated as long-lived documents rather than CMS entries, and the author retains control of voice, timing, and accountability at every step.
 
-## Highlights
-- Canonical content layout is filesystem-based (`/blog/YYYY/MM/DD/NN-slug/`) with stable URLs and derived dates.
-- Templates are pure HTML and never read metadata; queries select content; rendering is deterministic stamping.
-- Summary and index views are built-in render modes using frontmatter `title`, `summary`, and `thumbnail` with minimal inline formatting.
-- Full article pages are authored in Markdown and may diverge from frontmatter titles.
-- JavaScript is optional and additive; the site must remain readable and navigable without it.
-- CSS is plain, semantic-first, accessible, and optimized for long-form readability.
-- Tooling is lightweight, CI-driven, and designed for free or near-zero hosting.
+The PRD frames the project as a calm, authored web system: semantic HTML, accessibility, mobile-first layouts, and minimal JavaScript that never becomes a dependency. The workflow is meant to be fast enough for daily capture, but structured enough to support repurposing into talks, videos, or long-form writing. Cost and portability matter: the stack favors free or near-zero hosting, CLI-first tooling, and stable URLs owned by the author.
 
-## Specs
-- `docs/PRD.md` - Product requirements and vision
-- `docs/queries.md` - Architecture and design decisions
-- `docs/article-spec.md` - Specification for the Article Unit
-- `docs/articles-frontmatter.md` - Frontmatter and metadata rules
-- `docs/queries-spec.md` - Query JSON schema
-- `docs/queries-builtin.md` - Canonical built-in queries
-- `docs/templating.md` - Templating and rendering specification
-- `docs/templating-conventions.md` - Template authoring conventions
-- `docs/templating-javascript.md` - Progressive enhancement and JS boundary
-- `docs/styling.md` - CSS and styling specification
-- `docs/ci-pipeline.md` - Build pipeline and CI rules
-- `docs/design-reference.md` - Reference implementation and execution guide
+Architecturally, identity and chronology are derived from the filesystem (`/blog/YYYY/MM/DD/NN-slug/`), queries select content, templates remain pure HTML, and rendering is deterministic stamping. Summary and index views are a built-in render mode that uses frontmatter `title`, `summary`, and `thumbnail` with minimal inline formatting, while full article pages are authored in Markdown and may intentionally diverge from those summary titles. CSS is plain and semantic-first, and JavaScript is optional and additive, ensuring the site stays readable and navigable without it.
+
+For the canonical goals and decisions, start with `docs/PRD.md`. The architecture is captured in `docs/queries.md`, with the Article Unit defined in `docs/article-spec.md` and frontmatter rules in `docs/articles-frontmatter.md`. The query schema and built-ins are in `docs/queries-spec.md` and `docs/queries-builtin.md`. Rendering, template rules, and the JavaScript boundary live in `docs/templating.md`, `docs/templating-conventions.md`, and `docs/templating-javascript.md`. Styling rules are defined in `docs/styling.md`, pipeline and CI rules in `docs/ci-pipeline.md`, and the implementation guide in `docs/design-reference.md`.
 
 ## License
 MIT. See `LICENSE`.
