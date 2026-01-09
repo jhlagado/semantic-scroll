@@ -4,14 +4,14 @@ This document is **normative**. It defines how named queries select articles, ho
 
 The intent is to:
 
-* keep templates **pure HTML**
-* keep queries as the **only selection language**
-* keep rendering **mechanical, deterministic, and inspectable**
+- keep templates **pure HTML**
+- keep queries as the **only selection language**
+- keep rendering **mechanical, deterministic, and inspectable**
 
 This specification is written to match the canonical content architecture:
 
 ```
-blog/YYYY/MM/DD/NN-slug/<files>
+content/blog/YYYY/MM/DD/NN-slug/<files>
 ```
 
 Any deviation from this specification is an architectural change and must be deliberate.
@@ -28,16 +28,16 @@ An **article record** is a build-time data structure representing exactly one ar
 
 It is derived from:
 
-* the folder path (date and per-day ordinal)
-* the article frontmatter (for indexing and querying only)
-* the article Markdown body (for rendering only)
+- the folder path (date and per-day ordinal)
+- the article frontmatter (for indexing and querying only)
+- the article Markdown body (for rendering only)
 
-An article record is *not* a rendered document. It is an intermediate representation.
+An article record is _not_ a rendered document. It is an intermediate representation.
 
 #### Important separation rule
 
-* Frontmatter drives **discovery, indexing, and query selection**
-* Markdown body drives **what appears in rendered HTML**
+- Frontmatter drives **discovery, indexing, and query selection**
+- Markdown body drives **what appears in rendered HTML**
 
 At no point may frontmatter values be injected directly into templates.
 
@@ -49,31 +49,31 @@ A **named query** is a declarative selector that returns an ordered list of arti
 
 Properties:
 
-* stored centrally (for example `config/queries.json`)
-* referenced **only by name** from templates
-* defined using a restricted JSON schema
-* evaluated entirely at build time
-* returns **zero, one, or many** article records
+- stored centrally (for example `config/queries.json`)
+- referenced **only by name** from templates
+- defined using a restricted JSON schema
+- evaluated entirely at build time
+- returns **zero, one, or many** article records
 
 Queries do not know:
 
-* which templates use them
-* how results are rendered
-* whether results are rendered at all
+- which templates use them
+- how results are rendered
+- whether results are rendered at all
 
 ---
 
 ### 1.3 Template
 
-A **template** is a valid HTML document (or fragment) that declares one or more *render slots*.
+A **template** is a valid HTML document (or fragment) that declares one or more _render slots_.
 
 Templates:
 
-* are plain, standards-compliant HTML
-* may include static copy, layout, navigation, and fallback text
-* **must not contain logic**
-* **must not read frontmatter or derived metadata**
-* declare only *where* query results are inserted
+- are plain, standards-compliant HTML
+- may include static copy, layout, navigation, and fallback text
+- **must not contain logic**
+- **must not read frontmatter or derived metadata**
+- declare only _where_ query results are inserted
 
 Templates are intentionally “dumb”. All intelligence lives outside them.
 
@@ -85,19 +85,19 @@ Templates are intentionally “dumb”. All intelligence lives outside them.
 
 A template file may be either:
 
-* **Page template**
+- **Page template**
   Produces a complete HTML document, including `<!doctype>`, `<html>`, `<head>`, and `<body>`.
 
-* **Fragment template**
+- **Fragment template**
   Produces a partial document intended for inclusion elsewhere.
 
 #### MVP constraint
 
 To reduce complexity:
 
-* only **page templates** are supported initially
-* every template is rendered independently to an output HTML file
-* fragment composition may be introduced later as a strictly additive feature
+- only **page templates** are supported initially
+- every template is rendered independently to an output HTML file
+- fragment composition may be introduced later as a strictly additive feature
 
 ---
 
@@ -115,18 +115,18 @@ Example:
 
 Rules:
 
-* `<template>` is valid anywhere in HTML and is inert by default
-* `data-query` names the query to execute
-* `data-query` values are names only; templates cannot pass arguments or modifiers
-* the **inner HTML** of the `<template>` element is the **fallback content**
-* fallback content is rendered **only** when the query returns zero results
+- `<template>` is valid anywhere in HTML and is inert by default
+- `data-query` names the query to execute
+- `data-query` values are names only; templates cannot pass arguments or modifiers
+- the **inner HTML** of the `<template>` element is the **fallback content**
+- fallback content is rendered **only** when the query returns zero results
 
 The `<template>` element is chosen deliberately because it is:
 
-* semantically inert
-* non-rendering by default
-* explicit in intent
-* standard HTML, not a DSL
+- semantically inert
+- non-rendering by default
+- explicit in intent
+- standard HTML, not a DSL
 
 ---
 
@@ -144,9 +144,9 @@ Example:
 
 Rules:
 
-* `data-view` is optional
-* default view is `article`
-* allowed values are `article`, `summary`, and `summary-list`
+- `data-view` is optional
+- default view is `article`
+- allowed values are `article`, `summary`, and `summary-list`
 
 `article` renders full Markdown bodies. `summary` renders a built-in summary block. `summary-list` renders the same summary block wrapped in a list item for use in `<ul>` or `<ol>` containers.
 
@@ -160,9 +160,9 @@ Each `<template data-query="X">` slot is processed independently.
 
 If query `X` returns zero article records:
 
-* the `<template>`’s inner HTML is rendered verbatim
-* no Markdown rendering occurs
-* no empty wrappers are injected
+- the `<template>`’s inner HTML is rendered verbatim
+- no Markdown rendering occurs
+- no empty wrappers are injected
 
 This allows authors to write friendly empty-state messaging directly in HTML.
 
@@ -172,10 +172,10 @@ This allows authors to write friendly empty-state messaging directly in HTML.
 
 If query `X` returns exactly one article record:
 
-* fallback content is ignored
-* the output is determined by the render mode
-* `article` renders the Markdown body to HTML
-* `summary` and `summary-list` render a built-in summary block
+- fallback content is ignored
+- the output is determined by the render mode
+- `article` renders the Markdown body to HTML
+- `summary` and `summary-list` render a built-in summary block
 
 ---
 
@@ -183,9 +183,9 @@ If query `X` returns exactly one article record:
 
 If query `X` returns N article records:
 
-* fallback content is ignored
-* the stamping process is repeated N times
-* rendered fragments are injected sequentially
+- fallback content is ignored
+- the stamping process is repeated N times
+- rendered fragments are injected sequentially
 
 ---
 
@@ -195,11 +195,11 @@ Summary views are built-in and not user-definable. They are the only rendering m
 
 Fields used:
 
-* `title` (frontmatter, required)
-* `summary` (frontmatter, optional)
-* `thumbnail` (frontmatter, optional)
-* `tags` and `stream` (frontmatter, optional)
-* `year`, `month`, `day`, and `path` (derived from the filesystem)
+- `title` (frontmatter, required)
+- `summary` (frontmatter, optional)
+- `thumbnail` (frontmatter, optional)
+- `tags` and `stream` (frontmatter, optional)
+- `year`, `month`, `day`, and `path` (derived from the filesystem)
 
 Title and summary support a minimal inline Markdown subset: bold, italic, and inline links only. No other Markdown constructs or inline HTML are supported.
 
@@ -210,11 +210,13 @@ Summary block:
 ```html
 <article class="summary">
   <header class="summary-header">
-    <h2 class="summary-title"><a href="/blog/YYYY/MM/DD/NN-slug/">Title</a></h2>
+    <h2 class="summary-title">
+      <a href="/content/blog/YYYY/MM/DD/NN-slug/">Title</a>
+    </h2>
     <time class="summary-date" datetime="YYYY-MM-DD">YYYY-MM-DD</time>
   </header>
   <figure class="summary-thumb">
-    <img src="assets/thumbnail.jpg" alt="Title">
+    <img src="assets/thumbnail.jpg" alt="Title" />
   </figure>
   <p class="summary-text">Summary text...</p>
   <dl class="summary-meta">
@@ -250,13 +252,13 @@ The order of rendered results is **entirely defined by the query**.
 
 Rules:
 
-* sorting must be explicitly specified in the query
-* no implicit filesystem ordering is permitted
-* ties must be broken deterministically
+- sorting must be explicitly specified in the query
+- no implicit filesystem ordering is permitted
+- ties must be broken deterministically
 
 Recommended tie-breaker:
 
-* full article path, compared lexically
+- full article path, compared lexically
 
 This guarantees stable output across runs.
 
@@ -274,10 +276,10 @@ Stamping is the process of:
 
 Stamping must be:
 
-* mechanical
-* side-effect free
-* repeatable
-* independent of surrounding HTML
+- mechanical
+- side-effect free
+- repeatable
+- independent of surrounding HTML
 
 Templates never mutate content; they only receive it.
 
@@ -287,16 +289,16 @@ Templates never mutate content; they only receive it.
 
 Stamping is **not**:
 
-* variable interpolation
-* conditional rendering
-* looping constructs
-* component evaluation
+- variable interpolation
+- conditional rendering
+- looping constructs
+- component evaluation
 
 It is closer to:
 
-* document assembly
-* static publishing
-* print layout
+- document assembly
+- static publishing
+- print layout
 
 This distinction is critical to avoiding DSL creep.
 
@@ -310,10 +312,10 @@ In Mode A, a render slot is simply a placeholder for the **entire rendered Markd
 
 Process:
 
-* load article Markdown
-* convert to HTML fragment
-* inject fragment as-is at slot position
-* repeat for each record
+- load article Markdown
+- convert to HTML fragment
+- inject fragment as-is at slot position
+- repeat for each record
 
 No wrapper is imposed by the template.
 
@@ -323,11 +325,11 @@ No wrapper is imposed by the template.
 
 If an author wants any of the following to appear on the page:
 
-* title
-* date
-* tags
-* headings
-* section structure
+- title
+- date
+- tags
+- headings
+- section structure
 
 They must be written **explicitly in the Markdown body**.
 
@@ -359,10 +361,10 @@ Each article fragment may begin with its own `<h1>`, `<article>`, or other struc
 
 Mode A is ideal for:
 
-* diary-style streams
-* chronological logs
-* full article pages
-* MVP implementations where correctness > abstraction
+- diary-style streams
+- chronological logs
+- full article pages
+- MVP implementations where correctness > abstraction
 
 Mode A is the **only supported mode for MVP**.
 
@@ -374,18 +376,18 @@ Mode B exists to support uniform index layouts (lists, cards, summaries).
 
 However, Mode B introduces risks:
 
-* implicit content conventions
-* excerpt logic
-* partial rendering semantics
-* metadata leakage temptation
+- implicit content conventions
+- excerpt logic
+- partial rendering semantics
+- metadata leakage temptation
 
 Given your architectural goals, Mode B is **explicitly deferred**.
 
 It must not be implemented until:
 
-* real usage pressure exists
-* conventions are proven necessary
-* constraints are re-evaluated deliberately
+- real usage pressure exists
+- conventions are proven necessary
+- constraints are re-evaluated deliberately
 
 ---
 
@@ -404,7 +406,7 @@ This index is the sole data source for queries.
 For each directory matching:
 
 ```
-blog/YYYY/MM/DD/NN-slug/
+content/blog/YYYY/MM/DD/NN-slug/
 ```
 
 the build must:
@@ -424,17 +426,17 @@ Markdown body is **not rendered** during indexing.
 From path:
 
 ```
-blog/2026/01/08/02-z80-disassembly/
+content/blog/2026/01/08/02-z80-disassembly/
 ```
 
 derive:
 
-* `year = 2026`
-* `month = 01`
-* `day = 08`
-* `ordinal = 02`
-* `slug = z80-disassembly`
-* `path = full relative path`
+- `year = 2026`
+- `month = 01`
+- `day = 08`
+- `ordinal = 02`
+- `slug = z80-disassembly`
+- `path = full relative path`
 
 Derived fields are authoritative and immutable.
 
@@ -444,15 +446,15 @@ Derived fields are authoritative and immutable.
 
 Frontmatter may include:
 
-* `status`
-* `tags`
-* `stream`
+- `status`
+- `tags`
+- `stream`
 
 Frontmatter is:
 
-* read during indexing
-* used during query filtering
-* **never passed to templates**
+- read during indexing
+- used during query filtering
+- **never passed to templates**
 
 ---
 
@@ -500,10 +502,10 @@ A single template may contain multiple render slots:
 
 Rules:
 
-* each slot is evaluated independently
-* slots are processed top-to-bottom in document order
-* a query may be referenced multiple times
-* all slots share the same article index
+- each slot is evaluated independently
+- slots are processed top-to-bottom in document order
+- a query may be referenced multiple times
+- all slots share the same article index
 
 ---
 
@@ -515,13 +517,13 @@ Templates render into a clean output directory (e.g. `build/`).
 
 Recommended mappings:
 
-* Article pages:
+- Article pages:
 
   ```
   build/blog/YYYY/MM/DD/NN-slug/index.html
   ```
 
-* Index pages:
+- Index pages:
 
   ```
   build/index.html
@@ -535,9 +537,9 @@ Article pages are first-class outputs rendered through templates; there is no Ma
 
 Index pages (home, tag pages, day/month/year archives) are first-class rendered outputs, not derived views.
 
-* each index page is rendered from an explicit template
-* each index page has a stable output path
-* no index page is generated implicitly
+- each index page is rendered from an explicit template
+- each index page has a stable output path
+- no index page is generated implicitly
 
 If an index page exists, it exists because a template explicitly rendered it.
 
@@ -547,9 +549,9 @@ If an index page exists, it exists because a template explicitly rendered it.
 
 For each article directory:
 
-* copy `assets/` directory if present
-* preserve relative paths
-* ensure links resolve identically post-build
+- copy `assets/` directory if present
+- preserve relative paths
+- ensure links resolve identically post-build
 
 Assets are never inferred or relocated automatically.
 
@@ -561,14 +563,14 @@ For MVP, templates are explicitly enumerated.
 
 Example:
 
-* `templates/home.html`
-* `templates/tag.html`
-* `templates/day.html`
+- `templates/home.html`
+- `templates/tag.html`
+- `templates/day.html`
 
 Later extensions may include:
 
-* a template registry
-* parameterized template selection
+- a template registry
+- parameterized template selection
 
 Implicit template discovery is not allowed.
 
@@ -580,11 +582,11 @@ Implicit template discovery is not allowed.
 
 Build must fail if:
 
-* a template references an unknown query
-* article path violates canonical structure
-* ordinal mismatch exists
-* required files are missing
-* Markdown cannot be rendered
+- a template references an unknown query
+- article path violates canonical structure
+- ordinal mismatch exists
+- required files are missing
+- Markdown cannot be rendered
 
 ---
 
@@ -594,9 +596,9 @@ Build may warn if:
 
 Forward references are allowed: templates may reference queries that resolve to zero results, and queries may target tags, stream names, or dates that do not yet exist. These conditions warn but do not fail.
 
-* a query returns zero results
-* a query is defined but unused
-* a template produces no output
+- a query returns zero results
+- a query is defined but unused
+- a template produces no output
 
 Warnings must be visible but non-fatal.
 
@@ -621,10 +623,10 @@ The benefit is durability.
 
 For MVP, the following are fixed:
 
-* Mode A stamping only
-* HTML templates only
-* named queries only
-* metadata never rendered
-* deterministic build order
+- Mode A stamping only
+- HTML templates only
+- named queries only
+- metadata never rendered
+- deterministic build order
 
 Anything else is additive and must not weaken these guarantees.

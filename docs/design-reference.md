@@ -25,7 +25,7 @@ initialize empty render plan
 ### 2. Discover Articles
 
 ```
-for each directory under blog/:
+for each directory under content/blog/:
   validate path matches YYYY/MM/DD/NN-slug
   validate zero-padded numeric components
   validate NN matches numeric prefix of NN-slug
@@ -142,8 +142,9 @@ This layout is **canonical**.
 
 ```
 /
-├─ blog/
-│  └─ YYYY/MM/DD/NN-slug/
+├─ content/
+│  └─ blog/
+│     └─ YYYY/MM/DD/NN-slug/
 │     ├─ article.md
 │     └─ assets/
 │
@@ -177,16 +178,16 @@ This layout is **canonical**.
 
 Each script must:
 
-* do **one thing**
-* accept explicit inputs
-* produce explicit outputs
-* have no hidden state
+- do **one thing**
+- accept explicit inputs
+- produce explicit outputs
+- have no hidden state
 
 Scripts must not:
 
-* inspect templates unless rendering
-* render markdown unless explicitly a render step
-* make assumptions outside specs
+- inspect templates unless rendering
+- render markdown unless explicitly a render step
+- make assumptions outside specs
 
 ---
 
@@ -206,14 +207,14 @@ Scripts must not:
 
 | Category  | Condition               | Result    |
 | --------- | ----------------------- | --------- |
-| Structure | Invalid blog path       | ❌ Fail    |
-| Structure | Ordinal mismatch        | ❌ Fail    |
-| Metadata  | Missing status          | ❌ Fail    |
-| Queries   | Unknown key             | ❌ Fail    |
+| Structure | Invalid blog path       | ❌ Fail   |
+| Structure | Ordinal mismatch        | ❌ Fail   |
+| Metadata  | Missing status          | ❌ Fail   |
+| Queries   | Unknown key             | ❌ Fail   |
 | Metadata  | Article has no tags     | ⚠ Warning |
-| Templates | Unknown query           | ❌ Fail    |
+| Templates | Unknown query           | ❌ Fail   |
 | Templates | No slots                | ⚠ Warning |
-| Assets    | Missing referenced file | ❌ Fail    |
+| Assets    | Missing referenced file | ❌ Fail   |
 
 Warnings must appear in CI logs but not fail the run.
 
@@ -239,27 +240,27 @@ Warnings must appear in CI logs but not fail the run.
 ### Template (`templates/home.html`)
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Home</title>
-</head>
-<body>
-  <main>
-    <h1>Recent Posts</h1>
+  <head>
+    <meta charset="utf-8" />
+    <title>Home</title>
+  </head>
+  <body>
+    <main>
+      <h1>Recent Posts</h1>
 
-    <template data-query="latest-posts">
-      <p>No posts yet.</p>
-    </template>
-  </main>
-</body>
+      <template data-query="latest-posts">
+        <p>No posts yet.</p>
+      </template>
+    </main>
+  </body>
 </html>
 ```
 
 ---
 
-### Article (`blog/2026/01/08/01-first-post/article.md`)
+### Article (`content/blog/2026/01/08/01-first-post/article.md`)
 
 ```md
 ---
@@ -294,9 +295,9 @@ Everything was deterministic.
 
 At this point you have:
 
-* a locked content taxonomy
-* a constrained query language
-* a mechanical renderer
-* strict template rules
-* explicit CI behavior
-* a clear implementation path
+- a locked content taxonomy
+- a constrained query language
+- a mechanical renderer
+- strict template rules
+- explicit CI behavior
+- a clear implementation path
