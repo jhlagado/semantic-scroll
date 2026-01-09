@@ -1,4 +1,4 @@
-# AI-Driven Blogging Setup
+# AI-Driven Blogging Platform
 
 This repository defines an AI-assisted technical diary and publishing system built on classic web values. It is designed to capture daily technical work in durable, human-readable form without turning publishing into a chore. Posts are treated as long-lived documents rather than CMS entries, and the author retains control of voice, timing, and accountability at every step.
 
