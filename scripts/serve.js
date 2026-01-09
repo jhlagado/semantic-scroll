@@ -7,6 +7,7 @@ const path = require('path');
 const ROOT = process.cwd();
 const BASE_DIR = path.resolve(ROOT, 'build');
 const PORT = Number(process.env.PORT || 8000);
+const HOST = process.env.HOST || '0.0.0.0';
 const RELOAD_PATH = '/__reload';
 const clients = new Set();
 let reloadTimer = null;
@@ -111,6 +112,7 @@ if (fs.existsSync(BASE_DIR)) {
   });
 }
 
-server.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
+server.listen(PORT, HOST, () => {
+  const displayHost = HOST === '0.0.0.0' ? 'localhost' : HOST;
+  console.log(`http://${displayHost}:${PORT}`);
 });

@@ -68,6 +68,36 @@ These are rhetorical crutches. They flatten nuance and signal AI-authored text i
 
 Write **what the thing is**, directly.
 
+#### Anti-Contrast Pair Rule
+
+Avoid sentence pairs that define an idea by negation followed by correction.
+
+Patterns to watch:
+
+> X is not A. It is B.
+> This is not about A. It is about B.
+> These are not X. They are Y.
+
+These pairs read as dramatic, but they flatten thought. They sound like someone circling the idea and keeping their distance. Humans usually state what something is, then qualify it. A standalone negation drains the idea.
+
+When you want to express contrast, add texture without flipping polarity.
+
+Bad:
+
+> The writing is not decoration. It is how the system learns.
+
+Better:
+
+> The writing teaches the system what it can become.
+
+Bad:
+
+> This project is not about finished ideas. It is about unfinished ones.
+
+Better:
+
+> This project lives in the middle of ideas while they are still taking shape.
+
 ---
 
 ### 3.2 Performative Closings
@@ -208,4 +238,3 @@ If the answer is no, it fails.
 This document is **locked**.
 
 Violations are not stylistic disagreements; they are errors.
-

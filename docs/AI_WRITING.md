@@ -43,6 +43,31 @@ The blog is a personal technical diary. When drafting blog posts or diary entrie
 ### 3.3 Sentence Variety
 Avoid the repetitive [Subject] [Verb] [Object] cadence common in LLM output. Vary sentence length and structure to create a natural human rhythm.
 
+### 3.4 Anti-Contrast Pair Rule
+Avoid sentence pairs that define an idea by negation followed by correction. The pattern reads like a staged reveal and tends to flatten thought. State what something is, then deepen it with texture or a concrete verb.
+
+Patterns to watch:
+
+> X is not A. It is B.
+> This is not about A. It is about B.
+> These are not X. They are Y.
+
+Bad:
+
+> The writing is not decoration. It is how the system learns.
+
+Better:
+
+> The writing teaches the system what it can become.
+
+Bad:
+
+> This project is not about finished ideas. It is about unfinished ones.
+
+Better:
+
+> This project lives in the middle of ideas while they are still taking shape.
+
 ---
 
 ## 4. Technical Precision

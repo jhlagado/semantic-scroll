@@ -119,6 +119,16 @@ const CONTRAST_PATTERNS = [
     regex: /\b(goal|aim|purpose|point|intent)\b[^.?!]{0,80}\bisn['’]t\b[^.?!]{0,160}[.?!]\s+it(?:'s|’s| is)\b/gi
   },
   {
+    label: 'is/are not X. it/they <verb>',
+    weight: 8,
+    regex: /\b(?:is|are|was|were)\s+not\b[^.?!]{0,200}[.?!]\s+(?:it|this|they|these|that|those)\s+(?!do\s+not|does\s+not|did\s+not|is\s+not|are\s+not|was\s+not|were\s+not)\b\w+/gi
+  },
+  {
+    label: 'do/does not X. it/they <verb>',
+    weight: 8,
+    regex: /\b(?:do|does|did)\s+not\b[^.?!]{0,200}[.?!]\s+(?:it|this|they|these|that|those)\s+(?!do\s+not|does\s+not|did\s+not|is\s+not|are\s+not|was\s+not|were\s+not)\b\w+/gi
+  },
+  {
     label: 'not X, but Y',
     weight: 6,
     regex: /\bnot\b[^.?!]{0,100}\bbut\b/gi

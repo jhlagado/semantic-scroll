@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{year}} - Archive - jhardy.work</title>
+  <meta name="description" data-content="meta-description" />
+  <link rel="canonical" data-href="canonical-url" />
+  <meta name="color-scheme" data-content="color-scheme" />
+  <meta name="theme-color" data-content="theme-color" />
+  <title data-slot="page-title"></title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
   <link rel="icon" type="image/svg+xml" href="/assets/semantic-scroll.svg" />
   <link rel="stylesheet" href="/assets/site.css" />
@@ -21,8 +25,10 @@
       </nav>
     </header>
     <main>
-      <h1>{{year}}</h1>
-      {{month_sections}}
+      <h1 data-slot="year"></h1>
+      <div data-slot="month-sections">
+        <p class="summary-empty">No posts yet.</p>
+      </div>
     </main>
   </div>
   <script>

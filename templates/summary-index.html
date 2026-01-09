@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{page_title}}</title>
+  <meta name="description" data-content="meta-description" />
+  <link rel="canonical" data-href="canonical-url" />
+  <meta name="color-scheme" data-content="color-scheme" />
+  <meta name="theme-color" data-content="theme-color" />
+  <title data-slot="page-title"></title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
   <link rel="icon" type="image/svg+xml" href="/assets/semantic-scroll.svg" />
   <link rel="stylesheet" href="/assets/site.css" />
@@ -18,18 +22,18 @@
       <nav class="site-nav">
         <a href="/">Home</a>
         <a href="/content/blog/">Archive</a>
-        {{nav_extra}}
+        <span data-slot="nav-extra"></span>
       </nav>
     </header>
     <main>
-      <h1>{{page_heading}}</h1>
-      {{page_intro}}
+      <h1 data-slot="page-heading"></h1>
+      <div data-slot="page-intro"></div>
       <ul class="summary-list">
         <template data-query="page-posts" data-view="summary-list">
           <li class="summary-empty">No posts yet.</li>
         </template>
       </ul>
-      {{page_extra}}
+      <div data-slot="page-extra"></div>
     </main>
   </div>
   <script>

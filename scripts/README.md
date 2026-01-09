@@ -36,7 +36,7 @@ npm install -g nodemon
 npm run dev
 ```
 
-This runs `build` then starts the local server, restarting on changes in `content/`, `templates/`, `assets/`, and `config/`.
+This runs `build` then starts the local server, restarting on changes in `content/`, `templates/`, `assets/`, and `config/`. By default the dev server binds to `127.0.0.1`; set `HOST=0.0.0.0` if you need to reach it from another device, and override the port with `PORT=xxxx` if needed.
 
 ## Lint prose in drafts
 

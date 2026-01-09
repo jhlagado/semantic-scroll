@@ -11,6 +11,11 @@ const ARCHIVE_OUTPUT_ROOT = path.join(OUTPUT_DIR, 'content', 'blog');
 const STATIC_ASSETS_DIR = path.join(ROOT, 'assets');
 const QUERIES_PATH = path.join(ROOT, 'config', 'queries.json');
 
+const SITE_URL = 'https://jhardy.work';
+const SITE_DESCRIPTION = 'A public experiment in building a publishing system while using it, with essays and specs evolving alongside the code.';
+const META_COLOR_SCHEME = 'light';
+const META_THEME_COLOR = '#ffffff';
+
 const ARTICLE_TEMPLATE = path.join(TEMPLATE_DIR, 'article.html');
 const HOME_TEMPLATE = path.join(TEMPLATE_DIR, 'home.html');
 const BLOG_TEMPLATE = path.join(TEMPLATE_DIR, 'blog.html');
@@ -297,7 +302,13 @@ function renderSite(index, queryResults) {
   ensureDir(OUTPUT_DIR);
 
   const homeTemplate = fs.readFileSync(HOME_TEMPLATE, 'utf8');
-  const homeHtml = renderTemplate(homeTemplate, queryResults);
+  const homeHtml = renderTemplate(
+    applyMeta(homeTemplate, {
+      canonical: joinUrl(SITE_URL, '/'),
+      description: SITE_DESCRIPTION
+    }),
+    queryResults
+  );
   writeFile(path.join(OUTPUT_DIR, 'index.html'), homeHtml);
 
   const articleTemplate = fs.readFileSync(ARTICLE_TEMPLATE, 'utf8');
@@ -307,7 +318,13 @@ function renderSite(index, queryResults) {
 
   for (const article of articleCandidates) {
     const perArticleResults = { 'article-page': [article] };
-    const articleHtml = renderTemplate(articleTemplate, perArticleResults);
+    const articleHtml = renderTemplate(
+      applyMeta(articleTemplate, {
+        canonical: joinUrl(SITE_URL, article.publicPath),
+        description: descriptionForArticle(article)
+      }),
+      perArticleResults
+    );
 
     const outputDir = path.join(OUTPUT_DIR, article.relDir);
     const outputFile = path.join(outputDir, 'index.html');
@@ -363,7 +380,16 @@ function renderArchiveRoot(published) {
     }).join('\n')
     : '<li class="archive-empty">No posts yet.</li>';
 
-  const html = renderTemplate(applyTokens(template, { year_list: yearList }), {});
+  const html = renderTemplate(
+    applySlots(
+      applyMeta(template, {
+        canonical: joinUrl(SITE_URL, '/content/blog/'),
+        description: SITE_DESCRIPTION
+      }),
+      { 'year-list': yearList }
+    ),
+    {}
+  );
   writeFile(path.join(ARCHIVE_OUTPUT_ROOT, 'index.html'), html);
 }
 
@@ -398,10 +424,17 @@ function renderYearArchives(published) {
     }).join('\n');
 
     const content = monthSections || '<p class="summary-empty">No posts yet.</p>';
-    const html = applyTokens(template, {
-      year: escapeHtml(year),
-      month_sections: content
-    });
+    const html = applySlots(
+      applyMeta(template, {
+        canonical: joinUrl(SITE_URL, `/content/blog/${year}/`),
+        description: SITE_DESCRIPTION
+      }),
+      {
+        'page-title': escapeHtml(`${year} - Archive - jhardy.work`),
+        year: escapeHtml(year),
+        'month-sections': content
+      }
+    );
     const rendered = renderTemplate(html, queryResults);
     writeFile(path.join(ARCHIVE_OUTPUT_ROOT, year, 'index.html'), rendered);
   }
@@ -416,16 +449,25 @@ function renderMonthArchives(published) {
     const [year, month] = key.split('-');
     const monthItems = sortItems(byMonth.get(key), 'date-asc');
     const label = `${monthName(month)} ${year}`;
-    const tokens = {
-      page_title: escapeHtml(`${label} - Archive - jhardy.work`),
-      page_heading: escapeHtml(label),
-      page_intro: '',
-      page_extra: '',
-      nav_extra: `<a href="/content/blog/${year}/">${escapeHtml(year)}</a>`
+    const slots = {
+      'page-title': escapeHtml(`${label} - Archive - jhardy.work`),
+      'page-heading': escapeHtml(label),
+      'page-intro': '',
+      'page-extra': '',
+      'nav-extra': `<a href="/content/blog/${year}/">${escapeHtml(year)}</a>`
     };
-    const html = renderTemplate(applyTokens(template, tokens), {
-      'page-posts': monthItems
-    });
+    const html = renderTemplate(
+      applySlots(
+        applyMeta(template, {
+          canonical: joinUrl(SITE_URL, `/content/blog/${year}/${month}/`),
+          description: SITE_DESCRIPTION
+        }),
+        slots
+      ),
+      {
+        'page-posts': monthItems
+      }
+    );
     writeFile(path.join(ARCHIVE_OUTPUT_ROOT, year, month, 'index.html'), html);
   }
 }
@@ -470,31 +512,49 @@ function renderTagArchives(published) {
       ].join('\n')
       : '';
 
-    const tokens = {
-      page_title: escapeHtml(`Tag: ${tag} - jhardy.work`),
-      page_heading: escapeHtml(`Tag: ${tag}`),
-      page_intro: '',
-      page_extra: yearList,
-      nav_extra: ''
+    const slots = {
+      'page-title': escapeHtml(`Tag: ${tag} - jhardy.work`),
+      'page-heading': escapeHtml(`Tag: ${tag}`),
+      'page-intro': '',
+      'page-extra': yearList,
+      'nav-extra': ''
     };
 
-    const html = renderTemplate(applyTokens(template, tokens), {
-      'page-posts': latest
-    });
+    const html = renderTemplate(
+      applySlots(
+        applyMeta(template, {
+          canonical: joinUrl(SITE_URL, `/tags/${tag}/`),
+          description: SITE_DESCRIPTION
+        }),
+        slots
+      ),
+      {
+        'page-posts': latest
+      }
+    );
     writeFile(path.join(OUTPUT_DIR, 'tags', tag, 'index.html'), html);
 
     for (const year of years) {
       const yearItems = itemsDesc.filter((item) => item.year === year);
-      const yearTokens = {
-        page_title: escapeHtml(`Tag: ${tag} - ${year} - jhardy.work`),
-        page_heading: escapeHtml(`Tag: ${tag} - ${year}`),
-        page_intro: '',
-        page_extra: '',
-        nav_extra: `<a href="/tags/${tag}/">${escapeHtml(tag)}</a>`
+      const yearSlots = {
+        'page-title': escapeHtml(`Tag: ${tag} - ${year} - jhardy.work`),
+        'page-heading': escapeHtml(`Tag: ${tag} - ${year}`),
+        'page-intro': '',
+        'page-extra': '',
+        'nav-extra': `<a href="/tags/${tag}/">${escapeHtml(tag)}</a>`
       };
-      const yearHtml = renderTemplate(applyTokens(template, yearTokens), {
-        'page-posts': yearItems
-      });
+      const yearHtml = renderTemplate(
+        applySlots(
+          applyMeta(template, {
+            canonical: joinUrl(SITE_URL, `/tags/${tag}/${year}/`),
+            description: SITE_DESCRIPTION
+          }),
+          yearSlots
+        ),
+        {
+          'page-posts': yearItems
+        }
+      );
       writeFile(path.join(OUTPUT_DIR, 'tags', tag, year, 'index.html'), yearHtml);
     }
   }
@@ -610,13 +670,72 @@ function renderSummary(article) {
   return parts.join('\n');
 }
 
-function applyTokens(html, tokens) {
+function applySlots(html, slots) {
+  if (!slots || typeof slots !== 'object') {
+    return html;
+  }
+  return html.replace(
+    /(<([a-zA-Z0-9:-]+)(?:\s[^>]*?)?\sdata-slot="([^"]+)"[^>]*>)([\s\S]*?)(<\/\2>)/g,
+    (full, openTag, tagName, slotName, inner, closeTag) => {
+      if (!Object.prototype.hasOwnProperty.call(slots, slotName)) {
+        return full;
+      }
+      return `${openTag}${slots[slotName]}${closeTag}`;
+    }
+  );
+}
+
+function applyContentAttributes(html, values) {
   let output = html;
-  for (const [key, value] of Object.entries(tokens)) {
-    const token = `{{${key}}}`;
-    output = output.split(token).join(value);
+  for (const [key, value] of Object.entries(values)) {
+    const marker = `data-content="${key}"`;
+    output = output.split(marker).join(`content="${escapeHtml(value)}"`);
   }
   return output;
+}
+
+function applyHrefAttributes(html, values) {
+  let output = html;
+  for (const [key, value] of Object.entries(values)) {
+    const marker = `data-href="${key}"`;
+    output = output.split(marker).join(`href="${escapeHtml(value)}"`);
+  }
+  return output;
+}
+
+function applyMeta(html, { canonical, description }) {
+  const contentValues = {
+    'meta-description': normalizeWhitespace(description || SITE_DESCRIPTION),
+    'color-scheme': META_COLOR_SCHEME,
+    'theme-color': META_THEME_COLOR
+  };
+  const hrefValues = {
+    'canonical-url': canonical || SITE_URL
+  };
+  let output = applyContentAttributes(html, contentValues);
+  output = applyHrefAttributes(output, hrefValues);
+  return output;
+}
+
+function descriptionForArticle(article) {
+  const summary = article.frontmatter.summary;
+  if (summary) {
+    const cleaned = stripInlineMarkup(summary);
+    if (cleaned) {
+      return cleaned;
+    }
+  }
+  return SITE_DESCRIPTION;
+}
+
+function stripInlineMarkup(text) {
+  return normalizeWhitespace(String(text)
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/[*_`~]/g, ''));
+}
+
+function normalizeWhitespace(text) {
+  return String(text).replace(/\s+/g, ' ').trim();
 }
 
 function groupBy(items, keyFn) {
