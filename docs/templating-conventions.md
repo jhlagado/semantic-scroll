@@ -1,6 +1,6 @@
 # Template Authoring Conventions
 
-This document defines **mandatory conventions** for authoring HTML templates in the blog system. It is derived from `docs/templating.md` and `docs/prd.md`.
+This document defines **mandatory conventions** for authoring HTML templates in the blog system. It is derived from `docs/templating.md` and `docs/PRD.md`.
 
 Templates are structural documents, not programs.
 They must remain readable, predictable, and boring.
@@ -96,6 +96,11 @@ Rules:
 * `data-query` is mandatory
 * value must match a defined named query
 * fallback content must be valid HTML
+* `data-view` is optional and must be one of `article`, `summary`, or `summary-list`
+
+Summary render modes are built-in and produce fixed HTML. Templates may only select a mode via `data-view` and may not attempt to re-create summary markup manually.
+
+Use `summary-list` only when the template slot is inside a `<ul>` or `<ol>` container, since it renders list items.
 
 ---
 

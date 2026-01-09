@@ -1,6 +1,6 @@
 # The Article Unit: A Specification for Durable Content
 
-This document defines the **Article Unit**, the fundamental atomic unit of the blog. It is derived from `docs/prd.md` and aligned with `docs/articles-frontmatter.md`. Rather than treating blog posts as simple entries in a database, we treat each one as a self-contained, portable, and durable document. An Article Unit must be capable of fulfilling many roles—from a quick technical thought captured in a diary to a formal, multi-page technical specification. It is designed to be readable as a standalone Markdown file for decades, independent of the build system used to render it.
+This document defines the **Article Unit**, the fundamental atomic unit of the blog. It is derived from `docs/PRD.md` and aligned with `docs/articles-frontmatter.md`. Rather than treating blog posts as simple entries in a database, we treat each one as a self-contained, portable, and durable document. An Article Unit must be capable of fulfilling many roles—from a quick technical thought captured in a diary to a formal, multi-page technical specification. It is designed to be readable as a standalone Markdown file for decades, independent of the build system used to render it.
 
 ---
 
@@ -17,17 +17,20 @@ The most critical part of this path is the **NN** ordinal prefix in the leaf dir
 An Article Unit is divided into two functional regions: the invisible metadata (Frontmatter) and the visible prose (Body). The strict separation between these two is a core architectural choice.
 
 ### 2.1 The Invisible Index (Frontmatter)
-Frontmatter is used exclusively by the build system for machine-level tasks like indexing and query execution. It is never used as a source for rendering HTML. A typical frontmatter block defines the article's current lifecycle state and thematic track:
+Frontmatter is used for indexing, query execution, and summary rendering. It is not used as a source for full article rendering. A typical frontmatter block defines the article's current lifecycle state and thematic track:
 
 ```yaml
 ---
+title: "Short title used for index views"
 status: published
 tags: [z80, assembly, retrocomputing]
 stream: rebuild-log
+summary: "Short factual summary used in index views"
+thumbnail: assets/thumbnail.jpg
 ---
 ```
 
-Here, the `status` field controls visibility (e.g., preventing drafts from appearing in public feeds), while the `stream` field categorizes the post into an ongoing thematic flow (like a specific project log). An optional `summary` may be included for indexing or external feeds, but it is not rendered. We avoid placing titles or dates in frontmatter to prevent metadata drift; those values belong in the human-facing body.
+Here, the `status` field controls visibility (e.g., preventing drafts from appearing in public feeds), while the `stream` field categorizes the post into an ongoing thematic flow (like a specific project log). The `title`, `summary`, and `thumbnail` fields are used by built-in summary views and external feeds, not by full article rendering. Title and summary may include minimal inline formatting (bold, italic, and inline links only). Dates remain filesystem-derived rather than frontmatter-defined.
 
 ### 2.2 The Visible Document (The Mirroring Requirement)
 Because our rendering templates are intentionally "dumb" and cannot access frontmatter, the document body must be self-contained. Any information intended for the reader—such as the title, the date of creation, or the categorical tags—must be authored directly in the Markdown prose. This "mirroring" ensures that if the build system disappears tomorrow, the document remains perfectly legible to a human reader.

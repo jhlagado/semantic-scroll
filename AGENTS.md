@@ -24,7 +24,7 @@ Do **not** introduce tools, abstractions, or patterns "for safety" or "best prac
 
 The following documents are authoritative and must not be contradicted:
 
-- `docs/prd.md`
+- `docs/PRD.md`
 - `docs/queries.md`
 - `docs/articles-frontmatter.md`
 - `docs/article-spec.md`

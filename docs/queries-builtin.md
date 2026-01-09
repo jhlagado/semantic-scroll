@@ -253,6 +253,7 @@ Select all published posts in a given year.
 * Parameter substitution occurs at build time.
 * Parameters must resolve to concrete values before execution.
 * Templates reference the **query name**, not the parameters directly.
+* Month and day parameters are normalized to integers; zero-padded strings are accepted but not required.
 
 ---
 

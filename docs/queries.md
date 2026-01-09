@@ -1,7 +1,7 @@
 # Blog Architecture & Design Decisions
 
 This document records the architectural and design decisions for the AI-assisted blog system.
-It is derived from `docs/prd.md` and is **normative**: if future work conflicts with this document, the future work is wrong unless this document is explicitly updated.
+It is derived from `docs/PRD.md` and is **normative**: if future work conflicts with this document, the future work is wrong unless this document is explicitly updated.
 
 The system prioritizes clarity, durability, classic web principles, and strict separation of concerns.
 
@@ -94,18 +94,18 @@ Frontmatter exists **only** to support:
 * indexing
 * querying
 * build-time decisions
+* summary rendering in built-in views
 
-No metadata access at render time. Visible metadata (title, date, etc.) must be authored directly in the Markdown body.
+Templates do not access metadata. Full article rendering uses only Markdown bodies. Summary views are a built-in render mode that may use frontmatter fields.
 
 ### 4.2 Published Content Rule
 
-If a field is visible on the rendered page (date, tag, label, etc.):
+If a field is visible on a full article page (date, tag, label, etc.):
 
 * it **must exist in the Markdown body**
 * even if it also exists in metadata
 
-Metadata is not a rendering input.
-Rendered pages are self-contained documents.
+Summary and index views are a controlled exception: they may render frontmatter values using the built-in summary renderer.
 
 ---
 
@@ -201,6 +201,8 @@ Allowed for:
 
 Exact match only.
 AND semantics only.
+
+Month and day values are normalized to integers before comparison. The filesystem uses zero-padded segments, but queries may use numeric values or zero-padded strings as long as they normalize to the same integer.
 
 ---
 
