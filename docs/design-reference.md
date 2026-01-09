@@ -1,6 +1,6 @@
 # Reference Implementation and Execution Guide
 
-This document provides the **concrete, implementation-facing guidance** for the blog system, without committing to a specific language or framework. It is derived from `docs/prd.md`, `docs/queries.md`, `docs/templating.md`, and `docs/ci-pipeline.md`.
+This document provides the **concrete, implementation-facing guidance** for the blog system, without committing to a specific language or framework. It is derived from `docs/PRD.md`, `docs/queries.md`, `docs/templating.md`, and `docs/ci-pipeline.md`.
 
 It is strictly derived from the previously defined architecture and does not introduce new concepts.
 

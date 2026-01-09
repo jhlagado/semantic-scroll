@@ -1,6 +1,6 @@
 # The Article Unit: A Specification for Durable Content
 
-This document defines the **Article Unit**, the fundamental atomic unit of the blog. It is derived from `docs/prd.md` and aligned with `docs/articles-frontmatter.md`. Rather than treating blog posts as simple entries in a database, we treat each one as a self-contained, portable, and durable document. An Article Unit must be capable of fulfilling many roles—from a quick technical thought captured in a diary to a formal, multi-page technical specification. It is designed to be readable as a standalone Markdown file for decades, independent of the build system used to render it.
+This document defines the **Article Unit**, the fundamental atomic unit of the blog. It is derived from `docs/PRD.md` and aligned with `docs/articles-frontmatter.md`. Rather than treating blog posts as simple entries in a database, we treat each one as a self-contained, portable, and durable document. An Article Unit must be capable of fulfilling many roles—from a quick technical thought captured in a diary to a formal, multi-page technical specification. It is designed to be readable as a standalone Markdown file for decades, independent of the build system used to render it.
 
 ---
 

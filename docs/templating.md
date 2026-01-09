@@ -1,6 +1,6 @@
 # Templating and Rendering Specification
 
-This document is **normative**. It defines how named queries select articles, how templates consume query results, and how Markdown becomes HTML inside templates. It is derived from `docs/prd.md` and `docs/queries.md`.
+This document is **normative**. It defines how named queries select articles, how templates consume query results, and how Markdown becomes HTML inside templates. It is derived from `docs/PRD.md` and `docs/queries.md`.
 
 The intent is to:
 

@@ -1,6 +1,6 @@
 # Query JSON Schema Specification
 
-This document defines the **authoritative schema** for named queries used by the blog system. It is derived from `docs/queries.md` and `docs/prd.md`.
+This document defines the **authoritative schema** for named queries used by the blog system. It is derived from `docs/queries.md` and `docs/PRD.md`.
 
 Queries are **data**, not code.
 They are validated strictly at build time.

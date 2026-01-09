@@ -1,6 +1,6 @@
 # Frontmatter and Metadata Specification
 
-This document defines how frontmatter metadata is used in the blog system. It is derived from `docs/prd.md` and aligned with `docs/queries.md`.
+This document defines how frontmatter metadata is used in the blog system. It is derived from `docs/PRD.md` and aligned with `docs/queries.md`.
 
 Frontmatter exists **only** to support discovery, indexing, and querying.
 It is **never** used directly for rendering HTML.

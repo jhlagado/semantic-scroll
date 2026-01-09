@@ -1,6 +1,6 @@
 # Template Authoring Conventions
 
-This document defines **mandatory conventions** for authoring HTML templates in the blog system. It is derived from `docs/templating.md` and `docs/prd.md`.
+This document defines **mandatory conventions** for authoring HTML templates in the blog system. It is derived from `docs/templating.md` and `docs/PRD.md`.
 
 Templates are structural documents, not programs.
 They must remain readable, predictable, and boring.

@@ -1,7 +1,7 @@
 # Blog Architecture & Design Decisions
 
 This document records the architectural and design decisions for the AI-assisted blog system.
-It is derived from `docs/prd.md` and is **normative**: if future work conflicts with this document, the future work is wrong unless this document is explicitly updated.
+It is derived from `docs/PRD.md` and is **normative**: if future work conflicts with this document, the future work is wrong unless this document is explicitly updated.
 
 The system prioritizes clarity, durability, classic web principles, and strict separation of concerns.
 

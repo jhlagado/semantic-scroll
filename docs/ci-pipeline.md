@@ -1,6 +1,6 @@
 # Build Pipeline and CI Specification
 
-This document defines the **end-to-end build pipeline** for the blog system, including discovery, indexing, querying, rendering, asset handling, and deployment. It is derived from `docs/prd.md` and aligned with `docs/queries.md` and `docs/templating.md`.
+This document defines the **end-to-end build pipeline** for the blog system, including discovery, indexing, querying, rendering, asset handling, and deployment. It is derived from `docs/PRD.md` and aligned with `docs/queries.md` and `docs/templating.md`.
 
 It also defines **CI validation rules**, including which conditions are **hard errors** versus **warnings**.
 
