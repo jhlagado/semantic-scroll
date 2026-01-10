@@ -30,7 +30,7 @@ thumbnail: hero.jpg
 Here is where the writing begins…
 ```
 
-Everything above the divider is metadata. Everything below it is published text.
+Everything above the divider is metadata. Everything below it carries the published text.
 
 The build reads frontmatter to construct lists, series pages, and tag pages. Titles, summaries, thumbnails, tags, and series membership come from that block. The body stays untouched until an article page renders it.
 

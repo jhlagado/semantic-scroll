@@ -15,7 +15,7 @@ summary: "Feeds are build artifacts derived from queries so subscriptions stay d
 # Feeds and Discovery
 *January 11, 2026* | Series: indexing | Tags: publishing, process, tooling, structure, indexing, feeds
 
-I treat feeds as first-class build artifacts. They are generated from the same query system that powers indexes, not from scraped HTML.
+I treat feeds as first-class build artifacts. They come from the same query system that powers indexes, not from scraped HTML.
 
 The global feed is a view of the latest posts. Tag feeds and series feeds reuse the same data with different ordering rules. That keeps subscriptions aligned with the rest of the site.
 
