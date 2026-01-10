@@ -5,12 +5,12 @@ tags:
   - publishing
   - process
   - tooling
-  - genesis
+series: genesis
 summary: "This project is a self-referential experiment in software development and content production, and this first post explains how the live Q/A workflow hardens into the system itself."
 ---
 
 # Start Here: Building the Tool While Using It
-*January 9, 2026* | Tags: #publishing, #process, #tooling, #genesis
+*January 9, 2026* | Series: genesis | Tags: publishing, process, tooling
 
 This project exists to test a new model of software development and content production in public. The repository is both the lab and the record, and the system I am building will publish the discoveries that come out of its own construction.
 
@@ -22,4 +22,4 @@ I want to minimize imports and treat third-party tools as last resorts. If the p
 
 On the publishing side, I am aiming for the most boring convention that still works: a home page index with the newest post at the top, and a dedicated article page for each post with a stable permalink. That is the shape of the site I want to live inside.
 
-This is the beginning of the genesis stream. The next posts will move through the philosophy and the mechanics, but they will stay grounded in the same principle: build the tool while using it, and let the system explain itself in real time.
+This is the beginning of the genesis series. The next posts will move through the philosophy and the mechanics, but they will stay grounded in the same principle: build the tool while using it, and let the system explain itself in real time.

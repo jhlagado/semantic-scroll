@@ -43,11 +43,11 @@ Quality should remain high even with rapid posting. Posts should read as deliber
 
 Freshness matters for the author’s momentum and for external visibility. The system should encourage a steady cadence without turning publishing into a chore.
 
-Owning the domain is a non-negotiable requirement. The publishing stack can evolve, but DNS and canonical URLs should remain under the author's control to keep content portable. Over time, the system should support multiple subject streams (for example, retrocomputing and Z80 work alongside modern AI tooling) without fragmenting the archive. Streams are promoted tags, not frontmatter fields, so the archive can shift its narrative shape without rewriting posts.
+Owning the domain is a non-negotiable requirement. The publishing stack can evolve, but DNS and canonical URLs should remain under the author's control to keep content portable. Over time, the system should support multiple subject series (for example, retrocomputing and Z80 work alongside modern AI tooling) without fragmenting the archive. Series live in frontmatter as a single, author-declared value so the archive can hold narrative arcs without rewriting tags.
 
 Each section should read as a standalone piece that can be published with minimal rewriting when the build story goes live.
 
-The first public content should document the build itself. This spec should translate into a narrative **stream** that shows the decisions, tradeoffs, and implementation steps behind the blog, beginning as a tag that is later promoted.
+The first public content should document the build itself. This spec should translate into a narrative **series** that shows the decisions, tradeoffs, and implementation steps behind the blog.
 
 This project is a deliberate trial of a new model of software development and content production. The repository is both the laboratory and the record, and the publishing system is expected to surface its own discoveries as they happen. The documentation process is the first subject, not a preface, and the earliest posts should show how the specs were shaped, how constraints were chosen, and why the system is being built this way.
 
@@ -81,7 +81,7 @@ Accessibility should target WCAG 2.1 AA where applicable, with regular contrast 
 
 The site should reflect the classic, server-rendered web. HTML should be legible without JavaScript, URLs should remain stable and human-readable, and CSS should improve readability rather than compete with the content.
 
-This document is written to brief an AI while remaining readable as a narrative. Each section should stand on its own as a potential future blog post, with a linear flow from principles to implementation so the process can be published as a **stream** without heavy rewriting.
+This document is written to brief an AI while remaining readable as a narrative. Each section should stand on its own as a potential future blog post, with a linear flow from principles to implementation so the process can be published as a **series** without heavy rewriting.
 
 ## 3. Content Creation Workflow
 
@@ -89,7 +89,7 @@ This section breaks down how each blog post comes to life, from the initial conv
 
 **Conversational Drafting** is at the heart of this workflow. Instead of starting with a blank page, you’ll have a dialogue with the AI. During this chat, the AI will help you figure out what the post is about, suggest a human-readable title, and identify relevant tags. It’ll also clarify the post’s status—whether it’s a draft, ready for review, or good to go live. Along the way, the AI will help you gather any necessary assets, like code snippets, images, or links, and figure out where they fit into the post.
 
-Once you’ve got all that figured out, the AI will generate a **folder-based output**. Each post will live in its own date-based folder (like `/content/blog/YYYY/MM/DD/NN-slug/`) and include a single markdown file along with any co-located assets like images or code. The markdown file will have embedded frontmatter metadata for status, tags, title, optional summary, and optional thumbnail so index views are consistent while full article titles and dates remain authored in the body.
+Once you’ve got all that figured out, the AI will generate a **folder-based output**. Each post will live in its own date-based folder (like `/content/blog/YYYY/MM/DD/NN-slug/`) and include a single markdown file plus an optional `assets/` subfolder for images, code, or media. The markdown file will have embedded frontmatter metadata for status, tags, title, optional summary, and optional thumbnail so index views are consistent while full article titles and dates remain authored in the body.
 
 **Linking and referencing** are also built into this workflow. You’ll be able to add internal links to other posts using relative paths or shortcodes and include external links that the AI can help curate. Eventually, we might wrap these links in semantic tags or add unobtrusive JavaScript enhancements like tooltips, but the core idea is to keep linking straightforward and reliable.
 
@@ -105,7 +105,7 @@ Prompts should accept explicit parameters such as target length, required links,
 
 Posts should support code snippets as first-class content. Snippets should live in fenced code blocks with language identifiers where possible, remain copyable without client-side tooling, and stay readable in plain HTML. If a snippet is large or likely to be reused, it should be stored as a separate file in the post folder and referenced explicitly from the markdown.
 
-The drafting flow should accept asset paths and image requests up front. If the author provides images, the AI should place and caption them; if images are requested, the AI should either generate them or leave explicit placeholders with filenames so the author can fill them later. Thumbnails, when used, should be referenced in frontmatter for indexing or feeds, and any thumbnail that must appear in an index view must also be authored in the Markdown body since templates do not read metadata.
+The drafting flow should accept asset paths and image requests up front. If the author provides images, the AI should place and caption them; if images are requested, the AI should either generate them or leave explicit placeholders with filenames so the author can fill them later. Thumbnails, when used, should be stored in the article’s `assets/` folder and referenced in frontmatter for indexing or feeds, and any thumbnail that must appear in an index view must also be authored in the Markdown body since templates do not read metadata.
 
 ## 4. Draft Lifecycle
 
@@ -143,11 +143,11 @@ In short, the metadata and tagging rules are here to keep everything organized a
 
 Dates are derived from the filesystem; if both creation and publication dates need to be explicit for readers, they should be authored in the body rather than inferred from metadata. Summaries should be short and factual to support index pages and previews.
 
-Tags and metadata should be rich enough to support multiple thematic tracks, from AI workflow experimentation to retrocomputing projects, while staying normalized and searchable. Over time, this metadata should also support reuse in other formats, such as compiling a **stream** into a talk outline or grouping posts into a longer narrative.
+Tags and metadata should be rich enough to support multiple thematic tracks, from AI workflow experimentation to retrocomputing projects, while staying normalized and searchable. Over time, this metadata should also support reuse in other formats, such as compiling a **series** into a talk outline or grouping posts into a longer narrative.
 
-Streams are nominated tags listed in a collections registry, which keeps multi-topic work organized without splitting the site into separate systems. We prefer the term "stream" over "series" because a series implies a linear, finite sequence of parts, whereas a stream suggests an ongoing, thematic flow of content. This allows retrocomputing projects and modern AI tooling to coexist as distinct thematic channels in the same archive while remaining filterable by their respective tracks. This remains optional so the default path stays simple.
+Series are author-declared narrative arcs, with a single `series` value in frontmatter. Tags remain topical, and multiple series can coexist without splitting the site into separate systems. This keeps story order explicit while leaving topical discovery to tags.
 
-If separate blogs are eventually needed, the system should allow a clean split without rewriting content or breaking URLs. The default, however, is a single domain with multiple streams and clear tag boundaries.
+If separate blogs are eventually needed, the system should allow a clean split without rewriting content or breaking URLs. The default, however, is a single domain with multiple series and clear tag boundaries.
 
 Tag vocabulary should be curated over time. When new tags are introduced, they should either map to existing canonical tags or be added deliberately, so that long-term archives remain coherent and searchable. During the drafting process, the AI Agent is responsible for normalizing tags within the Markdown prose to ensure the visible content remains consistent with the searchable index.
 
@@ -157,7 +157,7 @@ In this section, we’ll outline how internal links are handled to ensure that y
 
 We’ll use **relative paths** for internal links, meaning that links will point to other posts based on their folder structure rather than hard-coded URLs. This makes the system more flexible. If you need to move or rename a post, you can update the link paths without breaking the overall structure.
 
-We’ll also allow **forward references**, which means you can create links to posts that haven’t been written yet. This is especially useful when you’re planning a **stream** of related posts and want to link them together in advance. If a forward reference doesn’t resolve right away, that’s okay—it will just be a warning rather than an error. The link will become active as soon as the target post is created. This supports exploratory writing without being constrained by what has already been published.
+We’ll also allow **forward references**, which means you can create links to posts that haven’t been written yet. This is especially useful when you’re planning a **series** of related posts and want to link them together in advance. If a forward reference doesn’t resolve right away, that’s okay—it will just be a warning rather than an error. The link will become active as soon as the target post is created. This supports exploratory writing without being constrained by what has already been published.
 
 Overall, the goal is to keep internal linking intuitive and robust. By using a consistent linking convention and allowing for flexible references, we make it easy to maintain a well-connected and easy-to-navigate blog as it grows.
 
@@ -171,7 +171,7 @@ Slugs and canonical URLs should be treated as durable identifiers. If a title ch
 
 In this section, we’ll dive into how we handle assets—like images, code snippets, PDFs, and other media—so that they’re easy to manage and reuse. Our approach is to keep assets close to the articles they belong to, ensuring that everything related to a post is self-contained.
 
-**Co-located assets** mean that each article’s images and other media live right alongside its markdown file in the same folder. This makes it easy to keep track of which assets belong to which post, and it ensures that all the references in the markdown file are relative and easy to maintain. If you ever need to move or archive a post, you can just move the entire folder, and all its assets will come along for the ride.
+**Co-located assets** mean that each article’s images and other media live in an `assets/` subfolder within the article directory. This keeps the article root clean and makes it easy to keep track of which files belong to which post, while keeping all references relative and easy to maintain. If you ever need to move or archive a post, you can move the entire folder and its assets together.
 
 We also treat assets as **durable and reusable**. Once an asset is added to a post, it’s never automatically deleted or removed. If you want to reuse an image or a diagram in another article, you can simply reference it from the original folder or copy it into the new article’s folder. We’re avoiding any kind of automatic asset cleanup or deduplication so that you always have full control over your media.
 
@@ -181,7 +181,7 @@ The asset model prioritizes organization, durability, and portability by co-loca
 
 Assets should be optimized before commit (compressed images, trimmed PDFs), and every image should include accessible alt text in the markdown. Asset paths should remain relative so posts stay portable across environments.
 
-AI-generated images are allowed but should be explicitly named and stored alongside the post with clear filenames. If generation metadata or prompts are kept, they should live in the same folder so the asset remains reproducible without external services.
+AI-generated images are allowed but should be explicitly named and stored in the article’s `assets/` folder with clear filenames. If generation metadata or prompts are kept, they should live alongside the article in a separate file, not mixed into the assets folder.
 
 Thumbnails are optional but supported. If used, they should be small, lightweight images intended for index views or social sharing, and they should be generated or selected deliberately rather than inferred automatically. Thumbnails may be referenced in frontmatter for indexing or feeds, but any thumbnail that must be visible in an index view must also be authored in the Markdown body.
 
@@ -209,7 +209,7 @@ Over time, these verbs will form the basis of a shared vocabulary that makes it 
 
 In short, the AI vocabulary is the bridge between conversational authoring and automated scripting. It gives you a consistent, easy-to-use set of tools to direct the AI and ensures that the system remains flexible and user-friendly as it evolves.
 
-Verbs should map to deterministic actions in prose and in tooling. Create generates a folder and stub, revise edits content without status changes, tag assigns or modifies normalized tags, link creates or adjusts internal or external links, attach copies or generates assets into the article folder, status updates visibility metadata only, summarize refines the metadata summary field, find locates content by title, tag, date, or concept within the repo, and inspect provides read-only reporting on state such as metadata completeness or broken links.
+Verbs should map to deterministic actions in prose and in tooling. Create generates a folder and stub, revise edits content without status changes, tag assigns or modifies normalized tags, link creates or adjusts internal or external links, attach copies or generates assets into the article’s `assets/` folder, status updates visibility metadata only, summarize refines the metadata summary field, find locates content by title, tag, date, or concept within the repo, and inspect provides read-only reporting on state such as metadata completeness or broken links.
 
 The vocabulary should remain stable so scripts can depend on it.
 
@@ -323,13 +323,13 @@ Phase Four brings the visual system to its intended quality. Typography, spacing
 
 ### Phase Five: Content Rollout and Iteration
 
-Phase Five scales real publishing. The initial build-log **stream** is released, the daily diary cadence is tested, tags and topic streams are refined, and the system is tuned based on friction observed in actual use. This phase also defines how posts are repurposed into talks, videos, or longer-form writing so the workflow supports the broader content strategy.
+Phase Five scales real publishing. The initial build-log **series** is released, the daily diary cadence is tested, tags and series definitions are refined, and the system is tuned based on friction observed in actual use. This phase also defines how posts are repurposed into talks, videos, or longer-form writing so the workflow supports the broader content strategy.
 
 ## 15. Specifications Map
 
 This PRD sets the intent; the implementation details are specified in the derived documents.
 
-Frontmatter and status semantics are defined in [articles-frontmatter.md](articles-frontmatter.md). The Article Unit is defined in [article-spec.md](article-spec.md). Architectural invariants and the query-driven rendering model are defined in [queries.md](queries.md), with schema details in [queries-spec.md](queries-spec.md) and canonical query definitions in [queries-builtin.md](queries-builtin.md). Rendering and template rules are defined in [templating.md](templating.md) and [templating-conventions.md](templating-conventions.md), with the JavaScript boundary in [templating-javascript.md](templating-javascript.md). Styling rules and CSS constraints live in [styling.md](styling.md). Pipeline and CI rules live in [ci-pipeline.md](ci-pipeline.md). The execution guide and reference pseudocode are in [design-reference.md](design-reference.md).
+Frontmatter and status semantics are defined in [articles-frontmatter.md](articles-frontmatter.md). Tagging and series semantics are defined in [tagging.md](tagging.md). The Article Unit is defined in [article-spec.md](article-spec.md). Architectural invariants and the query-driven rendering model are defined in [queries.md](queries.md), with schema details in [queries-spec.md](queries-spec.md) and canonical query definitions in [queries-builtin.md](queries-builtin.md). Rendering and template rules are defined in [templating.md](templating.md) and [templating-conventions.md](templating-conventions.md), with the JavaScript boundary in [templating-javascript.md](templating-javascript.md). Styling rules and CSS constraints live in [styling.md](styling.md). Pipeline and CI rules live in [ci-pipeline.md](ci-pipeline.md). The execution guide and reference pseudocode are in [design-reference.md](design-reference.md).
 
 ## Conclusion
 

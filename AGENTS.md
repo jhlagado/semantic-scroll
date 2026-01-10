@@ -151,6 +151,25 @@ If behavior matters, specify it explicitly. Do not introduce smart defaults or s
 
 ---
 
+### 7.1 Environment and Dependency Sanity
+
+You must **never** install new dependencies, create `package.json` entries, or mutate the project environment (e.g., adding `node_modules`) without explicit, written permission for the specific tool. 
+
+Being "proactive" does not extend to environmental mutation. If a task requires a new library:
+1. Propose it in an Implementation Plan.
+2. Explain the trade-offs.
+3. Wait for the user to say "Approve" or "Install".
+
+Silent environmental changes are considered an architectural breach.
+
+---
+
+## 7.2 Guidance Discovery (Mandatory)
+
+Before proposing changes, scan for existing guidance documents beyond this file, including any project docs that define AI behavior, operations, or workflow. If a relevant document exists, update it instead of creating a new one. Do not add new guidance documents without explicit approval.
+
+---
+
 ## 8. Preferred AI Behavior
 
 Do:

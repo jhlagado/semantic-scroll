@@ -3,7 +3,7 @@
   --color-text: #111;
   --color-muted: #4a4a4a;
   --color-border: #e2e2e2;
-  --content-width: 68ch;
+  --content-width: 64ch;
 }
 
 *,
@@ -24,7 +24,7 @@ body {
   font-size: 1rem;
   color: var(--color-text);
   background: var(--color-bg);
-  padding: 0.25rem 1rem 1.5rem;
+  padding: 0.75rem 1.25rem 2.5rem;
 }
 
 h1,
@@ -46,7 +46,11 @@ a {
 }
 
 a:focus {
-  outline: 2px solid currentColor;
+  outline: none;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-border);
   outline-offset: 2px;
 }
 
@@ -60,8 +64,8 @@ a:focus {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.25rem;
-  margin-bottom: 1rem;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
 }
 
 .site-header,
@@ -87,8 +91,12 @@ main,
   object-position: 50% 35%;
 }
 
+.site-mark:focus-visible {
+  outline: none;
+}
+
 .site-name {
-  margin: -0.75rem 0 0;
+  margin: -0.25rem 0 0;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -103,7 +111,7 @@ main,
   gap: 1rem;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: -0.35rem;
+  margin-top: 0;
 }
 
 main {
@@ -111,7 +119,41 @@ main {
 }
 
 main h1:first-child {
+  margin-top: 1rem;
+}
+
+.page-article {
+  line-height: 1.7;
+}
+
+.page-article .site-header {
+  margin-bottom: 3rem;
+}
+
+.page-article p {
+  margin: 0 0 1.2rem;
+}
+
+.page-article pre {
+  margin: 1.4rem 0;
+}
+
+.article-figure {
+  margin: 1.75rem 0;
+}
+
+.article-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.article-figure figcaption {
   margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  font-style: italic;
+  text-align: center;
 }
 
 .summary-list,
@@ -127,12 +169,12 @@ main h1:first-child {
 .archive-years li + li,
 .tag-year-list li + li,
 .index-list li + li {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
 
 .summary {
   border-top: 1px solid var(--color-border);
-  padding-top: 1.5rem;
+  padding-top: 1rem;
 }
 
 .summary-header {
@@ -141,12 +183,13 @@ main h1:first-child {
   gap: 0.25rem;
 }
 
-.summary-date {
-  color: var(--color-muted);
+.summary-title {
+  margin-top: 0.5em;
 }
 
-.summary-meta {
-  margin: 1rem 0 0;
+.summary-meta-line {
+  margin: 0.75rem 0 0;
+  color: var(--color-muted);
 }
 
 .site-footer {
