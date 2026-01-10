@@ -25,13 +25,12 @@ Frontmatter is used for indexing, query execution, and summary rendering. It is 
 title: "Short title used for index views"
 status: published
 tags: [z80, assembly, retrocomputing]
-stream: rebuild-log
 summary: "Short factual summary used in index views"
 thumbnail: assets/thumbnail.jpg
 ---
 ```
 
-Here, the `status` field controls visibility (e.g., preventing drafts from appearing in public feeds), while the `stream` field categorizes the post into an ongoing thematic flow (like a specific project log). The `title`, `summary`, and `thumbnail` fields are used by built-in summary views and external feeds, not by full article rendering. Title and summary may include minimal inline formatting (bold, italic, and inline links only). Dates remain filesystem-derived rather than frontmatter-defined.
+Here, the `status` field controls visibility (e.g., preventing drafts from appearing in public feeds). The `title`, `summary`, and `thumbnail` fields are used by built-in summary views and external feeds, not by full article rendering. Title and summary may include minimal inline formatting (bold, italic, and inline links only). Dates remain filesystem-derived rather than frontmatter-defined.
 
 ### 2.2 The Visible Document (The Mirroring Requirement)
 
@@ -53,7 +52,7 @@ While the Article Unit is flexible, it typically aligns with specific archetypes
 
 ### 3.1 The Technical Diary (Stream Log)
 
-A diary entry focuses on rapid capture and narrative flow. It often exists as part of a continuous **stream**, providing a chronological account of progress or discovery. The style is informal and conversational, prioritized for speed and clarity of thought.
+A diary entry focuses on rapid capture and narrative flow. It often exists as part of a continuous **stream**, providing a chronological account of progress or discovery. Streams are promoted tags rather than frontmatter fields, so the article still only declares its tags and the system later nominates one of them as a stream. The style is informal and conversational, prioritized for speed and clarity of thought.
 
 > _Example (Diary)_:
 >

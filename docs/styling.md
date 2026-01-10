@@ -32,7 +32,7 @@ CSS should rely on the natural cascade and avoid over-specific selectors. `!impo
 
 ## 5. Class Naming
 
-Class names should describe role or meaning rather than appearance. Names like `.article-stream`, `.post-meta`, and `.nav-primary` are preferred over names like `.blue-text` or `.left-column`. A lightweight BEM-style pattern is acceptable when it improves clarity, but strict adherence is not required.
+Class names should describe role or meaning rather than appearance. Names like `.article-tags`, `.post-meta`, and `.nav-primary` are preferred over names like `.blue-text` or `.left-column`. A lightweight BEM-style pattern is acceptable when it improves clarity, but strict adherence is not required.
 
 ## 6. Typography and Readability
 

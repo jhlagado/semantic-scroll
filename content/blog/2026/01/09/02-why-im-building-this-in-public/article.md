@@ -6,12 +6,12 @@ tags:
   - writing
   - process
   - ai
-stream: genesis
+  - genesis
 summary: "Writing in public forces clarity, keeps the work tied to the code, and makes the AI constraints visible as the system grows."
 ---
 
 # Why I'm Building This in Public
-*January 9, 2026* | Tags: #publishing, #writing, #process, #ai | Stream: genesis
+*January 9, 2026* | Tags: #publishing, #writing, #process, #ai, #genesis
 
 I'm building this in public because writing things down changes how I think. When ideas stay private they remain vague and provisional. When I write for others, even an imagined reader, the ideas sharpen. Assumptions surface, decisions harden, and gaps show.
 

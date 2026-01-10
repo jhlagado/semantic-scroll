@@ -6,12 +6,12 @@ tags:
   - process
   - tooling
   - automation
-stream: genesis
+  - genesis
 summary: "Notes on writing quickly without losing voice, and on using local linting as friction rather than a judge."
 ---
 
 # Writing Fast Without Writing Sloppily
-*January 9, 2026* | Tags: #writing, #process, #tooling, #automation | Stream: genesis
+*January 9, 2026* | Tags: #writing, #process, #tooling, #automation, #genesis
 
 Writing quickly matters to this project. Without it I'd slow down and publish less. The pace is part of the experiment: ideas form in real time, I'm making decisions under pressure, and the value is in capturing them while they're still alive. That creates tension: speed pulls me toward shortcuts and familiar phrasing that drain the work of voice.
 

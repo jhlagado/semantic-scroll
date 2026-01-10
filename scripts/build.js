@@ -10,6 +10,7 @@ const OUTPUT_DIR = path.join(ROOT, 'build');
 const ARCHIVE_OUTPUT_ROOT = path.join(OUTPUT_DIR, 'content', 'blog');
 const STATIC_ASSETS_DIR = path.join(ROOT, 'assets');
 const QUERIES_PATH = path.join(ROOT, 'config', 'queries.json');
+const COLLECTIONS_PATH = path.join(ROOT, 'config', 'collections.json');
 
 const SITE_URL = 'https://jhardy.work';
 const SITE_DESCRIPTION = 'A public experiment in building a publishing system while using it, with essays and specs evolving alongside the code.';
@@ -22,6 +23,7 @@ const BLOG_TEMPLATE = path.join(TEMPLATE_DIR, 'blog.html');
 const YEAR_TEMPLATE = path.join(TEMPLATE_DIR, 'year.html');
 const SUMMARY_TEMPLATE = path.join(TEMPLATE_DIR, 'summary-index.html');
 const TAG_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'tags.html');
+const STREAM_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'streams.html');
 
 const STATUS_VALUES = new Set(['draft', 'review', 'published', 'archived']);
 const INTERNAL_QUERY_NAMES = new Set(['article-page']);
@@ -29,7 +31,6 @@ const ALLOWED_QUERY_KEYS = new Set([
   'source',
   'status',
   'tag',
-  'stream',
   'year',
   'month',
   'day',
@@ -57,8 +58,9 @@ function main() {
   const articles = discoverArticles(CONTENT_ROOT);
   const index = buildIndex(articles);
   const queries = loadQueries(QUERIES_PATH);
+  const collections = loadCollections(COLLECTIONS_PATH);
   const queryResults = executeQueries(index, queries);
-  renderSite(index, queryResults);
+  renderSite(index, queryResults, collections);
   copyStaticAssets();
   copyAssets(index);
 }
@@ -163,6 +165,10 @@ function buildIndex(records) {
       }
     }
 
+    if (Object.prototype.hasOwnProperty.call(frontmatter, 'stream')) {
+      errors.push(`Frontmatter includes deprecated 'stream' field in ${record.relDir}/article.md`);
+    }
+
     if (frontmatter.tags) {
       if (!Array.isArray(frontmatter.tags)) {
         errors.push(`Tags must be a list in ${record.relDir}/article.md`);
@@ -173,7 +179,7 @@ function buildIndex(records) {
       }
     }
 
-    for (const key of ['title', 'summary', 'thumbnail', 'stream']) {
+    for (const key of ['title', 'summary', 'thumbnail']) {
       if (frontmatter[key] && typeof frontmatter[key] !== 'string') {
         errors.push(`Frontmatter '${key}' must be a string in ${record.relDir}/article.md`);
       }
@@ -249,9 +255,6 @@ function loadQueries(filePath) {
       errors.push(`Query '${name}' has invalid tag`);
     }
 
-    if (query.stream && typeof query.stream !== 'string') {
-      errors.push(`Query '${name}' has invalid stream`);
-    }
   }
 
   if (errors.length) {
@@ -259,6 +262,63 @@ function loadQueries(filePath) {
   }
 
   return parsed;
+}
+
+function loadCollections(filePath) {
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`Missing collections file: ${filePath}`);
+  }
+  const raw = fs.readFileSync(filePath, 'utf8');
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON in ${filePath}`);
+  }
+
+  const errors = [];
+  const streams = Array.isArray(parsed.streams) ? parsed.streams : [];
+  const featured = Array.isArray(parsed.featured) ? parsed.featured : [];
+
+  if (parsed.streams && !Array.isArray(parsed.streams)) {
+    errors.push('Collections "streams" must be a list');
+  }
+  if (parsed.featured && !Array.isArray(parsed.featured)) {
+    errors.push('Collections "featured" must be a list');
+  }
+
+  const normalizedStreams = [];
+  for (const entry of streams) {
+    if (typeof entry !== 'string') {
+      errors.push('Stream entries must be strings');
+      continue;
+    }
+    const tag = normalizeTag(entry);
+    if (tag && !normalizedStreams.includes(tag)) {
+      normalizedStreams.push(tag);
+    }
+  }
+
+  const normalizedFeatured = [];
+  for (const entry of featured) {
+    if (typeof entry !== 'string') {
+      errors.push('Featured entries must be strings');
+      continue;
+    }
+    const trimmed = entry.trim();
+    if (trimmed && !normalizedFeatured.includes(trimmed)) {
+      normalizedFeatured.push(trimmed);
+    }
+  }
+
+  if (errors.length) {
+    throw new Error(errors.join('\n'));
+  }
+
+  return {
+    streams: normalizedStreams,
+    featured: normalizedFeatured
+  };
 }
 
 function executeQueries(index, queries) {
@@ -275,9 +335,6 @@ function executeQueries(index, queries) {
       items = items.filter((item) => (item.frontmatter.tags || []).includes(tag));
     }
 
-    if (query.stream) {
-      items = items.filter((item) => item.frontmatter.stream === query.stream);
-    }
 
     items = applyEqualityOrRange(items, query, 'year');
     items = applyEqualityOrRange(items, query, 'month');
@@ -298,7 +355,7 @@ function executeQueries(index, queries) {
   return results;
 }
 
-function renderSite(index, queryResults) {
+function renderSite(index, queryResults, collections) {
   cleanDir(OUTPUT_DIR);
   ensureDir(OUTPUT_DIR);
 
@@ -349,6 +406,8 @@ function renderSite(index, queryResults) {
   renderMonthArchives(published);
   renderTagArchives(published);
   renderTagIndex(published);
+  renderStreamArchives(published, collections);
+  renderStreamIndex(published, collections);
 }
 
 function copyAssets(index) {
@@ -598,6 +657,98 @@ function renderTagIndex(published) {
   writeFile(path.join(OUTPUT_DIR, 'tags', 'index.html'), html);
 }
 
+function renderStreamArchives(published, collections) {
+  const streams = (collections && collections.streams) || [];
+  if (!streams.length) {
+    return;
+  }
+
+  const template = fs.readFileSync(SUMMARY_TEMPLATE, 'utf8');
+
+  for (const stream of streams) {
+    const items = published.filter((article) => {
+      const tags = article.frontmatter.tags || [];
+      return tags.includes(stream);
+    });
+
+    const itemsDesc = sortItems(items, 'date-desc');
+    const latest = itemsDesc.slice(0, 12);
+    const yearCounts = countBy(items, (item) => item.year);
+    const years = Object.keys(yearCounts).sort((a, b) => Number(b) - Number(a));
+
+    const yearList = years.length
+      ? [
+        '<section class="tag-years">',
+        '  <h2>Years</h2>',
+        '  <ul class="tag-year-list">',
+        years.map((year) => {
+          const count = yearCounts[year];
+          return `    <li><a href="/content/blog/${year}/">${escapeHtml(year)}</a> (${count})</li>`;
+        }).join('\n'),
+        '  </ul>',
+        '</section>'
+      ].join('\n')
+      : '';
+
+    const slots = {
+      'page-title': escapeHtml(`Stream: ${stream} - jhardy.work`),
+      'page-heading': escapeHtml(`Stream: ${stream}`),
+      'page-intro': '',
+      'page-extra': yearList,
+      'nav-extra': '<a href="/streams/">Streams</a>'
+    };
+
+    const html = renderTemplate(
+      applySlots(
+        applyMeta(template, {
+          canonical: joinUrl(SITE_URL, `/streams/${stream}/`),
+          description: SITE_DESCRIPTION
+        }),
+        slots
+      ),
+      {
+        'page-posts': latest
+      }
+    );
+    writeFile(path.join(OUTPUT_DIR, 'streams', stream, 'index.html'), html);
+  }
+}
+
+function renderStreamIndex(published, collections) {
+  const streams = (collections && collections.streams) || [];
+  const template = fs.readFileSync(STREAM_INDEX_TEMPLATE, 'utf8');
+  const streamCounts = new Map();
+
+  for (const article of published) {
+    const tags = article.frontmatter.tags || [];
+    for (const tag of tags) {
+      if (!streams.includes(tag)) {
+        continue;
+      }
+      streamCounts.set(tag, (streamCounts.get(tag) || 0) + 1);
+    }
+  }
+
+  const streamList = streams.length
+    ? streams.map((stream) => {
+      const count = streamCounts.get(stream) || 0;
+      return `<li><a href="/streams/${stream}/">${escapeHtml(stream)}</a> (${count})</li>`;
+    }).join('\n')
+    : '<li class="archive-empty">No streams yet.</li>';
+
+  const html = renderTemplate(
+    applySlots(
+      applyMeta(template, {
+        canonical: joinUrl(SITE_URL, '/streams/'),
+        description: SITE_DESCRIPTION
+      }),
+      { 'stream-list': streamList }
+    ),
+    {}
+  );
+  writeFile(path.join(OUTPUT_DIR, 'streams', 'index.html'), html);
+}
+
 function renderTemplate(html, queryResults) {
   const templateRegex = /<template\b([^>]*)>([\s\S]*?)<\/template>/g;
 
@@ -692,10 +843,6 @@ function renderSummary(article) {
     for (const tag of tags) {
       metaRows.push(`    <dd><a rel="tag" href="/tags/${tag}/">${escapeHtml(tag)}</a></dd>`);
     }
-  }
-  if (fm.stream) {
-    metaRows.push('    <dt>Stream</dt>');
-    metaRows.push(`    <dd>${escapeHtml(fm.stream)}</dd>`);
   }
 
   if (metaRows.length) {

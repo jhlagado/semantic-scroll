@@ -104,23 +104,11 @@ Tags are used **only** for querying and indexing.
 
 ---
 
-### 3.3 Stream
-
-```yaml
-stream: build-log
-```
-
-Rules:
-
-- optional
-- single value only
-- exact match semantics
-
-Used to categorize content into thematic tracks (e.g., retrocomputing, AI-tooling) while remaining in the same repository.
+Tags also serve as the raw material for streams. The system nominates certain tags as streams via the collections registry, so articles never declare a stream field in frontmatter.
 
 ---
 
-### 3.4 Summary
+### 3.3 Summary
 
 ```yaml
 summary: Short, factual description of the article.
@@ -187,7 +175,7 @@ If a value needs to be visible on the page:
 - a title
 - a date (e.g., "January 9, 2026")
 - a tag list
-- a stream label
+  - a stream label (rendered as a promoted tag in the collections registry)
 
 …it **must** be written explicitly in the Markdown body. Frontmatter is an index for machines; Markdown is the document for humans.
 

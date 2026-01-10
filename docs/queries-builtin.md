@@ -154,35 +154,7 @@ Select all published posts with a given tag.
 * tag index pages
 * topical navigation
 
----
-
-## 3.5 `posts-by-stream`
-
-### Purpose
-
-Select all published posts in a named stream.
-
-### Definition (parameterized)
-
-```json
-{
-  "source": "blog",
-  "status": "published",
-  "stream": "<stream>",
-  "sort": "date-asc"
-}
-```
-
-### Notes
-
-* Ordering is chronological by design
-* Stream semantics are author-defined
-
-### Usage
-
-* long-running project logs
-* build diaries
-* narrative sequences
+Streams are implemented as promoted tags, so any stream views draw from tag queries with an additional registry check. There is no separate stream query.
 
 ---
 
@@ -249,7 +221,6 @@ Select all published posts in a given year.
   * `month`
   * `day`
   * `tag`
-  * `stream`
 * Parameter substitution occurs at build time.
 * Parameters must resolve to concrete values before execution.
 * Templates reference the **query name**, not the parameters directly.
