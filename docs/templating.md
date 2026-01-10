@@ -198,7 +198,7 @@ Fields used:
 - `title` (frontmatter, required)
 - `summary` (frontmatter, optional)
 - `thumbnail` (frontmatter, optional)
-- `tags` and `stream` (frontmatter, optional)
+- `tags` (frontmatter, optional)
 - `year`, `month`, `day`, and `path` (derived from the filesystem)
 
 Title and summary support a minimal inline Markdown subset: bold, italic, and inline links only. No other Markdown constructs or inline HTML are supported.
@@ -222,8 +222,6 @@ Summary block:
   <dl class="summary-meta">
     <dt>Tags</dt>
     <dd><a rel="tag" href="/tags/tag/">tag</a></dd>
-    <dt>Stream</dt>
-    <dd>stream-name</dd>
   </dl>
 </article>
 ```
@@ -345,7 +343,7 @@ Example:
 
 ```html
 <main>
-  <section class="stream">
+  <section class="articles">
     <!-- article 1 HTML -->
     <!-- article 2 HTML -->
     <!-- article 3 HTML -->
@@ -361,7 +359,7 @@ Each article fragment may begin with its own `<h1>`, `<article>`, or other struc
 
 Mode A is ideal for:
 
-- diary-style streams
+- diary-style sequences
 - chronological logs
 - full article pages
 - MVP implementations where correctness > abstraction
@@ -448,7 +446,6 @@ Frontmatter may include:
 
 - `status`
 - `tags`
-- `stream`
 
 Frontmatter is:
 
@@ -594,7 +591,7 @@ Build must fail if:
 
 Build may warn if:
 
-Forward references are allowed: templates may reference queries that resolve to zero results, and queries may target tags, stream names, or dates that do not yet exist. These conditions warn but do not fail.
+Forward references are allowed: templates may reference queries that resolve to zero results, and queries may target tags or dates that do not yet exist. These conditions warn but do not fail.
 
 - a query returns zero results
 - a query is defined but unused

@@ -104,7 +104,7 @@ Build an **article index** used by queries.
 Each article index record includes:
 
 - path-derived fields
-- frontmatter fields (status, title, tags, stream, summary, thumbnail)
+- frontmatter fields (status, title, tags, summary, thumbnail)
 - absolute source path to article directory
 - path to Markdown file
 
@@ -204,13 +204,17 @@ Templates **never** access frontmatter or derived metadata directly.
 
 ### 7.5 Index Pages as First-Class Artifacts
 
-Index pages (home, tag pages, day/month/year archives) are first-class rendered outputs, not derived views.
+Index pages (home, tag pages, stream pages, day/month/year archives) are first-class rendered outputs, not derived views.
 
 - each index page is rendered from an explicit template
 - each index page has a stable output path
 - no index page is generated implicitly
 
 If an index page exists, it exists because a template explicitly rendered it.
+
+### 7.6 Collections Registry
+
+Streams and other curated collections are declared in `config/collections.json`. During rendering, the build uses the registry to decide which tags should receive stream pages. Articles remain tag-driven; the registry is editorial and changeable without altering content.
 
 ---
 
@@ -316,7 +320,7 @@ The build **may warn** but continue if:
 Forward references are allowed; queries or templates that target not-yet-existing content should warn but not fail.
 
 - query returns zero results
-- query references tags, stream, or dates that do not yet exist
+- query references tags or dates that do not yet exist
 - article has no tags
 - unused query definitions exist
 - unused templates exist

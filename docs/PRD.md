@@ -43,11 +43,11 @@ Quality should remain high even with rapid posting. Posts should read as deliber
 
 Freshness matters for the author’s momentum and for external visibility. The system should encourage a steady cadence without turning publishing into a chore.
 
-Owning the domain is a non-negotiable requirement. The publishing stack can evolve, but DNS and canonical URLs should remain under the author's control to keep content portable. Over time, the system should support multiple subject streams (for example, retrocomputing and Z80 work alongside modern AI tooling) without fragmenting the archive.
+Owning the domain is a non-negotiable requirement. The publishing stack can evolve, but DNS and canonical URLs should remain under the author's control to keep content portable. Over time, the system should support multiple subject streams (for example, retrocomputing and Z80 work alongside modern AI tooling) without fragmenting the archive. Streams are promoted tags, not frontmatter fields, so the archive can shift its narrative shape without rewriting posts.
 
 Each section should read as a standalone piece that can be published with minimal rewriting when the build story goes live.
 
-The first public content should document the build itself. This spec should translate into a narrative **stream** that shows the decisions, tradeoffs, and implementation steps behind the blog.
+The first public content should document the build itself. This spec should translate into a narrative **stream** that shows the decisions, tradeoffs, and implementation steps behind the blog, beginning as a tag that is later promoted.
 
 This project is a deliberate trial of a new model of software development and content production. The repository is both the laboratory and the record, and the publishing system is expected to surface its own discoveries as they happen. The documentation process is the first subject, not a preface, and the earliest posts should show how the specs were shaped, how constraints were chosen, and why the system is being built this way.
 
@@ -89,7 +89,7 @@ This section breaks down how each blog post comes to life, from the initial conv
 
 **Conversational Drafting** is at the heart of this workflow. Instead of starting with a blank page, you’ll have a dialogue with the AI. During this chat, the AI will help you figure out what the post is about, suggest a human-readable title, and identify relevant tags. It’ll also clarify the post’s status—whether it’s a draft, ready for review, or good to go live. Along the way, the AI will help you gather any necessary assets, like code snippets, images, or links, and figure out where they fit into the post.
 
-Once you’ve got all that figured out, the AI will generate a **folder-based output**. Each post will live in its own date-based folder (like `/content/blog/YYYY/MM/DD/NN-slug/`) and include a single markdown file along with any co-located assets like images or code. The markdown file will have embedded frontmatter metadata for status, tags, stream, title, optional summary, and optional thumbnail so index views are consistent while full article titles and dates remain authored in the body.
+Once you’ve got all that figured out, the AI will generate a **folder-based output**. Each post will live in its own date-based folder (like `/content/blog/YYYY/MM/DD/NN-slug/`) and include a single markdown file along with any co-located assets like images or code. The markdown file will have embedded frontmatter metadata for status, tags, title, optional summary, and optional thumbnail so index views are consistent while full article titles and dates remain authored in the body.
 
 **Linking and referencing** are also built into this workflow. You’ll be able to add internal links to other posts using relative paths or shortcodes and include external links that the AI can help curate. Eventually, we might wrap these links in semantic tags or add unobtrusive JavaScript enhancements like tooltips, but the core idea is to keep linking straightforward and reliable.
 
@@ -129,7 +129,7 @@ Scheduling can remain simple: publication should be triggered by status changes 
 
 ## 5. Metadata & Tagging Rules
 
-This section is all about the backbone of how we organize and categorize each piece of content—through metadata and tags. The metadata lives in the frontmatter of each markdown file and acts as the single source of truth for discovery and indexing. It includes fields like status, tags, stream, title, optional summary, and optional thumbnail, while dates are derived from the filesystem and article titles in the body remain free-form. The frontmatter title is for summary and index views and may differ from the body title. Title and summary support only minimal inline formatting (bold, italic, and links). Each of these fields helps determine where and how the post appears across the site.
+This section is all about the backbone of how we organize and categorize each piece of content—through metadata and tags. The metadata lives in the frontmatter of each markdown file and acts as the single source of truth for discovery and indexing. It includes fields like status, tags, title, optional summary, and optional thumbnail, while dates are derived from the filesystem and article titles in the body remain free-form. The frontmatter title is for summary and index views and may differ from the body title. Title and summary support only minimal inline formatting (bold, italic, and links). Each of these fields helps determine where and how the post appears across the site.
 
 When it comes to **tags**, we’re taking a controlled and normalized approach. Tags are case-insensitive, which means it doesn’t matter if you write “Z80” or “z80”—they’ll be treated the same. We also ignore minor variations like hyphens or underscores, so “Z-80” and “Z_80” also get folded into the same tag. This helps keep our tagging system clean and prevents tag sprawl, where you end up with a bunch of near-duplicate tags that all mean the same thing.
 
@@ -145,9 +145,9 @@ Dates are derived from the filesystem; if both creation and publication dates ne
 
 Tags and metadata should be rich enough to support multiple thematic tracks, from AI workflow experimentation to retrocomputing projects, while staying normalized and searchable. Over time, this metadata should also support reuse in other formats, such as compiling a **stream** into a talk outline or grouping posts into a longer narrative.
 
-A lightweight **stream** identifier is baked into the metadata to keep multi-topic work organized without splitting the site into separate systems. We prefer the term "stream" over "series" because a series implies a linear, finite sequence of parts, whereas a stream suggests an ongoing, thematic flow of content. This allows retrocomputing projects and modern AI tooling to coexist as distinct thematic channels in the same archive while remaining filterable by their respective tracks. This remains optional so the default path stays simple.
+Streams are nominated tags listed in a collections registry, which keeps multi-topic work organized without splitting the site into separate systems. We prefer the term "stream" over "series" because a series implies a linear, finite sequence of parts, whereas a stream suggests an ongoing, thematic flow of content. This allows retrocomputing projects and modern AI tooling to coexist as distinct thematic channels in the same archive while remaining filterable by their respective tracks. This remains optional so the default path stays simple.
 
-If separate blogs are eventually needed, the system should allow a clean split without rewriting content or breaking URLs. The default, however, is a single domain with multiple streams and clear metadata boundaries.
+If separate blogs are eventually needed, the system should allow a clean split without rewriting content or breaking URLs. The default, however, is a single domain with multiple streams and clear tag boundaries.
 
 Tag vocabulary should be curated over time. When new tags are introduced, they should either map to existing canonical tags or be added deliberately, so that long-term archives remain coherent and searchable. During the drafting process, the AI Agent is responsible for normalizing tags within the Markdown prose to ensure the visible content remains consistent with the searchable index.
 
