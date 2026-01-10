@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" data-content="meta-description" />
+  <link rel="canonical" data-href="canonical-url" />
+  <meta name="color-scheme" data-content="color-scheme" />
+  <meta name="theme-color" data-content="theme-color" />
+  <title>Tags - jhardy.work</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
+  <link rel="icon" type="image/svg+xml" href="/assets/semantic-scroll.svg" />
+  <link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <a class="site-mark" href="/">
+        <img src="/assets/semantic-scroll.svg" alt="Semantic Scroll" width="160" height="160" />
+      </a>
+      <p class="site-name"><a href="/">jhardy.work</a></p>
+      <nav class="site-nav">
+        <a href="/">Home</a>
+        <a href="/content/blog/">Archive</a>
+        <a href="/tags/">Tags</a>
+      </nav>
+    </header>
+    <main>
+      <h1>Tags</h1>
+      <ul class="index-list" data-slot="tag-list">
+        <li class="archive-empty">No tags yet.</li>
+      </ul>
+    </main>
+  </div>
+  <script>
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+      const es = new EventSource('/__reload');
+      es.onmessage = () => location.reload();
+    }
+  </script>
+</body>
+</html>

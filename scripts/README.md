@@ -21,8 +21,10 @@ brew install node
 ## Build the site
 
 ```sh
-node scripts/build.js
+npm run build
 ```
+
+The npm build script runs the prose linter first. It stays quiet unless it finds issues.
 
 ## Build on change and serve
 
@@ -36,11 +38,14 @@ npm install -g nodemon
 npm run dev
 ```
 
-This runs `build` then starts the local server, restarting on changes in `content/`, `templates/`, `assets/`, and `config/`. By default the dev server binds to `127.0.0.1`; set `HOST=0.0.0.0` if you need to reach it from another device, and override the port with `PORT=xxxx` if needed.
+This runs a strict lint, builds the site, starts the local server, and rebuilds on changes in `content/`, `templates/`, `assets/`, and `config/`. By default the dev server binds to `127.0.0.1`; set `HOST=0.0.0.0` if you need to reach it from another device, and override the port with `PORT=xxxx` if needed.
+
+The dev loop prints a short status line when lint and build succeed. Lint failures stop the dev process so problems stay visible.
 
 ## Lint prose in drafts
 
 The prose linter scans `content/blog/**/article.md` and skips `status: published` by default.
+It only prints output when it finds issues.
 
 ```sh
 node scripts/prose-lint.js
