@@ -25,6 +25,7 @@ const SUMMARY_TEMPLATE = path.join(TEMPLATE_DIR, 'summary-index.html');
 const TAG_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'tags.html');
 const SERIES_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'series.html');
 const ABOUT_TEMPLATE = path.join(TEMPLATE_DIR, 'about.html');
+const FEED_PATH = path.join(OUTPUT_DIR, 'feed.xml');
 
 const STATUS_VALUES = new Set(['draft', 'review', 'published', 'archived']);
 const INTERNAL_QUERY_NAMES = new Set(['article-page']);
@@ -394,7 +395,52 @@ function renderSite(index, queryResults) {
   renderTagIndex(published);
   renderSeriesArchives(published);
   renderSeriesIndex(published);
+  renderFeed(queryResults, published);
 }
+
+function renderFeed(queryResults, published) {
+  const items = queryResults['latest-posts']
+    ? queryResults['latest-posts']
+    : published.slice().sort(makeSortFn('date-desc')).slice(0, 25);
+
+  const lastBuild = new Date().toUTCString();
+  const feedItems = items.map((article) => {
+    const title = article.frontmatter.title || article.slug || 'Untitled';
+    const summary = article.frontmatter.summary || '';
+    const url = joinUrl(SITE_URL, article.publicPath);
+    const pubDate = formatRssDate(article);
+    return [
+      '    <item>',
+      `      <title>${escapeHtml(title)}</title>`,
+      `      <link>${escapeHtml(url)}</link>`,
+      `      <guid>${escapeHtml(url)}</guid>`,
+      `      <pubDate>${pubDate}</pubDate>`,
+      `      <description>${escapeHtml(stripInlineMarkup(summary))}</description>`,
+      '    </item>'
+    ].join('\n');
+  }).join('\n');
+
+  const feed = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<rss version="2.0">',
+    '  <channel>',
+    `    <title>${escapeHtml('Semantic Scroll')}</title>`,
+    `    <link>${escapeHtml(SITE_URL)}</link>`,
+    `    <description>${escapeHtml(SITE_DESCRIPTION)}</description>`,
+    `    <lastBuildDate>${lastBuild}</lastBuildDate>`,
+    feedItems,
+    '  </channel>',
+    '</rss>'
+  ].join('\n');
+
+  writeFile(FEED_PATH, feed);
+}
+
+function formatRssDate(article) {
+  const date = new Date(Date.UTC(Number(article.year), Number(article.month) - 1, Number(article.day)));
+  return date.toUTCString();
+}
+
 
 function copyAssets(index) {
   for (const article of index) {
