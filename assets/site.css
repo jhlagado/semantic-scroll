@@ -65,7 +65,7 @@ a:focus-visible {
   align-items: center;
   text-align: center;
   gap: 0.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.25rem;
 }
 
 .site-header,
@@ -124,10 +124,6 @@ main h1:first-child {
 
 .page-article {
   line-height: 1.7;
-}
-
-.page-article .site-header {
-  margin-bottom: 3rem;
 }
 
 .page-article p {
