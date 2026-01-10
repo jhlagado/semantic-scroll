@@ -1,5 +1,5 @@
 {
-  "name": "jhardy-work",
+  name: semantic-scroll,
   "private": true,
   "scripts": {
     "prebuild": "npm run -s lint:all",

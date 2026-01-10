@@ -11,7 +11,7 @@ const ARCHIVE_OUTPUT_ROOT = path.join(OUTPUT_DIR, 'content', 'blog');
 const STATIC_ASSETS_DIR = path.join(ROOT, 'assets');
 const QUERIES_PATH = path.join(ROOT, 'config', 'queries.json');
 
-const SITE_URL = process.env.SITE_URL || 'https://jhardy.work';
+const SITE_URL = process.env.SITE_URL || 'https://jhlagado.github.io/semantic-scroll';
 const BASE_PATH = normalizeBasePath(process.env.BASE_PATH || '');
 const SITE_DESCRIPTION = 'A public experiment in building a publishing system while using it, with essays and specs evolving alongside the code.';
 const META_COLOR_SCHEME = 'light';
@@ -24,6 +24,7 @@ const YEAR_TEMPLATE = path.join(TEMPLATE_DIR, 'year.html');
 const SUMMARY_TEMPLATE = path.join(TEMPLATE_DIR, 'summary-index.html');
 const TAG_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'tags.html');
 const SERIES_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'series.html');
+const ABOUT_TEMPLATE = path.join(TEMPLATE_DIR, 'about.html');
 
 const STATUS_VALUES = new Set(['draft', 'review', 'published', 'archived']);
 const INTERNAL_QUERY_NAMES = new Set(['article-page']);
@@ -342,6 +343,18 @@ function renderSite(index, queryResults) {
   );
   writeFile(path.join(OUTPUT_DIR, 'index.html'), homeHtml);
 
+  if (fs.existsSync(ABOUT_TEMPLATE)) {
+    const aboutTemplate = fs.readFileSync(ABOUT_TEMPLATE, 'utf8');
+    const aboutHtml = renderTemplate(
+      applyMeta(aboutTemplate, {
+        canonical: joinUrl(SITE_URL, '/about/'),
+        description: SITE_DESCRIPTION
+      }),
+      queryResults
+    );
+    writeFile(path.join(OUTPUT_DIR, 'about', 'index.html'), aboutHtml);
+  }
+
   const articleTemplate = fs.readFileSync(ARTICLE_TEMPLATE, 'utf8');
   const articleCandidates = queryResults['article-pages'] || [];
 
@@ -464,7 +477,7 @@ function renderYearArchives(published) {
         description: SITE_DESCRIPTION
       }),
       {
-        'page-title': escapeHtml(`${year} - Archive - jhardy.work`),
+        'page-title': escapeHtml(`${year} - Archive - Semantic Scroll`),
         year: escapeHtml(year),
         'month-sections': content
       }
@@ -484,7 +497,7 @@ function renderMonthArchives(published) {
     const monthItems = sortItems(byMonth.get(key), 'date-asc');
     const label = `${monthName(month)} ${year}`;
     const slots = {
-      'page-title': escapeHtml(`${label} - Archive - jhardy.work`),
+      'page-title': escapeHtml(`${label} - Archive - Semantic Scroll`),
       'page-heading': escapeHtml(label),
       'page-intro': '',
       'page-extra': '',
@@ -547,7 +560,7 @@ function renderTagArchives(published) {
       : '';
 
     const slots = {
-      'page-title': escapeHtml(`Tag: ${tag} - jhardy.work`),
+      'page-title': escapeHtml(`Tag: ${tag} - Semantic Scroll`),
       'page-heading': escapeHtml(`Tag: ${tag}`),
       'page-intro': '',
       'page-extra': yearList,
@@ -571,7 +584,7 @@ function renderTagArchives(published) {
     for (const year of years) {
       const yearItems = itemsAsc.filter((item) => item.year === year);
       const yearSlots = {
-        'page-title': escapeHtml(`Tag: ${tag} - ${year} - jhardy.work`),
+        'page-title': escapeHtml(`Tag: ${tag} - ${year} - Semantic Scroll`),
         'page-heading': escapeHtml(`Tag: ${tag} - ${year}`),
         'page-intro': '',
         'page-extra': '',
@@ -656,7 +669,7 @@ function renderSeriesArchives(published) {
       : '';
 
     const slots = {
-      'page-title': escapeHtml(`Series: ${series} - jhardy.work`),
+      'page-title': escapeHtml(`Series: ${series} - Semantic Scroll`),
       'page-heading': escapeHtml(`Series: ${series}`),
       'page-intro': '',
       'page-extra': yearList,
@@ -789,7 +802,7 @@ function linkHeaderMeta(body, publicPath) {
   const lineOne = seriesLink
     ? `[${dateText}](${publicPath}) | ${seriesLink}`
     : `[${dateText}](${publicPath})`;
-  const replacement = `${lineOne}<br>Tags: ${linkedTags}`;
+  const replacement = `${lineOne}<br>By [John Hardy](/about/)<br>Tags: ${linkedTags}`;
   return body.replace(metaLine, replacement);
 }
 
