@@ -802,7 +802,7 @@ function linkHeaderMeta(body, publicPath) {
   const lineOne = seriesLink
     ? `[${dateText}](${publicPath}) | ${seriesLink}`
     : `[${dateText}](${publicPath})`;
-  const replacement = `${lineOne}<br>By [John Hardy](/about/)<br>Tags: ${linkedTags}`;
+  const replacement = `By [John Hardy](/about/)<br>${lineOne}<br>Tags: ${linkedTags}`;
   return body.replace(metaLine, replacement);
 }
 
