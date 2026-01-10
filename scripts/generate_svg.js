@@ -1,4 +1,8 @@
 const fs = require('fs');
+// NOTE: This script assumes 'potrace' is available. 
+// User prefers global installation for one-off tools.
+// If running locally without node_modules, ensures potrace is in your NODE_PATH 
+// or run with a tool like npx: npx potrace assets/image.png -o assets/image.svg
 const potrace = require('potrace');
 const path = require('path');
 

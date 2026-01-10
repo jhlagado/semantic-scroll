@@ -11,9 +11,5 @@
     "lint:strict": "node scripts/prose-lint.js --all --strict",
     "lint:gate": "node scripts/prose-lint.js --all --gate",
     "srv": "node scripts/serve.js"
-  },
-  "dependencies": {
-    "fs": "^0.0.1-security",
-    "potrace": "^2.1.8"
   }
 }

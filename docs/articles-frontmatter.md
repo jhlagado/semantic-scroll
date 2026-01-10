@@ -104,11 +104,23 @@ Tags are used **only** for querying and indexing.
 
 ---
 
-Tags also serve as the raw material for streams. The system nominates certain tags as streams via the collections registry, so articles never declare a stream field in frontmatter.
+### 3.3 Series
+
+```yaml
+series: build-log
+```
+
+Rules:
+
+- optional
+- single value only
+- exact match semantics
+
+Series are narrative groupings where order matters. They are author-declared and sorted chronologically.
 
 ---
 
-### 3.3 Summary
+### 3.4 Summary
 
 ```yaml
 summary: Short, factual description of the article.
@@ -137,6 +149,7 @@ Rules:
 
 - optional
 - relative path within the article directory
+- must point inside the article's `assets/` subfolder
 - used for indexing or external feeds, not rendering
 
 If a thumbnail needs to be visible, it must also be authored in the Markdown body.
@@ -175,7 +188,7 @@ If a value needs to be visible on the page:
 - a title
 - a date (e.g., "January 9, 2026")
 - a tag list
-  - a stream label (rendered as a promoted tag in the collections registry)
+- a series label
 
 …it **must** be written explicitly in the Markdown body. Frontmatter is an index for machines; Markdown is the document for humans.
 
