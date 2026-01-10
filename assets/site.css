@@ -95,16 +95,15 @@ main,
   outline: none;
 }
 
-.site-name {
-  margin: -0.25rem 0 0;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.site-subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-muted);
+  text-align: center;
 }
 
-.site-name a {
-  text-decoration: none;
-}
+
+
 
 .site-nav {
   display: flex;
