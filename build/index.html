@@ -21,16 +21,27 @@
       <p class="site-name"><a href="/">jhardy.work</a></p>
       <nav class="site-nav">
         <a href="/content/blog/">Archive</a>
+        <a href="/tags/">Tags</a>
       </nav>
     </header>
     <main>
-      <h1>The Blog Is the Build System</h1>
+      <h1>The Content Store and the Article Unit</h1>
+<p><em>January 10, 2026</em> | Tags: #publishing, #process, #tooling, #structure | Stream: genesis</p>
+<p>I treat the content store as the filesystem itself. The repository holds the blog in plain folders, and every entry stays readable with a text editor long after the build scripts change.</p>
+<p>Each post lives at `content/blog/YYYY/MM/DD/NN-slug/`. The date and ordinal live in the path, and the slug gives a human handle. That path sets the URL and the order, and it stays fixed as the text evolves.</p>
+<pre><code>content/blog/YYYY/MM/DD/NN-slug/
+  article.md</code></pre>
+<p>Inside the directory I keep a single `article.md` and optional assets for that entry. The directory holds the history, and the file is what I read.</p>
+<p>Frontmatter holds status, tags, stream, and summary. The build reads those fields for indexing and queries. The body carries the title, date, tags, and stream in visible text so the Markdown file reads clean on its own.</p>
+<p>Queries select which articles appear, and templates stamp them into HTML. The content store feeds both sides, and the structure keeps the mechanics obvious.</p>
+<p>I want the archive to be legible a year from now. The path tells me when the work happened, the frontmatter tells me how it was indexed, and the body gives me the full record.</p>
+<h1>The Blog Is the Build System</h1>
 <p><em>January 10, 2026</em> | Tags: #publishing, #process, #tooling | Stream: genesis</p>
-<p>At some point in this project I noticed something had shifted. I started out wanting a place to put things while I worked, but what I ended up with is a repository that changes shape every time I write in it. A new tag, a new stream, a new way of ordering days quietly rewrites how everything else fits together.</p>
-<p>Each article lands as a directory, a file, and a set of paths that now have to make sense to the rest of the site. Dates, ordinals, summaries, and queries all grow out of the act of publishing. When I decide how something should be found, that decision turns into structure. The writing leaves a footprint that the build process then has to respect.</p>
-<p>That feedback loop is the real project. I write because I am thinking, and the system changes because I have written. Over time, patterns in that process settle into scripts and conventions. A conversation becomes a command. A rough workflow turns into a repeatable one. The automation does not replace the thinking but instead keeps whatever survived the thinking.</p>
-<p>This is why I keep everything visible and plain. Files, folders, and JSON make the state of the project legible at a glance. When I change direction, the change sits in the open where I can see it later. The Git history carries the shape of those decisions the way tree rings carry droughts and growth spurts.</p>
-<p>What emerges from that is a site that documents its own construction simply by existing. Each post advances both the story and the machinery that tells it. Reading backward through the archive will show how the system took on its current form, one day and one choice at a time. That trail is what I am really trying to keep.</p>
+<p>At some point in this project I noticed a shift. I wanted a place to put things while I worked; I ended up with a repository that changes shape every time I write. A new tag, a new stream, a new way of ordering days rewires how everything else fits together.</p>
+<p>Each article lands as a directory, a file, and a set of paths that must make sense to the rest of the site. Dates, ordinals, summaries, and queries grow out of publishing, and each decision about finding becomes structure. The writing leaves a footprint the build process has to respect.</p>
+<p>That feedback loop is the project. I write because I am thinking, and the system changes because I wrote. Over time, patterns settle into scripts and conventions. A conversation becomes a command. A rough workflow turns into a repeatable one. Automation keeps what survived the thinking and makes it easier to run again.</p>
+<p>This is why I keep everything visible and plain. Files, folders, and JSON keep the state legible at a glance, and a change sits in the open where I can see it later. The Git history carries the shape of those decisions like tree rings carry droughts and growth spurts.</p>
+<p>What emerges is a site that documents its own construction by existing. Each post advances both the story and the machinery that tells it. Reading backward through the archive shows how the system took on its current form, one day and one choice at a time. That trail is what I am trying to keep.</p>
 <h1>Writing Fast Without Writing Sloppily</h1>
 <p><em>January 9, 2026</em> | Tags: #writing, #process, #tooling, #automation | Stream: genesis</p>
 <p>Writing quickly matters to this project. Without it I'd slow down and publish less. The pace is part of the experiment: ideas form in real time, I'm making decisions under pressure, and the value is in capturing them while they're still alive. That creates tension: speed pulls me toward shortcuts and familiar phrasing that drain the work of voice.</p>
@@ -53,8 +64,8 @@
 <p>This project exists to test a new model of software development and content production in public. The repository is both the lab and the record, and the system I am building will publish the discoveries that come out of its own construction.</p>
 <p>The first content is the documentation process itself. That is why I am writing this as I build: the conversation, the decisions, the constraints, and the contradictions are the raw material. The Q/A process I am working out here is the real work. It becomes the content.</p>
 <p>Over time, this back-and-forth will harden into scripts. Today it is a dialogue. Tomorrow it becomes a command. As it stabilizes, the workflow gets more consistent and the content aligns more closely with the system it describes. That is the point of doing it in the open: the system proves itself by publishing its own formation.</p>
-<p>I want to minimize imports and treat third-party tools as last resorts rather than defaults. If the problem can be solved cleanly in a small amount of code, I do it myself and I understand it. If that stops being true, I bring in a dependency with intention and say why.</p>
-<p>On the publishing side, I am aiming for the most boring convention that still works: a home page index with the newest post at the top, and a dedicated article page for each post with a permalink that does not change. That is the shape of the site I want to live inside.</p>
+<p>I want to minimize imports and treat third-party tools as last resorts. If the problem can be solved cleanly in a small amount of code, I do it myself and I understand it. If that stops being true, I bring in a dependency with intention and say why.</p>
+<p>On the publishing side, I am aiming for the most boring convention that still works: a home page index with the newest post at the top, and a dedicated article page for each post with a stable permalink. That is the shape of the site I want to live inside.</p>
 <p>This is the beginning of the genesis stream. The next posts will move through the philosophy and the mechanics, but they will stay grounded in the same principle: build the tool while using it, and let the system explain itself in real time.</p>
     </main>
     <footer class="site-footer">

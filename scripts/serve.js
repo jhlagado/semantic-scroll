@@ -114,5 +114,5 @@ if (fs.existsSync(BASE_DIR)) {
 
 server.listen(PORT, HOST, () => {
   const displayHost = HOST === '0.0.0.0' ? 'localhost' : HOST;
-  console.log(`http://${displayHost}:${PORT}`);
+  console.log(`[srv] running at http://${displayHost}:${PORT}`);
 });

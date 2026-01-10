@@ -200,7 +200,6 @@ function main() {
   const files = resolveTargets(targets.length ? targets : [DEFAULT_ROOT]);
 
   if (!files.length) {
-    console.log('No article.md files found.');
     return;
   }
 
@@ -248,7 +247,6 @@ function main() {
   }
 
   if (!reports.length) {
-    console.log('No draft or unpublished articles to lint.');
     return;
   }
 
@@ -281,19 +279,24 @@ function main() {
         warningFiles += 1;
       }
     }
+  }
 
+  if (totalIssues === 0) {
+    return;
+  }
+
+  for (const report of reports) {
+    if (!report.issues.length) {
+      continue;
+    }
     console.log(`${report.filePath}`);
     console.log(`Score: ${report.score}`);
-    if (!report.issues.length) {
-      console.log('No issues found.');
-    } else {
-      for (const issue of report.issues) {
-        const lineInfo = issue.line ? `:${issue.line}` : '';
-        const severityTag = issue.severity ? ` [${issue.severity}]` : '';
-        console.log(`- ${report.filePath}${lineInfo}${severityTag} ${issue.message}`);
-      }
+    for (const issue of report.issues) {
+      const lineInfo = issue.line ? `:${issue.line}` : '';
+      const severityTag = issue.severity ? ` [${issue.severity}]` : '';
+      console.log(`- ${report.filePath}${lineInfo}${severityTag} ${issue.message}`);
     }
-    console.log(`Severity: high ${high} | medium ${medium} | low ${low}`);
+    console.log(`Severity: high ${report.severityCounts.high} | medium ${report.severityCounts.medium} | low ${report.severityCounts.low}`);
     if (gateEnabled) {
       const status = report.thresholdStatus.status.toUpperCase();
       const reasons = report.thresholdStatus.reasons.length

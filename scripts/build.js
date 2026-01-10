@@ -21,6 +21,7 @@ const HOME_TEMPLATE = path.join(TEMPLATE_DIR, 'home.html');
 const BLOG_TEMPLATE = path.join(TEMPLATE_DIR, 'blog.html');
 const YEAR_TEMPLATE = path.join(TEMPLATE_DIR, 'year.html');
 const SUMMARY_TEMPLATE = path.join(TEMPLATE_DIR, 'summary-index.html');
+const TAG_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'tags.html');
 
 const STATUS_VALUES = new Set(['draft', 'review', 'published', 'archived']);
 const INTERNAL_QUERY_NAMES = new Set(['article-page']);
@@ -347,6 +348,7 @@ function renderSite(index, queryResults) {
   renderYearArchives(published);
   renderMonthArchives(published);
   renderTagArchives(published);
+  renderTagIndex(published);
 }
 
 function copyAssets(index) {
@@ -558,6 +560,42 @@ function renderTagArchives(published) {
       writeFile(path.join(OUTPUT_DIR, 'tags', tag, year, 'index.html'), yearHtml);
     }
   }
+}
+
+function renderTagIndex(published) {
+  const template = fs.readFileSync(TAG_INDEX_TEMPLATE, 'utf8');
+  const tagCounts = new Map();
+
+  for (const article of published) {
+    const tags = article.frontmatter.tags || [];
+    for (const rawTag of tags) {
+      const tag = normalizeTag(rawTag);
+      if (!tag) {
+        continue;
+      }
+      tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+    }
+  }
+
+  const tags = Array.from(tagCounts.keys()).sort();
+  const tagList = tags.length
+    ? tags.map((tag) => {
+      const count = tagCounts.get(tag);
+      return `<li><a href="/tags/${tag}/">${escapeHtml(tag)}</a> (${count})</li>`;
+    }).join('\n')
+    : '<li class="archive-empty">No tags yet.</li>';
+
+  const html = renderTemplate(
+    applySlots(
+      applyMeta(template, {
+        canonical: joinUrl(SITE_URL, '/tags/'),
+        description: SITE_DESCRIPTION
+      }),
+      { 'tag-list': tagList }
+    ),
+    {}
+  );
+  writeFile(path.join(OUTPUT_DIR, 'tags', 'index.html'), html);
 }
 
 function renderTemplate(html, queryResults) {
