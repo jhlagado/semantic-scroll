@@ -33,7 +33,7 @@ thumbnail: assets/thumbnail.jpg
 ---
 ```
 
-Here, the `status` field controls visibility (e.g., preventing drafts from appearing in public feeds). The `title`, `summary`, and `thumbnail` fields are used by built-in summary views and external feeds, not by full article rendering. Thumbnails must live in the article’s `assets/` subfolder and be referenced by a relative path. Title and summary may include minimal inline formatting (bold, italic, and inline links only). Dates remain filesystem-derived rather than frontmatter-defined.
+Here, the `status` field controls visibility (e.g., preventing drafts from appearing in public feeds). The `title`, `summary`, and `thumbnail` fields are used by built-in summary views and external feeds, not by full article rendering. Thumbnails must live in the article’s `assets/` subfolder and be referenced by a path relative to that folder. The build resolves the path to an absolute URL in rendered HTML. Title and summary may include minimal inline formatting (bold, italic, and inline links only). Dates remain filesystem-derived rather than frontmatter-defined.
 
 ### 2.2 The Visible Document (The Mirroring Requirement)
 

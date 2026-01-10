@@ -8,7 +8,7 @@ tags:
   - structure
   - assets
 series: content-store
-summary: "Assets live beside the article that uses them, referenced by relative paths and rendered by templates without extra markup."
+summary: "Assets live beside the article that uses them, named in Markdown and resolved to absolute URLs at build time."
 ---
 
 # Assets
@@ -28,17 +28,17 @@ content/blog/2026/01/11/03-assets/
 
 `article.md` holds the writing. Everything in `assets/` exists only to support that writing. There is no shared media pool and no global upload area. Each article carries its own attachments.
 
-The Markdown body refers to assets by relative path:
+The Markdown body names assets by relative path, and the build resolves those paths to absolute URLs anchored to the article permalink:
 
 ```markdown
 ![Tree structure diagram](./assets/tree-structure.webp "Tree structure diagram")
 ```
 
-Because the image sits next to the file that references it, the link stays valid when the folder moves, when the repository gets cloned, and when the build copies files into the public site. The path means the same thing everywhere.
+Because the image sits next to the file that references it, the source stays stable when the folder moves or the repository gets cloned. The build converts that source path into a permalink-safe URL so the same image works whether the article appears on its own page or inside an index.
 
 Images serve different roles. Some get promoted into indexes as thumbnails. Some appear inline as diagrams or screenshots. That distinction comes from frontmatter and templates. The Markdown only names a file.
 
-The same approach applies to any other asset. Animated images, small videos, data files, or reference PDFs sit beside the article that uses them. The build step copies the `assets/` folder into the output tree and preserves the relative structure.
+The same approach applies to any other asset. Animated images, small videos, data files, or reference PDFs sit beside the article that uses them. The build copies the `assets/` folder into the output tree and preserves the on-disk structure while emitting absolute URLs in rendered HTML.
 
 Nothing in the article body needs to know how the site will present an image. It names a file. The template decides whether that file becomes responsive, lazy-loaded, or styled in a particular way.
 

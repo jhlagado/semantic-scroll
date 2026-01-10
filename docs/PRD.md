@@ -171,7 +171,7 @@ Slugs and canonical URLs should be treated as durable identifiers. If a title ch
 
 In this section, we’ll dive into how we handle assets—like images, code snippets, PDFs, and other media—so that they’re easy to manage and reuse. Our approach is to keep assets close to the articles they belong to, ensuring that everything related to a post is self-contained.
 
-**Co-located assets** mean that each article’s images and other media live in an `assets/` subfolder within the article directory. This keeps the article root clean and makes it easy to keep track of which files belong to which post, while keeping all references relative and easy to maintain. If you ever need to move or archive a post, you can move the entire folder and its assets together.
+**Co-located assets** mean that each article’s images and other media live in an `assets/` subfolder within the article directory. This keeps the article root clean and makes it easy to keep track of which files belong to which post, while keeping source references simple and stable. If you ever need to move or archive a post, you can move the entire folder and its assets together.
 
 We also treat assets as **durable and reusable**. Once an asset is added to a post, it’s never automatically deleted or removed. If you want to reuse an image or a diagram in another article, you can simply reference it from the original folder or copy it into the new article’s folder. We’re avoiding any kind of automatic asset cleanup or deduplication so that you always have full control over your media.
 
@@ -179,7 +179,7 @@ In the future, if you find that certain assets are used frequently across multip
 
 The asset model prioritizes organization, durability, and portability by co-locating assets with their articles and avoiding automatic deletion.
 
-Assets should be optimized before commit (compressed images, trimmed PDFs), and every image should include accessible alt text in the markdown. Asset paths should remain relative so posts stay portable across environments.
+Assets should be optimized before commit (compressed images, trimmed PDFs), and every image should include accessible alt text in the markdown. Asset paths in source remain relative so posts stay portable. The build resolves them to absolute URLs in rendered HTML.
 
 AI-generated images are allowed but should be explicitly named and stored in the article’s `assets/` folder with clear filenames. If generation metadata or prompts are kept, they should live alongside the article in a separate file, not mixed into the assets folder.
 

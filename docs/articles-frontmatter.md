@@ -148,7 +148,8 @@ thumbnail: assets/thumbnail.jpg
 Rules:
 
 - optional
-- relative path within the article directory
+- path relative to the article directory
+- resolved to an absolute URL at build time
 - must point inside the article's `assets/` subfolder
 - used for indexing or external feeds, not rendering
 

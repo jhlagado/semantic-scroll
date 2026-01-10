@@ -767,7 +767,7 @@ function renderSeriesArchives(published) {
       'page-heading': escapeHtml(`Series: ${series}`),
       'page-intro': '',
       'page-extra': yearList,
-      'nav-extra': `<a href="/series/${series}/">${escapeHtml(series)}</a>`
+      'nav-extra': ''
     };
 
     const html = renderTemplate(
