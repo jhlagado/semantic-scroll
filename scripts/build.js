@@ -763,7 +763,7 @@ function renderArticleBody(article) {
     throw new Error(`Missing frontmatter in ${article.relDir}/article.md`);
   }
   const body = linkHeaderMeta(parsed.body, article.publicPath);
-  return renderMarkdown(body);
+  return renderMarkdown(body, article.publicPath);
 }
 
 function linkHeaderMeta(body, publicPath) {
@@ -936,7 +936,7 @@ function monthName(month) {
   return MONTH_NAMES[index] || month;
 }
 
-function renderMarkdown(body) {
+function renderMarkdown(body, basePath = '') {
   const lines = body.split(/\r?\n/);
   let html = '';
   let paragraph = [];
@@ -956,7 +956,9 @@ function renderMarkdown(body) {
     const imageMatch = text.match(/^!\[([^\]]*)\]\((\S+)(?:\s+"([^"]+)")?\)$/);
     if (imageMatch) {
       const altText = escapeHtml(imageMatch[1]);
-      const src = escapeHtml(imageMatch[2]);
+      const rawSrc = imageMatch[2];
+      const resolvedSrc = resolveAssetPath(rawSrc, basePath);
+      const src = escapeHtml(resolvedSrc);
       const title = imageMatch[3] ? escapeHtml(imageMatch[3]) : '';
       html += '<figure class="article-figure">';
       html += `<img src="${src}" alt="${altText}" />`;
@@ -1022,6 +1024,19 @@ function renderMarkdown(body) {
 
   flushParagraph();
   return html.trim();
+}
+
+function resolveAssetPath(src, basePath) {
+  if (!src) {
+    return src;
+  }
+  if (/^(https?:)?\/\//i.test(src) || src.startsWith('/')) {
+    return src;
+  }
+  if (basePath) {
+    return joinUrl(basePath, src);
+  }
+  return src;
 }
 
 function parseFrontmatter(raw) {
