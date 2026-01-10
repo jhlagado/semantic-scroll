@@ -47,7 +47,7 @@ for each discovered article:
     - derived fields
     - frontmatter fields
     - path to markdown
-    - path to assets
+    - path to assets/ (if present)
 ```
 
 Markdown body is not rendered here.
@@ -115,6 +115,8 @@ for each rendered article:
 
 Paths must remain stable.
 
+Only files in assets/ are treated as publishable media. The article root should contain `article.md` and nothing else.
+
 ---
 
 ### 8. Validate Output
@@ -145,8 +147,8 @@ This layout is **canonical**.
 ├─ content/
 │  └─ blog/
 │     └─ YYYY/MM/DD/NN-slug/
-│     ├─ article.md
-│     └─ assets/
+│        ├─ article.md
+│        └─ assets/
 │
 ├─ templates/
 │  ├─ home.html

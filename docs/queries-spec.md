@@ -85,6 +85,7 @@ These fields perform **exact match filtering**.
 | -------- | ---------------- | ------------------------------------------ |
 | `status` | string           | `draft`, `review`, `published`, `archived` |
 | `tag`    | string           | matches if value ∈ tag set                 |
+| `series` | string           | exact match                                |
 | `year`   | number           | 4-digit year                               |
 | `month`  | string or number | month 1-12; zero-padded strings allowed    |
 | `day`    | string or number | day 1-31; zero-padded strings allowed      |
@@ -144,6 +145,7 @@ Ranges are **not allowed** for:
 
 * `tag`
 * `status`
+* `series`
 * `slug`
 
 ---

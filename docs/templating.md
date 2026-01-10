@@ -550,6 +550,8 @@ For each article directory:
 - preserve relative paths
 - ensure links resolve identically post-build
 
+Only files inside `assets/` are treated as publishable media. The article root should contain `article.md` and nothing else.
+
 Assets are never inferred or relocated automatically.
 
 ---
