@@ -7,7 +7,7 @@ tags:
   - tooling
   - structure
 series: genesis
-summary: "I keep writing, scripts, and structure in one place so the site grows alongside its build path."
+summary: "I keep the writing, scripts, and structure in one place so the site grows alongside its build path."
 ---
 
 # A Blog That Is Also the Build System
