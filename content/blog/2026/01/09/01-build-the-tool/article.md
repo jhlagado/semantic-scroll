@@ -5,12 +5,12 @@ tags:
   - publishing
   - process
   - tooling
-stream: genesis
+  - genesis
 summary: "This project is a self-referential experiment in software development and content production, and this first post explains how the live Q/A workflow hardens into the system itself."
 ---
 
 # Start Here: Building the Tool While Using It
-*January 9, 2026* | Tags: #publishing, #process, #tooling | Stream: genesis
+*January 9, 2026* | Tags: #publishing, #process, #tooling, #genesis
 
 This project exists to test a new model of software development and content production in public. The repository is both the lab and the record, and the system I am building will publish the discoveries that come out of its own construction.
 

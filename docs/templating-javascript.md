@@ -179,7 +179,6 @@ This applies to:
 * navigation
 * archives
 * tags
-* stream
 * articles
 * assets
 

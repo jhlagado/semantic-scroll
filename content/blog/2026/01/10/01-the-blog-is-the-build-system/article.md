@@ -5,12 +5,12 @@ tags:
   - publishing
   - process
   - tooling
-stream: genesis
+  - genesis
 summary: "Each post reshapes the repo, and the build system evolves to honor the trail the writing leaves."
 ---
 
 # The Blog Is the Build System
-*January 10, 2026* | Tags: #publishing, #process, #tooling | Stream: genesis
+*January 10, 2026* | Tags: #publishing, #process, #tooling, #genesis
 
 At some point in this project I noticed a shift. I wanted a place to put things while I worked; I ended up with a repository that changes shape every time I write. A new tag, a new stream, a new way of ordering days rewires how everything else fits together.
 

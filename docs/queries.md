@@ -21,7 +21,7 @@ This is a deliberately _boring_, _legible_, _durable_ web system.
 
 ### 1.1 Self-Documenting Build
 
-The first published content stream should document the construction of the system itself.
+The first published content stream should document the construction of the system itself. Streams are nominated tags, so this begins as a tag and is promoted in the collections registry.
 
 - Each architectural decision should be representable as a post.
 - Spec documents should map cleanly to publishable narratives.
@@ -193,7 +193,6 @@ Templates only ever reference `"latest-posts"`.
 Allowed for:
 
 - `status`
-- `stream`
 - `tag` (set membership)
 - `year`
 - `month`
@@ -343,7 +342,7 @@ If behavior matters, it must be specified explicitly. No smart defaults or silen
 
 The system permits forward references during authoring.
 
-- Queries may reference tags, stream names, or dates that do not yet exist.
+- Queries may reference tags or dates that do not yet exist.
 - Templates may reference queries that currently resolve to zero results.
 
 These conditions must produce warnings, not build failures. Forward references become active automatically once matching content exists.
