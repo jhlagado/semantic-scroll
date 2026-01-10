@@ -783,10 +783,13 @@ function linkHeaderMeta(body, publicPath) {
     }
     return `[${tag}](/tags/${normalized}/)`;
   }).join(', ');
-  const seriesSegment = seriesText
-    ? `Series: [${seriesText}](/series/${normalizeTag(seriesText)}/) | `
+  const seriesLink = seriesText
+    ? `Series: [${seriesText}](/series/${normalizeTag(seriesText)}/)`
     : '';
-  const replacement = `[${dateText}](${publicPath}) | ${seriesSegment}Tags: ${linkedTags}`;
+  const lineOne = seriesLink
+    ? `[${dateText}](${publicPath}) | ${seriesLink}`
+    : `[${dateText}](${publicPath})`;
+  const replacement = `${lineOne}<br>Tags: ${linkedTags}`;
   return body.replace(metaLine, replacement);
 }
 
