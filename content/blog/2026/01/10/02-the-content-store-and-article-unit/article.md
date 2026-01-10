@@ -6,12 +6,12 @@ tags:
   - process
   - tooling
   - structure
-series: genesis
+series: content-store
 summary: "The content store lives in the filesystem, and each article follows a fixed directory and document structure."
 ---
 
 # The Content Store and the Article Unit
-*January 10, 2026* | Series: genesis | Tags: publishing, process, tooling, structure
+*January 10, 2026* | Series: content-store | Tags: publishing, process, tooling, structure
 
 I treat the content store as the filesystem itself. The repository holds the blog in plain folders, and every entry stays readable with a text editor long after the build scripts change.
 

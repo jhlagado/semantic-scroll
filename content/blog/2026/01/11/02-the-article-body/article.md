@@ -6,12 +6,12 @@ tags:
   - process
   - tooling
   - structure
-series: genesis
+series: content-store
 summary: "The body is the readable record: plain Markdown text, links, code, and media, with layout left to templates."
 ---
 
 # The Article Body
-*January 11, 2026* | Series: genesis | Tags: publishing, process, tooling, structure
+*January 11, 2026* | Series: content-store | Tags: publishing, process, tooling, structure
 
 Frontmatter tells the system what an article is. The body tells the reader what it says.
 
