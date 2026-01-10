@@ -11,7 +11,8 @@ const ARCHIVE_OUTPUT_ROOT = path.join(OUTPUT_DIR, 'content', 'blog');
 const STATIC_ASSETS_DIR = path.join(ROOT, 'assets');
 const QUERIES_PATH = path.join(ROOT, 'config', 'queries.json');
 
-const SITE_URL = 'https://jhardy.work';
+const SITE_URL = process.env.SITE_URL || 'https://jhardy.work';
+const BASE_PATH = normalizeBasePath(process.env.BASE_PATH || '');
 const SITE_DESCRIPTION = 'A public experiment in building a publishing system while using it, with essays and specs evolving alongside the code.';
 const META_COLOR_SCHEME = 'light';
 const META_THEME_COLOR = '#ffffff';
@@ -62,6 +63,27 @@ function main() {
   renderSite(index, queryResults);
   copyStaticAssets();
   copyAssets(index);
+}
+
+function normalizeBasePath(raw) {
+  let base = String(raw || '').trim();
+  if (!base || base === '/') {
+    return '';
+  }
+  if (!base.startsWith('/')) {
+    base = `/${base}`;
+  }
+  return base.replace(/\/+$/, '');
+}
+
+function applyBasePath(html) {
+  if (!BASE_PATH) {
+    return html;
+  }
+  let output = html;
+  output = output.replace(/(href|src)=\"\/(?!\/)/g, `$1="${BASE_PATH}/`);
+  output = output.replace(/url\(\/(?!\/)/g, `url(${BASE_PATH}/`);
+  return output;
 }
 
 function discoverArticles(rootDir) {
@@ -731,7 +753,7 @@ function renderTemplate(html, queryResults) {
     throw new Error('Rendered output still contains <template> elements');
   }
 
-  return rendered;
+  return applyBasePath(rendered);
 }
 
 function renderArticleBody(article) {
