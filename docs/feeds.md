@@ -6,4 +6,4 @@ The canonical feed is generated from the `latest-posts` query. It includes the f
 
 Feed discovery is provided in the HTML head via an alternate link tag. Readers do not need to see the raw URL to benefit from it, but the URL remains stable and accessible for direct use.
 
-The canonical feed lives at `/feed.xml`. Additional tag or series feeds may be added later using the same pattern and the same query rules.
+The canonical feed lives at `/feed.xml`. Tag feeds live at `/tags/<tag>/feed.xml` and series feeds live at `/series/<series>/feed.xml`, using the same ordering rules as their index pages.
