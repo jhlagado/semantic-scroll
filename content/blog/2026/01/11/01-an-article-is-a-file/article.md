@@ -6,12 +6,12 @@ tags:
   - process
   - tooling
   - structure
-series: genesis
+series: content-store
 summary: "Each article is a single Markdown file in a dated folder, with frontmatter for indexing and a body for readers."
 ---
 
 # An Article Is a File
-*January 11, 2026* | Series: genesis | Tags: publishing, process, tooling, structure
+*January 11, 2026* | Series: content-store | Tags: publishing, process, tooling, structure
 
 In this system an article lives as one Markdown file inside its own directory. The folder fixes its place in time, and the file holds the text.
 

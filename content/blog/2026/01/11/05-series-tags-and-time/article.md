@@ -8,12 +8,12 @@ tags:
   - structure
   - series
   - tags
-series: genesis
+series: indexing
 summary: "Series and tags use the same frontmatter data but sort and group it differently for narrative and topical reading."
 ---
 
 # Series, Tags, and Time
-*January 11, 2026* | Series: genesis | Tags: publishing, process, tooling, structure, series, tags
+*January 11, 2026* | Series: indexing | Tags: publishing, process, tooling, structure, series, tags
 
 I treat the archive as an ordering problem once articles exist as files with frontmatter. The same set of entries can be grouped in different ways depending on what a reader wants. Two of those groupings matter here: series and tags.
 

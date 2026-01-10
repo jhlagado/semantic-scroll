@@ -7,12 +7,12 @@ tags:
   - tooling
   - structure
   - assets
-series: genesis
+series: content-store
 summary: "Assets live beside the article that uses them, referenced by relative paths and rendered by templates without extra markup."
 ---
 
 # Assets
-*January 11, 2026* | Series: genesis | Tags: publishing, process, tooling, structure, assets
+*January 11, 2026* | Series: content-store | Tags: publishing, process, tooling, structure, assets
 
 An article rarely stands on text alone. Screenshots, diagrams, photos, and small media files belong to the same unit of work. In this system those files live beside the article that references them.
 

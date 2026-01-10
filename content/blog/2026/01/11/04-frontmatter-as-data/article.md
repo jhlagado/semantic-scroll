@@ -7,12 +7,12 @@ tags:
   - tooling
   - structure
   - frontmatter
-series: genesis
+series: content-store
 summary: "Frontmatter is a small data block the build reads for indexing, while the body stays for readers."
 ---
 
 # Frontmatter as Data
-*January 11, 2026* | Series: genesis | Tags: publishing, process, tooling, structure, frontmatter
+*January 11, 2026* | Series: content-store | Tags: publishing, process, tooling, structure, frontmatter
 
 I write the body for readers. I use frontmatter so the rest of the system can work without reading it. Everything above the YAML divider supports indexing, ordering, and layout. The build reads this small structured block and stops.
 
