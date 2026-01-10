@@ -29,4 +29,4 @@ I favor a minimal toolchain, native JavaScript, and a bias against dependency sp
 
 I insist on a clean, date based folder tree where each article lives in its own folder with its assets nearby. I use tags and summaries to build indexes that cut across chronology while keeping the archive legible.
 
-I want this spec to grow by addenda rather than rewrites so the trail stays visible. I am writing the blog while building the blog, and I want that loop to stay clear.
+I want this spec to grow by addenda in place of rewrites so the trail stays visible. I am writing the blog while building the blog, and I want that loop to stay clear.

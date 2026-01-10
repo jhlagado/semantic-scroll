@@ -99,6 +99,69 @@ const RULES = [
     ],
     message: 'Scene-setting opener',
     paragraphStart: true
+  },
+  {
+    name: 'weak-opener',
+    weight: 2,
+    patterns: [
+      /^I\s+(want|think|feel|am)\b/i,
+      /^There\s+(is|are)\b/i,
+      /^It\s+(is|was|are|were|['’]s)\b/i
+    ],
+    message: 'Weak or vague paragraph opener',
+    paragraphStart: true
+  },
+  {
+    name: 'hedge-words',
+    weight: 2,
+    patterns: [
+      /\bkind of\b/i,
+      /\bsort of\b/i,
+      /\bmaybe\b/i,
+      /\bprobably\b/i,
+      /\bgenerally\b/i,
+      /\bsomewhat\b/i
+    ],
+    message: 'Hedge word'
+  },
+  {
+    name: 'intensifiers',
+    weight: 2,
+    patterns: [
+      /\bvery\b/i,
+      /\breally\b/i,
+      /\bquite\b/i,
+      /\bpretty\b/i,
+      /\bextremely\b/i,
+      /\bhighly\b/i
+    ],
+    message: 'Empty intensifier'
+  },
+  {
+    name: 'placeholder-nouns',
+    weight: 2,
+    patterns: [
+      /\bthing\b/i,
+      /\bthings\b/i,
+      /\bstuff\b/i,
+      /\baspect\b/i,
+      /\baspects\b/i,
+      /\belement\b/i,
+      /\belements\b/i,
+      /\barea\b/i,
+      /\bareas\b/i,
+      /\bpart\b/i,
+      /\bparts\b/i
+    ],
+    message: 'Placeholder noun'
+  },
+  {
+    name: 'passive-voice',
+    weight: 3,
+    patterns: [
+      /\b(am|is|are|was|were|be|been|being)\b\s+\w+ed\b/i
+    ],
+    message: 'Possible passive voice'
   }
 ];
 
@@ -171,6 +234,12 @@ const PUNCTUATION_RULES = [
     message: 'Ellipsis'
   },
   {
+    label: 'question-mark',
+    weight: 2,
+    regex: /\?/g,
+    message: 'Question mark in narrative prose'
+  },
+  {
     label: 'multiple-exclamation',
     weight: 2,
     regex: /!{2,}/g,
@@ -194,6 +263,24 @@ const DISCOURSE_MARKERS = [
   'as a result',
   'in other words',
   'on the other hand'
+];
+
+const WEAK_VERBS = [
+  'do',
+  'does',
+  'did',
+  'make',
+  'makes',
+  'made',
+  'get',
+  'gets',
+  'got',
+  'have',
+  'has',
+  'had',
+  'use',
+  'uses',
+  'used'
 ];
 
 function main() {
@@ -651,6 +738,35 @@ function lintMetrics(filePath, body, issues) {
         message: `High discourse-marker ratio (${(ratio * 100).toFixed(0)}%)`
       });
     }
+
+    const hedgeCount = countHedges(cleaned);
+    const hedgeRatio = hedgeCount / sentences.length;
+    if (hedgeCount >= 3 || hedgeRatio >= 0.2) {
+      addIssue(issues, {
+        line: 0,
+        weight: 2,
+        message: `Hedge density (${hedgeCount} hedges, ${(hedgeRatio * 100).toFixed(0)}%)`
+      });
+    }
+
+    const weakVerbCount = countWeakVerbs(sentences);
+    const weakVerbRatio = weakVerbCount / sentences.length;
+    if (weakVerbCount >= 4 || weakVerbRatio >= 0.35) {
+      addIssue(issues, {
+        line: 0,
+        weight: 2,
+        message: `Weak-verb density (${weakVerbCount} sentences, ${(weakVerbRatio * 100).toFixed(0)}%)`
+      });
+    }
+
+    const repeatedOpenerCount = countRepeatedOpeners(sentences);
+    if (repeatedOpenerCount > 0) {
+      addIssue(issues, {
+        line: 0,
+        weight: 3,
+        message: `Repeated sentence openers (${repeatedOpenerCount})`
+      });
+    }
   }
 }
 
@@ -674,6 +790,41 @@ function wordCount(text) {
 function startsWithMarker(sentence) {
   const lower = sentence.trim().toLowerCase();
   return DISCOURSE_MARKERS.some((marker) => lower.startsWith(marker + ' '));
+}
+
+function countHedges(text) {
+  const matches = text.match(/\b(kind of|sort of|maybe|probably|generally|somewhat)\b/gi);
+  return matches ? matches.length : 0;
+}
+
+function countWeakVerbs(sentences) {
+  let count = 0;
+  for (const sentence of sentences) {
+    const trimmed = sentence.trim().toLowerCase();
+    if (!trimmed) {
+      continue;
+    }
+    for (const verb of WEAK_VERBS) {
+      if (trimmed.startsWith(verb + ' ') || trimmed.startsWith('i ' + verb + ' ')) {
+        count += 1;
+        break;
+      }
+    }
+  }
+  return count;
+}
+
+function countRepeatedOpeners(sentences) {
+  let repeats = 0;
+  let prev = null;
+  for (const sentence of sentences) {
+    const opener = sentence.trim().split(/\s+/).slice(0, 2).join(' ').toLowerCase();
+    if (prev && opener && opener === prev) {
+      repeats += 1;
+    }
+    prev = opener || prev;
+  }
+  return repeats;
 }
 
 function stddev(numbers) {
