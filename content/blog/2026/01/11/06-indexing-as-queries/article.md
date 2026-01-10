@@ -21,6 +21,6 @@ Queries live in JSON, not inside templates. A template names the query and provi
 
 This separation keeps indexing logic small and inspectable. If a list looks wrong, I can read the query and see exactly why those items appear. The build does not infer or guess.
 
-The constraint is intentional. Queries are plain objects, not a DSL. They cannot grow into a second programming language. That limit is a feature: it prevents hidden logic and keeps the system declarative instead of imperative.
+The constraint is intentional. Queries are plain objects, not a DSL. They cannot grow into a second programming language. That limit is a feature: it prevents hidden logic and keeps the system declarative, not imperative.
 
 I can change a template without changing the data, or refine a query without touching markup. Indexes remain mechanical outputs of named inputs.
