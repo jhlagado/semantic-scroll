@@ -1,1 +1,4 @@
-# does the latest-articles query serve any function separate from home aricles, clarify queries
+# does the latest-articles query serve any function 
+clarify queries, reduce redundancy
+
+
