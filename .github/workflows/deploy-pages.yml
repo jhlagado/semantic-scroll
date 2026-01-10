@@ -30,8 +30,8 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          SITE_URL: https://jhlagado.github.io/jhardy.work
-          BASE_PATH: /jhardy.work
+          SITE_URL: https://jhlagado.github.io/semantic-scroll
+          BASE_PATH: /semantic-scroll
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
