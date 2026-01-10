@@ -18,7 +18,7 @@ The first content is the documentation process itself. That is why I am writing 
 
 Over time, this back-and-forth will harden into scripts. Today it is a dialogue. Tomorrow it becomes a command. As it stabilizes, the workflow gets more consistent and the content aligns more closely with the system it describes. That is the point of doing it in the open: the system proves itself by publishing its own formation.
 
-I want to minimize imports and treat third-party tools as last resorts. If the problem can be solved cleanly in a small amount of code, I do it myself and I understand it. If that stops being true, I bring in a dependency with intention and say why.
+I minimize imports and treat third-party tools as last resorts. If I can solve a problem cleanly in a small amount of code, I do it myself and I understand it. If that stops being true, I bring in a dependency with intention and say why.
 
 On the publishing side, I am aiming for the most boring convention that still works: a home page index with the newest post at the top, and a dedicated article page for each post with a stable permalink. That is the shape of the site I want to live inside.
 

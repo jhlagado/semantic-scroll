@@ -26,7 +26,7 @@ content/blog/2026/01/11/03-assets/
     hero.jpg
 ```
 
-`article.md` holds the writing. Everything in `assets/` exists only to support that writing. There is no shared media pool and no global upload area. Each article carries its own attachments.
+`article.md` holds the writing. Everything in `assets/` exists only to support that writing. There is no shared media pool and no global upload directory. Each article carries its own attachments.
 
 The Markdown body names assets by relative path, and the build resolves those paths to absolute URLs anchored to the article permalink:
 

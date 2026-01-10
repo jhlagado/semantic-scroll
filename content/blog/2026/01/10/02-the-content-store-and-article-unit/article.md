@@ -28,4 +28,4 @@ Frontmatter holds status, tags, and summary. The build reads those fields for in
 
 Queries select which articles appear, and templates stamp them into HTML. The content store feeds both sides, and the structure keeps the mechanics obvious.
 
-I want the archive to be legible a year from now. The path tells me when the work happened, the frontmatter tells me how it was indexed, and the body gives me the full record.
+I expect the archive to be legible a year from now. The path tells me when the work happened, the frontmatter tells me how I indexed it, and the body gives me the full record.
