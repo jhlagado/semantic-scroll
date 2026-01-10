@@ -1122,6 +1122,7 @@ function stripQuotes(value) {
 
 function renderInline(text) {
   let escaped = escapeHtml(text);
+  escaped = escaped.replace(/&lt;br\s*\/?&gt;/gi, '<br />');
   escaped = escaped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
   escaped = escaped.replace(/`([^`]+)`/g, '<code>$1</code>');
   escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
