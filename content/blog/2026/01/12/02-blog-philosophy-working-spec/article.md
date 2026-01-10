@@ -1,5 +1,5 @@
 ---
-title: "Blog Philosophy, Draft One"
+title: "Blog Philosophy"
 status: published
 tags:
   - philosophy
@@ -10,7 +10,7 @@ series: genesis
 summary: "I outline the motivations and design instincts that shape the blog, from classic HTML to a minimal toolchain."
 ---
 
-# Blog Philosophy, Draft One
+# Blog Philosophy
 *January 12, 2026* | Series: genesis | Tags: philosophy, publishing, web, process
 
 I write down the philosophy early because it shapes every later decision. A frictionless way to publish day to day technical work keeps AI drafting and me in control. A system that keeps momentum should not pull me into a UI.
