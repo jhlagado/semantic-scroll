@@ -204,7 +204,7 @@ Templates **never** access frontmatter or derived metadata directly.
 
 ### 7.5 Index Pages as First-Class Artifacts
 
-Index pages (home, tag pages, stream pages, day/month/year archives) are first-class rendered outputs, not derived views.
+Index pages (home, tag pages, series pages, day/month/year archives) are first-class rendered outputs, not derived views.
 
 - each index page is rendered from an explicit template
 - each index page has a stable output path
@@ -212,9 +212,9 @@ Index pages (home, tag pages, stream pages, day/month/year archives) are first-c
 
 If an index page exists, it exists because a template explicitly rendered it.
 
-### 7.6 Collections Registry
+### 7.6 Series Indexing
 
-Streams and other curated collections are declared in `config/collections.json`. During rendering, the build uses the registry to decide which tags should receive stream pages. Articles remain tag-driven; the registry is editorial and changeable without altering content.
+Series are declared in frontmatter as a single value. During rendering, the build groups published articles by `series` to generate series index pages, and it sorts those entries chronologically. Tag pages remain a separate, topical index sorted by recency.
 
 ---
 
@@ -231,6 +231,8 @@ For each article directory:
 - copy `assets/` directory (if present)
 - preserve relative paths
 - output assets alongside rendered article HTML
+
+Only files inside `assets/` are treated as publishable assets. The article root should contain `article.md` and nothing else.
 
 Assets are never deduplicated or optimized automatically at this stage.
 

@@ -5,14 +5,14 @@ tags:
   - publishing
   - process
   - tooling
-  - genesis
+series: genesis
 summary: "Each post reshapes the repo, and the build system evolves to honor the trail the writing leaves."
 ---
 
 # The Blog Is the Build System
-*January 10, 2026* | Tags: #publishing, #process, #tooling, #genesis
+*January 10, 2026* | Series: genesis | Tags: publishing, process, tooling
 
-At some point in this project I noticed a shift. I wanted a place to put things while I worked; I ended up with a repository that changes shape every time I write. A new tag, a new stream, a new way of ordering days rewires how everything else fits together.
+At some point in this project I noticed a shift. I wanted a place to put things while I worked; I ended up with a repository that changes shape every time I write. A new tag, a new series, a new way of ordering days rewires how everything else fits together.
 
 Each article lands as a directory, a file, and a set of paths that must make sense to the rest of the site. Dates, ordinals, summaries, and queries grow out of publishing, and each decision about finding becomes structure. The writing leaves a footprint the build process has to respect.
 

@@ -8,6 +8,8 @@ This document defines the **Article Unit**, the fundamental atomic unit of the b
 
 The identity of an article is rooted in the filesystem, which serves as the sole authoritative source for its chronological position and unique identity. We use a structured path hierarchy: `/content/blog/YYYY/MM/DD/NN-slug/article.md`.
 
+The article directory may also contain an `assets/` subfolder for images, code, PDFs, and other media. Aside from `article.md`, the root of the directory should not contain other files.
+
 The most critical part of this path is the **NN** ordinal prefix in the leaf directory. This two-digit ordinal prefix (`NN`) ensures that multiple articles created on the same day are sorted correctly by both human-centric tools and automated build scripts, preventing accidental alphabetical sorting of slugs. The leaf directory is named with its human-readable **NN-slug** (e.g., `01-first-post/`). Once an article is assigned to its folder, it remains there for its entire lifecycle; even if the content is revised years later, its birth folder remains its permanent home, preserving its place in history. Each article directory must contain exactly one canonical Markdown body file; missing or ambiguous candidates are build failures.
 
 ---
@@ -25,12 +27,13 @@ Frontmatter is used for indexing, query execution, and summary rendering. It is 
 title: "Short title used for index views"
 status: published
 tags: [z80, assembly, retrocomputing]
+series: build-log
 summary: "Short factual summary used in index views"
 thumbnail: assets/thumbnail.jpg
 ---
 ```
 
-Here, the `status` field controls visibility (e.g., preventing drafts from appearing in public feeds). The `title`, `summary`, and `thumbnail` fields are used by built-in summary views and external feeds, not by full article rendering. Title and summary may include minimal inline formatting (bold, italic, and inline links only). Dates remain filesystem-derived rather than frontmatter-defined.
+Here, the `status` field controls visibility (e.g., preventing drafts from appearing in public feeds). The `title`, `summary`, and `thumbnail` fields are used by built-in summary views and external feeds, not by full article rendering. Thumbnails must live in the article’s `assets/` subfolder and be referenced by a relative path. Title and summary may include minimal inline formatting (bold, italic, and inline links only). Dates remain filesystem-derived rather than frontmatter-defined.
 
 ### 2.2 The Visible Document (The Mirroring Requirement)
 
@@ -41,8 +44,10 @@ Every article begins with a standard header block that fulfills this requirement
 ```markdown
 # Building the Z80 Disassembler: Part 1
 
-_January 9, 2026_ | Tags: #z80, #assembly, #retrocomputing
+_January 9, 2026_ | Series: build-log | Tags: z80, assembly, retrocomputing
 ```
+
+The build wraps the date in a permalink to the article page, so the header stays readable as plain Markdown while still offering a direct link when rendered.
 
 ---
 
@@ -50,15 +55,15 @@ _January 9, 2026_ | Tags: #z80, #assembly, #retrocomputing
 
 While the Article Unit is flexible, it typically aligns with specific archetypes that dictate its prose style and structure. The following examples illustrate how the same fundamental unit adapts to different publishing needs.
 
-### 3.1 The Technical Diary (Stream Log)
+### 3.1 The Technical Diary (Series Log)
 
-A diary entry focuses on rapid capture and narrative flow. It often exists as part of a continuous **stream**, providing a chronological account of progress or discovery. Streams are promoted tags rather than frontmatter fields, so the article still only declares its tags and the system later nominates one of them as a stream. The style is informal and conversational, prioritized for speed and clarity of thought.
+A diary entry focuses on rapid capture and narrative flow. It often exists as part of a continuous **series**, providing a chronological account of progress or discovery. Series membership is declared in frontmatter as a single value, while tags remain topical. The style is informal and conversational, prioritized for speed and clarity of thought.
 
 > _Example (Diary)_:
 >
 > # Day 14: Solving the Timing Glitch
 >
-> _January 10, 2026_ | Tags: #hardware, #debugging
+> _January 10, 2026_ | Series: timing-fixes | Tags: hardware, debugging
 >
 > Today I finally tracked down the timing issue in the bus controller. It wasn't a logic error in the code, but a subtle propagation delay on the physical board. By shifting the clock edge slightly, the signals stabilized. This log records the specific probe points and values that led to the fix...
 
@@ -70,7 +75,7 @@ A specification is normative and precise. It uses explicitly numbered sections a
 >
 > # Protocol Definition: SYNC-GATE v1.2
 >
-> _January 11, 2026_ | Tags: #protocol, #standards
+> _January 11, 2026_ | Tags: protocol, standards
 >
 > **Status**: LOCKED (Stable)
 >
@@ -85,4 +90,4 @@ Reference docs are optimized for long-term lookup. They use objective prose, fre
 
 ## 4. Authoring Responsibility
 
-Anyone creating or revising a post must maintain the integrity of the Article Unit. The `/NN-slug/` folder structure must be enforced and all relevant metadata must be mirrored correctly in the body. Tags should be normalized within the prose to ensure consistency with the searchable index, transforming informal mentions like "hardware" into their canonical forms like "#hardware". Above all, the document should read as crafted writing rather than a collection of data points.
+Anyone creating or revising a post must maintain the integrity of the Article Unit. The `/NN-slug/` folder structure must be enforced and all relevant metadata must be mirrored correctly in the body. Tag labels in the header should use the canonical tag spellings so visible labels stay aligned with the index. Above all, the document should read as crafted writing rather than a collection of data points.

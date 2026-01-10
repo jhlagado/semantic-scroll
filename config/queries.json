@@ -3,7 +3,7 @@
     "source": "blog",
     "status": "published",
     "sort": "date-desc",
-    "limit": 12
+    "limit": 25
   },
   "article-pages": {
     "source": "blog",
@@ -14,7 +14,7 @@
     "source": "blog",
     "status": "published",
     "sort": "date-desc",
-    "limit": 10
+    "limit": 25
   },
   "all-published-posts": {
     "source": "blog",

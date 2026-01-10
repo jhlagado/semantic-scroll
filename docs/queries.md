@@ -21,7 +21,7 @@ This is a deliberately _boring_, _legible_, _durable_ web system.
 
 ### 1.1 Self-Documenting Build
 
-The first published content stream should document the construction of the system itself. Streams are nominated tags, so this begins as a tag and is promoted in the collections registry.
+The first published content series should document the construction of the system itself. Series are declared in frontmatter, so the build log can be explicit without adding extra registry files.
 
 - Each architectural decision should be representable as a post.
 - Spec documents should map cleanly to publishable narratives.
@@ -77,10 +77,10 @@ The system must never silently rewrite or infer redirects.
 
 Each article directory contains:
 
-- one primary Markdown file (canonical name to be standardized, e.g. `article.md`)
-- optional `assets/` directory (images, code, PDFs, etc.)
+- one primary Markdown file named `article.md`
+- optional `assets/` directory for images, code, PDFs, and other media
 
-Assets are **co-located** with articles to ensure portability and narrative locality.
+Assets are **co-located** with articles, but they live inside the `assets/` subdirectory so the article root stays clean and predictable. Aside from `article.md`, the root directory should not contain other files.
 
 ---
 
@@ -194,6 +194,7 @@ Allowed for:
 
 - `status`
 - `tag` (set membership)
+- `series` (exact match)
 - `year`
 - `month`
 - `day`

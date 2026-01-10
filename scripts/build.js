@@ -10,7 +10,6 @@ const OUTPUT_DIR = path.join(ROOT, 'build');
 const ARCHIVE_OUTPUT_ROOT = path.join(OUTPUT_DIR, 'content', 'blog');
 const STATIC_ASSETS_DIR = path.join(ROOT, 'assets');
 const QUERIES_PATH = path.join(ROOT, 'config', 'queries.json');
-const COLLECTIONS_PATH = path.join(ROOT, 'config', 'collections.json');
 
 const SITE_URL = 'https://jhardy.work';
 const SITE_DESCRIPTION = 'A public experiment in building a publishing system while using it, with essays and specs evolving alongside the code.';
@@ -23,7 +22,7 @@ const BLOG_TEMPLATE = path.join(TEMPLATE_DIR, 'blog.html');
 const YEAR_TEMPLATE = path.join(TEMPLATE_DIR, 'year.html');
 const SUMMARY_TEMPLATE = path.join(TEMPLATE_DIR, 'summary-index.html');
 const TAG_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'tags.html');
-const STREAM_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'streams.html');
+const SERIES_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'series.html');
 
 const STATUS_VALUES = new Set(['draft', 'review', 'published', 'archived']);
 const INTERNAL_QUERY_NAMES = new Set(['article-page']);
@@ -31,6 +30,7 @@ const ALLOWED_QUERY_KEYS = new Set([
   'source',
   'status',
   'tag',
+  'series',
   'year',
   'month',
   'day',
@@ -58,9 +58,8 @@ function main() {
   const articles = discoverArticles(CONTENT_ROOT);
   const index = buildIndex(articles);
   const queries = loadQueries(QUERIES_PATH);
-  const collections = loadCollections(COLLECTIONS_PATH);
   const queryResults = executeQueries(index, queries);
-  renderSite(index, queryResults, collections);
+  renderSite(index, queryResults);
   copyStaticAssets();
   copyAssets(index);
 }
@@ -178,8 +177,11 @@ function buildIndex(records) {
           .filter(Boolean);
       }
     }
+    if (frontmatter.series) {
+      frontmatter.series = normalizeTag(frontmatter.series);
+    }
 
-    for (const key of ['title', 'summary', 'thumbnail']) {
+    for (const key of ['title', 'summary', 'thumbnail', 'series']) {
       if (frontmatter[key] && typeof frontmatter[key] !== 'string') {
         errors.push(`Frontmatter '${key}' must be a string in ${record.relDir}/article.md`);
       }
@@ -254,6 +256,9 @@ function loadQueries(filePath) {
     if (query.tag && typeof query.tag !== 'string') {
       errors.push(`Query '${name}' has invalid tag`);
     }
+    if (query.series && typeof query.series !== 'string') {
+      errors.push(`Query '${name}' has invalid series`);
+    }
 
   }
 
@@ -262,63 +267,6 @@ function loadQueries(filePath) {
   }
 
   return parsed;
-}
-
-function loadCollections(filePath) {
-  if (!fs.existsSync(filePath)) {
-    throw new Error(`Missing collections file: ${filePath}`);
-  }
-  const raw = fs.readFileSync(filePath, 'utf8');
-  let parsed;
-  try {
-    parsed = JSON.parse(raw);
-  } catch (error) {
-    throw new Error(`Invalid JSON in ${filePath}`);
-  }
-
-  const errors = [];
-  const streams = Array.isArray(parsed.streams) ? parsed.streams : [];
-  const featured = Array.isArray(parsed.featured) ? parsed.featured : [];
-
-  if (parsed.streams && !Array.isArray(parsed.streams)) {
-    errors.push('Collections "streams" must be a list');
-  }
-  if (parsed.featured && !Array.isArray(parsed.featured)) {
-    errors.push('Collections "featured" must be a list');
-  }
-
-  const normalizedStreams = [];
-  for (const entry of streams) {
-    if (typeof entry !== 'string') {
-      errors.push('Stream entries must be strings');
-      continue;
-    }
-    const tag = normalizeTag(entry);
-    if (tag && !normalizedStreams.includes(tag)) {
-      normalizedStreams.push(tag);
-    }
-  }
-
-  const normalizedFeatured = [];
-  for (const entry of featured) {
-    if (typeof entry !== 'string') {
-      errors.push('Featured entries must be strings');
-      continue;
-    }
-    const trimmed = entry.trim();
-    if (trimmed && !normalizedFeatured.includes(trimmed)) {
-      normalizedFeatured.push(trimmed);
-    }
-  }
-
-  if (errors.length) {
-    throw new Error(errors.join('\n'));
-  }
-
-  return {
-    streams: normalizedStreams,
-    featured: normalizedFeatured
-  };
 }
 
 function executeQueries(index, queries) {
@@ -333,6 +281,9 @@ function executeQueries(index, queries) {
     if (query.tag) {
       const tag = normalizeTag(query.tag);
       items = items.filter((item) => (item.frontmatter.tags || []).includes(tag));
+    }
+    if (query.series) {
+      items = items.filter((item) => item.frontmatter.series === query.series);
     }
 
 
@@ -355,7 +306,7 @@ function executeQueries(index, queries) {
   return results;
 }
 
-function renderSite(index, queryResults, collections) {
+function renderSite(index, queryResults) {
   cleanDir(OUTPUT_DIR);
   ensureDir(OUTPUT_DIR);
 
@@ -406,8 +357,8 @@ function renderSite(index, queryResults, collections) {
   renderMonthArchives(published);
   renderTagArchives(published);
   renderTagIndex(published);
-  renderStreamArchives(published, collections);
-  renderStreamIndex(published, collections);
+  renderSeriesArchives(published);
+  renderSeriesIndex(published);
 }
 
 function copyAssets(index) {
@@ -554,8 +505,8 @@ function renderTagArchives(published) {
   const tags = Array.from(tagMap.keys()).sort();
   for (const tag of tags) {
     const items = tagMap.get(tag);
-    const itemsDesc = sortItems(items, 'date-desc');
-    const latest = itemsDesc.slice(0, 12);
+    const itemsAsc = sortItems(items, 'date-asc');
+    const latest = itemsAsc.slice(0, 25);
     const yearCounts = countBy(items, (item) => item.year);
     const years = Object.keys(yearCounts).sort((a, b) => Number(b) - Number(a));
 
@@ -596,7 +547,7 @@ function renderTagArchives(published) {
     writeFile(path.join(OUTPUT_DIR, 'tags', tag, 'index.html'), html);
 
     for (const year of years) {
-      const yearItems = itemsDesc.filter((item) => item.year === year);
+      const yearItems = itemsAsc.filter((item) => item.year === year);
       const yearSlots = {
         'page-title': escapeHtml(`Tag: ${tag} - ${year} - jhardy.work`),
         'page-heading': escapeHtml(`Tag: ${tag} - ${year}`),
@@ -657,22 +608,14 @@ function renderTagIndex(published) {
   writeFile(path.join(OUTPUT_DIR, 'tags', 'index.html'), html);
 }
 
-function renderStreamArchives(published, collections) {
-  const streams = (collections && collections.streams) || [];
-  if (!streams.length) {
-    return;
-  }
-
+function renderSeriesArchives(published) {
   const template = fs.readFileSync(SUMMARY_TEMPLATE, 'utf8');
+  const seriesMap = groupBy(published.filter((item) => item.frontmatter.series), (item) => item.frontmatter.series);
+  const seriesNames = Array.from(seriesMap.keys()).sort();
 
-  for (const stream of streams) {
-    const items = published.filter((article) => {
-      const tags = article.frontmatter.tags || [];
-      return tags.includes(stream);
-    });
-
-    const itemsDesc = sortItems(items, 'date-desc');
-    const latest = itemsDesc.slice(0, 12);
+  for (const series of seriesNames) {
+    const items = sortItems(seriesMap.get(series), 'date-asc');
+    const latest = items.slice(0, 25);
     const yearCounts = countBy(items, (item) => item.year);
     const years = Object.keys(yearCounts).sort((a, b) => Number(b) - Number(a));
 
@@ -691,17 +634,17 @@ function renderStreamArchives(published, collections) {
       : '';
 
     const slots = {
-      'page-title': escapeHtml(`Stream: ${stream} - jhardy.work`),
-      'page-heading': escapeHtml(`Stream: ${stream}`),
+      'page-title': escapeHtml(`Series: ${series} - jhardy.work`),
+      'page-heading': escapeHtml(`Series: ${series}`),
       'page-intro': '',
       'page-extra': yearList,
-      'nav-extra': '<a href="/streams/">Streams</a>'
+      'nav-extra': '<a href="/series/">Series</a>'
     };
 
     const html = renderTemplate(
       applySlots(
         applyMeta(template, {
-          canonical: joinUrl(SITE_URL, `/streams/${stream}/`),
+          canonical: joinUrl(SITE_URL, `/series/${series}/`),
           description: SITE_DESCRIPTION
         }),
         slots
@@ -710,43 +653,36 @@ function renderStreamArchives(published, collections) {
         'page-posts': latest
       }
     );
-    writeFile(path.join(OUTPUT_DIR, 'streams', stream, 'index.html'), html);
+    writeFile(path.join(OUTPUT_DIR, 'series', series, 'index.html'), html);
   }
 }
 
-function renderStreamIndex(published, collections) {
-  const streams = (collections && collections.streams) || [];
-  const template = fs.readFileSync(STREAM_INDEX_TEMPLATE, 'utf8');
-  const streamCounts = new Map();
+function renderSeriesIndex(published) {
+  const template = fs.readFileSync(SERIES_INDEX_TEMPLATE, 'utf8');
+  const seriesCounts = countBy(
+    published.filter((item) => item.frontmatter.series),
+    (item) => item.frontmatter.series
+  );
+  const seriesNames = Object.keys(seriesCounts).sort();
 
-  for (const article of published) {
-    const tags = article.frontmatter.tags || [];
-    for (const tag of tags) {
-      if (!streams.includes(tag)) {
-        continue;
-      }
-      streamCounts.set(tag, (streamCounts.get(tag) || 0) + 1);
-    }
-  }
-
-  const streamList = streams.length
-    ? streams.map((stream) => {
-      const count = streamCounts.get(stream) || 0;
-      return `<li><a href="/streams/${stream}/">${escapeHtml(stream)}</a> (${count})</li>`;
+  const seriesList = seriesNames.length
+    ? seriesNames.map((series) => {
+      const count = seriesCounts[series] || 0;
+      return `<li><a href="/series/${series}/">${escapeHtml(series)}</a> (${count})</li>`;
     }).join('\n')
-    : '<li class="archive-empty">No streams yet.</li>';
+    : '<li class="archive-empty">No series yet.</li>';
 
   const html = renderTemplate(
     applySlots(
       applyMeta(template, {
-        canonical: joinUrl(SITE_URL, '/streams/'),
+        canonical: joinUrl(SITE_URL, '/series/'),
         description: SITE_DESCRIPTION
       }),
-      { 'stream-list': streamList }
+      { 'series-list': seriesList }
     ),
     {}
   );
-  writeFile(path.join(OUTPUT_DIR, 'streams', 'index.html'), html);
+  writeFile(path.join(OUTPUT_DIR, 'series', 'index.html'), html);
 }
 
 function renderTemplate(html, queryResults) {
@@ -804,7 +740,32 @@ function renderArticleBody(article) {
   if (!parsed) {
     throw new Error(`Missing frontmatter in ${article.relDir}/article.md`);
   }
-  return renderMarkdown(parsed.body);
+  const body = linkHeaderMeta(parsed.body, article.publicPath);
+  return renderMarkdown(body);
+}
+
+function linkHeaderMeta(body, publicPath) {
+  const metaLine = /^(\*[^*\n]+\*)\s*\|\s*(?:Series:\s*([^|]+)\s*\|\s*)?Tags:\s*([^\n]+)$/m;
+  const match = body.match(metaLine);
+  if (!match) {
+    return body;
+  }
+  const dateText = match[1];
+  const seriesText = match[2] ? match[2].trim() : '';
+  const tagsText = match[3];
+  const tags = tagsText.split(',').map((tag) => tag.trim()).filter(Boolean);
+  const linkedTags = tags.map((tag) => {
+    const normalized = normalizeTag(tag);
+    if (!normalized) {
+      return tag;
+    }
+    return `[${tag}](/tags/${normalized}/)`;
+  }).join(', ');
+  const seriesSegment = seriesText
+    ? `Series: [${seriesText}](/series/${normalizeTag(seriesText)}/) | `
+    : '';
+  const replacement = `[${dateText}](${publicPath}) | ${seriesSegment}Tags: ${linkedTags}`;
+  return body.replace(metaLine, replacement);
 }
 
 function renderSummary(article) {
@@ -822,8 +783,23 @@ function renderSummary(article) {
   parts.push('<article class="summary">');
   parts.push('  <header class="summary-header">');
   parts.push(`    <h2 class="summary-title"><a href="${article.publicPath}">${titleHtml}</a></h2>`);
-  parts.push(`    <time class="summary-date" datetime="${dateText}">${dateText}</time>`);
   parts.push('  </header>');
+
+  const metaParts = [];
+  metaParts.push(`<time datetime="${dateText}">${dateText}</time>`);
+  if (fm.series) {
+    const seriesText = escapeHtml(fm.series);
+    metaParts.push(`Series: <a href="/series/${seriesText}/">${seriesText}</a>`);
+  }
+  const tags = fm.tags || [];
+  if (tags.length) {
+    const tagLinks = tags.map((tag) => {
+      const safeTag = escapeHtml(tag);
+      return `<a rel="tag" href="/tags/${safeTag}/">${safeTag}</a>`;
+    }).join(', ');
+    metaParts.push(`Tags: ${tagLinks}`);
+  }
+  parts.push(`  <p class="summary-meta-line">${metaParts.join(' | ')}</p>`);
 
   if (fm.thumbnail) {
     const thumbSrc = joinUrl(article.publicPath, fm.thumbnail);
@@ -834,21 +810,6 @@ function renderSummary(article) {
 
   if (summaryHtml) {
     parts.push(`  <p class="summary-text">${summaryHtml}</p>`);
-  }
-
-  const metaRows = [];
-  const tags = fm.tags || [];
-  if (tags.length) {
-    metaRows.push('    <dt>Tags</dt>');
-    for (const tag of tags) {
-      metaRows.push(`    <dd><a rel="tag" href="/tags/${tag}/">${escapeHtml(tag)}</a></dd>`);
-    }
-  }
-
-  if (metaRows.length) {
-    parts.push('  <dl class="summary-meta">');
-    parts.push(metaRows.join('\n'));
-    parts.push('  </dl>');
   }
 
   parts.push('</article>');
@@ -966,9 +927,25 @@ function renderMarkdown(body) {
       return;
     }
     const text = paragraph.join(' ').trim();
-    if (text) {
-      html += `<p>${renderInline(text)}</p>\n`;
+    if (!text) {
+      paragraph = [];
+      return;
     }
+    const imageMatch = text.match(/^!\[([^\]]*)\]\((\S+)(?:\s+"([^"]+)")?\)$/);
+    if (imageMatch) {
+      const altText = escapeHtml(imageMatch[1]);
+      const src = escapeHtml(imageMatch[2]);
+      const title = imageMatch[3] ? escapeHtml(imageMatch[3]) : '';
+      html += '<figure class="article-figure">';
+      html += `<img src="${src}" alt="${altText}" />`;
+      if (title) {
+        html += `<figcaption>${title}</figcaption>`;
+      }
+      html += '</figure>\n';
+      paragraph = [];
+      return;
+    }
+    html += `<p>${renderInline(text)}</p>\n`;
     paragraph = [];
   }
 
@@ -1106,9 +1083,10 @@ function stripQuotes(value) {
 function renderInline(text) {
   let escaped = escapeHtml(text);
   escaped = escaped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  escaped = escaped.replace(/`([^`]+)`/g, '<code>$1</code>');
   escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   escaped = escaped.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  return escaped;
+  return linkifyTags(escaped);
 }
 
 function normalizeTag(tag) {
@@ -1116,6 +1094,23 @@ function normalizeTag(tag) {
     .trim()
     .toLowerCase()
     .replace(/[_-]/g, '');
+}
+
+function linkifyTags(html) {
+  const parts = html.split(/(<[^>]+>)/g);
+  const tagPattern = /(^|[\s(>])#([A-Za-z0-9_-]+)\b/g;
+  return parts.map((part) => {
+    if (part.startsWith('<')) {
+      return part;
+    }
+    return part.replace(tagPattern, (match, prefix, rawTag) => {
+      const normalized = normalizeTag(rawTag);
+      if (!normalized) {
+        return match;
+      }
+      return `${prefix}<a rel="tag" href="/tags/${normalized}/">#${rawTag}</a>`;
+    });
+  }).join('');
 }
 
 function validateQueryField(query, name, errors, field) {
