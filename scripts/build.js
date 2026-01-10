@@ -396,6 +396,8 @@ function renderSite(index, queryResults) {
   renderSeriesArchives(published);
   renderSeriesIndex(published);
   renderFeed(queryResults, published);
+  renderTagFeeds(published);
+  renderSeriesFeeds(published);
 }
 
 function renderFeed(queryResults, published) {
@@ -403,15 +405,62 @@ function renderFeed(queryResults, published) {
     ? queryResults['latest-posts']
     : published.slice().sort(makeSortFn('date-desc')).slice(0, 25);
 
+  const feed = buildFeedXml({
+    title: 'Semantic Scroll',
+    link: SITE_URL,
+    description: SITE_DESCRIPTION,
+    items
+  });
+
+  writeFile(FEED_PATH, feed);
+}
+
+function renderTagFeeds(published) {
+  const tagMap = groupBy(published.flatMap((article) => {
+    const tags = article.frontmatter.tags || [];
+    return tags.map((tag) => ({ tag, article }));
+  }), (entry) => entry.tag);
+
+  for (const [tag, entries] of tagMap.entries()) {
+    const items = entries.map((entry) => entry.article).sort(makeSortFn('date-desc'));
+    const feed = buildFeedXml({
+      title: `Tag: ${tag} - Semantic Scroll`,
+      link: joinUrl(SITE_URL, `/tags/${tag}/`),
+      description: `Tag feed for ${tag}.`,
+      items
+    });
+    writeFile(path.join(OUTPUT_DIR, 'tags', tag, 'feed.xml'), feed);
+  }
+}
+
+function renderSeriesFeeds(published) {
+  const seriesMap = groupBy(
+    published.filter((item) => item.frontmatter.series),
+    (item) => item.frontmatter.series
+  );
+
+  for (const [series, items] of seriesMap.entries()) {
+    const ordered = items.slice().sort(makeSortFn('date-asc'));
+    const feed = buildFeedXml({
+      title: `Series: ${series} - Semantic Scroll`,
+      link: joinUrl(SITE_URL, `/series/${series}/`),
+      description: `Series feed for ${series}.`,
+      items: ordered
+    });
+    writeFile(path.join(OUTPUT_DIR, 'series', series, 'feed.xml'), feed);
+  }
+}
+
+function buildFeedXml({ title, link, description, items }) {
   const lastBuild = new Date().toUTCString();
   const feedItems = items.map((article) => {
-    const title = article.frontmatter.title || article.slug || 'Untitled';
+    const itemTitle = article.frontmatter.title || article.slug || 'Untitled';
     const summary = article.frontmatter.summary || '';
     const url = joinUrl(SITE_URL, article.publicPath);
     const pubDate = formatRssDate(article);
     return [
       '    <item>',
-      `      <title>${escapeHtml(title)}</title>`,
+      `      <title>${escapeHtml(itemTitle)}</title>`,
       `      <link>${escapeHtml(url)}</link>`,
       `      <guid>${escapeHtml(url)}</guid>`,
       `      <pubDate>${pubDate}</pubDate>`,
@@ -420,26 +469,25 @@ function renderFeed(queryResults, published) {
     ].join('\n');
   }).join('\n');
 
-  const feed = [
+  return [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<rss version="2.0">',
     '  <channel>',
-    `    <title>${escapeHtml('Semantic Scroll')}</title>`,
-    `    <link>${escapeHtml(SITE_URL)}</link>`,
-    `    <description>${escapeHtml(SITE_DESCRIPTION)}</description>`,
+    `    <title>${escapeHtml(title)}</title>`,
+    `    <link>${escapeHtml(link)}</link>`,
+    `    <description>${escapeHtml(description)}</description>`,
     `    <lastBuildDate>${lastBuild}</lastBuildDate>`,
     feedItems,
     '  </channel>',
     '</rss>'
   ].join('\n');
-
-  writeFile(FEED_PATH, feed);
 }
 
 function formatRssDate(article) {
   const date = new Date(Date.UTC(Number(article.year), Number(article.month) - 1, Number(article.day)));
   return date.toUTCString();
 }
+
 
 
 function copyAssets(index) {
