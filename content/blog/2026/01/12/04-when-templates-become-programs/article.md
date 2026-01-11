@@ -47,7 +47,7 @@ One is that the template stops being a reliable description of the document. I c
 
 Another is that it becomes harder to reason about changes. A small edit to a template can have wide effects, because it might alter the logic that decides which content it includes. A change to metadata or content can also change the layout of a page, because the template logic reacts to it. Structure and data become tightly coupled.
 
-None of this is inherently wrong. Many systems are built this way, and people learn to work within those constraints. But it does mean that the template is no longer just a piece of HTML with placeholders. This makes it a layer in the site's control plane. It contains behaviour, not just shape.
+None of this is inherently wrong. Many systems are built this way, and people learn to work within those constraints. That does mean the template is no longer just a piece of HTML with placeholders. This makes it a layer in the site's control plane. It contains behaviour, not just shape.
 
 By then I find it difficult to talk about a template as a document. It reads more like a small program that produces a document. That distinction matters if I care about inspecting, understanding, and preserving the output over time.
 
