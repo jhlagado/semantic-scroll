@@ -1,6 +1,6 @@
-# AI Writing and Prose Specification
+# Authoring and Prose Specification
 
-This document defines the **voice and style** for all prose generated or edited by AI agents in this project. It is derived from `docs/PRD.md` and mandated by `AGENTS.md`. 
+This document defines the **voice and style** for all prose generated or edited by AI agents in this project. It is derived from `docs/PRD.md` and mandated by `AGENTS.md`.
 
 The goal is to preserve a **human-first, authored "soul"** across the technical diary, specifications, and eventual blog posts.
 
@@ -67,6 +67,10 @@ Bad:
 Better:
 
 > This project lives in the middle of ideas while they are still taking shape.
+
+### 3.5 Summary Length and Clarity
+
+Frontmatter summaries must be at least two sentences. Aim for two or three short, factual sentences that state what the piece covers and why it matters. Avoid fragments, slogans, or single-line summaries.
 
 ---
 

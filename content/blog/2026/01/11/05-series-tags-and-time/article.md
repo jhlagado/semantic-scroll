@@ -9,7 +9,7 @@ tags:
   - series
   - tags
 series: indexing
-summary: "Series and tags use the same frontmatter data but sort and group it differently for narrative and topical reading."
+summary: "Series and tags use the same frontmatter data but sort and group it differently for narrative and topical reading. Series keep time in order, while tags keep topics current."
 ---
 
 # Series, Tags, and Time

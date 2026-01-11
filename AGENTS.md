@@ -239,7 +239,7 @@ If the answer is no, expand the prose.
 
 ### 9.7 Writing Style Compliance
 
-Any prose generation must comply with [AI_WRITING.md](docs/AI_WRITING.md).
+Any prose generation must comply with [authoring.md](docs/authoring.md).
 
 ---
 

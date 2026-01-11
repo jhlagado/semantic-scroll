@@ -25,7 +25,7 @@ title: "The Shape of the Archive"
 series: genesis
 tags: [tooling, publishing]
 status: published
-summary: "How this blog organises itself on disk instead of inside a database."
+summary: "How this blog organises itself on disk instead of inside a database. The path does the work."
 thumbnail: hero.jpg
 ```
 

@@ -123,13 +123,14 @@ Series are narrative groupings where order matters. They are author-declared and
 ### 3.4 Summary
 
 ```yaml
-summary: Short, factual description of the article.
+summary: Short, factual description of the article. It stays plain and direct.
 ```
 
 Rules:
 
 - optional
 - short and descriptive, not promotional
+- at least two sentences
 - used for summary and index views or external feeds, not full article rendering
 - supports a minimal inline Markdown subset: bold, italic, and inline links only
 

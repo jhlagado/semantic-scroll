@@ -191,8 +191,12 @@ main h1:first-child {
   margin: 0;
 }
 
-.series-entries > * + * {
-  margin-top: 1.2rem;
+.series-entries .article-entry + .article-entry {
+  margin-top: 1.6rem;
+}
+
+.article-entry {
+  margin-top: 3rem;
 }
 
 .summary-item + .summary-item,

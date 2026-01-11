@@ -62,7 +62,7 @@ const RULES = [
       /\blooking ahead\b/i,
       /\btestament\b/i
     ],
-    message: 'Forbidden AI-ism (see docs/AI_WRITING.md)'
+    message: 'Forbidden AI-ism (see docs/authoring.md)'
   },
   {
     name: 'banned-phrase',

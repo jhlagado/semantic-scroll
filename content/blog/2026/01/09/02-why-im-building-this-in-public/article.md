@@ -7,7 +7,7 @@ tags:
   - process
   - ai
 series: genesis
-summary: "Writing in public forces clarity, keeps the work tied to the code, and makes the AI constraints visible as the system grows."
+summary: "Writing in public forces clarity, keeps the work tied to the code, and makes the AI constraints visible as the system grows. The blog becomes a place to test boundaries and keep the record honest."
 ---
 
 # Why I'm Building This in Public

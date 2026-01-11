@@ -7,7 +7,7 @@ tags:
   - web
   - process
 series: genesis
-summary: "I outline the motivations and design instincts that shape the blog, from classic HTML to a minimal toolchain."
+summary: "I outline the motivations and design instincts that shape the blog, from classic HTML to a minimal toolchain. The focus stays on legibility, accessibility, and a system that documents itself while it runs."
 ---
 
 # Blog Philosophy
