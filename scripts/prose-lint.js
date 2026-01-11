@@ -18,6 +18,7 @@ const args = process.argv.slice(2);
 const includePublished = args.includes('--all') || args.includes('--include-published');
 const strict = args.includes('--strict');
 const gate = args.includes('--gate') || args.includes('--ci');
+const includeDocs = args.includes('--docs') || args.includes('--all');
 const report = args.includes('--report');
 const thresholds = resolveThresholds(args);
 const targets = extractTargets(args);
@@ -229,7 +230,8 @@ const RULES = [
       /\bapologizing\b/i
     ],
     message: 'US spelling (use UK/AU)',
-    skipInlineCode: true
+    skipInlineCode: true,
+    docs: true
   }
 ];
 
@@ -352,7 +354,13 @@ const WEAK_VERBS = [
 ];
 
 function main() {
-  const files = resolveTargets(targets.length ? targets : [DEFAULT_ROOT]);
+  const defaultTargets = targets.length ? targets : [DEFAULT_ROOT];
+  if (includeDocs && !targets.length) {
+    defaultTargets.push(path.join(ROOT, 'docs'));
+    defaultTargets.push(path.join(ROOT, 'README.md'));
+    defaultTargets.push(path.join(ROOT, 'notes.md'));
+  }
+  const files = resolveTargets(defaultTargets, { includeDocs });
 
   if (!files.length) {
     return;
@@ -367,7 +375,8 @@ function main() {
   for (const filePath of files) {
     const raw = fs.readFileSync(filePath, 'utf8');
     const parsed = parseFrontmatter(raw);
-    if (!parsed) {
+    const isArticle = path.basename(filePath) === 'article.md';
+    if (!parsed && isArticle) {
       reports.push({
         filePath,
         status: 'unknown',
@@ -388,14 +397,20 @@ function main() {
       continue;
     }
 
-    const status = parsed.frontmatter.status || 'unknown';
+    const normalized = parsed || {
+      frontmatter: {},
+      frontmatterLines: {},
+      body: raw,
+      bodyStartLine: 1
+    };
+    const status = isArticle ? (normalized.frontmatter.status || 'unknown') : 'doc';
     if (!includePublished && status === 'published') {
       skipped += 1;
       continue;
     }
 
     checked += 1;
-    const result = lintDocument(filePath, parsed);
+    const result = lintDocument(filePath, normalized, { isArticle });
     totalIssues += result.issues.length;
     totalScore += result.score;
     reports.push(result);
@@ -535,8 +550,9 @@ function readNumericFlag(entries, flag) {
   return undefined;
 }
 
-function resolveTargets(entries) {
+function resolveTargets(entries, options = {}) {
   const files = new Set();
+  const includeDocs = Boolean(options.includeDocs);
 
   for (const entry of entries) {
     const resolved = path.resolve(entry);
@@ -545,40 +561,47 @@ function resolveTargets(entries) {
     }
     const stat = fs.statSync(resolved);
     if (stat.isFile()) {
-      if (path.basename(resolved) === 'article.md') {
+      if (path.basename(resolved) === 'article.md' || (includeDocs && resolved.endsWith('.md'))) {
         files.add(resolved);
       }
       continue;
     }
     if (stat.isDirectory()) {
-      walk(resolved, files);
+      walk(resolved, files, includeDocs);
     }
   }
 
   return Array.from(files).sort();
 }
 
-function walk(dirPath, files) {
+function walk(dirPath, files, includeDocs) {
   const entries = fs.readdirSync(dirPath, { withFileTypes: true });
   for (const entry of entries) {
     const fullPath = path.join(dirPath, entry.name);
     if (entry.isDirectory()) {
-      walk(fullPath, files);
-    } else if (entry.isFile() && entry.name === 'article.md') {
-      files.add(fullPath);
+      walk(fullPath, files, includeDocs);
+    } else if (entry.isFile()) {
+      if (entry.name === 'article.md' || (includeDocs && entry.name.endsWith('.md'))) {
+        files.add(fullPath);
+      }
     }
   }
 }
 
-function lintDocument(filePath, parsed) {
+function lintDocument(filePath, parsed, options = {}) {
   const issues = [];
   const { frontmatter, frontmatterLines, body, bodyStartLine } = parsed;
+  const isArticle = options.isArticle !== false;
 
-  lintFrontmatterField(filePath, 'title', frontmatter, frontmatterLines, issues);
-  lintFrontmatterField(filePath, 'summary', frontmatter, frontmatterLines, issues);
+  if (isArticle) {
+    lintFrontmatterField(filePath, 'title', frontmatter, frontmatterLines, issues);
+    lintFrontmatterField(filePath, 'summary', frontmatter, frontmatterLines, issues);
+  }
 
-  lintBody(filePath, body, bodyStartLine, issues);
-  lintMetrics(filePath, body, issues);
+  lintBody(filePath, body, bodyStartLine, issues, { isArticle });
+  if (isArticle) {
+    lintMetrics(filePath, body, issues);
+  }
 
   const score = issues.reduce((sum, issue) => sum + issue.weight, 0);
   return { filePath, score, issues, severityCounts: tallySeverities(issues) };
@@ -593,8 +616,9 @@ function lintFrontmatterField(filePath, field, frontmatter, frontmatterLines, is
   lintLine(filePath, value, lineNumber, issues);
 }
 
-function lintBody(filePath, body, lineOffset, issues) {
+function lintBody(filePath, body, lineOffset, issues, options = {}) {
   const lines = body.split(/\r?\n/);
+  const isArticle = options.isArticle !== false;
   let inCode = false;
   let prevBlank = true;
   let paragraphLines = [];
@@ -610,7 +634,9 @@ function lintBody(filePath, body, lineOffset, issues) {
     }
     const paragraphText = paragraphLines.join(' ').trim();
     if (paragraphText) {
-      lintContrastParagraph(paragraphText, paragraphStartLine, issues);
+      if (isArticle) {
+        lintContrastParagraph(paragraphText, paragraphStartLine, issues);
+      }
       paragraphs.push({ text: paragraphText, line: paragraphStartLine });
     }
     paragraphLines = [];
@@ -653,9 +679,11 @@ function lintBody(filePath, body, lineOffset, issues) {
     }
 
     if (trimmed) {
-      lintLine(filePath, line, lineNumber, issues);
+      lintLine(filePath, line, lineNumber, issues, { isArticle });
       if (prevBlank) {
-        lintParagraphStart(filePath, line, lineNumber, issues);
+        if (isArticle) {
+          lintParagraphStart(filePath, line, lineNumber, issues);
+        }
         paragraphStartLine = lineNumber;
       }
       if (!isOrdered && !isUnordered) {
@@ -670,13 +698,19 @@ function lintBody(filePath, body, lineOffset, issues) {
   }
 
   flushParagraph();
-  lintListBlocks(orderedListBlocks, unorderedListBlocks, issues);
-  lintConditionalClosing(paragraphs, issues);
+  if (isArticle) {
+    lintListBlocks(orderedListBlocks, unorderedListBlocks, issues);
+    lintConditionalClosing(paragraphs, issues);
+  }
 }
 
-function lintLine(filePath, line, lineNumber, issues) {
+function lintLine(filePath, line, lineNumber, issues, options = {}) {
+  const isArticle = options.isArticle !== false;
   for (const rule of RULES) {
     if (rule.paragraphStart) {
+      continue;
+    }
+    if (!isArticle && !rule.docs) {
       continue;
     }
     const subject = rule.skipInlineCode ? stripInlineCode(line) : line;
