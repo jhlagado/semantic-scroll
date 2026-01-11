@@ -595,8 +595,7 @@ function renderMonthArchives(published) {
       'page-title': escapeHtml(`${label} - Archive - Semantic Scroll`),
       'page-heading': escapeHtml(label),
       'page-intro': '',
-      'page-extra': '',
-      'nav-extra': `<a href="/content/blog/${year}/">${escapeHtml(year)}</a>`
+      'page-extra': ''
     };
     const html = renderTemplate(
       applySlots(
@@ -658,8 +657,7 @@ function renderTagArchives(published) {
       'page-title': escapeHtml(`Tag: ${tag} - Semantic Scroll`),
       'page-heading': escapeHtml(`Tag: ${tag}`),
       'page-intro': '',
-      'page-extra': yearList,
-      'nav-extra': ''
+      'page-extra': yearList
     };
 
     const html = renderTemplate(
@@ -682,8 +680,7 @@ function renderTagArchives(published) {
         'page-title': escapeHtml(`Tag: ${tag} - ${year} - Semantic Scroll`),
         'page-heading': escapeHtml(`Tag: ${tag} - ${year}`),
         'page-intro': '',
-        'page-extra': '',
-        'nav-extra': `<a href="/tags/${tag}/">${escapeHtml(tag)}</a>`
+        'page-extra': ''
       };
       const yearHtml = renderTemplate(
         applySlots(
@@ -766,8 +763,7 @@ function renderSeriesArchives(published) {
       'page-title': escapeHtml(`Series: ${series} - Semantic Scroll`),
       'page-heading': escapeHtml(`Series: ${series}`),
       'page-intro': '',
-      'page-extra': yearList,
-      'nav-extra': ''
+      'page-extra': yearList
     };
 
     const html = renderTemplate(

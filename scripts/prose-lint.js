@@ -114,6 +114,15 @@ const RULES = [
     paragraphStart: true
   },
   {
+    name: 'conjunction-opener',
+    weight: 2,
+    patterns: [
+      /^(And|But)\b/
+    ],
+    message: 'Conjunction paragraph opener (prefer to join the previous sentence)',
+    paragraphStart: true
+  },
+  {
     name: 'hedge-words',
     weight: 2,
     patterns: [
@@ -579,6 +588,9 @@ function walk(dirPath, files, includeDocs) {
   for (const entry of entries) {
     const fullPath = path.join(dirPath, entry.name);
     if (entry.isDirectory()) {
+      if (['.git', 'node_modules', 'build', 'temp'].includes(entry.name)) {
+        continue;
+      }
       walk(fullPath, files, includeDocs);
     } else if (entry.isFile()) {
       if (entry.name === 'article.md' || (includeDocs && entry.name.endsWith('.md'))) {
@@ -706,6 +718,7 @@ function lintBody(filePath, body, lineOffset, issues, options = {}) {
 
 function lintLine(filePath, line, lineNumber, issues, options = {}) {
   const isArticle = options.isArticle !== false;
+  const hasBackticks = line.includes('`');
   for (const rule of RULES) {
     if (rule.paragraphStart) {
       continue;
@@ -713,7 +726,7 @@ function lintLine(filePath, line, lineNumber, issues, options = {}) {
     if (!isArticle && !rule.docs) {
       continue;
     }
-    const subject = rule.skipInlineCode ? stripInlineCode(line) : line;
+    const subject = rule.skipInlineCode && hasBackticks ? stripInlineCode(line) : line;
     for (const pattern of rule.patterns) {
       if (pattern.test(subject)) {
         addIssue(issues, {
@@ -805,6 +818,9 @@ function lintParagraphStart(filePath, line, lineNumber, issues) {
 function lintMetrics(filePath, body, issues) {
   const cleaned = stripCodeBlocks(body);
   const sentences = splitSentences(cleaned);
+  if (sentences.length < 3) {
+    return;
+  }
   const lineCount = cleaned ? cleaned.split(/\r?\n/).length : 0;
 
   if (lineCount) {
