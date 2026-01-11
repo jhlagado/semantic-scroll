@@ -578,8 +578,8 @@ For MVP, templates are explicitly enumerated.
 Example:
 
 - `templates/home.html`
-- `templates/tag.html`
-- `templates/day.html`
+- `templates/tags.html`
+- `templates/blog.html`
 
 Later extensions may include:
 
@@ -587,6 +587,20 @@ Later extensions may include:
 - parameterized template selection
 
 Implicit template discovery is not allowed.
+
+### 11.1 Template Glossary
+
+The build uses a fixed set of template files. Each one maps to a specific output family and should be understood as a stable part of the publishing surface.
+
+- `templates/home.html` renders the site home page at `/`.
+- `templates/article.html` renders full article pages at their canonical content paths.
+- `templates/blog.html` renders the archive landing page at `/content/blog/`.
+- `templates/year.html` renders yearly archive pages at `/content/blog/YYYY/`.
+- `templates/summary-index.html` renders summary lists for month pages and tag pages, including tag year pages.
+- `templates/tags.html` renders the tag index at `/tags/`.
+- `templates/series.html` renders the series index at `/series/`.
+- `templates/series-articles.html` renders full-article series pages at `/series/<series>/` and `/series/<series>/<year>/`.
+- `templates/about.html` renders the about page at `/about/` when present.
 
 ---
 

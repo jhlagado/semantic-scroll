@@ -1,5 +1,5 @@
 ---
-title: "Templates as Mechanical Stamps — Third"
+title: "Templates as Mechanical Stamps"
 status: published
 tags:
   - templating
@@ -10,7 +10,7 @@ series: templating
 summary: "Templates hold structure and nothing else, so queries select content and the build stamps it into place. A short caption line turns listings into semantic figures without raw HTML."
 ---
 
-# Templates as Mechanical Stamps — Third
+# Templates as Mechanical Stamps
 *January 12, 2026* | Series: templating | Tags: templating, publishing, process, tooling
 
 I keep templates from deciding what content exists, so the build pipeline and the query layer take on that responsibility. If you missed the earlier pieces, start with [Why Websites Need Templates](/content/blog/2026/01/12/03-why-websites-need-templates/) and [When Templates Start Making Decisions](/content/blog/2026/01/12/04-when-templates-become-programs/).

@@ -335,12 +335,19 @@ function renderSite(index, queryResults) {
   cleanDir(OUTPUT_DIR);
   ensureDir(OUTPUT_DIR);
 
+  const published = queryResults['all-published-posts']
+    ? queryResults['all-published-posts'].slice()
+    : index.filter((item) => item.frontmatter.status === 'published').sort(makeSortFn('date-asc'));
+
   const homeTemplate = fs.readFileSync(HOME_TEMPLATE, 'utf8');
   const homeHtml = renderTemplate(
-    applyMeta(homeTemplate, {
-      canonical: joinUrl(SITE_URL, '/'),
-      description: SITE_DESCRIPTION
-    }),
+    applySlots(
+      applyMeta(homeTemplate, {
+        canonical: joinUrl(SITE_URL, '/'),
+        description: SITE_DESCRIPTION
+      }),
+      { 'year-list': buildYearList(published, '/content/blog/') }
+    ),
     queryResults
   );
   writeFile(path.join(OUTPUT_DIR, 'index.html'), homeHtml);
@@ -384,10 +391,6 @@ function renderSite(index, queryResults) {
     ensureDir(outputDir);
     writeFile(outputFile, articleHtml);
   }
-
-  const published = queryResults['all-published-posts']
-    ? queryResults['all-published-posts'].slice()
-    : index.filter((item) => item.frontmatter.status === 'published').sort(makeSortFn('date-asc'));
 
   renderArchiveRoot(published);
   renderYearArchives(published);
@@ -512,15 +515,7 @@ function copyStaticAssets() {
 
 function renderArchiveRoot(published) {
   const template = fs.readFileSync(BLOG_TEMPLATE, 'utf8');
-  const yearCounts = countBy(published, (item) => item.year);
-  const years = Object.keys(yearCounts).sort((a, b) => Number(b) - Number(a));
-
-  const yearList = years.length
-    ? years.map((year) => {
-      const count = yearCounts[year];
-      return `<li><a href="/content/blog/${year}/">${escapeHtml(year)}</a> (${count})</li>`;
-    }).join('\n')
-    : '<li class="archive-empty">No posts yet.</li>';
+  const yearList = buildYearList(published, '/content/blog/');
 
   const html = renderTemplate(
     applySlots(
@@ -533,6 +528,18 @@ function renderArchiveRoot(published) {
     {}
   );
   writeFile(path.join(ARCHIVE_OUTPUT_ROOT, 'index.html'), html);
+}
+
+function buildYearList(items, basePath) {
+  const yearCounts = countBy(items, (item) => item.year);
+  const years = Object.keys(yearCounts).sort((a, b) => Number(b) - Number(a));
+  if (!years.length) {
+    return '<li class="archive-empty">No posts yet.</li>';
+  }
+  return years.map((year) => {
+    const count = yearCounts[year];
+    return `<li><a href="${basePath}${year}/">${escapeHtml(year)}</a> (${count})</li>`;
+  }).join('\n');
 }
 
 function renderYearArchives(published) {
@@ -634,8 +641,8 @@ function renderTagArchives(published) {
   const tags = Array.from(tagMap.keys()).sort();
   for (const tag of tags) {
     const items = tagMap.get(tag);
-    const itemsAsc = sortItems(items, 'date-asc');
-    const latest = itemsAsc.slice(0, 25);
+    const itemsDesc = sortItems(items, 'date-desc');
+    const latest = itemsDesc.slice(0, 25);
     const yearCounts = countBy(items, (item) => item.year);
     const years = Object.keys(yearCounts).sort((a, b) => Number(b) - Number(a));
 
@@ -675,7 +682,8 @@ function renderTagArchives(published) {
     writeFile(path.join(OUTPUT_DIR, 'tags', tag, 'index.html'), html);
 
     for (const year of years) {
-      const yearItems = itemsAsc.filter((item) => item.year === year);
+      const yearItems = items.filter((item) => item.year === year);
+      const yearItemsDesc = sortItems(yearItems, 'date-desc');
       const yearSlots = {
         'page-title': escapeHtml(`Tag: ${tag} - ${year} - Semantic Scroll`),
         'page-heading': escapeHtml(`Tag: ${tag} - ${year}`),
@@ -691,7 +699,7 @@ function renderTagArchives(published) {
           yearSlots
         ),
         {
-          'page-posts': yearItems
+          'page-posts': yearItemsDesc
         }
       );
       writeFile(path.join(OUTPUT_DIR, 'tags', tag, year, 'index.html'), yearHtml);
@@ -717,8 +725,11 @@ function renderSeriesArchives(published) {
   const seriesNames = Array.from(seriesMap.keys()).sort();
 
   for (const series of seriesNames) {
-    const items = sortItems(seriesMap.get(series), 'date-asc');
-    const yearCounts = countBy(items, (item) => item.year);
+    const seriesItems = seriesMap.get(series);
+    const itemsDesc = sortItems(seriesItems, 'date-desc');
+    const latest = itemsDesc.slice(0, 25);
+    const latestAsc = sortItems(latest, 'date-asc');
+    const yearCounts = countBy(seriesItems, (item) => item.year);
     const years = Object.keys(yearCounts).sort((a, b) => Number(b) - Number(a));
 
     const yearList = years.length
@@ -728,7 +739,7 @@ function renderSeriesArchives(published) {
         '  <ul class="tag-year-list">',
         years.map((year) => {
           const count = yearCounts[year];
-          return `    <li><a href="/content/blog/${year}/">${escapeHtml(year)}</a> (${count})</li>`;
+          return `    <li><a href="/series/${series}/${year}/">${escapeHtml(year)}</a> (${count})</li>`;
         }).join('\n'),
         '  </ul>',
         '</section>'
@@ -751,10 +762,34 @@ function renderSeriesArchives(published) {
         slots
       ),
       {
-        'page-posts': items
+        'page-posts': latestAsc
       }
     );
     writeFile(path.join(OUTPUT_DIR, 'series', series, 'index.html'), html);
+
+    for (const year of years) {
+      const yearItems = seriesItems.filter((item) => item.year === year);
+      const yearItemsAsc = sortItems(yearItems, 'date-asc');
+      const yearSlots = {
+        'page-title': escapeHtml(`Series: ${series} - ${year} - Semantic Scroll`),
+        'page-heading': escapeHtml(`Series: ${series} - ${year}`),
+        'page-intro': '',
+        'page-extra': yearList
+      };
+      const yearHtml = renderTemplate(
+        applySlots(
+          applyMeta(template, {
+            canonical: joinUrl(SITE_URL, `/series/${series}/${year}/`),
+            description: SITE_DESCRIPTION
+          }),
+          yearSlots
+        ),
+        {
+          'page-posts': yearItemsAsc
+        }
+      );
+      writeFile(path.join(OUTPUT_DIR, 'series', series, year, 'index.html'), yearHtml);
+    }
   }
 }
 
