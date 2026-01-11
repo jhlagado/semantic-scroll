@@ -148,7 +148,7 @@ Rules:
 - default view is `article`
 - allowed values are `article`, `summary`, and `summary-list`
 
-`article` renders full Markdown bodies. `summary` renders a built-in summary block. `summary-list` renders the same summary block wrapped in a list item for use in `<ul>` or `<ol>` containers.
+`article` renders full Markdown bodies. `summary` renders a built-in summary block. `summary-list` renders the same summary block wrapped in a list item for use in `<ul>` or `<ol>` containers. `tag-list` renders a list of tags derived from the query results and returns `<li>` items for use in `<ul>` or `<ol>` containers.
 
 ---
 

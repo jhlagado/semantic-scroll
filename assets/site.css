@@ -191,10 +191,6 @@ main h1:first-child {
   margin: 0;
 }
 
-.series-entries .article-entry + .article-entry {
-  margin-top: 1.6rem;
-}
-
 .article-entry {
   margin-top: 3rem;
 }

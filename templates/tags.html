@@ -16,7 +16,7 @@
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
   </noscript>
-  <link rel="icon" type="image/svg+xml" href="/assets/semantic-scroll.svg" />
+  <link rel="icon" type="image/png" href="/assets/semantic-scroll-fav.png" />
   <link rel="stylesheet" href="/assets/site.css" />
 </head>
 <body>
@@ -37,12 +37,15 @@
     </header>
     <main id="main">
       <h1>Tags</h1>
-      <ul class="index-list" data-slot="tag-list">
-        <li class="archive-empty">No tags yet.</li>
+      <ul class="index-list">
+        <template data-query="all-published-posts" data-view="tag-list">
+          <li class="archive-empty">No tags yet.</li>
+        </template>
       </ul>
     </main>
     <footer class="site-footer">
       <p>© 2026 John Hardy. GPL-3.0.</p>
+      <p>Published from the same repo that builds this site. <a href="https://github.com/jhlagado/semantic-scroll">GitHub</a>.</p>
     </footer>
   </div>
   <script>
