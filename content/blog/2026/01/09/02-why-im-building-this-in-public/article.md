@@ -19,6 +19,8 @@ This repository is where I'm working decisions out and where those workings live
 
 The writing is one of the tools I'm using to build the system. It affects the choices I make, and it keeps the work honest because it has to be readable to someone besides me.
 
+If you want the companion piece on pace and voice, read [Writing Fast Without Writing Sloppily](/content/blog/2026/01/09/03-writing-fast-without-writing-sloppily/).
+
 A central concern in the experiment is how AI fits into this. I want AI as a constrained collaborator with clear boundaries about authority, intent, and what I allow to change. Those constraints preserve the shape of the work while still letting me use speed and advantage when they help.
 
 The blog that will appear here comes from the project and follows the same rules. As the repository grows, the system that publishes it will grow alongside it. Templates, queries, build scripts, and deployment will show up because the writing needs them.

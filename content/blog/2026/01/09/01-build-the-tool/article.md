@@ -23,3 +23,5 @@ I minimize imports and treat third-party tools as last resorts. If I can solve a
 On the publishing side, I am aiming for the most boring convention that still works: a home page index with the newest post at the top, and a dedicated article page for each post with a stable permalink. That is the shape of the site I want to live inside.
 
 This is the beginning of the genesis series. The next posts will move through the philosophy and the mechanics, but they will stay grounded in the same principle: build the tool while using it, and let the system explain itself in real time.
+
+Related posts: [Blog Philosophy](/content/blog/2026/01/12/02-blog-philosophy-working-spec/), [A Blog That Is Also the Build System](/content/blog/2026/01/12/01-a-blog-that-is-also-the-build-system/).
