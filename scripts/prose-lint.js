@@ -31,6 +31,8 @@ const RULES = [
       // Pivotal/Transformative
       /\bpivotal\b/i,
       /\bgame-changer\b/i,
+      /\bempower(?:s|ed|ing)?\b/i,
+      /\brevolutionary\b/i,
       /\bunlock(?:s|ed|ing)?\b/i,
       /\bunleash(?:es|ed|ing)?\b/i,
       /\brevolutioniz(?:e|es|ed|ing)\b/i,
@@ -70,6 +72,10 @@ const RULES = [
     patterns: [
       /\bin short\b/i,
       /\bin summary\b/i,
+      /\bin the age of\b/i,
+      /\bin an age of\b/i,
+      /\bin the era of\b/i,
+      /\bin an era of\b/i,
       /\bat the end of the day\b/i,
       /\bthe key takeaway\b/i,
       /\bultimately\b/i,
