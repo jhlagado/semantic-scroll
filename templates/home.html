@@ -36,9 +36,16 @@
       </nav>
     </header>
     <main id="main">
-      <template data-query="home-posts">
-        <p class="summary-empty">No posts yet.</p>
-      </template>
+      <h1>Latest posts</h1>
+      <ul class="summary-list">
+        <template data-query="home-posts" data-view="summary-list">
+          <li class="summary-empty">No posts yet.</li>
+        </template>
+      </ul>
+      <h2>Years</h2>
+      <ul class="archive-years" data-slot="year-list">
+        <li class="archive-empty">No posts yet.</li>
+      </ul>
     </main>
     <footer class="site-footer">
       <p>© 2026 John Hardy. GPL-3.0.</p>
