@@ -24,5 +24,3 @@ Tags describe subject matter. They collect material that shares a topic without 
 Both groupings come from the same frontmatter table. Each article contributes a row with its date, tags, and series. The build applies different sorts to that same data. I need no extra structure in the files themselves. What changes is how I shape the list.
 
 This distinction lets the archive behave in two different ways at once. A series behaves like a log or a chaptered notebook, where order carries weight. A tag behaves like a topical index, where breadth and freshness matter more than sequence. The same article can sit inside both without conflict, because one describes its place in a story and the other describes what it is about.
-
-From a maintenance point of view this stays simple. Adding an article means adding one more row. Whether it appears in a series page, a tag page, or a month index depends only on how that row gets filtered and sorted.

@@ -23,4 +23,6 @@ This separation keeps indexing logic small and inspectable. If a list looks wron
 
 The constraint is intentional. Queries are plain objects, not a DSL. They cannot grow into a second programming language. That limit is a feature: it prevents hidden logic and keeps the system declarative, not imperative.
 
+Feeds follow the same rule. The global feed and tag or series feeds come from named queries, not scraped HTML. That keeps discovery aligned with the rest of the site and makes the outputs small and deterministic.
+
 I can change a template without changing the data, or refine a query without touching markup. Indexes remain mechanical outputs of named inputs.
