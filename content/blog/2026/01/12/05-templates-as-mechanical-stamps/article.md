@@ -7,7 +7,7 @@ tags:
   - process
   - tooling
 series: templating
-summary: "Templates hold structure and nothing else, so queries select content and the build stamps it into place."
+summary: "Templates hold structure and nothing else, so queries select content and the build stamps it into place. A short caption line turns listings into semantic figures without raw HTML."
 ---
 
 # Templates as Mechanical Stamps — Third

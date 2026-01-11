@@ -152,6 +152,21 @@ Rules:
 
 ---
 
+### 2.4 Render Wrappers
+
+Render wrappers are optional and exist only to provide semantic structure around full article bodies when a template needs it. The wrapper choice is part of layout, so the template must request it explicitly.
+
+Rules:
+
+- `data-wrap` is optional
+- the only supported value is `article`
+- `data-wrap="article"` is valid only when `data-view="article"`
+- the wrapper applies to each rendered article fragment
+
+When present, the build wraps each rendered article body in `<article class="article-entry">...</article>`. If no wrapper is requested, the build emits the article body without an extra container.
+
+---
+
 ## 3. Query Result Semantics in Templates
 
 Each `<template data-query="X">` slot is processed independently.
@@ -312,10 +327,10 @@ Process:
 
 - load article Markdown
 - convert to HTML fragment
-- inject fragment as-is at slot position
-- repeat for each record
+  - inject fragment as-is at slot position
+  - repeat for each record
 
-No wrapper is imposed by the template.
+By default, no wrapper is imposed by the template. If a template needs each article body wrapped in `<article class="article-entry">`, it must request that explicitly with `data-wrap="article"` on the render slot.
 
 ---
 

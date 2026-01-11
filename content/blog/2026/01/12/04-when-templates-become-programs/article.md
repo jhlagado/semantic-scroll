@@ -7,7 +7,7 @@ tags:
   - process
   - tooling
 series: templating
-summary: "I describe how templates take on selection work and why that shifts them from structure into control."
+summary: "I describe how templates take on selection work and why that shifts them from structure into control. I show how loops and conditionals blur layout with selection and make pages harder to predict."
 ---
 
 # When Templates Start Making Decisions
