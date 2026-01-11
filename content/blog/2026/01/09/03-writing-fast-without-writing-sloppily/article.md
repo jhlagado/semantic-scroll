@@ -3,15 +3,14 @@ title: "Writing Fast Without Writing Sloppily"
 status: published
 tags:
   - writing
-  - process
-  - tooling
   - automation
+  - prose
 series: genesis
 summary: "Notes on writing quickly without losing voice, and on using local linting as friction rather than a judge. I want speed without clichés, with tools that slow me down only when the prose goes flat."
 ---
 
 # Writing Fast Without Writing Sloppily
-*January 9, 2026* | Series: genesis | Tags: writing, process, tooling, automation
+*January 9, 2026* | Series: genesis | Tags: writing, automation, prose
 
 Writing quickly matters to this project. Without it I'd slow down and publish less. The pace drives the experiment: ideas form in real time, I'm making decisions under pressure, and the value is in capturing them while they're still alive. That creates tension: speed pulls me toward shortcuts and familiar phrasing that drain the work of voice.
 

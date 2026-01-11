@@ -2,16 +2,15 @@
 title: "An Article Is a File"
 status: published
 tags:
-  - publishing
-  - process
-  - tooling
+  - markdown
+  - filesystem
   - structure
 series: content-store
 summary: "Each article is a single Markdown file in a dated folder, with frontmatter for indexing and a body for readers. The path carries the time, and the file carries the content."
 ---
 
 # An Article Is a File
-*January 11, 2026* | Series: content-store | Tags: publishing, process, tooling, structure
+*January 11, 2026* | Series: content-store | Tags: markdown, filesystem, structure
 
 In this system an article lives as one Markdown file inside its own directory. The folder fixes its place in time, and the file holds the text.
 

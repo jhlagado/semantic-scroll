@@ -2,18 +2,15 @@
 title: "Indexing as Queries"
 status: published
 tags:
-  - publishing
-  - process
-  - tooling
-  - structure
   - indexing
   - queries
+  - architecture
 series: indexing
 summary: "Indexes are built by named queries, not ad-hoc logic, so selection stays declarative and repeatable. Templates stay dumb while queries stay readable, which keeps the archive explainable."
 ---
 
 # Indexing as Queries
-*January 11, 2026* | Series: indexing | Tags: publishing, process, tooling, structure, indexing, queries
+*January 11, 2026* | Series: indexing | Tags: indexing, queries, architecture
 
 I treat indexing as a query problem, not a rendering problem. Every list on the site comes from a named query that selects a set of articles and a sort order. That keeps selection declarative and repeatable, and it keeps logic out of templates.
 

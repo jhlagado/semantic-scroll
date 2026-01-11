@@ -2,16 +2,15 @@
 title: "Why I'm Building This in Public"
 status: published
 tags:
-  - publishing
   - writing
-  - process
   - ai
+  - philosophy
 series: genesis
 summary: "Writing in public forces clarity, keeps the work tied to the code, and makes the AI constraints visible as the system grows. The blog becomes a place to test boundaries and keep the record honest."
 ---
 
 # Why I'm Building This in Public
-*January 9, 2026* | Series: genesis | Tags: publishing, writing, process, ai
+*January 9, 2026* | Series: genesis | Tags: writing, ai, philosophy
 
 I'm building this in public because writing details down changes how I think. When ideas stay private they remain vague and provisional. When I write for others, even an imagined reader, the ideas sharpen. Assumptions surface, decisions harden, and gaps show.
 

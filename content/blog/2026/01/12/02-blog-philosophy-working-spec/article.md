@@ -3,15 +3,15 @@ title: "Blog Philosophy"
 status: published
 tags:
   - philosophy
-  - publishing
   - web
-  - process
+  - accessibility
+  - performance
 series: genesis
 summary: "I outline the motivations and design instincts that shape the blog, from classic HTML to a minimal toolchain. The focus stays on legibility, accessibility, and a system that documents itself while it runs."
 ---
 
 # Blog Philosophy
-*January 12, 2026* | Series: genesis | Tags: philosophy, publishing, web, process
+*January 12, 2026* | Series: genesis | Tags: philosophy, web, accessibility, performance
 
 I write this down early because it is the anchor I will keep returning to. The blog only works if it lets me publish day to day technical work without friction, with AI drafting alongside me, and with me keeping control of the final voice. That constraint is the condition that makes the rest of the system worth building.
 

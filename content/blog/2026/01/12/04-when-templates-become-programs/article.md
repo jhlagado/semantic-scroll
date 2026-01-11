@@ -3,16 +3,15 @@ title: "When Templates Start Making Decisions"
 status: published
 tags:
   - templating
-  - publishing
-  - process
-  - tooling
+  - rendering
+  - architecture
 series: templating
 summary: "I describe how templates take on selection work and why that shifts them from structure into control. I show how loops and conditionals blur layout with selection and make pages harder to predict."
 ---
 
 # When Templates Start Making Decisions
 
-_January 12, 2026_ | Series: templating | Tags: templating, publishing, process, tooling
+_January 12, 2026_ | Series: templating | Tags: templating, rendering, architecture
 
 If you missed the first piece, start with [Why Websites Need Templates](/content/blog/2026/01/12/03-why-websites-need-templates/). It lays out the baseline that this piece builds on.
 

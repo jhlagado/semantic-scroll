@@ -2,16 +2,15 @@
 title: "A Blog That Is Also the Build System"
 status: published
 tags:
-  - publishing
-  - process
-  - tooling
-  - structure
+  - build-system
+  - architecture
+  - workflow
 series: genesis
 summary: "I keep the writing, scripts, and structure in one place so the site grows alongside its build path. The repository becomes the diary, and tooling changes become entries in the record."
 ---
 
 # A Blog That Is Also the Build System
-*January 12, 2026* | Series: genesis | Tags: publishing, process, tooling, structure
+*January 12, 2026* | Series: genesis | Tags: build-system, architecture, workflow
 
 I built the repository to be the blog, the build system, and the record of how the build system changes. That sounds neat as a concept, but it is also a practical choice. If I keep the content in a single place and put the scripts that shape it in the same place, I can read the whole system like a diary. The log of work becomes the work. The writing lives inside the software that is taking shape.
 

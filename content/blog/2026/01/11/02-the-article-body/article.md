@@ -2,16 +2,15 @@
 title: "The Article Body"
 status: published
 tags:
-  - publishing
-  - process
-  - tooling
+  - markdown
+  - writing
   - structure
 series: content-store
 summary: "The body is the readable record: plain Markdown text, links, code, and media, with layout left to templates. Everything the reader sees lives here so the file stands alone without the build."
 ---
 
 # The Article Body
-*January 11, 2026* | Series: content-store | Tags: publishing, process, tooling, structure
+*January 11, 2026* | Series: content-store | Tags: markdown, writing, structure
 
 Frontmatter tells the system what an article is. The body tells the reader what it says.
 

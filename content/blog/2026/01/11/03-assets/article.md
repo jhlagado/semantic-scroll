@@ -2,17 +2,15 @@
 title: "Assets"
 status: published
 tags:
-  - publishing
-  - process
-  - tooling
-  - structure
   - assets
+  - filesystem
+  - structure
 series: content-store
 summary: "Assets live beside the article that uses them, named in Markdown and resolved to absolute URLs at build time. Keeping files local to each entry makes moves safe and links stable."
 ---
 
 # Assets
-*January 11, 2026* | Series: content-store | Tags: publishing, process, tooling, structure, assets
+*January 11, 2026* | Series: content-store | Tags: assets, filesystem, structure
 
 An article rarely stands on text alone. Screenshots, diagrams, photos, and small media files belong to the same unit of work. In this system those files live beside the article that references them.
 
