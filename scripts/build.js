@@ -1053,6 +1053,7 @@ function renderMarkdown(body, basePath = '') {
   let inCode = false;
   let codeLang = '';
   let codeLines = [];
+  let pendingCodeBlock = null;
 
   function flushParagraph() {
     if (!paragraph.length) {
@@ -1086,13 +1087,32 @@ function renderMarkdown(body, basePath = '') {
   function flushCode() {
     const code = escapeHtml(codeLines.join('\n'));
     const classAttr = codeLang ? ` class="language-${codeLang}"` : '';
-    html += `<pre><code${classAttr}>${code}</code></pre>\n`;
+    const blockHtml = `<pre><code${classAttr}>${code}</code></pre>\n`;
+    if (pendingCodeBlock) {
+      html += pendingCodeBlock;
+    }
+    pendingCodeBlock = blockHtml;
     codeLines = [];
     codeLang = '';
   }
 
   for (const line of lines) {
     const trimmed = line.trim();
+
+    const captionMatch = pendingCodeBlock ? trimmed.match(/^Caption:\s*(.+)$/) : null;
+    if (captionMatch) {
+      flushParagraph();
+      const captionText = captionMatch[1].trim();
+      const captionHtml = renderInline(captionText);
+      html += `<figure class="listing">\n${pendingCodeBlock}<figcaption>${captionHtml}</figcaption>\n</figure>\n`;
+      pendingCodeBlock = null;
+      continue;
+    }
+
+    if (pendingCodeBlock && trimmed) {
+      html += pendingCodeBlock;
+      pendingCodeBlock = null;
+    }
 
     if (trimmed.startsWith('```')) {
       if (inCode) {
@@ -1130,6 +1150,11 @@ function renderMarkdown(body, basePath = '') {
 
   if (inCode) {
     flushCode();
+  }
+
+  if (pendingCodeBlock) {
+    html += pendingCodeBlock;
+    pendingCodeBlock = null;
   }
 
   flushParagraph();

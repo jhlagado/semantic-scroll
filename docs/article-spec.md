@@ -49,6 +49,18 @@ _January 9, 2026_ | Series: build-log | Tags: z80, assembly, retrocomputing
 
 The build wraps the date in a permalink to the article page, so the header stays readable as plain Markdown while still offering a direct link when rendered.
 
+The body also supports captioned code listings. If the next non-empty line after a fenced code block starts with `Caption:`, the build wraps the code block in a `<figure class="listing">` and renders the caption as `<figcaption>`. This keeps listings semantic and accessible without forcing raw HTML into the Markdown.
+
+````markdown
+```html
+<ul>
+  <li>First post</li>
+  <li>Second post</li>
+</ul>
+```
+Caption: Short posts I want to surface on the home page.
+````
+
 ---
 
 ## 3. Archetypes in Action
