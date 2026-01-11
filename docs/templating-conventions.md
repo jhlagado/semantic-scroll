@@ -145,7 +145,7 @@ Fallback content must never:
 
 ## 6. Semantic HTML Requirements
 
-Templates must prioritize semantic elements over generic containers.
+Templates must prioritise semantic elements over generic containers.
 
 ### 6.1 Strongly Preferred Elements
 

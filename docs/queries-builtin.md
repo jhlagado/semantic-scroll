@@ -12,7 +12,7 @@ All other queries are considered **derived or custom** and must conform to the s
 Canonical queries exist to:
 
 * define the default browsing paths through the content
-* stabilize URLs and page structure
+* stabilise URLs and page structure
 * prevent ad-hoc or duplicated query definitions
 * provide predictable inputs for templates
 

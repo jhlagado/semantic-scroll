@@ -18,6 +18,7 @@ const args = process.argv.slice(2);
 const includePublished = args.includes('--all') || args.includes('--include-published');
 const strict = args.includes('--strict');
 const gate = args.includes('--gate') || args.includes('--ci');
+const report = args.includes('--report');
 const thresholds = resolveThresholds(args);
 const targets = extractTargets(args);
 
@@ -162,6 +163,73 @@ const RULES = [
       /\b(am|is|are|was|were|be|been|being)\b\s+\w+ed\b/i
     ],
     message: 'Possible passive voice'
+  },
+  {
+    name: 'us-spelling',
+    weight: 5,
+    patterns: [
+      /\bcolor\b/i,
+      /\bcolors\b/i,
+      /\bcenter\b/i,
+      /\bcenters\b/i,
+      /\bcentered\b/i,
+      /\bcentering\b/i,
+      /\borganize\b/i,
+      /\borganizes\b/i,
+      /\borganized\b/i,
+      /\borganizing\b/i,
+      /\banalyze\b/i,
+      /\banalyzed\b/i,
+      /\banalyzing\b/i,
+      /\boptimization\b/i,
+      /\boptimize\b/i,
+      /\boptimized\b/i,
+      /\boptimizing\b/i,
+      /\bbehavior\b/i,
+      /\bbehaviors\b/i,
+      /\bstabilize\b/i,
+      /\bstabilized\b/i,
+      /\bstabilizes\b/i,
+      /\bstabilizing\b/i,
+      /\bminimize\b/i,
+      /\bminimized\b/i,
+      /\bminimizes\b/i,
+      /\bminimizing\b/i,
+      /\bcustomize\b/i,
+      /\bcustomized\b/i,
+      /\bcustomizes\b/i,
+      /\bcustomizing\b/i,
+      /\bprioritize\b/i,
+      /\bprioritized\b/i,
+      /\bprioritizes\b/i,
+      /\bprioritizing\b/i,
+      /\bsummarize\b/i,
+      /\bsummarized\b/i,
+      /\bsummarizes\b/i,
+      /\bsummarizing\b/i,
+      /\bvisualize\b/i,
+      /\bvisualized\b/i,
+      /\bvisualizes\b/i,
+      /\bvisualizing\b/i,
+      /\bcatalog\b/i,
+      /\bcatalogs\b/i,
+      /\bgray\b/i,
+      /\bhonor\b/i,
+      /\bhonors\b/i,
+      /\bhonored\b/i,
+      /\bhonoring\b/i,
+      /\bmeter\b/i,
+      /\bmeters\b/i,
+      /\bfiber\b/i,
+      /\bdefense\b/i,
+      /\boffense\b/i,
+      /\bapologize\b/i,
+      /\bapologized\b/i,
+      /\bapologizes\b/i,
+      /\bapologizing\b/i
+    ],
+    message: 'US spelling (use UK/AU)',
+    skipInlineCode: true
   }
 ];
 
@@ -335,6 +403,16 @@ function main() {
 
   if (!reports.length) {
     return;
+  }
+
+  if (report) {
+    writeReport({
+      checked,
+      skipped,
+      totalIssues,
+      totalScore,
+      reports
+    });
   }
 
   let totalHigh = 0;
@@ -601,12 +679,13 @@ function lintLine(filePath, line, lineNumber, issues) {
     if (rule.paragraphStart) {
       continue;
     }
+    const subject = rule.skipInlineCode ? stripInlineCode(line) : line;
     for (const pattern of rule.patterns) {
-      if (pattern.test(line)) {
+      if (pattern.test(subject)) {
         addIssue(issues, {
           line: lineNumber,
           weight: rule.weight,
-          message: `${rule.message}: "${extractMatch(pattern, line)}"`
+          message: `${rule.message}: "${extractMatch(pattern, subject)}"`
         });
       }
     }
@@ -772,6 +851,10 @@ function lintMetrics(filePath, body, issues) {
 
 function stripCodeBlocks(text) {
   return text.replace(/```[\s\S]*?```/g, '');
+}
+
+function stripInlineCode(text) {
+  return text.replace(/`[^`]*`/g, '');
 }
 
 function splitSentences(text) {
@@ -994,6 +1077,13 @@ function trimSnippet(text) {
 function countMatches(text, regex) {
   const matches = text.match(regex);
   return matches ? matches.length : 0;
+}
+
+function writeReport(payload) {
+  const reportDir = path.join(ROOT, 'temp');
+  const reportPath = path.join(reportDir, 'lint-report.json');
+  fs.mkdirSync(reportDir, { recursive: true });
+  fs.writeFileSync(reportPath, JSON.stringify(payload, null, 2));
 }
 
 main();

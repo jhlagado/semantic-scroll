@@ -20,7 +20,7 @@ Open `article.md` in any entry and the shape stays the same. A YAML block sits a
 ```markdown
 ---
 title: "The Shape of the Archive"
-summary: "How this blog organizes itself on disk instead of inside a database."
+summary: "How this blog organises itself on disk instead of inside a database."
 series: genesis
 tags: [tooling, publishing]
 status: published

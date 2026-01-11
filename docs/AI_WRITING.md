@@ -10,7 +10,7 @@ The goal is to preserve a **human-first, authored "soul"** across the technical 
 
 AI-generated text often defaults to a "corporate-optimistic" tone characterized by vague metaphors and repetitive vocabulary. This is strictly forbidden. 
 
-We prioritize:
+We prioritise:
 - **Directness** over generalization.
 - **Concrete facts** over abstract summaries.
 - **Human experience** over "AI expertise."
@@ -26,7 +26,7 @@ If any of the following words or phrases appear in your output without an extrem
 | :--- | :--- |
 | **Pivotal/Transformative** | pivotal, game-changer, unlock, unleash, revolutionizing, landscape |
 | **Exploring/Navigating** | delve, dive into, navigate the complexities, embark on a journey |
-| **Optimization/Efficiency** | streamline, synergize, maximize, leverage (use "use"), tap into |
+| **Optimisation/Efficiency** | streamline, synergize, maximize, leverage (use "use"), tap into |
 | **Vague Value** | comprehensive, robust, bespoke, seamless transition, vibrant |
 | **Summary Crutches** | In today's fast-paced world, in conclusion (unless in a spec), looking ahead |
 

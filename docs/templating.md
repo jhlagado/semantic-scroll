@@ -333,7 +333,7 @@ They must be written **explicitly in the Markdown body**.
 
 Metadata is never implicitly rendered.
 
-This enforces clarity and avoids “magic” behavior.
+This enforces clarity and avoids “magic” behaviour.
 
 ---
 

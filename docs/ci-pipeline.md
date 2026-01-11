@@ -234,7 +234,7 @@ For each article directory:
 
 Only files inside `assets/` are treated as publishable assets. The article root should contain `article.md` and nothing else.
 
-Assets are never deduplicated or optimized automatically at this stage.
+Assets are never deduplicated or optimised automatically at this stage.
 
 ---
 

@@ -57,7 +57,7 @@ While the Article Unit is flexible, it typically aligns with specific archetypes
 
 ### 3.1 The Technical Diary (Series Log)
 
-A diary entry focuses on rapid capture and narrative flow. It often exists as part of a continuous **series**, providing a chronological account of progress or discovery. Series membership is declared in frontmatter as a single value, while tags remain topical. The style is informal and conversational, prioritized for speed and clarity of thought.
+A diary entry focuses on rapid capture and narrative flow. It often exists as part of a continuous **series**, providing a chronological account of progress or discovery. Series membership is declared in frontmatter as a single value, while tags remain topical. The style is informal and conversational, prioritised for speed and clarity of thought.
 
 > _Example (Diary)_:
 >
@@ -65,7 +65,7 @@ A diary entry focuses on rapid capture and narrative flow. It often exists as pa
 >
 > _January 10, 2026_ | Series: timing-fixes | Tags: hardware, debugging
 >
-> Today I finally tracked down the timing issue in the bus controller. It wasn't a logic error in the code, but a subtle propagation delay on the physical board. By shifting the clock edge slightly, the signals stabilized. This log records the specific probe points and values that led to the fix...
+> Today I finally tracked down the timing issue in the bus controller. It wasn't a logic error in the code, but a subtle propagation delay on the physical board. By shifting the clock edge slightly, the signals stabilised. This log records the specific probe points and values that led to the fix...
 
 ### 3.2 The Formal Specification (Spec)
 
@@ -84,7 +84,7 @@ A specification is normative and precise. It uses explicitly numbered sections a
 
 ### 3.3 The Reference Document
 
-Reference docs are optimized for long-term lookup. They use objective prose, frequent headings, and extensive code blocks to provide a durable resource for a specific topic.
+Reference docs are optimised for long-term lookup. They use objective prose, frequent headings, and extensive code blocks to provide a durable resource for a specific topic.
 
 ---
 

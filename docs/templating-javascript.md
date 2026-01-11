@@ -40,7 +40,7 @@ If any of the above fail, the system is broken by definition.
 
 ## 3. What JavaScript Is Allowed to Do
 
-JavaScript may be used **only** for the following classes of behavior.
+JavaScript may be used **only** for the following classes of behaviour.
 
 ### 3.1 Navigation Enhancement
 

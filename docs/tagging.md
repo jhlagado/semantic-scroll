@@ -25,12 +25,12 @@ title: "The Shape of the Archive"
 series: genesis
 tags: [tooling, publishing]
 status: published
-summary: "How this blog organizes itself on disk instead of inside a database."
+summary: "How this blog organises itself on disk instead of inside a database."
 thumbnail: hero.jpg
 ```
 
 Dates stay filesystem-derived. If a date needs to appear in the article header, it belongs in the Markdown body.
 
-## Indexing Behavior
+## Indexing Behaviour
 
 The build generates two kinds of lists. Series indexes pull every article that declares a `series` value and order the result by date ascending. Tag indexes pull every article that carries a tag and order the result by date descending. Both lists render as summaries, while full articles remain Markdown-first.

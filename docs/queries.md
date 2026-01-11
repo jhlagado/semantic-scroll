@@ -3,7 +3,7 @@
 This document records the architectural and design decisions for the AI-assisted blog system.
 It is derived from `docs/PRD.md` and is **normative**: if future work conflicts with this document, the future work is wrong unless this document is explicitly updated.
 
-The system prioritizes clarity, durability, classic web principles, and strict separation of concerns.
+The system prioritises clarity, durability, classic web principles, and strict separation of concerns.
 
 ---
 
@@ -302,7 +302,7 @@ Injected content is **HTML converted from Markdown**.
 - Dependencies allowed only for:
 
   - non-trivial correctness
-  - non-trivial optimization (e.g. minification)
+  - non-trivial optimisation (e.g. minification)
 
 Core pipeline must remain inspectable and boring.
 
@@ -335,7 +335,7 @@ These must never erode:
 - folder taxonomy remains stable
 - filesystem order always makes sense to a human, but traversal order has no semantic meaning
 
-If behavior matters, it must be specified explicitly. No smart defaults or silent guessing.
+If behaviour matters, it must be specified explicitly. No smart defaults or silent guessing.
 
 ---
 

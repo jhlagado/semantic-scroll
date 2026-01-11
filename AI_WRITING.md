@@ -50,6 +50,10 @@ Avoid the voice of:
 
 This is not instructional prose unless explicitly stated.
 
+### 2.1 Spelling
+
+I write in UK/Australian spelling throughout. American spellings are treated as errors.
+
 ---
 
 ## 3. Forbidden Rhetorical Patterns

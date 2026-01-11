@@ -301,5 +301,5 @@ At this point you have:
 - a constrained query language
 - a mechanical renderer
 - strict template rules
-- explicit CI behavior
+- explicit CI behaviour
 - a clear implementation path

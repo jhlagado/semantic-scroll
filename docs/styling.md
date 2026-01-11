@@ -40,7 +40,7 @@ Typography is a primary concern and should be treated as a usability feature, no
 
 Body text should target a line length around 60 to 75 characters, line height around 1.5 to 1.7, and generous vertical spacing between sections. Headings should follow a strict hierarchy without skipping levels, and they should be distinct without becoming banners. Code content must use a monospace font, preserve whitespace, and remain readable without excessive horizontal scrolling.
 
-Inline emphasis should remain subtle and legible. Links must be identifiable without relying solely on color, and underlines should not be removed unless replaced by an equally clear affordance.
+Inline emphasis should remain subtle and legible. Links must be identifiable without relying solely on colour, and underlines should not be removed unless replaced by an equally clear affordance.
 
 ## 7. Responsive Design
 
@@ -48,11 +48,11 @@ CSS must be written mobile-first, with base styles targeting small screens and e
 
 ## 8. Accessibility
 
-Styles must support accessibility by default. Color contrast must be sufficient, focus states must be visible, and text must remain readable at 200 percent zoom. Avoid relying on color alone for meaning. Focus outlines must not be removed unless replaced by an equally visible alternative.
+Styles must support accessibility by default. Colour contrast must be sufficient, focus states must be visible, and text must remain readable at 200 percent zoom. Avoid relying on colour alone for meaning. Focus outlines must not be removed unless replaced by an equally visible alternative.
 
 ## 9. Themes and User Preferences
 
-All colors should be defined via CSS variables. Hard-coded colors outside variable definitions are discouraged. The system should respect user color-scheme preferences using `prefers-color-scheme`, with manual theme switching optional and not required for MVP.
+All colours should be defined via CSS variables. Hard-coded colours outside variable definitions are discouraged. The system should respect user colour-scheme preferences using `prefers-color-scheme`, with manual theme switching optional and not required for MVP.
 
 Example tokens:
 

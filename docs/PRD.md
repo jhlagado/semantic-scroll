@@ -37,7 +37,7 @@ Ease of capture is critical. A post should be draftable in minutes, with the AI 
 
 The blog is also a technical diary. Posts should be easy to create on demand, often in the 500-word range, with enough structure to carry links, code, and images when needed. The aim is to document daily work in a way that remains useful later, both to the author and to readers who want a concise, high-quality view into the process.
 
-The project is also an experiment in public voice and discoverability. It should be friendly to search engines and to other AI systems that ingest and summarize content, which means clarity, stable structure, and predictable metadata.
+The project is also an experiment in public voice and discoverability. It should be friendly to search engines and to other AI systems that ingest and summarise content, which means clarity, stable structure, and predictable metadata.
 
 Quality should remain high even with rapid posting. Posts should read as deliberate and well-formed, not as rough dumps, while still keeping the barrier to capture low enough for daily use.
 
@@ -63,7 +63,7 @@ This section dives into the core principles that will shape the blog’s design 
 
 **Semantic HTML** means structuring content with meaningful tags that clearly define the role of each part of the page. This not only makes the content easier for humans to understand but also helps search engines and assistive technologies interpret it accurately. We’re not just building pages; we’re creating a well-labeled, well-structured document that stands the test of time.
 
-**Accessibility** is a non-negotiable priority. We’ll ensure that every page is fully navigable by keyboard, includes descriptive alt text for images, and leverages ARIA roles to improve screen reader support. We’ll also make sure our color choices meet accessibility standards for contrast, so the site is readable by everyone.
+**Accessibility** is a non-negotiable priority. We’ll ensure that every page is fully navigable by keyboard, includes descriptive alt text for images, and leverages ARIA roles to improve screen reader support. We’ll also make sure our colour choices meet accessibility standards for contrast, so the site is readable by everyone.
 
 **Minimal JavaScript** doesn’t mean no JavaScript; it means using it sparingly and thoughtfully. We’ll enhance user experience with subtle improvements, like smoother page transitions or simple interactive elements, but we’ll avoid heavy frameworks or complex dependencies. The goal is to keep the site lightweight, fast, and easy to maintain.
 
@@ -71,7 +71,7 @@ Finally, our **mobile-first approach** ensures that the site is designed to look
 
 A key UX goal is **Smooth Navigation Transitions**. Conventional blogs often suffer from "undisciplined navigation flashes" during page loads. We aim to mitigate this by using the History API and XHR/Fetch to create a seamless, SPA-like experience for internal navigation while remaining a strictly static site at its core. This mitigated "navigation flicker" brings the responsiveness users expect from modern apps back to the static document, proving that classic web values can deliver a premium experience without the overhead of heavy client-side state management.
 
-This behavior is strictly optional progressive enhancement. If JavaScript is disabled or the enhancement fails, standard link navigation should remain the default and should not feel broken or degraded.
+This behaviour is strictly optional progressive enhancement. If JavaScript is disabled or the enhancement fails, standard link navigation should remain the default and should not feel broken or degraded.
 
 In short, this section is all about the foundational principles that will guide the design and ensure the blog is not just functional and accessible, but also timeless and user-friendly.
 
@@ -129,13 +129,13 @@ Scheduling can remain simple: publication should be triggered by status changes 
 
 ## 5. Metadata & Tagging Rules
 
-This section is all about the backbone of how we organize and categorize each piece of content—through metadata and tags. The metadata lives in the frontmatter of each markdown file and acts as the single source of truth for discovery and indexing. It includes fields like status, tags, title, optional summary, and optional thumbnail, while dates are derived from the filesystem and article titles in the body remain free-form. The frontmatter title is for summary and index views and may differ from the body title. Title and summary support only minimal inline formatting (bold, italic, and links). Each of these fields helps determine where and how the post appears across the site.
+This section is all about the backbone of how we organise and categorize each piece of content—through metadata and tags. The metadata lives in the frontmatter of each markdown file and acts as the single source of truth for discovery and indexing. It includes fields like status, tags, title, optional summary, and optional thumbnail, while dates are derived from the filesystem and article titles in the body remain free-form. The frontmatter title is for summary and index views and may differ from the body title. Title and summary support only minimal inline formatting (bold, italic, and links). Each of these fields helps determine where and how the post appears across the site.
 
 When it comes to **tags**, we’re taking a controlled and normalized approach. Tags are case-insensitive, which means it doesn’t matter if you write “Z80” or “z80”—they’ll be treated the same. We also ignore minor variations like hyphens or underscores, so “Z-80” and “Z_80” also get folded into the same tag. This helps keep our tagging system clean and prevents tag sprawl, where you end up with a bunch of near-duplicate tags that all mean the same thing.
 
 We’ll choose a canonical form for each tag—typically all lowercase and free of punctuation—and the system will automatically normalize any variations to that canonical form. For example, `Z80`, `z-80`, and `z_80` should all collapse to the canonical `z80`. Normalization happens during the indexing process, allowing the author to use natural variations during drafting.
 
-In short, the metadata and tagging rules are here to keep everything organized and consistent. The metadata drives the visibility and categorization of each post, and the tagging rules ensure that your tags remain meaningful and easy to manage over time.
+In short, the metadata and tagging rules are here to keep everything organised and consistent. The metadata drives the visibility and categorization of each post, and the tagging rules ensure that your tags remain meaningful and easy to manage over time.
 
 **The Mirroring Requirement**: Because our templates are intentionally "dumb" and have zero access to frontmatter, any metadata that must be visible on the page (like the title, date, or tags) must be explicitly authored in the Markdown body. This "mirroring" preserves the durability and self-contained nature of our documents.
 
@@ -175,11 +175,11 @@ In this section, we’ll dive into how we handle assets—like images, code snip
 
 We also treat assets as **durable and reusable**. Once an asset is added to a post, it’s never automatically deleted or removed. If you want to reuse an image or a diagram in another article, you can simply reference it from the original folder or copy it into the new article’s folder. We’re avoiding any kind of automatic asset cleanup or deduplication so that you always have full control over your media.
 
-In the future, if you find that certain assets are used frequently across multiple articles, you can choose to move them to a shared location. But this is always a manual, intentional decision rather than an automatic process. We’re prioritizing simplicity and clarity, ensuring that each article remains self-contained by default. This maintains **narrative locality** and prevents hidden coupling between articles where an update to a shared asset inadvertently breaks multiple historical posts.
+In the future, if you find that certain assets are used frequently across multiple articles, you can choose to move them to a shared location. But this is always a manual, intentional decision rather than an automatic process. We’re prioritising simplicity and clarity, ensuring that each article remains self-contained by default. This maintains **narrative locality** and prevents hidden coupling between articles where an update to a shared asset inadvertently breaks multiple historical posts.
 
-The asset model prioritizes organization, durability, and portability by co-locating assets with their articles and avoiding automatic deletion.
+The asset model prioritises organization, durability, and portability by co-locating assets with their articles and avoiding automatic deletion.
 
-Assets should be optimized before commit (compressed images, trimmed PDFs), and every image should include accessible alt text in the markdown. Asset paths in source remain relative so posts stay portable. The build resolves them to absolute URLs in rendered HTML.
+Assets should be optimised before commit (compressed images, trimmed PDFs), and every image should include accessible alt text in the markdown. Asset paths in source remain relative so posts stay portable. The build resolves them to absolute URLs in rendered HTML.
 
 AI-generated images are allowed but should be explicitly named and stored in the article’s `assets/` folder with clear filenames. If generation metadata or prompts are kept, they should live alongside the article in a separate file, not mixed into the assets folder.
 
@@ -209,11 +209,11 @@ Over time, these verbs will form the basis of a shared vocabulary that makes it 
 
 In short, the AI vocabulary is the bridge between conversational authoring and automated scripting. It gives you a consistent, easy-to-use set of tools to direct the AI and ensures that the system remains flexible and user-friendly as it evolves.
 
-Verbs should map to deterministic actions in prose and in tooling. Create generates a folder and stub, revise edits content without status changes, tag assigns or modifies normalized tags, link creates or adjusts internal or external links, attach copies or generates assets into the article’s `assets/` folder, status updates visibility metadata only, summarize refines the metadata summary field, find locates content by title, tag, date, or concept within the repo, and inspect provides read-only reporting on state such as metadata completeness or broken links.
+Verbs should map to deterministic actions in prose and in tooling. Create generates a folder and stub, revise edits content without status changes, tag assigns or modifies normalized tags, link creates or adjusts internal or external links, attach copies or generates assets into the article’s `assets/` folder, status updates visibility metadata only, summarise refines the metadata summary field, find locates content by title, tag, date, or concept within the repo, and inspect provides read-only reporting on state such as metadata completeness or broken links.
 
 The vocabulary should remain stable so scripts can depend on it.
 
-These verbs should be usable from the command line or a minimal UI, so an instruction like "create a 500-word post with these links and images" can map cleanly to scripted behavior without manual UI work.
+These verbs should be usable from the command line or a minimal UI, so an instruction like "create a 500-word post with these links and images" can map cleanly to scripted behaviour without manual UI work.
 
 ## 10. CI and Publishing Process
 
@@ -227,7 +227,7 @@ The CI pipeline automates markdown conversion, deployment, and basic validation 
 
 CI should run in a clean environment with pinned tool versions to keep output stable. Build artifacts should be reproducible and stored in the gh-pages branch without manual edits.
 
-The canonical implementation is the static, query-driven pipeline defined in this PRD and the derived specs. WordPress may be used only as a short-term testbed or as a front-end generated from the same markdown source and honoring the same metadata and template separation; it must not become a parallel source of truth. If GitHub Pages is used, the pipeline should remain free and automated, with the option to bind a custom domain that the author owns.
+The canonical implementation is the static, query-driven pipeline defined in this PRD and the derived specs. WordPress may be used only as a short-term testbed or as a front-end generated from the same markdown source and honouring the same metadata and template separation; it must not become a parallel source of truth. If GitHub Pages is used, the pipeline should remain free and automated, with the option to bind a custom domain that the author owns.
 
 Cost control matters. The default assumption is free or near-zero hosting and tooling, with paid services only if they bring clear, deliberate value. The existing WordPress blog can serve as a testbed while a static workflow is evaluated, and the existing resume site on GitHub Pages can be merged into the same repo or linked as a first-class section. Setup and publishing should be achievable from the command line using tools like `gh` and `wp-cli`, with UI workflows treated as optional rather than required.
 
@@ -245,7 +245,7 @@ This subsection makes the CI pipeline concrete by detailing markdown conversion,
 
 ### Toolchain Philosophy
 
-We want to keep the toolchain lean and avoid unnecessary dependencies. That means relying on a few lightweight, third-party tools where they make sense, but having the AI generate custom scripts (in Python or JavaScript) for the specific tasks we need. The idea is to minimize the overhead and keep everything as simple and maintainable as possible.
+We want to keep the toolchain lean and avoid unnecessary dependencies. That means relying on a few lightweight, third-party tools where they make sense, but having the AI generate custom scripts (in Python or JavaScript) for the specific tasks we need. The idea is to minimise the overhead and keep everything as simple and maintainable as possible.
 
 ### Markdown to HTML Conversion
 
@@ -255,7 +255,7 @@ Each markdown file will be processed to extract its content and metadata, and th
 
 ### Index and Summary Pages
 
-In addition to individual article pages, the CI process will also generate index pages that list articles by tag, date, or other criteria. For example, we’ll have tag-based indexes that group articles by topic and date-based indexes that organize posts chronologically. Each of these summary pages will be automatically updated whenever new content is added, ensuring that your site’s navigation is always up-to-date.
+In addition to individual article pages, the CI process will also generate index pages that list articles by tag, date, or other criteria. For example, we’ll have tag-based indexes that group articles by topic and date-based indexes that organise posts chronologically. Each of these summary pages will be automatically updated whenever new content is added, ensuring that your site’s navigation is always up-to-date.
 
 Summary and index pages should use a built-in summary renderer that draws from frontmatter and filesystem-derived fields, with a fixed HTML structure that remains stylable via CSS. Templates only select the view mode; they do not interpolate metadata directly.
 
@@ -277,7 +277,7 @@ In this section, we’ll dive into the philosophy and practices that will shape 
 
 ### Minimalist Toolchain
 
-We’re going to keep the toolchain as simple as possible. That means no large frameworks like Tailwind; instead, we’ll use native CSS variables, flexbox, grid, and other modern CSS features. We can adopt a methodology like BEM (Block Element Modifier) to keep our styles organized and maintainable, ensuring that each component has a clear, consistent naming convention.
+We’re going to keep the toolchain as simple as possible. That means no large frameworks like Tailwind; instead, we’ll use native CSS variables, flexbox, grid, and other modern CSS features. We can adopt a methodology like BEM (Block Element Modifier) to keep our styles organised and maintainable, ensuring that each component has a clear, consistent naming convention.
 
 ### Responsive and Mobile-First Design
 
@@ -285,17 +285,17 @@ Our design approach is mobile-first, meaning we’ll start by designing for smal
 
 ### User Preferences and Accessibility
 
-We’ll also incorporate features that respect user preferences, such as offering both light and dark modes. Users will be able to switch between themes, and we’ll use CSS variables to manage color schemes so that it’s easy to maintain and expand. We’ll ensure high contrast options for accessibility, making the site comfortable to read for everyone.
+We’ll also incorporate features that respect user preferences, such as offering both light and dark modes. Users will be able to switch between themes, and we’ll use CSS variables to manage colour schemes so that it’s easy to maintain and expand. We’ll ensure high contrast options for accessibility, making the site comfortable to read for everyone.
 
 ### Performance and Clean Design
 
-Our CSS will be optimized for performance, keeping file sizes small and load times fast. By using a mobile-first design and a minimalist approach, we’ll ensure that the site is not only aesthetically pleasing but also quick and responsive. We’ll avoid clutter and unnecessary design elements, focusing on delivering a clean and elegant user experience.
+Our CSS will be optimised for performance, keeping file sizes small and load times fast. By using a mobile-first design and a minimalist approach, we’ll ensure that the site is not only aesthetically pleasing but also quick and responsive. We’ll avoid clutter and unnecessary design elements, focusing on delivering a clean and elegant user experience.
 
-Styling should define a typography scale, spacing rhythm, and a small set of tokens for color and layout to keep the UI consistent. The system should degrade gracefully if JavaScript is disabled.
+Styling should define a typography scale, spacing rhythm, and a small set of tokens for colour and layout to keep the UI consistent. The system should degrade gracefully if JavaScript is disabled.
 
 The visual design should reinforce the classic-web values in the content: fast loading, readable typography, durable layouts, and a sense that the site is authored rather than templated. The same system can support a resume section or other personal pages without breaking the editorial tone.
 
-Branding should be minimal but intentional. A small set of type and color tokens can carry the identity across the blog and resume without making the layout feel like a template, and print-friendly styling should keep the resume usable as a standalone document.
+Branding should be minimal but intentional. A small set of type and colour tokens can carry the identity across the blog and resume without making the layout feel like a template, and print-friendly styling should keep the resume usable as a standalone document.
 
 ## 13. Explicit Non-Goals
 
@@ -307,7 +307,7 @@ The execution plan favors a fast proof of the end-to-end workflow, then delibera
 
 ### Phase One: Content Model and Repository Foundations
 
-Phase One locks the content model and repository structure. The frontmatter schema is finalized, slug and URL rules are fixed, status behavior is proven, and the folder layout is chosen so posts and assets remain portable. Platform selection is decided using the criteria in this document, and domain ownership with canonical URLs is confirmed so future migrations do not break links.
+Phase One locks the content model and repository structure. The frontmatter schema is finalized, slug and URL rules are fixed, status behaviour is proven, and the folder layout is chosen so posts and assets remain portable. Platform selection is decided using the criteria in this document, and domain ownership with canonical URLs is confirmed so future migrations do not break links.
 
 ### Phase Two: Minimum Viable Publishing Pipeline
 
@@ -319,7 +319,7 @@ Once the machine of the publishing pipeline is proven in Phase Two, the focus sh
 
 ### Phase Four: Design, Accessibility, and Progressive Enhancement
 
-Phase Four brings the visual system to its intended quality. Typography, spacing, and color tokens are set; the resume section is integrated without breaking editorial tone; and accessibility and performance budgets are validated. Optional smooth navigation transitions are layered in only after baseline performance and HTML readability are solid.
+Phase Four brings the visual system to its intended quality. Typography, spacing, and colour tokens are set; the resume section is integrated without breaking editorial tone; and accessibility and performance budgets are validated. Optional smooth navigation transitions are layered in only after baseline performance and HTML readability are solid.
 
 ### Phase Five: Content Rollout and Iteration
 
