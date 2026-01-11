@@ -9,11 +9,18 @@
   <meta name="color-scheme" data-content="color-scheme" />
   <meta name="theme-color" data-content="theme-color" />
   <title>About - Semantic Scroll</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
+  </noscript>
   <link rel="icon" type="image/svg+xml" href="/assets/semantic-scroll.svg" />
   <link rel="stylesheet" href="/assets/site.css" />
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <div class="page">
     <header class="site-header">
       <a class="site-mark" href="/">
@@ -28,7 +35,7 @@
         <a href="/about/">About</a>
       </nav>
     </header>
-    <main>
+    <main id="main">
       <h1>About</h1>
       <p>This site and everything published through it is written and maintained by John Hardy.</p>
       <p>The material here exists as a working archive rather than a finished product. Articles, tools, and formats evolve together. The structure on disk and the pages on the site come from the same source. Nothing sits behind a separate content system.</p>
