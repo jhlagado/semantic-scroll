@@ -8,7 +8,7 @@ tags:
   - structure
   - assets
 series: content-store
-summary: "Assets live beside the article that uses them, named in Markdown and resolved to absolute URLs at build time."
+summary: "Assets live beside the article that uses them, named in Markdown and resolved to absolute URLs at build time. Keeping files local to each entry makes moves safe and links stable."
 ---
 
 # Assets

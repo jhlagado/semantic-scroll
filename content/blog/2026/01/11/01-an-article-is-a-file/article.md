@@ -7,7 +7,7 @@ tags:
   - tooling
   - structure
 series: content-store
-summary: "Each article is a single Markdown file in a dated folder, with frontmatter for indexing and a body for readers."
+summary: "Each article is a single Markdown file in a dated folder, with frontmatter for indexing and a body for readers. The path carries the time, and the file carries the content."
 ---
 
 # An Article Is a File
@@ -20,7 +20,7 @@ Open `article.md` in any entry and the shape stays the same. A YAML block sits a
 ```markdown
 ---
 title: "The Shape of the Archive"
-summary: "How this blog organises itself on disk instead of inside a database."
+summary: "How this blog organises itself on disk instead of inside a database. The path does the work."
 series: genesis
 tags: [tooling, publishing]
 status: published

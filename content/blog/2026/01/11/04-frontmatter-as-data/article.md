@@ -8,7 +8,7 @@ tags:
   - structure
   - frontmatter
 series: content-store
-summary: "Frontmatter is a small data block the build reads for indexing, while the body stays for readers."
+summary: "Frontmatter is a small data block the build reads for indexing, while the body stays for readers. The split keeps queries simple and the prose free from layout concerns."
 ---
 
 # Frontmatter as Data
@@ -20,7 +20,7 @@ A typical frontmatter block looks like this:
 
 ```yaml
 title: "An Article Is a File"
-summary: "How each entry in this blog reduces to a single Markdown file."
+summary: "How each entry in this blog reduces to a single Markdown file. The body stays human, the header stays machine."
 series: genesis
 tags: [publishing, process, tooling, structure]
 status: published

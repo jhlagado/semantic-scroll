@@ -28,7 +28,7 @@ title: "Short title used for index views"
 status: published
 tags: [z80, assembly, retrocomputing]
 series: build-log
-summary: "Short factual summary used in index views"
+summary: "Short factual summary used in index views. It stays plain and direct."
 thumbnail: assets/thumbnail.jpg
 ---
 ```

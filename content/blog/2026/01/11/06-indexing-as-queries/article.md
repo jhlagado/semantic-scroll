@@ -9,7 +9,7 @@ tags:
   - indexing
   - queries
 series: indexing
-summary: "Indexes are built by named queries, not ad-hoc logic, so selection stays declarative and repeatable."
+summary: "Indexes are built by named queries, not ad-hoc logic, so selection stays declarative and repeatable. Templates stay dumb while queries stay readable, which keeps the archive explainable."
 ---
 
 # Indexing as Queries

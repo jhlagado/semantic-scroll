@@ -7,7 +7,7 @@ tags:
   - tooling
   - automation
 series: genesis
-summary: "Notes on writing quickly without losing voice, and on using local linting as friction rather than a judge."
+summary: "Notes on writing quickly without losing voice, and on using local linting as friction rather than a judge. I want speed without clichés, with tools that slow me down only when the prose goes flat."
 ---
 
 # Writing Fast Without Writing Sloppily

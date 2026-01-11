@@ -836,6 +836,13 @@ function renderTemplate(html, queryResults) {
     if (!['article', 'summary', 'summary-list'].includes(view)) {
       throw new Error(`Unknown data-view '${view}'`);
     }
+    const wrap = attrs['data-wrap'];
+    if (wrap && wrap !== 'article') {
+      throw new Error(`Unknown data-wrap '${wrap}'`);
+    }
+    if (wrap && view !== 'article') {
+      throw new Error('data-wrap is only supported with data-view="article"');
+    }
 
     const items = queryResults[queryName] || [];
     if (!items.length) {
@@ -844,7 +851,11 @@ function renderTemplate(html, queryResults) {
 
     const fragments = items.map((item) => {
       if (view === 'article') {
-        return renderArticleBody(item);
+        const body = renderArticleBody(item);
+        if (wrap === 'article') {
+          return `<article class="article-entry">\n${body}\n</article>`;
+        }
+        return body;
       }
       const summary = renderSummary(item);
       if (view === 'summary-list') {

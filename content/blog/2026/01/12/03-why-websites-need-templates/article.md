@@ -7,7 +7,7 @@ tags:
   - process
   - tooling
 series: templating
-summary: "I lay out why templates exist and why separating content from layout keeps a site coherent."
+summary: "I lay out why templates exist and why separating content from layout keeps a site coherent. Repeated headers and footers make the case for composition without duplication."
 ---
 
 # Why Websites Need Templates

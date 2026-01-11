@@ -7,7 +7,7 @@ tags:
   - tooling
   - structure
 series: content-store
-summary: "The body is the readable record: plain Markdown text, links, code, and media, with layout left to templates."
+summary: "The body is the readable record: plain Markdown text, links, code, and media, with layout left to templates. Everything the reader sees lives here so the file stands alone without the build."
 ---
 
 # The Article Body

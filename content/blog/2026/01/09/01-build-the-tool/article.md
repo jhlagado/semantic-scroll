@@ -6,7 +6,7 @@ tags:
   - process
   - tooling
 series: genesis
-summary: "This project is a self-referential experiment in software development and content production, and this first post explains how the live Q/A workflow hardens into the system itself."
+summary: "This project is a self-referential experiment in software development and content production, and this first post explains how the live Q/A workflow hardens into the system itself. I want the public conversation to become the tooling that eventually replaces it."
 ---
 
 # Start Here: Building the Tool While Using It
