@@ -22,6 +22,7 @@ const HOME_TEMPLATE = path.join(TEMPLATE_DIR, 'home.html');
 const BLOG_TEMPLATE = path.join(TEMPLATE_DIR, 'blog.html');
 const YEAR_TEMPLATE = path.join(TEMPLATE_DIR, 'year.html');
 const SUMMARY_TEMPLATE = path.join(TEMPLATE_DIR, 'summary-index.html');
+const SERIES_ARTICLE_TEMPLATE = path.join(TEMPLATE_DIR, 'series-articles.html');
 const TAG_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'tags.html');
 const SERIES_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'series.html');
 const ABOUT_TEMPLATE = path.join(TEMPLATE_DIR, 'about.html');
@@ -738,13 +739,12 @@ function renderTagIndex(published) {
 }
 
 function renderSeriesArchives(published) {
-  const template = fs.readFileSync(SUMMARY_TEMPLATE, 'utf8');
+  const template = fs.readFileSync(SERIES_ARTICLE_TEMPLATE, 'utf8');
   const seriesMap = groupBy(published.filter((item) => item.frontmatter.series), (item) => item.frontmatter.series);
   const seriesNames = Array.from(seriesMap.keys()).sort();
 
   for (const series of seriesNames) {
     const items = sortItems(seriesMap.get(series), 'date-asc');
-    const latest = items.slice(0, 25);
     const yearCounts = countBy(items, (item) => item.year);
     const years = Object.keys(yearCounts).sort((a, b) => Number(b) - Number(a));
 
@@ -779,7 +779,7 @@ function renderSeriesArchives(published) {
         slots
       ),
       {
-        'page-posts': latest
+        'page-posts': items
       }
     );
     writeFile(path.join(OUTPUT_DIR, 'series', series, 'index.html'), html);

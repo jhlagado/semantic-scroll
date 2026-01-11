@@ -184,6 +184,10 @@ main h1:first-child {
   margin: 0;
 }
 
+.series-entries > * + * {
+  margin-top: 2.5rem;
+}
+
 .summary-item + .summary-item,
 .archive-years li + li,
 .tag-year-list li + li,
