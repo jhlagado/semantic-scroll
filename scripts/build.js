@@ -393,7 +393,7 @@ function renderSite(index, queryResults) {
   renderYearArchives(published);
   renderMonthArchives(published);
   renderTagArchives(published);
-  renderTagIndex(published);
+  renderTagIndex(queryResults);
   renderSeriesArchives(published);
   renderSeriesIndex(published);
   renderFeed(queryResults, published);
@@ -699,38 +699,14 @@ function renderTagArchives(published) {
   }
 }
 
-function renderTagIndex(published) {
+function renderTagIndex(queryResults) {
   const template = fs.readFileSync(TAG_INDEX_TEMPLATE, 'utf8');
-  const tagCounts = new Map();
-
-  for (const article of published) {
-    const tags = article.frontmatter.tags || [];
-    for (const rawTag of tags) {
-      const tag = normalizeTag(rawTag);
-      if (!tag) {
-        continue;
-      }
-      tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
-    }
-  }
-
-  const tags = Array.from(tagCounts.keys()).sort();
-  const tagList = tags.length
-    ? tags.map((tag) => {
-      const count = tagCounts.get(tag);
-      return `<li><a href="/tags/${tag}/">${escapeHtml(tag)}</a> (${count})</li>`;
-    }).join('\n')
-    : '<li class="archive-empty">No tags yet.</li>';
-
   const html = renderTemplate(
-    applySlots(
-      applyMeta(template, {
-        canonical: joinUrl(SITE_URL, '/tags/'),
-        description: SITE_DESCRIPTION
-      }),
-      { 'tag-list': tagList }
-    ),
-    {}
+    applyMeta(template, {
+      canonical: joinUrl(SITE_URL, '/tags/'),
+      description: SITE_DESCRIPTION
+    }),
+    queryResults
   );
   writeFile(path.join(OUTPUT_DIR, 'tags', 'index.html'), html);
 }
@@ -829,7 +805,7 @@ function renderTemplate(html, queryResults) {
     }
 
     const view = attrs['data-view'] || 'article';
-    if (!['article', 'summary', 'summary-list'].includes(view)) {
+    if (!['article', 'summary', 'summary-list', 'tag-list'].includes(view)) {
       throw new Error(`Unknown data-view '${view}'`);
     }
     const wrap = attrs['data-wrap'];
@@ -841,6 +817,13 @@ function renderTemplate(html, queryResults) {
     }
 
     const items = queryResults[queryName] || [];
+    if (view === 'tag-list') {
+      const tagList = renderTagList(items);
+      if (!tagList) {
+        return fallback;
+      }
+      return tagList;
+    }
     if (!items.length) {
       return fallback;
     }
@@ -953,6 +936,28 @@ function renderSummary(article) {
 
   parts.push('</article>');
   return parts.join('\n');
+}
+
+function renderTagList(items) {
+  const counts = new Map();
+  for (const article of items) {
+    const tags = article.frontmatter.tags || [];
+    for (const rawTag of tags) {
+      const tag = normalizeTag(rawTag);
+      if (!tag) {
+        continue;
+      }
+      counts.set(tag, (counts.get(tag) || 0) + 1);
+    }
+  }
+  const tags = Array.from(counts.keys()).sort();
+  if (!tags.length) {
+    return '';
+  }
+  return tags.map((tag) => {
+    const count = counts.get(tag);
+    return `<li><a href="/tags/${tag}/">${escapeHtml(tag)}</a> (${count})</li>`;
+  }).join('\n');
 }
 
 function applySlots(html, slots) {
