@@ -713,6 +713,7 @@ function lintBody(filePath, body, lineOffset, issues, options = {}) {
   if (isArticle) {
     lintListBlocks(orderedListBlocks, unorderedListBlocks, issues);
     lintConditionalClosing(paragraphs, issues);
+    lintSentenceOpeners(paragraphs, issues);
   }
 }
 
@@ -796,6 +797,26 @@ function lintListBlocks(orderedCount, unorderedCount, issues) {
     weight: 2 * over,
     message: `List blocks (${total}) exceed preferred max (${allowed}). Ordered: ${orderedCount}, unordered: ${unorderedCount}`
   });
+}
+
+function lintSentenceOpeners(paragraphs, issues) {
+  for (const paragraph of paragraphs) {
+    const sentences = splitSentences(paragraph.text);
+    for (const sentence of sentences) {
+      const trimmed = sentence.trim();
+      if (!trimmed) {
+        continue;
+      }
+      if (/^(And|But)\b/.test(trimmed)) {
+        addIssue(issues, {
+          line: paragraph.line,
+          weight: 2,
+          message: 'Conjunction sentence opener (prefer to join the previous sentence)'
+        });
+        break;
+      }
+    }
+  }
 }
 
 function lintParagraphStart(filePath, line, lineNumber, issues) {

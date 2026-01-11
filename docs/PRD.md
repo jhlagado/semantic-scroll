@@ -113,7 +113,7 @@ In this section, we’ll dive deeper into how each article moves through its lif
 
 We’ve got four main states: **draft, review, published, and archived**. When you start writing, the post is in the draft state. It’s still being developed, so it’s not visible in any public indexes or listings. Once you’ve got a complete draft that you’re ready to refine, you move it to the review state. This is your chance to do final checks—maybe polish the language, confirm all the links are correct, and make sure all the necessary assets are in place.
 
-When you’re happy with the review, you change the status to published. Now the post goes live and appears in all the public indexes, tag listings, and search results. It’s out there for everyone to see. But if at any point you decide you need to remove it from the public eye—maybe you’re updating it or it’s no longer relevant—you just change the status to archived. It’s still there in the repository, but it’s no longer in the public indexes. This way, you never have to delete anything; you just change its visibility by updating its metadata.
+When you’re happy with the review, you change the status to published. Now the post goes live and appears in all the public indexes, tag listings, and search results. It’s out there for everyone to see. If at any point you decide you need to remove it from the public eye—maybe you’re updating it or it’s no longer relevant—you just change the status to archived. It’s still there in the repository, but it’s no longer in the public indexes. This way, you never have to delete anything; you just change its visibility by updating its metadata.
 
 This metadata-driven approach makes it easy to see at a glance where each post stands in its lifecycle. It also means that “unpublishing” a post is as simple as flipping its status from published back to draft or archived, without having to delete or recreate anything.
 
@@ -175,7 +175,7 @@ In this section, we’ll dive into how we handle assets—like images, code snip
 
 We also treat assets as **durable and reusable**. Once an asset is added to a post, it’s never automatically deleted or removed. If you want to reuse an image or a diagram in another article, you can simply reference it from the original folder or copy it into the new article’s folder. We’re avoiding any kind of automatic asset cleanup or deduplication so that you always have full control over your media.
 
-In the future, if you find that certain assets are used frequently across multiple articles, you can choose to move them to a shared location. But this is always a manual, intentional decision rather than an automatic process. We’re prioritising simplicity and clarity, ensuring that each article remains self-contained by default. This maintains **narrative locality** and prevents hidden coupling between articles where an update to a shared asset inadvertently breaks multiple historical posts.
+In the future, if you find that certain assets are used frequently across multiple articles, you can choose to move them to a shared location. This remains a manual, intentional decision rather than an automatic process. We’re prioritising simplicity and clarity, ensuring that each article remains self-contained by default. This maintains **narrative locality** and prevents hidden coupling between articles where an update to a shared asset inadvertently breaks multiple historical posts.
 
 The asset model prioritises organization, durability, and portability by co-locating assets with their articles and avoiding automatic deletion.
 
