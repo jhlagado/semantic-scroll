@@ -1,14 +1,12 @@
 ---
+
+
 title: "Assets"
 status: published
-tags:
-  - publishing
-  - process
-  - tooling
-  - structure
-  - assets
 series: contentstore
 summary: "Assets live beside the article that uses them, named in Markdown and resolved to absolute URLs at build time. Keeping files local to each entry makes moves safe and links stable."
+tags:
+  - assets
 ---
 # Assets
 _January 11, 2026_ | Series: contentstore
@@ -47,4 +45,4 @@ The body stays clean because it has to. It is the place where all of this meets 
 
 ![Tree structure diagram](./assets/tree-structure.webp "Tree structure diagram")
 
-Tags: publishing, process, tooling, structure, assets
+Tags: assets

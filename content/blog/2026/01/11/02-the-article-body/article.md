@@ -1,11 +1,8 @@
 ---
+
+
 title: "The Article Body"
 status: published
-tags:
-  - publishing
-  - process
-  - tooling
-  - structure
 series: contentstore
 summary: "The body is the readable record, written as plain Markdown with links and code, while layout stays in templates. Everything the reader sees lives here so the file stands alone without the build."
 ---
@@ -38,4 +35,3 @@ That constraint forces clarity because if a concept cannot fit into Markdown wit
 
 The article body stays simple because it has to, since this is the one place where all of this meets a human reader and everything else can be mechanical while the body stays readable.
 
-Tags: publishing, process, tooling, structure

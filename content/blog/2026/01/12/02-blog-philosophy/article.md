@@ -1,13 +1,13 @@
 ---
+
+
 title: "Blog Philosophy"
 status: published
-tags:
-  - philosophy
-  - publishing
-  - web
-  - process
 series: genesis
 summary: "I outline the motivations and design instincts that shape the blog, from classic HTML to a minimal toolchain. The focus stays on legibility, accessibility, and a system that documents itself while it runs."
+tags:
+  - philosophy
+  - web
 ---
 # Blog Philosophy
 _January 12, 2026_ | Series: genesis
@@ -24,4 +24,4 @@ The tooling has to match that posture, so I favour a minimal toolchain and nativ
 
 This spec should grow by addenda so the trail stays visible. I am writing the blog while building the blog, and that loop stays central. A philosophy should show in the site, and the site should reveal any drift.
 
-Tags: philosophy, publishing, web, process
+Tags: philosophy, web

@@ -1,14 +1,14 @@
 ---
 title: "Reclaiming the Web's Original Spirit"
 status: published
+series: openweb
+summary: "I look back at the early web’s open standards and the practical freedom they enabled for ordinary publishers. I trace how convenience platforms changed the bargain and why owning a domain still matters."
+thumbnail: assets/this-is-for-everyone.jpg
 tags:
   - web
   - selfpublishing
   - openprotocols
   - platforms
-series: openweb
-summary: "I look back at the early web’s open standards and the practical freedom they enabled for ordinary publishers. I trace how convenience platforms changed the bargain and why owning a domain still matters."
-thumbnail: assets/this-is-for-everyone.jpg
 ---
 
 # Reclaiming the Web's Original Spirit

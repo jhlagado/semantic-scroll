@@ -1,10 +1,8 @@
 ---
+
+
 title: "Start Here: Building the Tool While Using It"
 status: published
-tags:
-  - publishing
-  - process
-  - tooling
 series: genesis
 summary: "This project is a self-referential experiment in software development that uses public writing to shape the system as it forms. This first post explains how the live Q/A workflow hardens into tooling and replaces itself over time."
 ---
@@ -25,4 +23,3 @@ This is the beginning of the genesis series. The next posts will move through th
 
 Related posts: [Blog Philosophy](/content/blog/2026/01/12/02-blog-philosophy/), [A Blog That Is Also the Build System](/content/blog/2026/01/12/01-a-blog-that-is-also-the-build-system/).
 
-Tags: publishing plus process and tooling

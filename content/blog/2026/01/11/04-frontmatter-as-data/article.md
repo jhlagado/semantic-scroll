@@ -1,14 +1,12 @@
 ---
+
+
 title: "Frontmatter as Data"
 status: published
-tags:
-  - publishing
-  - process
-  - tooling
-  - structure
-  - frontmatter
 series: contentstore
 summary: "Frontmatter is a small data block the build reads for indexing, while the body stays for readers. The split keeps queries simple and the prose free from layout concerns."
+tags:
+  - frontmatter
 ---
 # Frontmatter as Data
 _January 11, 2026_ | Series: contentstore
@@ -32,4 +30,4 @@ This separation lets the writing and the indexing evolve independently. A list t
 
 From a tooling perspective this keeps the pipeline simple. Scripts parse YAML and collect rows, then apply filters and sorts. They do not need to infer meaning from prose or inspect Markdown structure. Everything that participates in queries and lists lives in one place, in a form that stays stable even as the writing changes.
 
-Tags: publishing, process, tooling, structure, frontmatter
+Tags: frontmatter

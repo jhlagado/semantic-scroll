@@ -1,13 +1,12 @@
 ---
+
+
 title: "Why Websites Need Templates"
 status: published
-tags:
-  - templating
-  - publishing
-  - process
-  - tooling
 series: templating
 summary: "I lay out why templates exist and why separating content from layout keeps a site coherent. Repeated headers and footers make the case for composition without duplication."
+tags:
+  - templating
 ---
 # Why Websites Need Templates
 _January 12, 2026_ | Series: templating
@@ -32,4 +31,4 @@ Whether that is a good idea depends on what I want from my publishing system. I 
 
 In the next article I look at how that additional responsibility changes what templates are, and why it affects the clarity and predictability of the final HTML. If you want to continue, head to [When Templates Start Making Decisions](/content/blog/2026/01/12/04-when-templates-start-making-decisions/).
 
-Tags: templating, publishing, process, tooling
+Tags: templating

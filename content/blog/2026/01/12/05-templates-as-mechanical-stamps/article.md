@@ -1,13 +1,12 @@
 ---
+
+
 title: "Templates as Mechanical Stamps"
 status: published
-tags:
-  - templating
-  - publishing
-  - process
-  - tooling
 series: templating
 summary: "Templates hold structure and nothing else, so queries select content and the build stamps it into place. A short caption line turns listings into semantic figures without raw HTML."
+tags:
+  - templating
 ---
 # Templates as Mechanical Stamps
 _January 12, 2026_ | Series: templating
@@ -67,4 +66,4 @@ Everything in that file is real HTML. If I open it in a browser, it renders as a
 
 That simplicity keeps the system predictable and inspectable, and it stays durable over time. The complexity lives in the build process and the query definitions, where I can validate it and reason about it directly. The templates remain what they look like: static HTML documents with a few clearly defined places where content will appear.
 
-Tags: templating, publishing, process, tooling
+Tags: templating
