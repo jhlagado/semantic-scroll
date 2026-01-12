@@ -1,15 +1,13 @@
 ---
+
+
 title: "Indexing as Queries"
 status: published
-tags:
-  - publishing
-  - process
-  - tooling
-  - structure
-  - indexing
-  - queries
 series: indexing
 summary: "Indexes are built by named queries, not ad-hoc logic, so selection stays declarative and repeatable. Templates stay dumb while queries stay readable, which keeps the archive explainable."
+tags:
+  - indexing
+  - queries
 ---
 # Indexing as Queries
 _January 11, 2026_ | Series: indexing
@@ -26,4 +24,4 @@ Feeds follow the same rule, and the global feed plus tag or series feeds come fr
 
 I can change a template without changing the data, or refine a query without touching markup. Indexes remain mechanical outputs of named inputs.
 
-Tags: publishing, process, tooling, structure, indexing, queries
+Tags: indexing, queries

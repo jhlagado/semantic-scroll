@@ -1,11 +1,8 @@
 ---
+
+
 title: "An Article Is a File"
 status: published
-tags:
-  - publishing
-  - process
-  - tooling
-  - structure
 series: contentstore
 summary: "Each article is a single Markdown file in a dated folder, with frontmatter for indexing and a body for readers. The path carries the time, and the file carries the content."
 ---
@@ -41,4 +38,3 @@ From a tooling point of view this keeps articles easy to work with. The file rea
 
 The result is a simple object model. The folder locates the article in time. The frontmatter locates it in series and tags, while the body carries the text that gets published.
 
-Tags: publishing, process, tooling, structure

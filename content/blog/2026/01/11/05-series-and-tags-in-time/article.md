@@ -1,15 +1,13 @@
 ---
+
+
 title: "Series and Tags in Time"
 status: published
-tags:
-  - publishing
-  - process
-  - tooling
-  - structure
-  - series
-  - tags
 series: indexing
 summary: "Series and tags use the same frontmatter data but sort and group it differently for narrative and topical reading. Series keep time in order, while tags keep topics current."
+tags:
+  - series
+  - tags
 ---
 # Series and Tags in Time
 _January 11, 2026_ | Series: indexing
@@ -24,4 +22,4 @@ Both groupings come from the same frontmatter table. Each article contributes a 
 
 This distinction lets the archive behave in two different ways at once. A series behaves like a log or a chaptered notebook, where order carries weight. A tag behaves like a topical index, where breadth and freshness matter more than sequence. The same article can sit inside both without conflict, because one describes its place in a story and the other describes what it is about.
 
-Tags: publishing, process, tooling, structure, series, tags
+Tags: series, tags

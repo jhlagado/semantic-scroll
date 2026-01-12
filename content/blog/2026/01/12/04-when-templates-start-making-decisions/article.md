@@ -1,13 +1,12 @@
 ---
+
+
 title: "When Templates Start Making Decisions"
 status: published
-tags:
-  - templating
-  - publishing
-  - process
-  - tooling
 series: templating
 summary: "I describe how templates take on selection work and why that shifts them from structure into control. I show how loops and conditionals blur layout with selection and make pages harder to predict."
+tags:
+  - templating
 ---
 # When Templates Start Making Decisions
 
@@ -52,4 +51,4 @@ By then I find it difficult to talk about a template as a document. It reads mor
 
 The next article describes an alternative approach: keeping selection and ordering out of templates entirely, and using them only as fixed stamps that receive already-prepared content. It is the simplest way I have found to keep layout and selection separate. Continue to [Templates as Mechanical Stamps](/content/blog/2026/01/12/05-templates-as-mechanical-stamps/).
 
-Tags: templating, publishing, process, tooling
+Tags: templating

@@ -1031,7 +1031,7 @@ function countShortSentences(sentences, maxWords) {
     if (!text) {
       continue;
     }
-    if (/_January\\s+\\d{1,2},\\s+\\d{4}_\\s+\\|\\s+Series:/i.test(text)) {
+    if (/_January\s+\d{1,2},\s+\d{4}_\s+\|\s+Series:/i.test(text)) {
       continue;
     }
     if (/^Tags(?::|\s+include)/i.test(text)) {

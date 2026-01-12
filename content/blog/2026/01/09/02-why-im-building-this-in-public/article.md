@@ -1,13 +1,13 @@
 ---
+
+
 title: "Why I'm Building This in Public"
 status: published
-tags:
-  - publishing
-  - writing
-  - process
-  - ai
 series: genesis
 summary: "Writing in public forces clarity and keeps the work tied to the code while making the AI constraints visible as the system grows. The blog becomes a place to test boundaries and keep a reliable record."
+tags:
+  - writing
+  - ai
 ---
 # Why I'm Building This in Public
 _January 9, 2026_ | Series: genesis
@@ -26,4 +26,4 @@ The blog that will appear here comes from the project and follows the same rules
 
 I still work out my position, and I take my time with it. This is an attempt to think carefully and design slowly while leaving a readable trail behind. The trail should stand on its own, even if I am the only person who ever reads it end to end.
 
-Tags: publishing, writing, process, ai
+Tags: writing, ai

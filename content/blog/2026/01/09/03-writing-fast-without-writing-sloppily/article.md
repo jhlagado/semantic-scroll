@@ -1,13 +1,13 @@
 ---
+
+
 title: "Writing Fast Without Writing Sloppily"
 status: published
-tags:
-  - writing
-  - process
-  - tooling
-  - automation
 series: genesis
 summary: "Notes on writing quickly without losing voice and on using local linting as friction rather than a judge. I want speed without clichés, with tools that slow me down only when the prose goes flat."
+tags:
+  - writing
+  - automation
 ---
 # Writing Fast Without Writing Sloppily
 _January 9, 2026_ | Series: genesis
@@ -26,4 +26,4 @@ There's something slightly perverse about using code to guard against formulaic 
 
 *Steve Jobs once said "the computer is like a bicycle for the mind". The way I've been thinking about it lately, AI is like an e-bike for mine. Let's hope it doesn't drive me into a ditch!*
 
-Tags: writing, process, tooling, automation
+Tags: writing, automation

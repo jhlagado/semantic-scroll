@@ -1,13 +1,12 @@
 ---
 title: "Your Address Is Your Domain"
 status: published
+series: openweb
+summary: "I frame domain ownership as the practical boundary between publishing and renting space. The piece argues that control of the address keeps the promise of a URL in your hands."
 tags:
   - web
   - selfpublishing
   - domains
-  - publishing
-series: openweb
-summary: "I frame domain ownership as the practical boundary between publishing and renting space. The piece argues that control of the address keeps the promise of a URL in your hands."
 ---
 # Your Address Is Your Domain
 _January 12, 2026_ | Series: openweb
@@ -24,4 +23,4 @@ That matters because URLs are promises about where something can be found. When 
 
 That is why self-publishing on your own domain is about freedom as much as technology. A site on an address you control cannot be quietly erased or buried, and another party cannot reshape it. It becomes a place where your writing can exist on its own terms and persist for as long as you decide it should.
 
-Tags: web, selfpublishing, domains, publishing
+Tags: web, selfpublishing, domains

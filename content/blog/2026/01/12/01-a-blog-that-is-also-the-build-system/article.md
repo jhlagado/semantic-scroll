@@ -1,11 +1,8 @@
 ---
+
+
 title: "A Blog That Is Also the Build System"
 status: published
-tags:
-  - publishing
-  - process
-  - tooling
-  - structure
 series: genesis
 summary: "I keep writing and scripts in one place so the site grows alongside its build path. The repository becomes the diary where tooling changes show up as entries in the record."
 ---
@@ -22,4 +19,3 @@ The same principle applies to templates, which are plain HTML and only stamp con
 
 I do this because I want to write about building the blog while I build it. The first posts will be about the system that is learning to publish the posts. I am comfortable with that because I treat the system as a living artifact. The repo is the journal, which becomes the site and the build.
 
-Tags: publishing, process, tooling, structure
