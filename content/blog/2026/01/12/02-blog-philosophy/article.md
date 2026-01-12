@@ -23,5 +23,4 @@ Discoverability sits beside all of that, so clean URLs and meaningful titles sho
 The tooling has to match that posture, so I favour a minimal toolchain and native JavaScript while keeping the feature scope tight. I will add theming and user settings only when they serve reading.
 
 This spec should grow by addenda so the trail stays visible. I am writing the blog while building the blog, and that loop stays central. A philosophy should show in the site, and the site should reveal any drift.
-
 Tags: philosophy, web

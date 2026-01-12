@@ -4,34 +4,17 @@
 title: "The Article Body"
 status: published
 series: contentstore
-summary: "The body is the readable record, written as plain Markdown with links and code, while layout stays in templates. Everything the reader sees lives here so the file stands alone without the build."
+summary: "The body is the reader's record in plain Markdown so the text stays legible without the build, while templates handle layout and indexing."
 ---
 # The Article Body
 _January 11, 2026_ | Series: contentstore
 
-Frontmatter tells the system what an article is, while the body tells the reader what it says.
+Frontmatter defines an article for the build, but the body carries the meaning for readers. It is the section a reader actually meets, so I treat it as the record that must survive every build. Everything below the YAML block exists to be read, and that focus drives the format and the discipline. The body holds the text and keeps links and code beside the media, so the file stays readable before and after the build touches it.
 
-Everything below the YAML block exists for rendering and reading. That drives decisions about format and discipline. The body carries text along with links and code plus any media in a form that stays readable long before and long after any build step touches it.
+Markdown keeps the text close to plain language. Paragraphs and headings read the same in a terminal or a diff viewer, so the file stays legible wherever it travels. That consistency lets me review drafts without leaving the file. That stability is why I keep the body in Markdown even as the rest of the system shifts. I begin the body with the title and date line so the file stands on its own and the reader can orient without metadata. Sections use normal Markdown headings, which keeps the body free of page and layout syntax.
 
-Markdown works here because it stays close to plain text, so paragraphs read like paragraphs and headings read like headings while links stay visible. When I open a file in a terminal or a diff viewer, the writing stays legible even in a chat window.
+Layout lives in templates and the body stays focused on narrative structure. I add section breaks to serve the argument, and the template controls how headings appear on screen. Links point to published URLs and stay explicit in the prose, which keeps filesystem paths out of the body. Code blocks use fenced Markdown and avoid inline tooling because the code exists to be read. Syntax highlighting can happen in the browser when it helps.
 
-The structure stays steady because the body begins with a clear title and a date line so a reader can orient themselves without metadata. Sections use normal Markdown headings, and there is no special syntax for pages or layout because those concerns belong to templates.
+Images and other assets sit in the same folder as the article, and the Markdown references them by relative path so the entry stays self-contained when the folder moves. The build copies that folder into the public tree and keeps the same structure in place, which keeps images working in indexes and on their own page. The body avoids embedding logic and keeps lazy loading in templates, while the Markdown stays presentation-agnostic and media framing stays in the layout layer. That boundary keeps the writing stable, so I can edit a paragraph or add a code block without worrying about the rest of the system. The file remains text with attachments, and the build system turns it into a page.
 
-That boundary keeps narrative structure separate from visual structure. When I add a section break, I am thinking about the argument, not the styling. The template decides how headings appear on screen.
-
-Links stay explicit: internal links point to published URLs while external links stay plain, so filesystem paths stay out of the body. Nothing relies on shortcodes or custom syntax, so if a link breaks it does so in a way a human can see and fix.
-
-Code blocks use fenced Markdown with no embedded runners or inline tooling because the code exists to be read. Syntax highlighting can happen in the browser later if it happens at all.
-
-Images and other assets sit in the same folder as the article, and the Markdown references them by relative path so the entry stays self-contained when the folder moves. The build copies assets into the public site and keeps the same structure in place.
-
-The body carries no embedding logic, so images that need lazy-loading get handled by the template and external video stays as a link unless the template renders it differently. The Markdown stays presentation-agnostic while the template handles those choices.
-
-That boundary keeps the writing stable, so I can edit a paragraph or add a code block without worrying about the rest of the system. The file remains text with attachments, and the build system turns it into a page.
-
-The self-referential thread of this project shows up here. The articles describe the system that renders them, but they do so in the same format as everything else. There is no special channel for documentation. The documentation lives inside the system it documents.
-
-That constraint forces clarity because if a concept cannot fit into Markdown with links and headings, it does not exist in a form the system can carry. Writing becomes a design tool and shapes the system as it grows.
-
-The article body stays simple because it has to, since this is the one place where all of this meets a human reader and everything else can be mechanical while the body stays readable.
-
+These posts describe the system that publishes them, and they do so in the same format as every other article. That keeps the documentation inside the pipeline, and the body serves as evidence of the approach. When the build changes, the archive stays reliable. If an idea cannot live inside Markdown with links and headings, I treat that as a design problem and fix the system until it can. The article body stays simple because it is the only place a human meets the work, so everything else can remain mechanical.

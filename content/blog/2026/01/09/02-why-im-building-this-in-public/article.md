@@ -18,6 +18,8 @@ This repository is where I'm working decisions out and where those workings live
 
 The writing is one of the tools I'm using to build the system. It affects the choices I make and keeps the work accountable because it has to be readable to someone besides me.
 
+One concrete example: when I wrote down the rule that templates should remain pure HTML, it stopped me from adding conditional logic in a rush. That single paragraph forced me to move selection into named queries and keep the rendering mechanical, which is now a fixed constraint in the build.
+
 If you want the companion piece on pace and voice, read [Writing Fast Without Writing Sloppily](/content/blog/2026/01/09/03-writing-fast-without-writing-sloppily/).
 
 A central concern in the experiment is how AI fits into this. I want AI as a constrained collaborator with clear boundaries about authority and intent, along with what I allow to change. Those constraints preserve the shape of the work while still letting me use speed and advantage when they help.
