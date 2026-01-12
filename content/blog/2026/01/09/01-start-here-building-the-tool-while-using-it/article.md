@@ -15,7 +15,7 @@ The first content is the documentation process itself, so I write while I build 
 
 Over time, this back-and-forth will harden into scripts as the workflow stabilises and the content aligns with the system it describes. The point of doing it in the open is that the system proves itself by publishing its own formation. The diary becomes the tool because each change leaves a record I can test and reuse.
 
-I minimise imports and treat third-party tools as last resorts. If I can solve a problem cleanly in a small amount of code, I do it myself and I understand it. If that stops being true, I bring in a dependency with intention and say why.
+I minimise imports and treat third-party tools as a last resort. When a problem fits in a small script, I write it and keep it in the repo so the implementation stays visible. When the problem is larger than that, I import a library and document the specific gap it fills.
 
 On the publishing side, I am aiming for the most boring convention that still works: a home page index with the newest post at the top. Each post also gets a dedicated article page with a stable permalink. That is the shape of the site I want to live inside. It lets me read the archive as a plain list without extra machinery. It also keeps the build simple enough to inspect.
 

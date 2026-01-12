@@ -173,7 +173,8 @@ main h1:first-child {
   margin: 0.9rem 0;
 }
 
-.page-article pre {
+.page-article pre,
+.article-entry pre {
   margin: 1.4rem 0;
   max-width: 100%;
   overflow-x: auto;
@@ -185,13 +186,15 @@ main h1:first-child {
   padding: 0.85rem 1rem;
 }
 
-.page-article pre code {
+.page-article pre code,
+.article-entry pre code {
   background: none;
   border: 0;
   padding: 0;
 }
 
-.page-article :not(pre) > code {
+.page-article :not(pre) > code,
+.article-entry :not(pre) > code {
   background: var(--color-inline-code-bg);
   border: 1px solid var(--color-code-border);
   border-radius: 0.25rem;

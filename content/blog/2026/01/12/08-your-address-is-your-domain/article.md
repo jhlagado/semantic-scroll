@@ -11,7 +11,7 @@ tags:
 # Your Address Is Your Domain
 _January 12, 2026_ | Series: openweb
 
-When you publish on a platform, you are borrowing an address. Your writing lives under someone else’s name on someone else’s domain, and it stays there only as long as that company allows. You can share the link, but you do not control it because the ground your words stand on is not yours.
+When you publish on a platform, you are borrowing an address. Your writing lives under someone else’s name on someone else’s domain, and it stays there only as long as that company allows. You can share the link, but you do not control the address it points to.
 
 ![Medieval labourers working the land.](./assets/reeve-and-serfs.jpg "Toiling on someone else's domain")
 

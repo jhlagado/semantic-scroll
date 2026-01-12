@@ -16,7 +16,7 @@ I treat the archive as an ordering problem once articles exist as files with fro
 
 A series describes a narrative and carries the idea that one entry follows another, so reading in order carries meaning. Series pages group all articles with the same `series` value and sort them by date ascending. The first article sets context and each one extends it, so the list grows forward in time.
 
-Tags describe subject matter and collect material that shares a topic without implying sequence. A reader who clicks a tag expects to see what is most recent first, since recency tends to track relevance. Tag pages group by tag and sort by date descending. Older entries remain available, but they do not define the view.
+Tag pages describe subject matter and collect material that shares a topic without implying sequence. A reader who clicks a tag expects to see what is most recent first, since recency tends to track relevance. Tag pages group by tag and sort by date descending. Older entries remain available, but they do not define the view.
 
 Both groupings come from the same frontmatter table. Each article contributes a row with its date plus tags and series. The build applies different sorts to that same data. I need no extra structure in the files themselves. What changes is how I shape the list.
 

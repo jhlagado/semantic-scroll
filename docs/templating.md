@@ -555,6 +555,8 @@ Index pages (home, tag pages, day/month/year archives) are first-class rendered 
 
 If an index page exists, it exists because a template explicitly rendered it.
 
+The build also emits `sitemap.xml` and `robots.txt` at the output root. These files describe the public surface for crawlers and must reflect the same URLs and canonical paths the templates emit. They are build artifacts, not hand-edited documents.
+
 ---
 
 ### 10.2 Asset Handling

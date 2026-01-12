@@ -21,7 +21,7 @@ In the early 1990s when Tim Berners-Lee and his colleagues were shaping the Worl
 
 The web’s original promise rested on open protocols and a light technical burden. HTTP and HTML were open enough for anyone to implement, and small enough to understand. If you wanted to publish, you bought a domain and wrote a page then put it online. There was no gatekeeper and no opaque algorithm deciding who saw your work.
 
-Convenience platforms changed the bargain by offering instant audiences and effortless publishing, which made sense for a long time and drew me in. The cost is that your writing lives inside someone else’s system, and your visibility depends on their incentives. The surface looks open, but the platform owns it.
+Convenience platforms promised reach without setup, so I traded hosting and maintenance for speed and feedback. My writing then sat inside their systems, and its visibility moved with their incentives. The interface felt open, but the ground was theirs.
 
 This still matters because a personal site is a form of self-reliance. When you own the domain and the files, you also own the story you are telling. You can publish without asking and keep an archive that outlives a platform, with links that stay stable.
 

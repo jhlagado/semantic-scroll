@@ -29,6 +29,8 @@ const TAG_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'tags.html');
 const SERIES_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'series.html');
 const ABOUT_TEMPLATE = path.join(TEMPLATE_DIR, 'about.html');
 const FEED_PATH = path.join(OUTPUT_DIR, 'feed.xml');
+const SITEMAP_PATH = path.join(OUTPUT_DIR, 'sitemap.xml');
+const ROBOTS_PATH = path.join(OUTPUT_DIR, 'robots.txt');
 
 const STATUS_VALUES = new Set(['draft', 'review', 'published', 'archived']);
 const INTERNAL_QUERY_NAMES = new Set(['article-page']);
@@ -435,6 +437,8 @@ function renderSite(index, queryResults) {
   renderFeed(queryResults, published);
   renderTagFeeds(published);
   renderSeriesFeeds(published);
+  writeSitemap(published);
+  writeRobots();
 }
 
 function renderFeed(queryResults, published) {
@@ -488,6 +492,90 @@ function renderSeriesFeeds(published) {
   }
 }
 
+function writeSitemap(published) {
+  const urls = new Map();
+  const latest = published.slice().sort(makeSortFn('date-desc'))[0] || null;
+
+  const addUrl = (pathValue, lastmodArticle) => {
+    const loc = joinUrl(SITE_URL, pathValue);
+    const lastmod = lastmodArticle ? formatSitemapDate(lastmodArticle) : null;
+    if (!urls.has(loc) || (lastmod && urls.get(loc).lastmod < lastmod)) {
+      urls.set(loc, { loc, lastmod });
+    }
+  };
+
+  addUrl('/', latest);
+  addUrl('/about/', latest);
+  addUrl('/content/blog/', latest);
+  addUrl('/tags/', latest);
+  addUrl('/series/', latest);
+
+  for (const article of published) {
+    addUrl(article.publicPath, article);
+  }
+
+  const years = groupBy(published, (article) => article.year);
+  for (const [year, items] of years.entries()) {
+    const latestForYear = items.slice().sort(makeSortFn('date-desc'))[0];
+    addUrl(`/content/blog/${year}/`, latestForYear);
+  }
+
+  const months = groupBy(published, (article) => `${article.year}/${article.month}`);
+  for (const [key, items] of months.entries()) {
+    const latestForMonth = items.slice().sort(makeSortFn('date-desc'))[0];
+    addUrl(`/content/blog/${key}/`, latestForMonth);
+  }
+
+  const days = groupBy(published, (article) => `${article.year}/${article.month}/${article.day}`);
+  for (const [key, items] of days.entries()) {
+    const latestForDay = items.slice().sort(makeSortFn('date-desc'))[0];
+    addUrl(`/content/blog/${key}/`, latestForDay);
+  }
+
+  const tagMap = groupBy(published.flatMap((article) => {
+    const tags = article.frontmatter.tags || [];
+    return tags.map((tag) => ({ tag, article }));
+  }), (entry) => entry.tag);
+
+  for (const [tag, entries] of tagMap.entries()) {
+    const latestForTag = entries.map((entry) => entry.article).sort(makeSortFn('date-desc'))[0];
+    addUrl(`/tags/${tag}/`, latestForTag);
+    const byYear = groupBy(entries, (entry) => entry.article.year);
+    for (const [year, yearEntries] of byYear.entries()) {
+      const latestForYear = yearEntries.map((entry) => entry.article).sort(makeSortFn('date-desc'))[0];
+      addUrl(`/tags/${tag}/${year}/`, latestForYear);
+    }
+  }
+
+  const seriesMap = groupBy(
+    published.filter((item) => item.frontmatter.series),
+    (item) => item.frontmatter.series
+  );
+
+  for (const [series, items] of seriesMap.entries()) {
+    const latestForSeries = items.slice().sort(makeSortFn('date-desc'))[0];
+    addUrl(`/series/${series}/`, latestForSeries);
+    const byYear = groupBy(items, (item) => item.year);
+    for (const [year, yearEntries] of byYear.entries()) {
+      const latestForYear = yearEntries.slice().sort(makeSortFn('date-desc'))[0];
+      addUrl(`/series/${series}/${year}/`, latestForYear);
+    }
+  }
+
+  const sitemap = buildSitemapXml(Array.from(urls.values()));
+  writeFile(SITEMAP_PATH, sitemap);
+}
+
+function writeRobots() {
+  const lines = [
+    'User-agent: *',
+    'Allow: /',
+    '',
+    `Sitemap: ${joinUrl(SITE_URL, '/sitemap.xml')}`
+  ];
+  writeFile(ROBOTS_PATH, `${lines.join('\n')}\n`);
+}
+
 function buildFeedXml({ title, link, description, items }) {
   const lastBuild = new Date().toUTCString();
   const feedItems = items.map((article) => {
@@ -523,6 +611,35 @@ function buildFeedXml({ title, link, description, items }) {
 function formatRssDate(article) {
   const date = new Date(Date.UTC(Number(article.year), Number(article.month) - 1, Number(article.day)));
   return date.toUTCString();
+}
+
+function formatSitemapDate(article) {
+  return `${article.year}-${article.month}-${article.day}`;
+}
+
+function buildSitemapXml(entries) {
+  const lines = entries.map((entry) => {
+    if (entry.lastmod) {
+      return [
+        '  <url>',
+        `    <loc>${escapeHtml(entry.loc)}</loc>`,
+        `    <lastmod>${entry.lastmod}</lastmod>`,
+        '  </url>'
+      ].join('\n');
+    }
+    return [
+      '  <url>',
+      `    <loc>${escapeHtml(entry.loc)}</loc>`,
+      '  </url>'
+    ].join('\n');
+  });
+
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...lines,
+    '</urlset>'
+  ].join('\n');
 }
 
 
