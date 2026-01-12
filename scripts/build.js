@@ -13,6 +13,7 @@ const QUERIES_PATH = path.join(ROOT, 'config', 'queries.json');
 
 const SITE_URL = process.env.SITE_URL || 'https://jhlagado.github.io/semantic-scroll';
 const BASE_PATH = normalizeBasePath(process.env.BASE_PATH || '');
+const CUSTOM_DOMAIN = process.env.CUSTOM_DOMAIN || 'semantic-scroll.com';
 const SITE_DESCRIPTION = 'A public experiment in building a publishing system while using it, with essays and specs evolving alongside the code.';
 const META_COLOR_SCHEME = 'light';
 const META_THEME_COLOR = '#ffffff';
@@ -64,6 +65,7 @@ function main() {
   const queries = loadQueries(QUERIES_PATH);
   const queryResults = executeQueries(index, queries);
   renderSite(index, queryResults);
+  writeCname();
   copyStaticAssets();
   copyAssets(index);
 }
@@ -87,6 +89,13 @@ function applyBasePath(html) {
   output = output.replace(/(href|src)=\"\/(?!\/)/g, `$1="${BASE_PATH}/`);
   output = output.replace(/url\(\/(?!\/)/g, `url(${BASE_PATH}/`);
   return output;
+}
+
+function writeCname() {
+  if (!CUSTOM_DOMAIN) {
+    return;
+  }
+  writeFile(path.join(OUTPUT_DIR, 'CNAME'), `${CUSTOM_DOMAIN}\n`);
 }
 
 function discoverArticles(rootDir) {
