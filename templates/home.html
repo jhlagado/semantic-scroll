@@ -36,12 +36,11 @@
       </nav>
     </header>
     <main id="main">
-      <h1>Latest posts</h1>
-      <ul class="summary-list">
-        <template data-query="home-posts" data-view="summary-list">
-          <li class="summary-empty">No posts yet.</li>
+      <div class="series-entries">
+        <template data-query="home-posts" data-view="article" data-wrap="article">
+          <p class="summary-empty">No posts yet.</p>
         </template>
-      </ul>
+      </div>
       <h2>Years</h2>
       <ul class="archive-years" data-slot="year-list">
         <li class="archive-empty">No posts yet.</li>

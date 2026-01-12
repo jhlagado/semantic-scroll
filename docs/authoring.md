@@ -32,6 +32,18 @@ If any of the following words or phrases appear in your output without an extrem
 
 ---
 
+## 2.1 Additional Lazy Writing Ticks
+
+These patterns flatten voice and should be avoided in prose. They are not “technical errors”, but they quickly make a piece read like a generic explainer.
+
+Avoid scene-setting clichés such as “In the age of…”, “In an age of…”, or “In the era of…”. Fold the context into the sentence without that prefabricated frame.
+
+Avoid empty finale phrases like “Ultimately”, “In conclusion”, or “At the end of the day”. End on a concrete point, a specific decision, or a personal observation instead.
+
+Avoid buzzwords that imply significance without stating it. Terms like “empower”, “revolutionary”, and “game-changer” remove detail and replace it with bluster.
+
+---
+
 ## 3. Structural Rules: Prose First
 
 ### 3.1 Narrative Flow

@@ -899,30 +899,38 @@ function renderArticleBody(article) {
 }
 
 function linkHeaderMeta(body, publicPath) {
-  const metaLine = /^(\*[^*\n]+\*)\s*\|\s*(?:Series:\s*([^|]+)\s*\|\s*)?Tags:\s*([^\n]+)$/m;
-  const match = body.match(metaLine);
-  if (!match) {
-    return body;
+  const headerLine = /^([_*]?[A-Za-z]+\s+\d{1,2},\s+\d{4}[_*]?)(?:\s*\|\s*Series:\s*([^\n]+))?$/m;
+  const tagsLine = /^Tags(?:\s+include)?\s*:?\s*([^\n]+?)(?:\s+for context\.)?$/m;
+  const headerMatch = body.match(headerLine);
+  const tagsMatch = body.match(tagsLine);
+
+  let updated = body;
+
+  if (headerMatch) {
+    const dateText = headerMatch[1].trim();
+    const seriesText = headerMatch[2] ? headerMatch[2].trim() : '';
+    const seriesLink = seriesText
+      ? ` | Series: [${seriesText}](/series/${encodeURIComponent(seriesText)}/)`
+      : '';
+    const lineOne = `[${dateText}](${publicPath})${seriesLink}`;
+    const replacement = `By [John Hardy](/about/)<br>${lineOne}`;
+    updated = updated.replace(headerLine, replacement);
   }
-  const dateText = match[1];
-  const seriesText = match[2] ? match[2].trim() : '';
-  const tagsText = match[3];
-  const tags = tagsText.split(',').map((tag) => tag.trim()).filter(Boolean);
-  const linkedTags = tags.map((tag) => {
-    const normalized = normalizeTag(tag);
-    if (!normalized) {
-      return tag;
-    }
-    return `[${tag}](/tags/${normalized}/)`;
-  }).join(', ');
-  const seriesLink = seriesText
-    ? `Series: [${seriesText}](/series/${normalizeTag(seriesText)}/)`
-    : '';
-  const lineOne = seriesLink
-    ? `[${dateText}](${publicPath}) | ${seriesLink}`
-    : `[${dateText}](${publicPath})`;
-  const replacement = `By [John Hardy](/about/)<br>${lineOne}<br>Tags: ${linkedTags}`;
-  return body.replace(metaLine, replacement);
+
+  if (tagsMatch) {
+    const tagsText = tagsMatch[1];
+    const tags = tagsText.split(',').map((tag) => tag.trim()).filter(Boolean);
+    const linkedTags = tags.map((tag) => {
+      const normalized = normalizeTag(tag);
+      if (!normalized) {
+        return tag;
+      }
+      return `[${tag}](/tags/${normalized}/)`;
+    }).join(', ');
+    updated = updated.replace(tagsLine, `Tags: ${linkedTags}`);
+  }
+
+  return updated;
 }
 
 function renderSummary(article) {
@@ -946,13 +954,14 @@ function renderSummary(article) {
   metaParts.push(`<time datetime="${dateText}">${dateText}</time>`);
   if (fm.series) {
     const seriesText = escapeHtml(fm.series);
-    metaParts.push(`Series: <a href="/series/${seriesText}/">${seriesText}</a>`);
+    metaParts.push(`Series: <a href="/series/${encodeURIComponent(fm.series)}/">${seriesText}</a>`);
   }
   const tags = fm.tags || [];
   if (tags.length) {
     const tagLinks = tags.map((tag) => {
       const safeTag = escapeHtml(tag);
-      return `<a rel="tag" href="/tags/${safeTag}/">${safeTag}</a>`;
+      const normalized = normalizeTag(tag);
+      return `<a rel="tag" href="/tags/${normalized}/">${safeTag}</a>`;
     }).join(', ');
     metaParts.push(`Tags: ${tagLinks}`);
   }
@@ -1095,6 +1104,22 @@ function monthName(month) {
 
 function renderMarkdown(body, basePath = '') {
   const lines = body.split(/\r?\n/);
+  const foldIndex = lines.findIndex((line) => line.trim().match(/^@@Fold(?:\s*:\s*(.+))?$/));
+  if (foldIndex === -1) {
+    return renderMarkdownSection(lines, basePath).trim();
+  }
+
+  const foldLine = lines[foldIndex].trim();
+  const foldMatch = foldLine.match(/^@@Fold(?:\s*:\s*(.+))?$/);
+  const summaryText = foldMatch && foldMatch[1] ? foldMatch[1].trim() : 'Read more';
+  const beforeLines = lines.slice(0, foldIndex);
+  const afterLines = lines.slice(foldIndex + 1);
+  const beforeHtml = renderMarkdownSection(beforeLines, basePath);
+  const afterHtml = renderMarkdownSection(afterLines, basePath);
+  return `${beforeHtml}<details class="article-fold"><summary>${renderInline(summaryText)}</summary>\n${afterHtml}</details>\n`.trim();
+}
+
+function renderMarkdownSection(lines, basePath) {
   let html = '';
   let paragraph = [];
   let inCode = false;
@@ -1146,7 +1171,7 @@ function renderMarkdown(body, basePath = '') {
   for (const line of lines) {
     const trimmed = line.trim();
 
-    const captionMatch = pendingCodeBlock ? trimmed.match(/^Caption:\s*(.+)$/) : null;
+    const captionMatch = pendingCodeBlock ? trimmed.match(/^@@Caption:\s*(.+)$/) : null;
     if (captionMatch) {
       flushParagraph();
       const captionText = captionMatch[1].trim();
@@ -1205,7 +1230,7 @@ function renderMarkdown(body, basePath = '') {
   }
 
   flushParagraph();
-  return html.trim();
+  return html;
 }
 
 function resolveAssetPath(src, basePath) {
@@ -1306,6 +1331,7 @@ function renderInline(text) {
   escaped = escaped.replace(/`([^`]+)`/g, '<code>$1</code>');
   escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   escaped = escaped.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  escaped = escaped.replace(/_([^_]+)_/g, '<em>$1</em>');
   return linkifyTags(escaped);
 }
 
