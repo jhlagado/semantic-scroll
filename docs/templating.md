@@ -645,6 +645,8 @@ This system avoids:
 The cost is verbosity.
 The benefit is durability.
 
+Head metadata is a controlled exception. The build may populate `<title>` and social meta tags in the document head using frontmatter and path-derived values, but templates remain metadata-blind and the body never renders frontmatter.
+
 ---
 
 ## 14. Explicit MVP Lock-In

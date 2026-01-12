@@ -287,7 +287,7 @@ build/
 
 Where `<main>` contains the rendered Markdown HTML for the article.
 
-No metadata was rendered.
+No metadata was rendered in the body; head metadata is stamped from frontmatter and path data.
 No logic lived in the template.
 Everything was deterministic.
 
