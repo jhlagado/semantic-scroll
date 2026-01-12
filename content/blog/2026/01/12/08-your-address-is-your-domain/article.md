@@ -2,7 +2,7 @@
 title: "Your Address Is Your Domain"
 status: published
 series: openweb
-summary: "I frame domain ownership as the practical boundary between publishing and renting space. The piece argues that control of the address keeps the promise of a URL in your hands."
+summary: "Argues that owning the domain is the first unit of independence. It calls the reader to secure the address before building the site."
 tags:
   - web
   - selfpublishing

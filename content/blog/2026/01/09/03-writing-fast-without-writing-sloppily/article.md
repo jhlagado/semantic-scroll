@@ -2,7 +2,7 @@
 title: "Writing Fast Without Writing Sloppily"
 status: published
 series: genesis
-summary: "Notes on writing quickly without losing voice and on using local linting as friction rather than a judge. I want speed without clichés, with tools that slow me down only when the prose goes flat."
+summary: "Sets out how I keep pace without losing voice, with a named failure pattern and a before-and-after rewrite. It shows how the prose-lint script flags drift and forces a second pass."
 tags:
   - writing
   - automation
@@ -17,6 +17,8 @@ It's easy to slide into that as certain phrases arrive fully formed and sentence
 Automation helps here, even though it's awkward. I don't believe there's a reliable way to algorithmically judge good writing, and I'm not trying to invent one. What I do think is possible is to detect laziness. I watch for repetition and familiar scaffolding, then for verbal tics that appear when attention drops or when a phrase announces an idea before it arrives because those patterns show up quickly.
 
 The `prose-lint` script most often catches short scene‑setting lines that do no work. It also flags contrast framing that drifts into meta narration. It flags tidy lists of three that flatten nuance. Those are the signals that my attention slipped and the prose started to coast.
+
+One example I keep seeing is a scene-setting line that gestures at the topic and then stalls. Draft: "This section is about speed and quality in writing." I rewrite it into a concrete decision. A revision like "I write fast to capture decisions while they are fresh, then slow down to keep the voice intact" turns an announcement into an argument.
 
 This project will involve writing local scripts that scan prose and score it for those habits. The scripts are friction: no rewrites, no house style, just a mirror. If a draft trips too many signals, that's my cue to slow down and look again because the tooling doesn't decide what's good.
 

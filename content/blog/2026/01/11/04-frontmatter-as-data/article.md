@@ -4,7 +4,7 @@
 title: "Frontmatter as Data"
 status: published
 series: contentstore
-summary: "Frontmatter is a small data block the build reads for indexing while the body stays for readers, keeping queries mechanical and the prose readable."
+summary: "Separates machine data from prose so indexing stays deterministic. It keeps list logic away from the article voice."
 tags:
   - frontmatter
 ---
@@ -27,6 +27,8 @@ thumbnail: assets/hero.jpg
 Those fields form the row for this article in the site's internal table. Titles and summaries let index pages render without scraping prose, and the series value places the article inside a forward-moving narrative. Tags attach the entry to topics, and status controls visibility. The thumbnail gives lists a concrete image.
 
 This separation lets writing and indexing evolve independently. A list title may not match the heading inside the article, and a summary may never appear in the prose. I keep that duplication because it keeps each surface predictable and keeps the body readable even when the index logic changes.
+
+It keeps the voice in the body intact when I revise the indexing rules.
 
 From a tooling perspective this keeps the pipeline simple. Scripts parse YAML and collect rows, then apply filters and sorts without reading the body. That keeps selection mechanical and prevents hidden inference. Everything that participates in queries and lists lives in one place, in a form that stays stable even as the writing changes.
 

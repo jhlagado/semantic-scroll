@@ -4,7 +4,7 @@
 title: "Assets"
 status: published
 series: contentstore
-summary: "Assets live beside the article that uses them, named in Markdown and resolved to absolute URLs at build time. Keeping files local to each entry makes moves safe and links stable."
+summary: "Sets the rule that assets live beside each article to keep attachments portable. It makes a clone complete by default and keeps links stable."
 tags:
   - assets
 ---
@@ -22,6 +22,8 @@ content/blog/2026/01/11/03-assets/
 ```
 
 `article.md` holds the writing and the `assets/` folder holds the attachments. There is no shared media pool and no global upload directory, so each article carries its own supporting files. That choice keeps the archive legible on disk and makes it obvious which files belong to which entry.
+
+A cloned copy stays complete because each article carries its own attachments.
 
 The Markdown body names assets by relative path, and the build resolves those paths to absolute URLs anchored to the article permalink. The source stays clean, and the output stays stable. That keeps links predictable when the archive grows. It also keeps review simple because the path stays visible in the prose.
 
