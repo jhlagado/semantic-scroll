@@ -4,7 +4,7 @@
 title: "Blog Philosophy"
 status: published
 series: genesis
-summary: "I outline the motivations and design instincts that shape the blog, from classic HTML to a minimal toolchain. The focus stays on legibility, accessibility, and a system that documents itself while it runs."
+summary: "States the non-negotiable stance behind the project: classic HTML, accessibility, durable URLs, minimal tooling. It draws the boundary where drift would break trust in the archive."
 tags:
   - philosophy
   - web
@@ -22,5 +22,5 @@ Discoverability sits beside all of that, so clean URLs and meaningful titles sho
 
 The tooling has to match that posture, so I favour a minimal toolchain and native JavaScript while keeping the feature scope tight. I will add theming and user settings only when they serve reading.
 
-This spec should grow by addenda so the trail stays visible. I am writing the blog while building the blog, and that loop stays central. A philosophy should show in the site, and the site should reveal any drift.
+This spec should grow by addenda so the trail stays visible. I am writing the blog while building the blog, and that loop stays central. A philosophy should show in the site, and the site should reveal any drift. If I drop these constraints, the archive loses its promise and the project fails its own test.
 Tags: philosophy, web

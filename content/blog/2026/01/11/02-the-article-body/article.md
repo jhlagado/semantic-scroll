@@ -4,7 +4,7 @@
 title: "The Article Body"
 status: published
 series: contentstore
-summary: "The body is the reader's record in plain Markdown so the text stays legible without the build, while templates handle layout and indexing."
+summary: "Explains why the body stays plain Markdown and readable on its own. It commits to a reader surface that survives even if the build disappears."
 ---
 # The Article Body
 _January 11, 2026_ | Series: contentstore
@@ -17,4 +17,4 @@ Layout lives in templates and the body stays focused on narrative structure. I a
 
 Images and other assets sit in the same folder as the article, and the Markdown references them by relative path so the entry stays self-contained when the folder moves. The build copies that folder into the public tree and keeps the same structure in place, which keeps images working in indexes and on their own page. The body avoids embedding logic and keeps lazy loading in templates, while the Markdown stays presentation-agnostic and media framing stays in the layout layer. That boundary keeps the writing stable, so I can edit a paragraph or add a code block without worrying about the rest of the system. The file remains text with attachments, and the build system turns it into a page.
 
-These posts describe the system that publishes them, and they do so in the same format as every other article. That keeps the documentation inside the pipeline, and the body serves as evidence of the approach. When the build changes, the archive stays reliable. If an idea cannot live inside Markdown with links and headings, I treat that as a design problem and fix the system until it can. The article body stays simple because it is the only place a human meets the work, so everything else can remain mechanical.
+These posts describe the system that publishes them, and they do so in the same format as every other article. That keeps the documentation inside the pipeline, and the body serves as evidence of the approach. When the build changes, the archive stays reliable. If an idea cannot live inside Markdown with links and headings, I treat that as a design problem and fix the system until it can. The body is my promise to readers: it stays readable even if the build disappears.

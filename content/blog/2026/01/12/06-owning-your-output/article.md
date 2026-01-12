@@ -2,7 +2,7 @@
 title: "Owning Your Output"
 status: published
 series: openweb
-summary: "I explain why owning the publishing surface is a technical choice, not a lifestyle preference. The piece frames self-publishing as a way to keep writing durable, inspectable, and under my control."
+summary: "Frames self-publishing as a technical choice that keeps writing durable and under my control. It ties that choice to why I am building this system and publishing here."
 tags:
   - web
   - philosophy

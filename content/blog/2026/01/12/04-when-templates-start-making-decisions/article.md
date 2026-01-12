@@ -4,7 +4,7 @@
 title: "When Templates Start Making Decisions"
 status: published
 series: templating
-summary: "I describe how templates take on selection work and how loops and conditionals push them from structure into control. This is where predictable layout starts to blur."
+summary: "Shows how loops and conditionals in templates turn layout into a control layer. It names the point where I stop trusting the output because selection is hidden."
 tags:
   - templating
 ---

@@ -2,7 +2,7 @@
 title: "Reclaiming the Web's Original Spirit"
 status: published
 series: openweb
-summary: "I look back at the early web’s open standards and the practical freedom they enabled for ordinary publishers. I trace how convenience platforms changed the bargain and why owning a domain still matters."
+summary: "Connects the early web's open protocols to present design choices in this project. It ends with a constraint that keeps the work open and portable."
 thumbnail: assets/this-is-for-everyone.jpg
 tags:
   - web
@@ -25,6 +25,6 @@ Convenience platforms changed the bargain by offering instant audiences and effo
 
 This still matters because a personal site is a form of self-reliance. When you own the domain and the files, you also own the story you are telling. You can publish without asking and keep an archive that outlives a platform, with links that stay stable.
 
-The point here is to keep the original contract intact through open standards and durable URLs, with independent publishing as the practice. This is the ground I want to stand on while I build this site. I insist on open protocols in this system.
+Keeping that contract means sticking to open standards and durable URLs while I build this site. That is why I insist on open protocols and plain HTML in this system.
 
 Tags: web, selfpublishing, openprotocols, platforms

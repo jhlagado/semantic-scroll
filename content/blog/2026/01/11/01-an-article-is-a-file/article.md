@@ -4,7 +4,7 @@
 title: "An Article Is a File"
 status: published
 series: contentstore
-summary: "Each article lives as a single Markdown file in its own dated folder so the archive stays inspectable, URLs stay stable, and indexing stays mechanical."
+summary: "Defines the article as a single file in a dated folder so the URL stays stable. It links that structure to reader trust in old links and a durable archive."
 ---
 # An Article Is a File
 _January 11, 2026_ | Series: contentstore
@@ -29,6 +29,8 @@ Here is where the writing begins…
 ```
 
 Everything above the divider is frontmatter for indexing, and everything below it carries the published text. The build reads the YAML block to assemble lists for series and tags, then renders the body as the article page. That keeps selection mechanical and keeps templates focused on structure.
+
+That pairing is the reason each permalink stays stable and reviewable even when the build changes.
 
 Some values appear in both places because each surface has a job. Titles and summaries belong in lists, while the article uses its own headline. A summary can stay out of the body so indexes stay concise. That keeps index pages tight while the article stays expansive. It also keeps readers from re-reading the same text in two places.
 

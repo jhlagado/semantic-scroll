@@ -4,7 +4,7 @@
 title: "Why Websites Need Templates"
 status: published
 series: templating
-summary: "I lay out why templates exist and why separating content from layout keeps a site coherent. Repeated headers and footers make the case for composition without duplication."
+summary: "Shows how templates solve duplication and keep structure consistent across pages. It sets up the stamp model as the reason this series exists."
 tags:
   - templating
 ---
@@ -24,6 +24,8 @@ In its simplest form, templating is just composition. A page is the result of ta
 This separation matters because it lets me work on content and structure independently. I can write or revise an article without touching the site chrome. A change to the site chrome does not require me to rewrite the archive. The template system is what connects those two strands.
 
 Once a site grows beyond a few pages, this quickly becomes essential. Without templates, I either duplicate markup everywhere or invent ad-hoc scripts to assemble pages. Templates are the conventional way to express that assembly.
+
+This baseline matters because the rest of the series argues for a stricter, stamp-like approach to templates.
 
 Where templates get more complicated is in how much responsibility I give them. Many systems ask templates to do more than place content into a frame. They ask templates to decide which pieces of content should appear and in what order, sometimes with conditions. That turns the template into a control layer with decisions baked in.
 

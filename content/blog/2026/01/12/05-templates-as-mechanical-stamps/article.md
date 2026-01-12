@@ -4,7 +4,7 @@
 title: "Templates as Mechanical Stamps"
 status: published
 series: templating
-summary: "Templates hold structure and nothing else, so queries select content and the build stamps it into place. A short caption line turns listings into semantic figures without raw HTML."
+summary: "Presents the stamp model where queries select and templates place prepared content, with a concrete example. It aims for templates that read like documents and still produce reliable pages."
 tags:
   - templating
 ---
@@ -65,5 +65,7 @@ Here is a concrete example that matches the home page most readers expect. It is
 Everything in that file is real HTML. If I open it in a browser, it renders as a page with an empty state because the `<template>` tag is inert by design. When the build runs, the system replaces that one tag with the output of the `latest-posts` query. Three returned articles become three summaries in that space, and the build then removes the `<template>` tag itself. If the query returns nothing, the fallback paragraph remains and the rest of the page stays the same.
 
 That simplicity keeps the system predictable and inspectable, and it stays durable over time. The complexity lives in the build process and the query definitions, where I can validate it and reason about it directly. The templates remain what they look like: static HTML documents with a few clearly defined places where content will appear. If you can read the template, you can understand the page.
+
+The aim is for a reader to open a template and feel the page is already there, with only the content missing.
 
 Tags: templating

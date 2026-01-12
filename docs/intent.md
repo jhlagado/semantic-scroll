@@ -1,110 +1,37 @@
-Here is the per‑article intentionality assessment and action plan. Each entry includes intent, audience, takeaway, and a concrete rewrite action or a rework flag.
+This document reframes each article in terms of authorial intent, audience motive, and reader outcome, then proposes a stronger, specific rewrite action. The aim is to make each piece read as deliberate craft rather than a descriptive stub.
 
-Start Here: Building the Tool While Using It (article.md)
-Intent: Onboard the reader into the experiment and declare that the build process itself is the content.
-Audience: New readers who need a map of what this project is and why it is public.
-Takeaway: This is a live system; the writing shapes the tooling and the tooling shapes the writing.
-Rewrite action: Add a short paragraph at the end that explicitly tells readers how to use the archive (e.g. “start here, then follow the genesis series”), so the intent becomes an instruction, not just a declaration.
+Start Here: Building the Tool While Using It exists to orient a new reader and to make the method feel tangible rather than philosophical. The audience is someone arriving cold, and the intended outcome is clarity about how to navigate the archive as a living build log. The current ending names the series but does not yet instruct a reader how to use it. Rewrite action: finish with a direct, two‑sentence instruction that points to the genesis series as the main path and names the first two links as the reader’s next step, so the intent becomes a map rather than a claim.
 
-Why I’m Building This in Public (article.md)
-Intent: Justify public work as a way to sharpen thought and bind decisions to visible code.
-Audience: Readers sceptical about public diaries or AI‑assisted development.
-Takeaway: Writing in public is not branding; it is the method that makes the system legible.
-Rewrite action: Add one concrete example of a decision that changed because it was written down. This will make the motive feel real rather than abstract.
+Why I’m Building This in Public exists to defend public writing as an engineering method and to justify the vulnerability that comes with it. The audience is sceptical readers who view public diaries as noise. The intended outcome is respect for the practice as a decision tool, not a performance. The piece already has one example, but it sits mid‑stream and feels incidental. Rewrite action: add a short, concrete second example at the end that shows a visible change in the repo caused by writing, so the intent becomes cumulative evidence.
 
-Writing Fast Without Writing Sloppily (article.md)
-Intent: Defend speed as a requirement while showing how the author avoids formulaic prose.
-Audience: Writers who assume speed and quality cannot coexist.
-Takeaway: Fast writing is only useful when the system enforces attention rather than clichés.
-Rewrite action: Add one short paragraph describing the specific failure mode the lint catches most often. That makes the intent practical and visible.
+Writing Fast Without Writing Sloppily exists to reconcile speed with craft and to show that constraints can preserve voice. The audience is writers who assume pace requires compromise. The intended outcome is trust that the process can stay human even when assisted by tooling. The “prose‑lint” paragraph is good but still abstract. Rewrite action: add a single, named failure pattern and a brief before/after sentence pair that shows how the tool changes a draft, making the intent demonstrable.
 
-An Article Is a File (article.md)
-Intent: Define the atomic unit of the system to keep it simple and durable.
-Audience: Technical readers who need a precise model.
-Takeaway: The file system is the source of truth, and the article is a stable unit.
-Rewrite action: Add one sentence that explains why this matters to a reader (e.g. “this is why every permalink is durable and reviewable”), so the intent isn’t only structural.
+An Article Is a File exists to define the atomic unit and to make durability feel concrete. The audience is technical readers who need a stable model to reason about. The intended outcome is understanding that the file system is not a convenience, it is the archive contract. The article already explains the structure but does not explicitly connect it to reader trust. Rewrite action: add one sentence after the YAML example that states how this guarantees permalinks and lets a reader trust an old link, so the intent moves from structure to promise.
 
-The Article Body (article.md)
-Intent: Protect the narrative surface from build logic and layout.
-Audience: Anyone who expects Markdown to remain readable over time.
-Takeaway: The body is the human record; templates are the mechanical frame.
-Rewrite action: Add a short closing line that explicitly frames this as a commitment to readers, not just an implementation choice.
+The Article Body exists to defend the reader surface and keep the narrative separate from build logic. The audience is anyone who expects Markdown to be readable without tooling. The intended outcome is confidence that the writing stands on its own. The close is strong but drifts into system language. Rewrite action: replace the final two sentences with a direct commitment to the reader that the body will remain readable even if the build disappears, keeping the intent human‑facing.
 
-Assets (article.md)
-Intent: Prevent media sprawl by coupling assets to their article.
-Audience: Future maintainers and anyone adding images.
-Takeaway: Assets are attachments to a file, not a global library.
-Rewrite action: Add a sentence that ties this to portability (e.g. “a cloned repo remains complete”), reinforcing why the author cares.
+Assets exists to prevent media sprawl and to keep attachments portable. The audience is future contributors adding images. The intended outcome is a habit of keeping assets local so the archive remains intact. The piece already explains mechanics but could lean harder into portability. Rewrite action: add a sentence after the folder example that says a clone is complete by default, so the intent is framed as a portability guarantee rather than a rule.
 
-Frontmatter as Data (article.md)
-Intent: Keep index logic clean by separating machine data from prose.
-Audience: Readers who need to understand the build pipeline.
-Takeaway: Queries read frontmatter; prose remains human.
-Rewrite action: Add a single sentence showing how this protects authorial voice (e.g. “the body stays readable even if the index logic changes”).
+Frontmatter as Data exists to separate machine data from prose and to keep indexing deterministic. The audience is readers trying to understand how queries work. The intended outcome is trust that lists do not scrape prose or invent meaning. The article explains the table model but does not state why that protects voice. Rewrite action: add a line in the last paragraph that names the benefit explicitly, such as keeping the body’s tone untouched by index logic, so the intent is about authorial control.
 
-Series and Tags in Time (article.md)
-Intent: Explain why the same data serves narrative order and topical order.
-Audience: Readers navigating the archive.
-Takeaway: Series are story‑order; tags are topic‑order.
-Rewrite action: Add a closing line that tells the reader how to choose between the two, which makes the intent practical.
+Series and Tags in Time exists to teach navigation intent: when to follow a sequence and when to browse a topic. The audience is a reader deciding how to approach the archive. The intended outcome is that series read as a narrative and tags read as topical updates. The last line already gives guidance but feels brief. Rewrite action: expand that closing sentence into a short, two‑sentence directive that clarifies the reader’s choice and suggests that series are for story while tags are for status.
 
-Indexing as Queries (article.md)
-Intent: Enforce a declarative selection model and keep templates dumb.
-Audience: Technical readers who might otherwise expect template logic.
-Takeaway: Named queries are the only selection mechanism.
-Rewrite action: Add a sentence that explains what this prevents (e.g. “no hidden selection, no surprise lists”), to make the author’s motive explicit.
+Indexing as Queries exists to defend a declarative selection model and to keep templates mechanical. The audience is technical readers who might expect templating logic. The intended outcome is a clear mental model: queries select, templates stamp. The piece already covers the constraint, but the motive could be sharper. Rewrite action: add a single sentence after the “no DSL” paragraph that names the failure the rule prevents, such as hidden selection or impossible debugging, so the intent is about accountability.
 
-A Blog That Is Also the Build System (article.md)
-Intent: Frame the repo as both journal and tool.
-Audience: Readers who need the conceptual hinge between philosophy and mechanics.
-Takeaway: The system documents its own construction by existing in one place.
-Rewrite action: Add a line that addresses the reader directly (“this is why you can inspect the system by reading the archive”), so intent is reader‑facing.
+A Blog That Is Also the Build System exists to connect philosophy with mechanics and to show why the repo is the journal. The audience is readers who need the conceptual hinge, not just the plumbing. The intended outcome is the ability to inspect the system by reading the archive. The last paragraph gestures at this, but the reader is not directly addressed. Rewrite action: add a sentence that explicitly invites the reader to trace a decision through the file tree, making the intent participatory.
 
-Blog Philosophy (article.md)
-Intent: Anchor the project with non‑negotiable values.
-Audience: Anyone trying to understand the project’s design boundaries.
-Takeaway: Classic HTML, accessibility, and durable URLs are the baseline.
-Rewrite action: Add a short sentence at the end that states the cost of violating the philosophy (e.g. “if I lose this, the project fails”), to make the intent feel binding.
+Blog Philosophy exists to state the non‑negotiables and make the project legible as a stance rather than a feature list. The audience is anyone trying to understand the boundaries. The intended outcome is that the reader sees a clear line between acceptable evolution and drift. The close is good but could be firmer. Rewrite action: add a final sentence that states the cost of violating the philosophy in concrete terms, such as losing trust in the archive or breaking the promise to readers.
 
-Why Websites Need Templates (article.md)
-Intent: Establish the basic problem templates solve before critique.
-Audience: Readers unfamiliar with static publishing mechanics.
-Takeaway: Templates reduce duplication and keep structure consistent.
-Rewrite action: Add a closing line that ties this directly to the author’s system (“this is why I need a mechanical stamp”), to foreshadow the series payoff.
+Why Websites Need Templates exists to give the first step of the templating series and to ground the reader before critique. The audience is readers unfamiliar with static publishing mechanics. The intended outcome is understanding that templates solve duplication and consistency. The article already hints at the next piece, but the author’s system is only implied. Rewrite action: insert a short bridge sentence before the final paragraph that names the “stamp” model as the reason the series exists, so the intent is explicit.
 
-When Templates Start Making Decisions (article.md)
-Intent: Show how logic inside templates erodes predictability.
-Audience: Readers accustomed to template engines.
-Takeaway: Selection logic inside templates becomes a hidden control plane.
-Rewrite action: Add one sentence about the author’s reaction (“this is where I start losing trust in the output”), to make the motive personal and clear.
+When Templates Start Making Decisions exists to show how logic inside templates erodes predictability. The audience is readers accustomed to templating engines. The intended outcome is scepticism about mixing selection with structure. The article already names the risk, but the author’s personal motive is muted. Rewrite action: add a sentence that states the point at which you stop trusting the output, making the intent emotional and technical at once.
 
-Templates as Mechanical Stamps (article.md)
-Intent: Present the alternative template model and show it in action.
-Audience: Readers ready for the concrete mechanism.
-Takeaway: Templates are structural stamps; queries do selection.
-Rewrite action: Add one sentence after the example stating what the author wants the reader to feel (“if you can read the template, you can understand the page”), to emphasise the reason for the design.
+Templates as Mechanical Stamps exists to present the alternative model and make it visible. The audience is readers who now accept the problem and want the solution. The intended outcome is confidence that templates can be read like documents and still produce reliable pages. The example does most of the work. Rewrite action: add a closing sentence that states what you want the reader to feel when they open a template file, turning the example into a reader‑centric payoff.
 
-Owning Your Output (article.md)
-Intent: Frame self‑publishing as a technical control decision.
-Audience: Readers who use platforms out of convenience.
-Takeaway: Owning the surface is about durability, not identity.
-Rewrite action: Add a line that ties this back to the project (e.g. “this is why I build this system instead of posting elsewhere”), to make the connection explicit.
+Owning Your Output exists to frame self‑publishing as a technical choice rather than a lifestyle. The audience is people who publish on platforms out of convenience. The intended outcome is a desire to own the surface and keep writing durable. The article could tie more tightly back to the project. Rewrite action: add a line in the final paragraph that says this is why you are building the system instead of posting elsewhere, which will make the intent explicit and project‑specific.
 
-Reclaiming the Web’s Original Spirit (article.md)
-Intent: Put the open‑web ethos in historical context.
-Audience: Readers who may not remember or care about early web values.
-Takeaway: The original contract of open protocols still matters.
-Rewrite action: Add a closing sentence that bridges history to present action (“this is why I insist on open protocols in this system”), making intention explicit.
+Reclaiming the Web’s Original Spirit exists to connect the historical ethic of open protocols to present design choices. The audience is readers who did not live through the early web. The intended outcome is belief that openness still matters and can be acted on. The piece ends on principle but not on action. Rewrite action: add a closing line that links the history to a concrete constraint in this project, such as refusing closed templates or platform‑bound formats, so the intent becomes current.
 
-Your Address Is Your Domain (article.md)
-Intent: Make the domain itself the core unit of independence.
-Audience: Readers who think domain ownership is optional.
-Takeaway: The URL is a promise, and owning it protects the promise.
-Rewrite action: Add one line that states the author’s hoped‑for reader action (e.g. “I want you to own the address before you build the house”), which makes the intent directive.
+Your Address Is Your Domain exists to argue that domain ownership is the primary unit of independence. The audience is readers who treat domains as optional. The intended outcome is a practical decision to own the address before publishing. The current ending is strong but could be more directive. Rewrite action: add one sentence that turns the metaphor into a reader action, such as “own the address before you build the house,” to make the intent explicitly prescriptive.
 
-Rework pile (if you want to prune rather than refine):
-None of these need removal, but two are borderline if you want to cut aggressively for signal:
-
-article.md (implementation‑heavy)
-article.md (schema‑heavy)
-If you want, I can implement the rewrite actions now, one article at a time, and keep a running checklist of intent clarity as we go.
+Rework priority: none require deletion, but the two most vulnerable if you want to prune hard are Assets and Frontmatter as Data because they are implementation‑heavy. If you keep them, the rewrite actions above should anchor them in reader‑visible intent rather than internal rules.

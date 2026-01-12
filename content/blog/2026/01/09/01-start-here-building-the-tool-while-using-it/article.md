@@ -4,7 +4,7 @@
 title: "Start Here: Building the Tool While Using It"
 status: published
 series: genesis
-summary: "This project is a self-referential experiment in software development that uses public writing to shape the system as it forms. This first post explains how the live Q/A workflow hardens into tooling and replaces itself over time."
+summary: "An entry map for the project that frames the live build log. It tells readers to start with the genesis series and follow the first two posts."
 ---
 # Start Here: Building the Tool While Using It
 _January 9, 2026_ | Series: genesis
@@ -19,6 +19,6 @@ I minimise imports and treat third-party tools as last resorts. If I can solve a
 
 On the publishing side, I am aiming for the most boring convention that still works: a home page index with the newest post at the top. Each post also gets a dedicated article page with a stable permalink. That is the shape of the site I want to live inside. It lets me read the archive as a plain list without extra machinery. It also keeps the build simple enough to inspect.
 
-This is the beginning of the genesis series. Read the posts in order if you want the narrative and the mechanics together. The sequence is the intended path through the decisions that shaped the build.
+To follow the build as it forms, read the genesis series in order, starting here. After this post, read [Blog Philosophy](/content/blog/2026/01/12/02-blog-philosophy/). Next, read [A Blog That Is Also the Build System](/content/blog/2026/01/12/01-a-blog-that-is-also-the-build-system/) and continue forward through the series.
 
 Related posts: [Blog Philosophy](/content/blog/2026/01/12/02-blog-philosophy/), [A Blog That Is Also the Build System](/content/blog/2026/01/12/01-a-blog-that-is-also-the-build-system/).
