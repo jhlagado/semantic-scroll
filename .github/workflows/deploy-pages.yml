@@ -30,8 +30,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          SITE_URL: https://jhlagado.github.io/semantic-scroll
-          BASE_PATH: /semantic-scroll
+          SITE_URL: https://semantic-scroll.com
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
