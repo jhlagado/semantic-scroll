@@ -4,14 +4,16 @@
 title: "An Article Is a File"
 status: published
 series: contentstore
-summary: "Each article is a single Markdown file in a dated folder, with frontmatter for indexing and a body for readers. The path carries the time, and the file carries the content."
+summary: "Each article lives as a single Markdown file in its own dated folder so the archive stays inspectable, URLs stay stable, and indexing stays mechanical."
 ---
 # An Article Is a File
 _January 11, 2026_ | Series: contentstore
 
-In this system an article lives as one Markdown file inside its own directory and each entry sits in one folder with one file that fixes its place in time while the file holds the text. I can open any entry months later and still see the same shape, which matters more to me than a clever template layer.
+I treat each article as a single Markdown file inside its own folder because I want the archive to stay inspectable and durable. A reader can open the file and see the full text in a stable shape, which keeps the record legible years later. You can also clone the archive and read it in plain text when the build changes.
 
-Open `article.md` in any entry and the shape stays the same. A YAML block sits at the top, followed by the Markdown body, so the layout does not drift.
+Each entry lives in its own folder. The folder path carries the date and slug. The file carries the writing, so URLs stay aligned with edits.
+
+Open `article.md` in any entry and you always see the same two-section structure. A YAML block sits at the top and the Markdown body follows, which keeps the writing distinct from the data surface.
 
 ```markdown
 ---
@@ -26,15 +28,10 @@ thumbnail: hero.jpg
 Here is where the writing begins…
 ```
 
-Everything above the divider is metadata, and everything below it carries the published text.
+Everything above the divider is frontmatter for indexing, and everything below it carries the published text. The build reads the YAML block to assemble lists for series and tags, then renders the body as the article page. That keeps selection mechanical and keeps templates focused on structure.
 
-The build reads frontmatter to construct lists for series and tags. That block holds titles and summaries, plus thumbnails and series membership for indexing. The body stays untouched until an article page renders it.
+Some values appear in both places because each surface has a job. Titles and summaries belong in lists, while the article uses its own headline. A summary can stay out of the body so indexes stay concise. That keeps index pages tight while the article stays expansive. It also keeps readers from re-reading the same text in two places.
 
-Templates never reconcile the two layers, so series pages pull summaries in order and tag pages pull summaries by recency. Article pages render the body while leaving the metadata alone, and that keeps the data surfaces stable.
+From a tooling point of view this keeps articles easy to work with. The file reads cleanly in a text editor. The metadata parses cleanly in small scripts. Git diffs stay tight enough to scan in seconds.
 
-This design forces duplication when something matters in more than one place. A list title can differ from the heading in the article. A summary may never appear in the prose. I accept that because it keeps each surface predictable.
-
-From a tooling point of view this keeps articles easy to work with. The file reads cleanly in a text editor and the metadata parses cleanly in scripts, while Git diffs stay tight so I can scan changes in seconds.
-
-The result is a simple object model. The folder locates the article in time. The frontmatter locates it in series and tags, while the body carries the text that gets published.
-
+For readers this means the permalink remains stable and the record stays open to inspection. For me it means a predictable build and a file I can review years later. That durability is the payoff of treating the file system as the source.

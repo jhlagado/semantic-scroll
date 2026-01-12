@@ -728,6 +728,7 @@ function lintBody(filePath, body, lineOffset, issues, options = {}) {
     lintListBlocks(orderedListBlocks, unorderedListBlocks, issues);
     lintConditionalClosing(paragraphs, issues);
     lintSentenceOpeners(paragraphs, issues);
+    lintParagraphLengths(paragraphs, issues);
   }
 }
 
@@ -1046,6 +1047,64 @@ function countShortSentences(sentences, maxWords) {
     }
   }
   return count;
+}
+
+function lintParagraphLengths(paragraphs, issues) {
+  if (!paragraphs.length) {
+    return;
+  }
+  const eligible = [];
+  const shortLines = [];
+  for (const paragraph of paragraphs) {
+    const text = paragraph.text.trim();
+    if (!text) {
+      continue;
+    }
+    if (shouldSkipParagraph(text)) {
+      continue;
+    }
+    const count = splitSentences(text).length;
+    eligible.push({ count, line: paragraph.line });
+    if (count <= 2) {
+      shortLines.push(paragraph.line);
+    }
+  }
+  if (eligible.length < 4) {
+    return;
+  }
+  const shortRatio = shortLines.length / eligible.length;
+  if (shortLines.length >= 3 && shortRatio >= 0.4) {
+    const sample = shortLines.slice(0, 5).join(', ');
+    addIssue(issues, {
+      line: 0,
+      weight: 2,
+      message: `Short paragraphs (≤2 sentences): ${shortLines.length}/${eligible.length}. Lines: ${sample}`
+    });
+  }
+  const variance = stddev(eligible.map((item) => item.count));
+  if (variance < 0.5) {
+    addIssue(issues, {
+      line: 0,
+      weight: 2,
+      message: `Low paragraph-length variance (${variance.toFixed(2)})`
+    });
+  }
+}
+
+function shouldSkipParagraph(text) {
+  if (/^#+\s+/.test(text)) {
+    return true;
+  }
+  if (/_January\s+\d{1,2},\s+\d{4}_\s+\|\s+Series:/i.test(text)) {
+    return true;
+  }
+  if (/^Tags(?::|\s+include)/i.test(text)) {
+    return true;
+  }
+  if (/^Related posts:/i.test(text)) {
+    return true;
+  }
+  return false;
 }
 
 function countRepeatedOpeners(sentences) {

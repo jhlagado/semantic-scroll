@@ -22,4 +22,6 @@ Both groupings come from the same frontmatter table. Each article contributes a 
 
 This distinction lets the archive behave in two different ways at once. A series behaves like a log or a chaptered notebook, where order carries weight. A tag behaves like a topical index, where breadth and freshness matter more than sequence. The same article can sit inside both without conflict, because one describes its place in a story and the other describes what it is about.
 
+When you want the story, follow a series; when you want the latest on a topic, follow a tag.
+
 Tags: series, tags

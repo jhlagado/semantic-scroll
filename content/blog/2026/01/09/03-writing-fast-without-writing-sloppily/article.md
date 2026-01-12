@@ -1,6 +1,4 @@
 ---
-
-
 title: "Writing Fast Without Writing Sloppily"
 status: published
 series: genesis
@@ -17,6 +15,8 @@ Writing quickly matters to this project because without it I'd slow down and pub
 It's easy to slide into that as certain phrases arrive fully formed and sentences drift into explanation while leaving description behind. Paragraphs climb into commentary about the writing. Language has grooves, so when I'm moving fast I let the wheels fall into them.
 
 Automation helps here, even though it's awkward. I don't believe there's a reliable way to algorithmically judge good writing, and I'm not trying to invent one. What I do think is possible is to detect laziness. I watch for repetition and familiar scaffolding, then for verbal tics that appear when attention drops or when a phrase announces an idea before it arrives because those patterns show up quickly.
+
+The `prose-lint` script most often catches short scene‑setting lines that do no work. It also flags contrast framing that drifts into meta narration. It flags tidy lists of three that flatten nuance. Those are the signals that my attention slipped and the prose started to coast.
 
 This project will involve writing local scripts that scan prose and score it for those habits. The scripts are friction: no rewrites, no house style, just a mirror. If a draft trips too many signals, that's my cue to slow down and look again because the tooling doesn't decide what's good.
 

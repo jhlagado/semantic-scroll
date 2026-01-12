@@ -25,6 +25,6 @@ Convenience platforms changed the bargain by offering instant audiences and effo
 
 This still matters because a personal site is a form of self-reliance. When you own the domain and the files, you also own the story you are telling. You can publish without asking and keep an archive that outlives a platform, with links that stay stable.
 
-The point here is to keep the original contract intact through open standards and durable URLs, with independent publishing as the practice. That is the ground I want to stand on while I build this site.
+The point here is to keep the original contract intact through open standards and durable URLs, with independent publishing as the practice. This is the ground I want to stand on while I build this site. I insist on open protocols in this system.
 
 Tags: web, selfpublishing, openprotocols, platforms

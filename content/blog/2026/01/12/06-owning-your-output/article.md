@@ -21,6 +21,6 @@ Self-publishing, for me, is a technical choice. Owning a domain and shipping pla
 
 This way of working also changes how I think about the archive. When everything lives on my own site, I set the rules of what matters and how it surfaces. It is a collection of files and links that I am responsible for. That makes the archive legible and inspectable. It becomes something I can maintain for years without renting it from a platform.
 
-This series is about that choice and treats publishing as infrastructure. I want to write in a space that I control, using tools that do not disappear when a service shuts down. Plain HTML still exists alongside stable URLs and open protocols. I am building with those constraints because they keep the writing mine and keep the system open to anyone who wants to read it or take it elsewhere.
+This series is about that choice and treats publishing as infrastructure. I want to write in a space that I control, using tools that do not disappear when a service shuts down. Plain HTML still exists alongside stable URLs and open protocols. I am building with those constraints because they keep the writing mine and keep the system open to anyone who wants to read it or take it elsewhere. This is why I build this system and publish here.
 
 Tags: web, philosophy, selfpublishing, openprotocols

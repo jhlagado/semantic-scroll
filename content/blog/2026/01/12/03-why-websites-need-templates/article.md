@@ -13,7 +13,7 @@ _January 12, 2026_ | Series: templating
 
 When I load a web page in a browser, what arrives is a single document. It might be long and include navigation plus footers and sidebars around a main column of text, but to the browser it is just one block of HTML.
 
-When I run a site with more than a handful of pages, however, I am not authoring one document. I am authoring many pages, not just one. Each page has its own content, but the structure repeats. The header and navigation repeat, and the footer and typography repeat along with the layout.
+When a site grows beyond a handful of pages, I am no longer writing one document but a whole set. Each page carries its own content, yet the structure repeats. The header and navigation stay consistent across the set. The footer and typography stay consistent, as does the layout.
 
 If I were to copy that shared structure into every file, the site would be hard to maintain. A small change to the navigation or layout would require touching every page. Over time those copies drift, and the site becomes inconsistent. This is the practical problem templates exist to solve for me.
 
@@ -27,7 +27,7 @@ Once a site grows beyond a few pages, this quickly becomes essential. Without te
 
 Where templates get more complicated is in how much responsibility I give them. Many systems ask templates to do more than place content into a frame. They ask templates to decide which pieces of content should appear and in what order, sometimes with conditions. That turns the template into a control layer with decisions baked in.
 
-Whether that is a good idea depends on what I want from my publishing system. I use the next piece to make that trade-off explicit.
+Whether that is a good idea depends on what I want from my publishing system. That is why I want templates to act as mechanical stamps that receive prepared content. I use the next piece to make that trade-off explicit.
 
 In the next article I look at how that additional responsibility changes what templates are, and why it affects the clarity and predictability of the final HTML. If you want to continue, head to [When Templates Start Making Decisions](/content/blog/2026/01/12/04-when-templates-start-making-decisions/).
 
