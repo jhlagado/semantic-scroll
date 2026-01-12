@@ -14,6 +14,7 @@ const QUERIES_PATH = path.join(ROOT, 'config', 'queries.json');
 const SITE_URL = process.env.SITE_URL || 'https://jhlagado.github.io/semantic-scroll';
 const BASE_PATH = normalizeBasePath(process.env.BASE_PATH || '');
 const CUSTOM_DOMAIN = process.env.CUSTOM_DOMAIN || 'semantic-scroll.com';
+const SITE_NAME = 'Semantic Scroll';
 const SITE_DESCRIPTION = 'A public experiment in building a publishing system while using it, with essays and specs evolving alongside the code.';
 const META_COLOR_SCHEME = 'light';
 const META_THEME_COLOR = '#ffffff';
@@ -349,13 +350,18 @@ function renderSite(index, queryResults) {
     : index.filter((item) => item.frontmatter.status === 'published').sort(makeSortFn('date-asc'));
 
   const homeTemplate = fs.readFileSync(HOME_TEMPLATE, 'utf8');
+  const homeLabel = 'Home';
   const homeHtml = renderTemplate(
     applySlots(
       applyMeta(homeTemplate, {
         canonical: joinUrl(SITE_URL, '/'),
-        description: SITE_DESCRIPTION
+        description: SITE_DESCRIPTION,
+        title: homeLabel
       }),
-      { 'year-list': buildYearList(published, '/content/blog/') }
+      {
+        'page-title': escapeHtml(composePageTitle(homeLabel)),
+        'year-list': buildYearList(published, '/content/blog/')
+      }
     ),
     queryResults
   );
@@ -364,10 +370,16 @@ function renderSite(index, queryResults) {
   if (fs.existsSync(ABOUT_TEMPLATE)) {
     const aboutTemplate = fs.readFileSync(ABOUT_TEMPLATE, 'utf8');
     const aboutHtml = renderTemplate(
-      applyMeta(aboutTemplate, {
-        canonical: joinUrl(SITE_URL, '/about/'),
-        description: SITE_DESCRIPTION
-      }),
+      applySlots(
+        applyMeta(aboutTemplate, {
+          canonical: joinUrl(SITE_URL, '/about/'),
+          description: SITE_DESCRIPTION,
+          title: 'About'
+        }),
+        {
+          'page-title': escapeHtml(composePageTitle('About'))
+        }
+      ),
       queryResults
     );
     writeFile(path.join(OUTPUT_DIR, 'about', 'index.html'), aboutHtml);
@@ -380,11 +392,23 @@ function renderSite(index, queryResults) {
 
   for (const article of articleCandidates) {
     const perArticleResults = { 'article-page': [article] };
+    const articleTitle = articleMetaTitle(article);
     const articleHtml = renderTemplate(
-      applyMeta(articleTemplate, {
-        canonical: joinUrl(SITE_URL, article.publicPath),
-        description: descriptionForArticle(article)
-      }),
+      applySlots(
+        applyMeta(articleTemplate, {
+          canonical: joinUrl(SITE_URL, article.publicPath),
+          description: descriptionForArticle(article),
+          title: articleTitle,
+          ogType: 'article',
+          image: articleOgImage(article),
+          publishedTime: articlePublishedTime(article),
+          section: article.frontmatter.series || null,
+          tags: article.frontmatter.tags || []
+        }),
+        {
+          'page-title': escapeHtml(composePageTitle(articleTitle))
+        }
+      ),
       perArticleResults
     );
 
@@ -525,14 +549,19 @@ function copyStaticAssets() {
 function renderArchiveRoot(published) {
   const template = fs.readFileSync(BLOG_TEMPLATE, 'utf8');
   const yearList = buildYearList(published, '/content/blog/');
+  const label = 'Archive';
 
   const html = renderTemplate(
     applySlots(
       applyMeta(template, {
         canonical: joinUrl(SITE_URL, '/content/blog/'),
-        description: SITE_DESCRIPTION
+        description: SITE_DESCRIPTION,
+        title: label
       }),
-      { 'year-list': yearList }
+      {
+        'page-title': escapeHtml(composePageTitle(label)),
+        'year-list': yearList
+      }
     ),
     {}
   );
@@ -585,7 +614,8 @@ function renderYearArchives(published) {
     const html = applySlots(
       applyMeta(template, {
         canonical: joinUrl(SITE_URL, `/content/blog/${year}/`),
-        description: SITE_DESCRIPTION
+        description: SITE_DESCRIPTION,
+        title: `${year} Archive`
       }),
       {
         'page-title': escapeHtml(`${year} - Archive - Semantic Scroll`),
@@ -617,7 +647,8 @@ function renderMonthArchives(published) {
       applySlots(
         applyMeta(template, {
           canonical: joinUrl(SITE_URL, `/content/blog/${year}/${month}/`),
-          description: SITE_DESCRIPTION
+          description: SITE_DESCRIPTION,
+          title: `${label} Archive`
         }),
         slots
       ),
@@ -680,7 +711,8 @@ function renderTagArchives(published) {
       applySlots(
         applyMeta(template, {
           canonical: joinUrl(SITE_URL, `/tags/${tag}/`),
-          description: SITE_DESCRIPTION
+          description: SITE_DESCRIPTION,
+          title: `Tag: ${tag}`
         }),
         slots
       ),
@@ -703,7 +735,8 @@ function renderTagArchives(published) {
         applySlots(
           applyMeta(template, {
             canonical: joinUrl(SITE_URL, `/tags/${tag}/${year}/`),
-            description: SITE_DESCRIPTION
+            description: SITE_DESCRIPTION,
+            title: `Tag: ${tag} - ${year}`
           }),
           yearSlots
         ),
@@ -719,10 +752,16 @@ function renderTagArchives(published) {
 function renderTagIndex(queryResults) {
   const template = fs.readFileSync(TAG_INDEX_TEMPLATE, 'utf8');
   const html = renderTemplate(
-    applyMeta(template, {
-      canonical: joinUrl(SITE_URL, '/tags/'),
-      description: SITE_DESCRIPTION
-    }),
+    applySlots(
+      applyMeta(template, {
+        canonical: joinUrl(SITE_URL, '/tags/'),
+        description: SITE_DESCRIPTION,
+        title: 'Tags'
+      }),
+      {
+        'page-title': escapeHtml(composePageTitle('Tags'))
+      }
+    ),
     queryResults
   );
   writeFile(path.join(OUTPUT_DIR, 'tags', 'index.html'), html);
@@ -766,7 +805,8 @@ function renderSeriesArchives(published) {
       applySlots(
         applyMeta(template, {
           canonical: joinUrl(SITE_URL, `/series/${series}/`),
-          description: SITE_DESCRIPTION
+          description: SITE_DESCRIPTION,
+          title: `Series: ${series}`
         }),
         slots
       ),
@@ -789,7 +829,8 @@ function renderSeriesArchives(published) {
         applySlots(
           applyMeta(template, {
             canonical: joinUrl(SITE_URL, `/series/${series}/${year}/`),
-            description: SITE_DESCRIPTION
+            description: SITE_DESCRIPTION,
+            title: `Series: ${series} - ${year}`
           }),
           yearSlots
         ),
@@ -821,9 +862,13 @@ function renderSeriesIndex(published) {
     applySlots(
       applyMeta(template, {
         canonical: joinUrl(SITE_URL, '/series/'),
-        description: SITE_DESCRIPTION
+        description: SITE_DESCRIPTION,
+        title: 'Series'
       }),
-      { 'series-list': seriesList }
+      {
+        'page-title': escapeHtml(composePageTitle('Series')),
+        'series-list': seriesList
+      }
     ),
     {}
   );
@@ -1046,17 +1091,92 @@ function applyHrefAttributes(html, values) {
   return output;
 }
 
-function applyMeta(html, { canonical, description }) {
+function composePageTitle(label) {
+  return `${label} - ${SITE_NAME}`;
+}
+
+function articleMetaTitle(article) {
+  const title = article.frontmatter.title || article.slug || 'Untitled';
+  return stripInlineMarkup(title);
+}
+
+function articlePublishedTime(article) {
+  const date = new Date(Date.UTC(Number(article.year), Number(article.month) - 1, Number(article.day)));
+  return date.toISOString();
+}
+
+function siteImageUrl() {
+  return joinUrl(SITE_URL, '/assets/semantic-scroll.png');
+}
+
+function articleOgImage(article) {
+  const thumb = article.frontmatter.thumbnail;
+  if (thumb) {
+    return joinUrl(SITE_URL, joinUrl(article.publicPath, thumb));
+  }
+  return siteImageUrl();
+}
+
+function removeMetaTag(html, key) {
+  const pattern = new RegExp(`\\s*<meta\\s+[^>]*data-content="${key}"[^>]*>\\s*`, 'i');
+  return html.replace(pattern, '');
+}
+
+function injectMetaTags(html, marker, tags) {
+  const tagMarkup = tags && tags.length
+    ? `${tags.map((tag) => `  <meta property="article:tag" content="${escapeHtml(tag)}" />`).join('\n')}\n`
+    : '';
+  return html.replace(marker, tagMarkup);
+}
+
+function applyMeta(html, {
+  canonical,
+  description,
+  title,
+  ogType,
+  image,
+  publishedTime,
+  section,
+  tags
+}) {
+  const metaTitle = title || SITE_NAME;
+  const metaDescription = description ? normalizeWhitespace(description) : null;
+  const metaImage = image || siteImageUrl();
+  const metaOgType = ogType || 'website';
+  const metaCanonical = canonical || SITE_URL;
+  const twitterCard = metaImage ? 'summary_large_image' : 'summary';
+
   const contentValues = {
-    'meta-description': normalizeWhitespace(description || SITE_DESCRIPTION),
+    'meta-description': metaDescription,
+    'og-site-name': SITE_NAME,
+    'og-title': metaTitle,
+    'og-description': metaDescription,
+    'og-url': metaCanonical,
+    'og-type': metaOgType,
+    'og-image': metaImage,
+    'twitter-card': twitterCard,
+    'twitter-title': metaTitle,
+    'twitter-description': metaDescription,
+    'twitter-image': metaImage,
+    'article-published-time': publishedTime || null,
+    'article-section': section || null,
     'color-scheme': META_COLOR_SCHEME,
     'theme-color': META_THEME_COLOR
   };
   const hrefValues = {
-    'canonical-url': canonical || SITE_URL
+    'canonical-url': metaCanonical
   };
-  let output = applyContentAttributes(html, contentValues);
+  let output = html;
+  for (const [key, value] of Object.entries(contentValues)) {
+    if (value === null || value === undefined || value === '') {
+      output = removeMetaTag(output, key);
+      continue;
+    }
+    const marker = `data-content="${key}"`;
+    output = output.split(marker).join(`content="${escapeHtml(value)}"`);
+  }
   output = applyHrefAttributes(output, hrefValues);
+  output = injectMetaTags(output, '<!-- meta:article-tags -->', tags);
   return output;
 }
 
@@ -1068,7 +1188,7 @@ function descriptionForArticle(article) {
       return cleaned;
     }
   }
-  return SITE_DESCRIPTION;
+  return null;
 }
 
 function stripInlineMarkup(text) {

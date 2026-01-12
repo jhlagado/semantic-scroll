@@ -81,7 +81,7 @@ Rules:
 - may differ from the Markdown body title
 - supports a minimal inline Markdown subset (see Summary)
 
-The frontmatter title is used only by summary renderers and never injected into full article pages.
+The frontmatter title is used by summary renderers and for head metadata (the `<title>` tag and social meta). It is never injected into the article body.
 
 ---
 
