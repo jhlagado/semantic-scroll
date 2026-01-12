@@ -83,7 +83,9 @@ const RULES = [
       /\bwhat this means is\b/i,
       /\bit's worth noting\b/i,
       /\bat its core\b/i,
-      /\bthis highlights the importance of\b/i
+      /\bthis highlights the importance of\b/i,
+      /\byour terms\b/i,
+      /\bhonest\b/i
     ],
     message: 'Banned phrase'
   },
@@ -287,6 +289,11 @@ const CONTRAST_PATTERNS = [
     regex: /\bnot only\b[^.?!]{0,120}\bbut\b/gi
   },
   {
+    label: 'not because',
+    weight: 12,
+    regex: /\bnot because\b[^.?!]{0,200}[.?!]/gi
+  },
+  {
     label: 'rather than',
     weight: 4,
     regex: /\brather than\b/gi
@@ -310,6 +317,7 @@ const CONTRAST_PATTERNS = [
 
 const CONTRAST_PARAGRAPH_CAP = 12;
 const EMDASH_LINES_PER = 20;
+const SHORT_SENTENCE_MAX = 6;
 const EMDASH_PATTERN = /—/g;
 const PUNCTUATION_RULES = [
   {
@@ -923,6 +931,24 @@ function lintMetrics(filePath, body, issues) {
         message: `Repeated sentence openers (${repeatedOpenerCount})`
       });
     }
+
+    const listyCount = countListySentences(sentences);
+    if (listyCount > 0) {
+      addIssue(issues, {
+        line: 0,
+        weight: 2,
+        message: `List-heavy sentences (${listyCount})`
+      });
+    }
+
+    const shortSentenceCount = countShortSentences(sentences, SHORT_SENTENCE_MAX);
+    if (shortSentenceCount > 0) {
+      addIssue(issues, {
+        line: 0,
+        weight: 2,
+        message: `Short sentences (≤${SHORT_SENTENCE_MAX} words): ${shortSentenceCount}`
+      });
+    }
   }
 }
 
@@ -969,6 +995,54 @@ function countWeakVerbs(sentences) {
         count += 1;
         break;
       }
+    }
+  }
+  return count;
+}
+
+function countListySentences(sentences) {
+  let count = 0;
+  for (const sentence of sentences) {
+    const text = sentence.trim();
+    if (!text) {
+      continue;
+    }
+    if (/_January\s+\d{1,2},\s+\d{4}_\s+\|\s+Series:/i.test(text)) {
+      continue;
+    }
+    if (/^Tags(?::|\s+include)/i.test(text)) {
+      continue;
+    }
+    const commaCount = (text.match(/,/g) || []).length;
+    if (commaCount < 2) {
+      continue;
+    }
+    if (/\b(and|or)\b/i.test(text)) {
+      count += 1;
+    }
+  }
+  return count;
+}
+
+function countShortSentences(sentences, maxWords) {
+  let count = 0;
+  for (const sentence of sentences) {
+    const text = sentence.trim();
+    if (!text) {
+      continue;
+    }
+    if (/_January\\s+\\d{1,2},\\s+\\d{4}_\\s+\\|\\s+Series:/i.test(text)) {
+      continue;
+    }
+    if (/^Tags(?::|\s+include)/i.test(text)) {
+      continue;
+    }
+    if (text.endsWith(':')) {
+      continue;
+    }
+    const words = wordCount(text);
+    if (words > 0 && words <= maxWords) {
+      count += 1;
     }
   }
   return count;
