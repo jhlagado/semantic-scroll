@@ -37,7 +37,7 @@ Here is the template logic I am talking about:
 {% endif %}
 ```
 
-Caption: Short posts I want to surface on the home page.
+@@Caption: Short posts I want to surface on the home page.
 
 The result is that the final HTML page is no longer a simple combination of a frame and a piece of content. The output is a program embedded inside the template. To understand what the page will look like, I have to consider the template file, the data it receives, and the logic that operates on that data.
 

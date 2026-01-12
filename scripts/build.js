@@ -1095,6 +1095,22 @@ function monthName(month) {
 
 function renderMarkdown(body, basePath = '') {
   const lines = body.split(/\r?\n/);
+  const foldIndex = lines.findIndex((line) => line.trim().match(/^@@Fold(?:\s*:\s*(.+))?$/));
+  if (foldIndex === -1) {
+    return renderMarkdownSection(lines, basePath).trim();
+  }
+
+  const foldLine = lines[foldIndex].trim();
+  const foldMatch = foldLine.match(/^@@Fold(?:\s*:\s*(.+))?$/);
+  const summaryText = foldMatch && foldMatch[1] ? foldMatch[1].trim() : 'Read more';
+  const beforeLines = lines.slice(0, foldIndex);
+  const afterLines = lines.slice(foldIndex + 1);
+  const beforeHtml = renderMarkdownSection(beforeLines, basePath);
+  const afterHtml = renderMarkdownSection(afterLines, basePath);
+  return `${beforeHtml}<details class="article-fold"><summary>${renderInline(summaryText)}</summary>\n${afterHtml}</details>\n`.trim();
+}
+
+function renderMarkdownSection(lines, basePath) {
   let html = '';
   let paragraph = [];
   let inCode = false;
@@ -1146,7 +1162,7 @@ function renderMarkdown(body, basePath = '') {
   for (const line of lines) {
     const trimmed = line.trim();
 
-    const captionMatch = pendingCodeBlock ? trimmed.match(/^Caption:\s*(.+)$/) : null;
+    const captionMatch = pendingCodeBlock ? trimmed.match(/^@@Caption:\s*(.+)$/) : null;
     if (captionMatch) {
       flushParagraph();
       const captionText = captionMatch[1].trim();
@@ -1205,7 +1221,7 @@ function renderMarkdown(body, basePath = '') {
   }
 
   flushParagraph();
-  return html.trim();
+  return html;
 }
 
 function resolveAssetPath(src, basePath) {

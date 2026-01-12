@@ -64,7 +64,7 @@ Here is a concrete example that matches the home page most readers expect. It is
 </html>
 ```
 
-Caption: The latest entries as they land in the archive.
+@@Caption: The latest entries as they land in the archive.
 
 Everything in that file is real HTML. If I open it in a browser, it renders as a page with an empty state because the `<template>` tag is inert by design. When the build runs, the system replaces that one tag with the output of the `latest-posts` query. Three returned articles become three summaries in that space, and the build then removes the `<template>` tag itself. If the query returns nothing, the fallback paragraph remains and the rest of the page stays the same.
 

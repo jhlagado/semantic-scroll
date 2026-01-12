@@ -49,7 +49,7 @@ _January 9, 2026_ | Series: build-log | Tags: z80, assembly, retrocomputing
 
 The build wraps the date in a permalink to the article page, so the header stays readable as plain Markdown while still offering a direct link when rendered.
 
-The body also supports captioned code listings. If the next non-empty line after a fenced code block starts with `Caption:`, the build wraps the code block in a `<figure class="listing">` and renders the caption as `<figcaption>`. This keeps listings semantic and accessible without forcing raw HTML into the Markdown.
+The body also supports captioned code listings. If the next non-empty line after a fenced code block starts with `@@Caption:`, the build wraps the code block in a `<figure class="listing">` and renders the caption as `<figcaption>`. This keeps listings semantic and accessible without forcing raw HTML into the Markdown.
 
 ````markdown
 ```html
@@ -58,8 +58,10 @@ The body also supports captioned code listings. If the next non-empty line after
   <li>Second post</li>
 </ul>
 ```
-Caption: Short posts I want to surface on the home page.
+@@Caption: Short posts I want to surface on the home page.
 ````
+
+The body also supports a fold marker that hides the remainder of a page behind a native `<details>` element. If a line contains `@@Fold` on its own, the build splits the article at that point. Everything after the marker is wrapped in `<details class="article-fold">`, with a `<summary>` label that defaults to “Read more”. You can customise the label by adding text after a colon, for example `@@Fold: Continue reading`.
 
 ---
 
