@@ -14,7 +14,7 @@ _January 12, 2026_ | Series: genesis
 
 I write this down early because it is the anchor I will keep returning to and the blog only works if it lets me publish day to day technical work without friction while AI drafts alongside me and I keep control of the final voice. That constraint is the condition that makes the rest of the system worth building.
 
-The middle of it, for me, is the web itself. I keep coming back to classic HTML and the original web idea from Tim Berners-Lee. A document should be legible without tooling, and a link should be a durable pointer that does not depend on runtime action. I want this site to feel like the early web did when it was a network of human readable documents, where the page is the page and the URL means what it says.
+The centre of it, for me, is the web itself. I keep coming back to classic HTML and the original web idea from Tim Berners-Lee. A document should read cleanly in source and still make sense without scripts, and a link should act as a stable address with no runtime dependency. I want this site to feel like the early web did when it was a network of human readable documents where the page is the page and the URL means what it says.
 
 That stance forces decisions about durability and access. Accessibility and internationalisation are not optional if I want the site to last, so headings and landmarks must make sense to assistive tools and links must remain clear. Text and layout choices cannot collapse when language or fonts change, or when the reader never uses a mouse. Performance and cacheability live in the same layer. Pages need to load fast on slow networks and stay responsive on old devices.
 
