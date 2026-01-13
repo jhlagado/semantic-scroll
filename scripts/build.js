@@ -1178,10 +1178,11 @@ function renderArticleBody(article) {
 function renderArticleMetaTop(article) {
   const dateText = formatDisplayDate(article);
   const parts = [];
-  parts.push(`  <p class="article-meta-date"><em><a href="${article.publicPath}">${dateText}</a></em></p>`);
   if (article.frontmatter.series) {
     const seriesText = escapeHtml(article.frontmatter.series);
-    parts.push(`  <p class="article-meta-series">Series: <a href="/series/${encodeURIComponent(article.frontmatter.series)}/">${seriesText}</a></p>`);
+    parts.push(`  <p class="article-meta-date"><em><a href="${article.publicPath}">${dateText}</a></em> | Series: <a href="/series/${encodeURIComponent(article.frontmatter.series)}/">${seriesText}</a></p>`);
+  } else {
+    parts.push(`  <p class="article-meta-date"><em><a href="${article.publicPath}">${dateText}</a></em></p>`);
   }
   return parts.join('\n');
 }
