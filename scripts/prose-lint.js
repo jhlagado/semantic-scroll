@@ -246,7 +246,7 @@ const RULES = [
       /\bapologizes\b/i,
       /\bapologizing\b/i
     ],
-    message: 'US spelling (use UK/AU)',
+    message: 'US spelling (use British/Australian)',
     skipInlineCode: true,
     docs: true
   }
