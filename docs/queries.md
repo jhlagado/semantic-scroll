@@ -331,7 +331,7 @@ These must never erode:
 
 - templates stay dumb
 - queries stay declarative
-- metadata never leaks into full article presentation; summary views are a controlled exception
+- metadata appears only in summary views and fixed article metadata blocks
 - folder taxonomy remains stable
 - filesystem order always makes sense to a human, but traversal order has no semantic meaning
 

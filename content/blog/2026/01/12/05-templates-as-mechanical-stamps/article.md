@@ -9,7 +9,6 @@ tags:
   - templating
 ---
 # Templates as Mechanical Stamps
-_January 12, 2026_ | Series: templating
 
 If you missed the earlier piece, start with [Why Websites Need Templates](/content/blog/2026/01/12/03-why-websites-need-templates/). It lays out why templates exist and why the shared frame matters. It also gives the baseline this piece argues against.
 
@@ -88,5 +87,3 @@ Everything in that file is real HTML. If I open it in a browser, it renders as a
 That simplicity keeps the system predictable and inspectable, and it stays durable over time. The complexity lives in the build process and the query definitions, where I can validate it and reason about it directly. The templates remain what they look like: static HTML documents with a few clearly defined places where content will appear. If you can read the template, you can understand the page.
 
 The aim is for a reader to open a template and feel the page is already there, with only the content missing.
-
-Tags: templating

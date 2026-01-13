@@ -9,7 +9,6 @@ tags:
   - tooling
 ---
 # Guarding Against the Machine Voice
-_January 13, 2026_ | Series: genesis
 
 I built a [linting](https://graphite.com/guides/understanding-code-linting-purpose) script to flag formulaic phrasing and hedge words that creep into prose during fast writing when assisted by automation. The script runs against drafts by default and stops the build if too many issues accumulate in a single file. Speed matters to this project, yet unexamined speed produces exactly the variety of writing I want to avoid. I need a mirror that catches when prose drifts into explanation mode or starts sounding like a corporate blog post. The linter serves as that mirror by reflecting my own habits back to me during the draft process. Each rule carries a numeric weight where high-severity rules target the common formulaic failures that almost never appear in careful writing. The script flags these immediately to keep the voice sharp and direct.
 

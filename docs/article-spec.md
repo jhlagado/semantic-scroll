@@ -35,19 +35,19 @@ thumbnail: assets/thumbnail.jpg
 
 Here, the `status` field controls visibility (e.g., preventing drafts from appearing in public feeds). The `title`, `summary`, and `thumbnail` fields are used by built-in summary views and external feeds, not by full article rendering. Thumbnails must live in the article’s `assets/` subfolder and be referenced by a path relative to that folder. The build resolves the path to an absolute URL in rendered HTML. Title and summary may include minimal inline formatting (bold, italic, and inline links only). Dates remain filesystem-derived rather than frontmatter-defined.
 
-### 2.2 The Visible Document (The Mirroring Requirement)
+### 2.2 The Visible Document (Body First)
 
-Because our rendering templates are intentionally "dumb" and cannot access frontmatter, the document body must be self-contained. Any information intended for the reader—such as the title, the date of creation, or the categorical tags—must be authored directly in the Markdown prose. This "mirroring" ensures that if the build system disappears tomorrow, the document remains perfectly legible to a human reader.
+Templates remain "dumb," but full article pages include fixed metadata blocks above and below the Markdown body. Those blocks render the article date, permalink, series, and tags from frontmatter and the filesystem path. The body is reserved for the title, byline, and the prose itself, which keeps the document readable even when extracted from the build.
 
-Every article begins with a standard header block that fulfills this requirement:
+Every article begins with a straightforward body header that is part of the prose:
 
 ```markdown
 # Building the Z80 Disassembler: Part 1
 
-_January 9, 2026_ | Series: build-log | Tags: z80, assembly, retrocomputing
+By John Hardy
 ```
 
-The build wraps the date in a permalink to the article page, so the header stays readable as plain Markdown while still offering a direct link when rendered.
+If you want the date, series, or tags repeated inside the body text, you can still write them explicitly. The default expectation is that those values live in the metadata blocks instead.
 
 The body also supports captioned code listings. If the next non-empty line after a fenced code block starts with `@@Caption:`, the build wraps the code block in a `<figure class="listing">` and renders the caption as `<figcaption>`. This keeps listings semantic and accessible without forcing raw HTML into the Markdown.
 
@@ -77,8 +77,6 @@ A diary entry focuses on rapid capture and narrative flow. It often exists as pa
 >
 > # Day 14: Solving the Timing Glitch
 >
-> _January 10, 2026_ | Series: timing-fixes | Tags: hardware, debugging
->
 > Today I finally tracked down the timing issue in the bus controller. It wasn't a logic error in the code, but a subtle propagation delay on the physical board. By shifting the clock edge slightly, the signals stabilised. This log records the specific probe points and values that led to the fix...
 
 ### 3.2 The Formal Specification (Spec)
@@ -88,8 +86,6 @@ A specification is normative and precise. It uses explicitly numbered sections a
 > _Example (Spec)_:
 >
 > # Protocol Definition: SYNC-GATE v1.2
->
-> _January 11, 2026_ | Tags: protocol, standards
 >
 > **Status**: LOCKED (Stable)
 >
@@ -104,4 +100,4 @@ Reference docs are optimised for long-term lookup. They use objective prose, fre
 
 ## 4. Authoring Responsibility
 
-Anyone creating or revising a post must maintain the integrity of the Article Unit. The `/NN-slug/` folder structure must be enforced and all relevant metadata must be mirrored correctly in the body. Tag labels in the header should use the canonical tag spellings so visible labels stay aligned with the index. Above all, the document should read as crafted writing rather than a collection of data points.
+Anyone creating or revising a post must maintain the integrity of the Article Unit. The `/NN-slug/` folder structure must be enforced and metadata should remain accurate in frontmatter so the header and footer blocks stay consistent. The body should read as crafted writing rather than a collection of data points.

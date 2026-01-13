@@ -11,7 +11,6 @@ tags:
   - automation
 ---
 # Why I'm Building This in Public
-_January 9, 2026_ | Series: genesis
 
 I'm building this in public because writing details down changes how I think. When ideas stay private they remain vague and provisional. Writing for an imagined reader sharpens the ideas and shows the gaps as decisions harden on the page.
 
@@ -26,5 +25,3 @@ The `prose-lint` script is my counterweight. It catches scene-setting lines that
 A central concern in the experiment is how AI fits into this. I want AI as a constrained collaborator with clear boundaries about authority and intent, along with what I allow to change. Those constraints preserve the shape of the work while still letting me use speed and advantage when they help. The blog that will appear here comes from the project and follows the same rules, so templates and queries show up alongside build scripts and deployment because the writing needs them. Another example came from tagging, where writing down the normalisation rule forced me to rename a handful of tags and rebuild the indexes so the archive stayed coherent and kept near-duplicates in one place.
 
 I still work out my position, and I take my time with it. This is an attempt to think carefully and design slowly while leaving a readable trail behind. The trail should stand on its own, even if I am the only person who ever reads it end to end.
-
-Tags: writing, ai, automation
