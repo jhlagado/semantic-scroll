@@ -16,6 +16,8 @@ const BASE_PATH = normalizeBasePath(process.env.BASE_PATH || '');
 const CUSTOM_DOMAIN = process.env.CUSTOM_DOMAIN || 'semantic-scroll.com';
 const SITE_NAME = 'Semantic Scroll';
 const SITE_DESCRIPTION = 'A public experiment in building a publishing system while using it, with essays and specs evolving alongside the code.';
+const SITE_LANGUAGE = 'en-AU';
+const FEED_AUTHOR = 'John Hardy';
 const META_COLOR_SCHEME = 'light';
 const META_THEME_COLOR = '#ffffff';
 
@@ -450,7 +452,8 @@ function renderFeed(queryResults, published) {
     title: 'Semantic Scroll',
     link: SITE_URL,
     description: SITE_DESCRIPTION,
-    items
+    items,
+    feedUrl: joinUrl(SITE_URL, '/feed.xml')
   });
 
   writeFile(FEED_PATH, feed);
@@ -468,7 +471,8 @@ function renderTagFeeds(published) {
       title: `Tag: ${tag} - Semantic Scroll`,
       link: joinUrl(SITE_URL, `/tags/${tag}/`),
       description: `Tag feed for ${tag}.`,
-      items
+      items,
+      feedUrl: joinUrl(SITE_URL, `/tags/${tag}/feed.xml`)
     });
     writeFile(path.join(OUTPUT_DIR, 'tags', tag, 'feed.xml'), feed);
   }
@@ -486,7 +490,8 @@ function renderSeriesFeeds(published) {
       title: `Series: ${series} - Semantic Scroll`,
       link: joinUrl(SITE_URL, `/series/${series}/`),
       description: `Series feed for ${series}.`,
-      items: ordered
+      items: ordered,
+      feedUrl: joinUrl(SITE_URL, `/series/${series}/feed.xml`)
     });
     writeFile(path.join(OUTPUT_DIR, 'series', series, 'feed.xml'), feed);
   }
@@ -576,32 +581,115 @@ function writeRobots() {
   writeFile(ROBOTS_PATH, `${lines.join('\n')}\n`);
 }
 
-function buildFeedXml({ title, link, description, items }) {
-  const lastBuild = new Date().toUTCString();
-  const feedItems = items.map((article) => {
-    const itemTitle = article.frontmatter.title || article.slug || 'Untitled';
-    const summary = article.frontmatter.summary || '';
-    const url = joinUrl(SITE_URL, article.publicPath);
-    const pubDate = formatRssDate(article);
-    return [
-      '    <item>',
-      `      <title>${escapeHtml(itemTitle)}</title>`,
-      `      <link>${escapeHtml(url)}</link>`,
-      `      <guid>${escapeHtml(url)}</guid>`,
-      `      <pubDate>${pubDate}</pubDate>`,
-      `      <description>${escapeHtml(stripInlineMarkup(summary))}</description>`,
-      '    </item>'
-    ].join('\n');
-  }).join('\n');
+function buildFeedEnclosure(article) {
+  const thumb = article.frontmatter.thumbnail;
+  if (!thumb) {
+    return '';
+  }
+  const filePath = path.join(article.dir, thumb);
+  if (!fs.existsSync(filePath)) {
+    return '';
+  }
+  const stats = fs.statSync(filePath);
+  if (!stats.isFile()) {
+    return '';
+  }
+  const ext = path.extname(filePath).toLowerCase();
+  const typeMap = {
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.png': 'image/png',
+    '.gif': 'image/gif',
+    '.webp': 'image/webp',
+    '.svg': 'image/svg+xml'
+  };
+  const mimeType = typeMap[ext];
+  if (!mimeType) {
+    return '';
+  }
+  const url = joinUrl(SITE_URL, joinUrl(article.publicPath, thumb));
+  return `      <enclosure url="${escapeHtml(url)}" length="${stats.size}" type="${mimeType}" />`;
+}
 
-  return [
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    '<rss version="2.0">',
+function escapeCdata(text) {
+  return String(text).replace(/]]>/g, ']]]]><![CDATA[>');
+}
+
+function absolutizeHtml(html) {
+  let output = html;
+  output = output.replace(/(href|src)=\"\/(?!\/)([^"]*)\"/g, (_match, attr, relPath) => {
+    return `${attr}="${joinUrl(SITE_URL, relPath)}"`;
+  });
+  output = output.replace(/url\(\/(?!\/)([^)]+)\)/g, (_match, relPath) => {
+    return `url(${joinUrl(SITE_URL, relPath)})`;
+  });
+  return output;
+}
+
+function buildFeedXml({ title, link, description, items, feedUrl }) {
+  const lastBuild = new Date().toUTCString();
+  const channelImage = siteImageUrl();
+  const channelLines = [
     '  <channel>',
     `    <title>${escapeHtml(title)}</title>`,
     `    <link>${escapeHtml(link)}</link>`,
     `    <description>${escapeHtml(description)}</description>`,
     `    <lastBuildDate>${lastBuild}</lastBuildDate>`,
+    `    <language>${SITE_LANGUAGE}</language>`
+  ];
+
+  if (feedUrl) {
+    channelLines.push(`    <atom:link href="${escapeHtml(feedUrl)}" rel="self" type="application/rss+xml" />`);
+  }
+
+  if (channelImage) {
+    channelLines.push('    <image>');
+    channelLines.push(`      <url>${escapeHtml(channelImage)}</url>`);
+    channelLines.push(`      <title>${escapeHtml(title)}</title>`);
+    channelLines.push(`      <link>${escapeHtml(link)}</link>`);
+    channelLines.push('    </image>');
+  }
+
+  const feedItems = items.map((article) => {
+    const itemTitle = article.frontmatter.title || article.slug || 'Untitled';
+    const summary = article.frontmatter.summary || '';
+    const url = joinUrl(SITE_URL, article.publicPath);
+    const pubDate = formatRssDate(article);
+    const tags = article.frontmatter.tags || [];
+    const categories = tags.map((tag) => `      <category>${escapeHtml(tag)}</category>`).join('\n');
+    const bodyHtml = renderArticleBody(article);
+    const encodedHtml = escapeCdata(absolutizeHtml(bodyHtml));
+    const enclosure = buildFeedEnclosure(article);
+
+    const itemLines = [
+      '    <item>',
+      `      <title>${escapeHtml(itemTitle)}</title>`,
+      `      <link>${escapeHtml(url)}</link>`,
+      `      <guid isPermaLink="true">${escapeHtml(url)}</guid>`,
+      `      <pubDate>${pubDate}</pubDate>`,
+      `      <dc:creator>${escapeHtml(FEED_AUTHOR)}</dc:creator>`,
+      `      <description>${escapeHtml(stripInlineMarkup(summary))}</description>`
+    ];
+
+    if (categories) {
+      itemLines.push(categories);
+    }
+    if (enclosure) {
+      itemLines.push(enclosure);
+    }
+    itemLines.push(`      <content:encoded><![CDATA[${encodedHtml}]]></content:encoded>`);
+    itemLines.push('    </item>');
+    return itemLines.join('\n');
+  }).join('\n');
+
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<rss version="2.0"',
+    '  xmlns:content="http://purl.org/rss/1.0/modules/content/"',
+    '  xmlns:dc="http://purl.org/dc/elements/1.1/"',
+    '  xmlns:atom="http://www.w3.org/2005/Atom"',
+    '>',
+    ...channelLines,
     feedItems,
     '  </channel>',
     '</rss>'
