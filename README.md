@@ -1,32 +1,42 @@
-# Live Blogging Platform
+# Semantic Scroll
 
-This repository defines an AI-assisted technical diary and publishing system built on classic web values. It is designed to capture daily technical work in durable, human-readable form without turning publishing into a chore. Posts are treated as long-lived documents rather than CMS entries, and the author retains control of voice, timing, and accountability at every step. AI tools and automation must follow `AGENTS.md` before making changes.
+A minimalist blogging platform built on classic web values: semantic HTML, accessibility, and filesystem simplicity. No database, no build complexity—just content organized by date and rendered as clean, fast static HTML.
 
-The PRD frames the project as a calm, authored web system: semantic HTML, accessibility, mobile-first layouts, and minimal JavaScript that never becomes a dependency. The workflow is meant to be fast enough for daily capture, but structured enough to support repurposing into talks, videos, or long-form writing. Cost and portability matter: the stack favors free or near-zero hosting, CLI-first tooling, and stable URLs owned by the author.
+## Design Philosophy
 
-Architecturally, identity and chronology are derived from the filesystem (`/content/blog/YYYY/MM/DD/NN-slug/`), queries select content, templates remain pure HTML, and rendering is deterministic stamping. Summary and index views are built-in render modes that use frontmatter `title`, `summary`, and `thumbnail` with minimal inline formatting, while full article pages are authored in Markdown and may intentionally diverge from those summary titles. Frontmatter is rendered only in summary and index views, never in full article rendering. CSS is plain and semantic-first, and JavaScript is optional and additive, ensuring the site stays readable and navigable without it.
+Semantic Scroll embraces simplicity at every level:
 
-For the canonical goals and decisions, start with [docs/PRD.md](docs/PRD.md). The architecture is captured in [docs/queries.md](docs/queries.md), with the Article Unit defined in [docs/article-spec.md](docs/article-spec.md) and frontmatter rules in [docs/articles-frontmatter.md](docs/articles-frontmatter.md). The query schema and built-ins are in [docs/queries-spec.md](docs/queries-spec.md) and [docs/queries-builtin.md](docs/queries-builtin.md). Rendering, template rules, and the JavaScript boundary live in [docs/templating.md](docs/templating.md), [docs/templating-conventions.md](docs/templating-conventions.md), and [docs/templating-javascript.md](docs/templating-javascript.md). Styling rules are defined in [docs/styling.md](docs/styling.md), pipeline and CI rules in [docs/ci-pipeline.md](docs/ci-pipeline.md), and the implementation guide in [docs/design-reference.md](docs/design-reference.md).
+- **Filesystem as database**: Content lives in dated folders (`/content/blog/YYYY/MM/DD/NN-slug/`), making your writing human-readable and version-control friendly
+- **HTML-first templates**: Pure, accessible markup without framework lock-in
+- **Mobile-first**: Responsive layouts that work everywhere
+- **Minimal JavaScript**: Progressive enhancement, never a dependency
+- **Deterministic builds**: Same input always produces the same output
+
+The platform is designed for writers who want to publish quickly without fighting tooling or memorizing commands.
+
+## Architecture
+
+Identity and chronology derive naturally from the filesystem structure. Queries select content, templates remain pure HTML, and rendering produces static pages. For detailed goals and decisions, see [docs/PRD.md](docs/PRD.md). The query system is documented in [docs/queries.md](docs/queries.md), and the content format is defined in [docs/article-spec.md](docs/article-spec.md).
 
 ## Local tooling
 
-Local scripts run on Node.js and the repo keeps installs outside the tree. Install Node.js with your preferred system tool, then install `nodemon` globally for the dev watcher.
+Requires Node.js. Install `nodemon` globally for the development watcher:
 
 ```sh
 npm install -g nodemon
 ```
 
-More detail lives in [scripts/README.md](scripts/README.md).
+See [scripts/README.md](scripts/README.md) for more detail.
 
 ## Build and lint
 
-`npm run build` runs the strict prose linter first and stops on lint errors, then writes the site into `build/`.
+`npm run build` checks prose quality first, then writes the site to `build/`:
 
 ```sh
 npm run build
 ```
 
-`npm run lint` checks drafts only. `npm run lint:all` includes published posts, and `npm run lint:gate` applies threshold checks for CI.
+Lint commands: `npm run lint` (drafts only), `npm run lint:all` (all content), `npm run lint:gate` (CI thresholds).
 
 ```sh
 npm run lint
@@ -36,15 +46,15 @@ npm run lint:gate
 
 ## Local development
 
-`npm run dev` runs a non-blocking lint report, builds the site, starts the server, and rebuilds on changes under `content/`, `templates/`, `assets/`, and `config/`. The dev server binds to `127.0.0.1:8000` by default; override with `HOST` and `PORT` if needed.
+`npm run dev` starts a development server with live reload. The server binds to `127.0.0.1` and rebuilds automatically when content, templates, assets, or config change:
 
 ```sh
 npm run dev
 ```
 
-## Deferred notes
+## Publishing
 
-Two topics are intentionally deferred: a GitHub Pages and custom domain walkthrough, and a clear base‑URL story for GitHub Pages versus custom domains. Both will be documented after the next pass on deployment.
+Static output in `build/` can be deployed to any web host. GitHub Pages and custom domain configuration will be documented in an upcoming release.
 
 ## License
 
