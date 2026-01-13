@@ -6,6 +6,7 @@
     "build": "node scripts/build.js",
     "build:dev": "npm run -s lint:dev || echo \"[lint] issues (non-blocking)\"; node scripts/build.js && echo \"[build] ok\"",
     "dev": "bash -c 'set -e; npm run -s build:dev; HOST=${HOST:-127.0.0.1} npm run -s srv & srv_pid=$!; trap \"if [ -n \\\"$srv_pid\\\" ]; then kill \\\"$srv_pid\\\" 2>/dev/null; fi\" EXIT; echo \"[dev] watching for changes\"; nodemon --quiet --on-change-only --exitcrash --legacy-watch --watch content --watch templates --watch assets --watch config --ignore build --ext md,html,css,js,json,svg --exec \"npm run -s build:dev\"'",
+    "start": "clear && npm run dev && npm run dev",
     "lint": "node scripts/prose-lint.js",
     "lint:all": "node scripts/prose-lint.js --all",
     "lint:dev": "node scripts/prose-lint.js --all --report",

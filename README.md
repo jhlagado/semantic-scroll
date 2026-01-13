@@ -46,11 +46,13 @@ npm run lint:gate
 
 ## Local development
 
-`npm run dev` starts a development server with live reload. The server binds to `127.0.0.1` and rebuilds automatically when content, templates, assets, or config change:
+`npm run start` clears the terminal and starts the development server. The server binds to `127.0.0.1` and rebuilds automatically when content, templates, assets, or config change:
 
 ```sh
-npm run dev
+npm run start
 ```
+
+`npm run dev` runs the same dev loop without clearing the terminal.
 
 ## Publishing
 
