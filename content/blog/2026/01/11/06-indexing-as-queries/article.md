@@ -22,6 +22,8 @@ The constraint is intentional because queries are plain objects, not a DSL. They
 
 This keeps the lists debuggable because every entry maps back to a named filter.
 
+Series and tag pages use the same index but serve different reading modes. A series carries narrative order, so those pages sort by date ascending and read like a sequence. Tag pages group by topic and sort by recency, because readers usually want the latest work first. Both views are built from the same frontmatter table, with the difference coming from the query and sort rules and avoiding extra fields.
+
 Feeds follow the same rule, and the global feed plus tag or series feeds come from named queries that avoid scraped HTML. That keeps discovery aligned with the rest of the site and makes the outputs small and deterministic.
 
 I can change a template without changing the data, or refine a query without touching markup. Indexes remain mechanical outputs of named inputs. The result is no surprise lists and no invisible filters.

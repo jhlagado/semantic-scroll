@@ -11,13 +11,34 @@ tags:
 # Templates as Mechanical Stamps
 _January 12, 2026_ | Series: templating
 
-I keep templates from deciding what content exists so the build pipeline and the query layer take on that responsibility. If you missed the earlier pieces, start with [Why Websites Need Templates](/content/blog/2026/01/12/03-why-websites-need-templates/) and [When Templates Start Making Decisions](/content/blog/2026/01/12/04-when-templates-start-making-decisions/).
+If you missed the earlier piece, start with [Why Websites Need Templates](/content/blog/2026/01/12/03-why-websites-need-templates/). It lays out why templates exist and why the shared frame matters. It also gives the baseline this piece argues against.
+
+Once a template starts making decisions, it stops behaving like a document and begins acting like a control layer. It gets access to collections of articles and loops through them. It filters results and hides sections based on conditions. That is convenient at first and hard to reason about later, because the output depends on hidden logic inside the layout.
+
+Here is the type of template logic I am talking about. It looks like layout, but it carries behaviour. 
+
+```
+{% if featured_posts.length > 0 %}
+<h2>Featured</h2>
+<ul>
+  {% for post in featured_posts %}
+    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
+```
+
+@@Caption: Posts I want to surface on the home page.
+
+When templates carry that logic, I can no longer read the file and know what the HTML will be. A small edit to a condition can change the page structure, and a metadata tweak can move a heading or drop a list. That is the point where I stop trusting the output.
+
+I avoid that by keeping templates from deciding what content exists. The build pipeline and the query layer take on the responsibility instead. That keeps selection in one place where I can inspect it.
 
 Before the build touches any template, it walks the filesystem and reads frontmatter to construct an index of all available articles. Queries apply to that index to produce explicit, ordered lists of article records. Each query has a name, and that name refers to a specific deterministic result set.
 
-By the time a template enters the pipeline, the interesting work is already complete. It receives the result of a query with a list of article records that already sit in the correct order, whether the list is empty or not.
+By the time a template enters the pipeline, the interesting work is already complete. It receives the result of a query with a list of article records that already sit in the correct order, whether the list is empty or not. That list arrives as data with no instruction to compute.
 
-That is what lets templates stay simple. It keeps the scope small when I need to debug.
+That is what lets templates stay simple. It keeps the scope small when I need to debug. It also keeps the source legible when I return to it months later.
 
 A template contains ordinary HTML and one or more `<template>` tags that act as render slots. Each slot names a query so the build knows what to stamp. At build time, the system takes the results of that query and stamps the corresponding content into the slot. If the query returned nothing, the system uses the fallback HTML inside the `<template>` tag instead. After stamping, the build removes the `<template>` tag itself, leaving only normal HTML behind.
 
@@ -27,7 +48,7 @@ This turns templating into a mechanical operation. Given the same set of article
 
 It also makes the templates readable in a way that is hard to achieve in more conventional systems. When I open one, I see the page structure as it will exist in the final output. I see the header and navigation, then the main content with its fallback messages for empty sections. There is no embedded logic to mentally execute. The only dynamic pieces are clearly marked as slots.
 
-That is what I mean by calling the system boring. I want the boring sections to stay readable, not clever. The templates stay simple and ignore metadata or sorting rules, while avoiding visibility flags as they provide a fixed shape that content slots into.
+That is what I mean by calling the system boring. I want the boring sections to stay readable, not clever. The templates stay simple and ignore metadata or sorting rules, while avoiding visibility flags as they provide a fixed shape that content slots into. Boring here means predictable and inspectable over time.
 
 Here is a concrete example that matches the home page most readers expect. It is a normal page with a header and navigation plus a list of recent posts. The only special tag is the slot where the build will stamp the query results:
 

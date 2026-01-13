@@ -31,6 +31,6 @@ Where templates get more complicated is in how much responsibility I give them. 
 
 Whether that is a good idea depends on what I want from my publishing system. That is why I want templates to act as mechanical stamps that receive prepared content. I use the next piece to make that trade-off explicit.
 
-In the next article I look at how that additional responsibility changes what templates are, and why it affects the clarity and predictability of the final HTML. If you want to continue, head to [When Templates Start Making Decisions](/content/blog/2026/01/12/04-when-templates-start-making-decisions/).
+In the next article I look at how that additional responsibility changes what templates are, and why it affects the clarity and predictability of the final HTML. If you want to continue, head to [Templates as Mechanical Stamps](/content/blog/2026/01/12/05-templates-as-mechanical-stamps/).
 
 Tags: templating

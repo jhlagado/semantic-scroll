@@ -15,6 +15,22 @@ Markdown keeps the text close to plain language. Paragraphs and headings read th
 
 Layout lives in templates and the body stays focused on narrative structure. I add section breaks to serve the argument, and the template controls how headings appear on screen. Links point to published URLs and stay explicit in the prose, which keeps filesystem paths out of the body. Code blocks use fenced Markdown and avoid inline tooling because the code exists to be read. Syntax highlighting can happen in the browser when it helps.
 
-Images and other assets sit in the same folder as the article, and the Markdown references them by relative path so the entry stays self-contained when the folder moves. The build copies that folder into the public tree and keeps the same structure in place, which keeps images working in indexes and on their own page. The body avoids embedding logic and keeps lazy loading in templates, while the Markdown stays presentation-agnostic and media framing stays in the layout layer. That boundary keeps the writing stable, so I can edit a paragraph or add a code block without worrying about the rest of the system. The file remains text with attachments, and the build system turns it into a page.
+Images and other assets live beside the article inside an `assets/` folder, so each entry carries its own attachments. There is no shared media pool, which keeps the archive legible on disk and makes a clone complete by default. It also keeps attribution and context close to the writing that references the files.
+
+```
+content/blog/2026/01/11/02-the-article-body/
+  article.md
+  assets/
+    diagram.webp
+    hero.jpg
+```
+
+The Markdown references assets by relative path so the entry stays self-contained when the folder moves. The build copies the `assets/` directory into the public tree and keeps the same structure in place, which keeps images working in indexes and on their own page. The source stays clean because the paths remain visible and easy to review.
+
+```markdown
+![Diagram of the content tree](./assets/diagram.webp "Content tree diagram")
+```
+
+The body avoids embedding logic and leaves lazy loading and presentation to templates, while the Markdown stays presentation-agnostic and media framing stays in the layout layer. That boundary keeps the writing stable, so I can edit a paragraph or add a code block without worrying about the rest of the system. The body remains a record, not a rendering script.
 
 These posts describe the system that publishes them, and they do so in the same format as every other article. That keeps the documentation inside the pipeline, and the body serves as evidence of the approach. When the build changes, the archive stays reliable. If an idea cannot live inside Markdown with links and headings, I treat that as a design problem and fix the system until it can. The body is my promise to readers: it stays readable even if the build disappears.

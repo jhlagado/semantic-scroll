@@ -4,19 +4,31 @@
 title: "A Blog That Is Also the Build System"
 status: published
 series: genesis
-summary: "Explains why the repository holds both the writing and the build so decisions stay traceable. It invites readers to inspect the file tree as a record of how the system forms."
+summary: "Sets out why the repository holds both the writing and the build so decisions stay traceable. It anchors that structure in classic web values and a minimal toolchain."
+tags:
+  - philosophy
+  - web
+  - tooling
 ---
 # A Blog That Is Also the Build System
 _January 12, 2026_ | Series: genesis
 
-I built the repository to be the blog and the build system with the record of how the build changes kept in the same place. That sounds neat as a concept, but it is also a practical choice. If I keep the content in a single place and put the scripts that shape it in the same place, I can read the whole system like a diary where the log of work becomes the work and the writing lives inside the software taking shape.
+This blog only works if it lets me publish day to day technical work without friction, with AI drafting alongside me and me keeping control of the final voice. That constraint is the reason the rest of the system exists.
 
-This idea changes how I think about content. A post is a folder with a Markdown file and nearby assets, plus a small amount of metadata that makes indexing possible. The folder tree is the public rhythm of the blog. Dates become paths and months become folders, so each post sits as a leaf in the tree. I can point at the layout and show how the site thinks.
+The web itself is the anchor for this project. I want documents that read cleanly in source and still make sense without scripts. Links should behave as stable addresses and stay clear of runtime actions. The site should feel like the early web did when a page was a page and a URL meant what it said.
 
-It also changes the role of automation. I rely on a handful of scripts that are obvious when I read them, because that makes the system legible to me and to the AI that maintains it. The scripts handle repetition, and the repo holds the permanent record. When the AI adds a script, it becomes an event in the diary and the change itself becomes content so the build system learns in public.
+That stance forces decisions about durability and access. Accessibility and internationalisation are core requirements because headings and landmarks have to make sense to assistive tools. Layout choices cannot collapse when language or fonts change, or when the reader never uses a mouse. Performance and cacheability sit in the same layer because pages have to load fast on slow networks and stay responsive on old devices.
 
-The same principle applies to templates, which are plain HTML and only stamp content into a page. Queries decide what exists, and those queries live beside the content they select. That is the heart of this approach. The data and selection stay visible, and the render stays visible too. When I say that the blog is the build system, I mean that the entire path from idea to page is traceable inside one repository. If you want to inspect how the system works, you can read the archive and follow those decisions in plain sight.
+Discoverability sits beside all of that and keeps the surface legible to crawlers. Clean URLs and clear titles should show intent without JavaScript. Indexable pages should do the same work. I use unobtrusive JavaScript where it helps navigation, but the baseline page remains intact with classic HTML as the foundation.
 
-Pick any entry and follow its folder path to trace the decision trail that produced it.
+The tooling has to match the posture, so I keep the toolchain small and inspectable. I add theming and user settings only when they serve reading, and I leave the rest out.
 
-I do this because I want to write about building the blog while I build it. The first posts will be about the system that is learning to publish the posts. I am comfortable with that because I treat the system as a living artifact. The repo is the journal, which becomes the site and the build.
+The repository is the blog and the build system, with the record of how the build changes kept in the same place. A post is a folder with a Markdown file and nearby assets, plus a small amount of metadata that makes indexing possible. The folder tree is the public rhythm of the blog. Dates become paths and months become folders, so each post sits as a leaf in the tree. I can point at the layout and show how the site thinks.
+
+Automation has a narrower role here and stays focused on repetition. I rely on a handful of scripts that are obvious when I read them, because that keeps the system legible to me and to the AI that helps maintain it. The scripts handle repetition and the repo holds the permanent record. When the AI adds a script, it becomes an event in the diary and the change itself becomes content.
+
+Templates are plain HTML and only stamp content into a page. Queries decide what exists, and those queries live beside the content they select. That is the heart of this approach. The data stays visible and the selection stays visible. The render stays visible once the build runs. When I say the blog is the build system, I mean the path from idea to page is traceable inside one repository.
+
+Pick any entry and follow its folder path to trace the decision trail that produced it. If I drop these constraints, the archive loses its promise and the project fails its own test.
+
+Tags: philosophy, web, tooling
