@@ -701,6 +701,11 @@ function formatRssDate(article) {
   return date.toUTCString();
 }
 
+function formatDisplayDate(article) {
+  const monthLabel = monthName(article.month);
+  return `${monthLabel} ${Number(article.day)}, ${article.year}`;
+}
+
 function formatSitemapDate(article) {
   return `${article.year}-${article.month}-${article.day}`;
 }
@@ -1168,15 +1173,13 @@ function renderArticleBody(article) {
 }
 
 function renderArticleMetaTop(article) {
-  const dateText = `${article.year}-${article.month}-${article.day}`;
+  const dateText = formatDisplayDate(article);
   const parts = [];
-  parts.push('<div class="article-meta-top">');
   parts.push(`  <p class="article-meta-date"><em><a href="${article.publicPath}">${dateText}</a></em></p>`);
   if (article.frontmatter.series) {
     const seriesText = escapeHtml(article.frontmatter.series);
     parts.push(`  <p class="article-meta-series">Series: <a href="/series/${encodeURIComponent(article.frontmatter.series)}/">${seriesText}</a></p>`);
   }
-  parts.push('</div>');
   return parts.join('\n');
 }
 
