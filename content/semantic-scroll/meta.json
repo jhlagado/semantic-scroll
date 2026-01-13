@@ -1,0 +1,20 @@
+[
+  {"tag":"meta","attrs":{"name":"description"},"valueKey":"meta-description"},
+  {"tag":"meta","attrs":{"property":"og:site_name"},"valueKey":"og-site-name"},
+  {"tag":"meta","attrs":{"property":"og:title"},"valueKey":"og-title"},
+  {"tag":"meta","attrs":{"property":"og:description"},"valueKey":"og-description"},
+  {"tag":"meta","attrs":{"property":"og:url"},"valueKey":"og-url"},
+  {"tag":"meta","attrs":{"property":"og:type"},"valueKey":"og-type"},
+  {"tag":"meta","attrs":{"property":"og:image"},"valueKey":"og-image"},
+  {"tag":"meta","attrs":{"name":"twitter:card"},"valueKey":"twitter-card"},
+  {"tag":"meta","attrs":{"name":"twitter:title"},"valueKey":"twitter-title"},
+  {"tag":"meta","attrs":{"name":"twitter:description"},"valueKey":"twitter-description"},
+  {"tag":"meta","attrs":{"name":"twitter:image"},"valueKey":"twitter-image"},
+  {"tag":"meta","attrs":{"property":"article:published_time"},"valueKey":"article-published-time"},
+  {"tag":"meta","attrs":{"property":"article:section"},"valueKey":"article-section"},
+  {"tag":"meta","attrs":{"name":"color-scheme"},"valueKey":"color-scheme"},
+  {"tag":"meta","attrs":{"name":"theme-color"},"valueKey":"theme-color"},
+  {"tag":"link","attrs":{"rel":"canonical"},"valueKey":"canonical-url","valueAttr":"href"},
+  {"tag":"link","attrs":{"rel":"alternate","type":"application/rss+xml"},"valueKey":"feed-url","valueAttr":"href","titleKey":"site-name"},
+  {"tag":"title","valueKey":"page-title","valueAttr":"text"}
+]
