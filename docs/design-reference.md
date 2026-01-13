@@ -145,15 +145,15 @@ This layout is **canonical**.
 ```
 /
 ├─ content/
-│  └─ blog/
-│     └─ YYYY/MM/DD/NN-slug/
-│        ├─ article.md
-│        └─ assets/
-│
-├─ templates/
-│  ├─ home.html
-│  ├─ day.html
-│  ├─ tag.html
+│  └─ <instance>/
+│     ├─ YYYY/MM/DD/NN-slug/
+│     │  ├─ article.md
+│     │  └─ assets/
+│     ├─ templates/
+│     │  ├─ article.html
+│     │  ├─ summary-index.html
+│     │  └─ about.html
+│     └─ assets/
 │
 ├─ config/
 │  └─ queries.json
@@ -239,22 +239,19 @@ Warnings must appear in CI logs but not fail the run.
 
 ---
 
-### Template (`templates/home.html`)
+### Template (`content/<contentDir>/templates/summary-index.html`)
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Home</title>
+    <!-- meta:head -->
   </head>
   <body>
     <main>
-      <h1>Recent Posts</h1>
-
-      <template data-query="latest-posts">
-        <p>No posts yet.</p>
-      </template>
+      <div data-slot="page-heading"></div>
+      <div data-slot="page-body"></div>
     </main>
   </body>
 </html>

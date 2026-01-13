@@ -71,13 +71,7 @@ const META_COLOR_SCHEME = 'light';
 const META_THEME_COLOR = '#ffffff';
 
 const ARTICLE_TEMPLATE = resolveTemplatePath('article.html');
-const HOME_TEMPLATE = resolveTemplatePath('home.html');
-const BLOG_TEMPLATE = resolveTemplatePath('blog.html');
-const YEAR_TEMPLATE = resolveTemplatePath('year.html');
-const SUMMARY_TEMPLATE = resolveTemplatePath('summary-index.html');
-const SERIES_ARTICLE_TEMPLATE = resolveTemplatePath('series-articles.html');
-const TAG_INDEX_TEMPLATE = resolveTemplatePath('tags.html');
-const SERIES_INDEX_TEMPLATE = resolveTemplatePath('series.html');
+const INDEX_TEMPLATE = resolveTemplatePath('summary-index.html');
 const ABOUT_TEMPLATE = resolveTemplatePath('about.html');
 const FEED_PATH = path.join(OUTPUT_DIR, 'feed.xml');
 const SITEMAP_PATH = path.join(OUTPUT_DIR, 'sitemap.xml');
@@ -520,18 +514,21 @@ function renderSite(index, queryResults) {
     ? queryResults['all-published-posts'].slice()
     : index.filter((item) => item.frontmatter.status === 'published').sort(makeSortFn('date-asc'));
 
-  const homeTemplate = fs.readFileSync(HOME_TEMPLATE, 'utf8');
-  const homeLabel = 'Home';
+  const indexTemplate = fs.readFileSync(INDEX_TEMPLATE, 'utf8');
+  const homeBody = buildArticleListSection('home-posts');
+  const homeExtra = buildYearListSection(published, ARCHIVE_ROOT_PATH, 'Years');
   const homeHtml = renderTemplate(
     applySlots(
-      applyMeta(homeTemplate, {
+      applyMeta(indexTemplate, {
         canonical: joinUrl(SITE_URL, '/'),
         description: SITE_DESCRIPTION,
-        title: homeLabel
+        title: 'Home'
       }),
       {
-        'page-title': escapeHtml(composePageTitle(homeLabel)),
-        'year-list': buildYearList(published, ARCHIVE_ROOT_PATH)
+        'page-heading': '',
+        'page-intro': '',
+        'page-body': homeBody,
+        'page-extra': homeExtra
       }
     ),
     queryResults
@@ -956,10 +953,9 @@ function copyStaticAssets() {
 }
 
 function renderArchiveRoot(published) {
-  const template = fs.readFileSync(BLOG_TEMPLATE, 'utf8');
-  const yearList = buildYearList(published, ARCHIVE_ROOT_PATH);
+  const template = fs.readFileSync(INDEX_TEMPLATE, 'utf8');
   const label = 'Archive';
-
+  const pageBody = buildYearListSection(published, ARCHIVE_ROOT_PATH);
   const html = renderTemplate(
     applySlots(
       applyMeta(template, {
@@ -968,8 +964,10 @@ function renderArchiveRoot(published) {
         title: label
       }),
       {
-        'page-title': escapeHtml(composePageTitle(label)),
-        'year-list': yearList
+        'page-heading': buildHeading(label),
+        'page-intro': '',
+        'page-body': pageBody,
+        'page-extra': ''
       }
     ),
     {}
@@ -989,8 +987,55 @@ function buildYearList(items, basePath) {
   }).join('\n');
 }
 
+function buildYearListSection(items, basePath, headingText = '') {
+  const heading = headingText ? `<h2>${escapeHtml(headingText)}</h2>\n` : '';
+  const listItems = buildYearList(items, basePath);
+  return `${heading}<ul class="archive-years">\n${listItems}\n</ul>`;
+}
+
+function buildSummaryListSection(queryName, emptyText = 'No posts yet.') {
+  const empty = escapeHtml(emptyText);
+  return [
+    '<ul class="summary-list">',
+    `  <template data-query="${queryName}" data-view="summary-list">`,
+    `    <li class="summary-empty">${empty}</li>`,
+    '  </template>',
+    '</ul>'
+  ].join('\n');
+}
+
+function buildArticleListSection(queryName, emptyText = 'No posts yet.') {
+  const empty = escapeHtml(emptyText);
+  return [
+    '<div class="series-entries">',
+    `  <template data-query="${queryName}" data-view="article-full">`,
+    `    <p class="summary-empty">${empty}</p>`,
+    '  </template>',
+    '</div>'
+  ].join('\n');
+}
+
+function buildTagListSection(queryName, emptyText = 'No tags yet.') {
+  const empty = escapeHtml(emptyText);
+  return [
+    '<ul class="index-list">',
+    `  <template data-query="${queryName}" data-view="tag-list">`,
+    `    <li class="archive-empty">${empty}</li>`,
+    '  </template>',
+    '</ul>'
+  ].join('\n');
+}
+
+function buildHeading(text, level = 1) {
+  if (!text) {
+    return '';
+  }
+  const safeText = escapeHtml(text);
+  return `<h${level}>${safeText}</h${level}>`;
+}
+
 function renderYearArchives(published) {
-  const template = fs.readFileSync(YEAR_TEMPLATE, 'utf8');
+  const template = fs.readFileSync(INDEX_TEMPLATE, 'utf8');
   const byYear = groupBy(published, (item) => item.year);
   const years = Array.from(byYear.keys()).sort((a, b) => Number(b) - Number(a));
 
@@ -1020,25 +1065,28 @@ function renderYearArchives(published) {
     }).join('\n');
 
     const content = monthSections || '<p class="summary-empty">No posts yet.</p>';
-    const html = applySlots(
-      applyMeta(template, {
-        canonical: joinUrl(SITE_URL, `${ARCHIVE_ROOT_PATH}${year}/`),
-        description: SITE_DESCRIPTION,
-        title: `${year} Archive`
-      }),
-      {
-        'page-title': escapeHtml(`${year} - Archive - ${SITE_NAME}`),
-        year: escapeHtml(year),
-        'month-sections': content
-      }
+    const html = renderTemplate(
+      applySlots(
+        applyMeta(template, {
+          canonical: joinUrl(SITE_URL, `${ARCHIVE_ROOT_PATH}${year}/`),
+          description: SITE_DESCRIPTION,
+          title: `${year} Archive`
+        }),
+        {
+          'page-heading': buildHeading(year),
+          'page-intro': '',
+          'page-body': content,
+          'page-extra': ''
+        }
+      ),
+      queryResults
     );
-    const rendered = renderTemplate(html, queryResults);
-    writeFile(path.join(ARCHIVE_OUTPUT_ROOT, year, 'index.html'), rendered);
+    writeFile(path.join(ARCHIVE_OUTPUT_ROOT, year, 'index.html'), html);
   }
 }
 
 function renderMonthArchives(published) {
-  const template = fs.readFileSync(SUMMARY_TEMPLATE, 'utf8');
+  const template = fs.readFileSync(INDEX_TEMPLATE, 'utf8');
   const byMonth = groupBy(published, (item) => `${item.year}-${item.month}`);
   const keys = Array.from(byMonth.keys()).sort((a, b) => b.localeCompare(a));
 
@@ -1046,10 +1094,11 @@ function renderMonthArchives(published) {
     const [year, month] = key.split('-');
     const monthItems = sortItems(byMonth.get(key), 'date-asc');
     const label = `${monthName(month)} ${year}`;
+    const pageBody = buildSummaryListSection('page-posts');
     const slots = {
-      'page-title': escapeHtml(`${label} - Archive - ${SITE_NAME}`),
-      'page-heading': escapeHtml(label),
+      'page-heading': buildHeading(label),
       'page-intro': '',
+      'page-body': pageBody,
       'page-extra': ''
     };
     const html = renderTemplate(
@@ -1070,7 +1119,7 @@ function renderMonthArchives(published) {
 }
 
 function renderTagArchives(published) {
-  const template = fs.readFileSync(SUMMARY_TEMPLATE, 'utf8');
+  const template = fs.readFileSync(INDEX_TEMPLATE, 'utf8');
   const tagMap = new Map();
 
   for (const article of published) {
@@ -1109,10 +1158,11 @@ function renderTagArchives(published) {
       ].join('\n')
       : '';
 
+    const pageBody = buildSummaryListSection('page-posts');
     const slots = {
-      'page-title': escapeHtml(`Tag: ${tag} - ${SITE_NAME}`),
-      'page-heading': escapeHtml(`Tag: ${tag}`),
+      'page-heading': buildHeading(`Tag: ${tag}`),
       'page-intro': '',
+      'page-body': pageBody,
       'page-extra': yearList
     };
 
@@ -1134,10 +1184,11 @@ function renderTagArchives(published) {
     for (const year of years) {
       const yearItems = items.filter((item) => item.year === year);
       const yearItemsDesc = sortItems(yearItems, 'date-desc');
+      const yearBody = buildSummaryListSection('page-posts');
       const yearSlots = {
-        'page-title': escapeHtml(`Tag: ${tag} - ${year} - ${SITE_NAME}`),
-        'page-heading': escapeHtml(`Tag: ${tag} - ${year}`),
+        'page-heading': buildHeading(`Tag: ${tag} - ${year}`),
         'page-intro': '',
+        'page-body': yearBody,
         'page-extra': ''
       };
       const yearHtml = renderTemplate(
@@ -1159,7 +1210,8 @@ function renderTagArchives(published) {
 }
 
 function renderTagIndex(queryResults) {
-  const template = fs.readFileSync(TAG_INDEX_TEMPLATE, 'utf8');
+  const template = fs.readFileSync(INDEX_TEMPLATE, 'utf8');
+  const pageBody = buildTagListSection('all-published-posts');
   const html = renderTemplate(
     applySlots(
       applyMeta(template, {
@@ -1168,7 +1220,10 @@ function renderTagIndex(queryResults) {
         title: 'Tags'
       }),
       {
-        'page-title': escapeHtml(composePageTitle('Tags'))
+        'page-heading': buildHeading('Tags'),
+        'page-intro': '',
+        'page-body': pageBody,
+        'page-extra': ''
       }
     ),
     queryResults
@@ -1177,7 +1232,7 @@ function renderTagIndex(queryResults) {
 }
 
 function renderSeriesArchives(published) {
-  const template = fs.readFileSync(SERIES_ARTICLE_TEMPLATE, 'utf8');
+  const template = fs.readFileSync(INDEX_TEMPLATE, 'utf8');
   const seriesMap = groupBy(published.filter((item) => item.frontmatter.series), (item) => item.frontmatter.series);
   const seriesNames = Array.from(seriesMap.keys()).sort();
 
@@ -1203,10 +1258,11 @@ function renderSeriesArchives(published) {
       ].join('\n')
       : '';
 
+    const pageBody = buildArticleListSection('page-posts');
     const slots = {
-      'page-title': escapeHtml(`Series: ${series} - ${SITE_NAME}`),
-      'page-heading': escapeHtml(`Series: ${series}`),
+      'page-heading': buildHeading(`Series: ${series}`),
       'page-intro': '',
+      'page-body': pageBody,
       'page-extra': yearList
     };
 
@@ -1228,10 +1284,11 @@ function renderSeriesArchives(published) {
     for (const year of years) {
       const yearItems = seriesItems.filter((item) => item.year === year);
       const yearItemsAsc = sortItems(yearItems, 'date-asc');
+      const yearBody = buildArticleListSection('page-posts');
       const yearSlots = {
-        'page-title': escapeHtml(`Series: ${series} - ${year} - ${SITE_NAME}`),
-        'page-heading': escapeHtml(`Series: ${series} - ${year}`),
+        'page-heading': buildHeading(`Series: ${series} - ${year}`),
         'page-intro': '',
+        'page-body': yearBody,
         'page-extra': yearList
       };
       const yearHtml = renderTemplate(
@@ -1253,7 +1310,7 @@ function renderSeriesArchives(published) {
 }
 
 function renderSeriesIndex(published) {
-  const template = fs.readFileSync(SERIES_INDEX_TEMPLATE, 'utf8');
+  const template = fs.readFileSync(INDEX_TEMPLATE, 'utf8');
   const seriesCounts = countBy(
     published.filter((item) => item.frontmatter.series),
     (item) => item.frontmatter.series
@@ -1267,6 +1324,7 @@ function renderSeriesIndex(published) {
     }).join('\n')
     : '<li class="archive-empty">No series yet.</li>';
 
+  const pageBody = `<ul class="index-list">\n${seriesList}\n</ul>`;
   const html = renderTemplate(
     applySlots(
       applyMeta(template, {
@@ -1275,8 +1333,10 @@ function renderSeriesIndex(published) {
         title: 'Series'
       }),
       {
-        'page-title': escapeHtml(composePageTitle('Series')),
-        'series-list': seriesList
+        'page-heading': buildHeading('Series'),
+        'page-intro': '',
+        'page-body': pageBody,
+        'page-extra': ''
       }
     ),
     {}
