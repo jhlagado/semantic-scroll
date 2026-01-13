@@ -2,27 +2,27 @@
 
 This document defines how frontmatter metadata is used in the blog system. It is derived from `docs/PRD.md` and aligned with `docs/queries.md`.
 
-Frontmatter exists **only** to support discovery, indexing, and querying.
-It is **never** used directly for rendering HTML.
+Frontmatter exists to support discovery, indexing, querying, and fixed metadata blocks that surround full article bodies. It is not used to render the article body itself.
 
-If a value appears in rendered output, it must exist explicitly in the Markdown body.
+If a value should appear inside the body prose, it must be authored directly in the Markdown body.
 
 ---
 
 ## 1. Purpose of Frontmatter
 
-Frontmatter is used exclusively for:
+Frontmatter is used for:
 
 - filesystem discovery
 - query evaluation
 - index construction
 - build-time validation
+- summary views
+- article metadata blocks
 
 Frontmatter must **not**:
 
 - influence templates
-- inject values into HTML
-- replace visible content
+- replace or rewrite the Markdown body
 
 Rendered pages are self-contained documents.
 
@@ -100,7 +100,7 @@ Rules:
 - treated as a set (no duplicates)
 - order is not significant
 
-Tags are used **only** for querying and indexing.
+Tags are used for querying, index pages, summary views, and article metadata blocks.
 
 ---
 
@@ -116,7 +116,7 @@ Rules:
 - single value only
 - exact match semantics
 
-Series are narrative groupings where order matters. They are author-declared and sorted chronologically.
+Series are narrative groupings where order matters. They are author-declared and sorted chronologically. Series are used for querying, index pages, summary views, and article metadata blocks.
 
 ---
 
@@ -136,7 +136,7 @@ Rules:
 
 Other Markdown constructs and inline HTML are not supported in title or summary fields.
 
-If a summary needs to be visible, it must also be written in the Markdown body.
+If a summary needs to be visible in the body, it must also be written in the Markdown body.
 
 ---
 
@@ -154,7 +154,7 @@ Rules:
 - must point inside the article's `assets/` subfolder
 - used for indexing or external feeds, not rendering
 
-If a thumbnail needs to be visible, it must also be authored in the Markdown body.
+If a thumbnail needs to be visible in the body, it must also be authored in the Markdown body.
 
 ---
 
@@ -181,20 +181,13 @@ Derived fields:
 
 ---
 
-## 5. Rendering Rule: The Mirroring Requirement
+## 5. Rendering Rule: Body vs Metadata Blocks
 
-Frontmatter is **not visible** to templates and is **never** used for rendering.
+Frontmatter is not visible to templates except through fixed render modes for summary views and article metadata blocks.
 
-If a value needs to be visible on the page:
+On full article pages, the build renders a metadata header and footer around the Markdown body. These blocks expose the date, series, and tags without forcing them into the body text. If an author wants those values repeated in the prose, they can still write them explicitly, but duplication is no longer required.
 
-- a title
-- a date (e.g., "January 9, 2026")
-- a tag list
-- a series label
-
-…it **must** be written explicitly in the Markdown body. Frontmatter is an index for machines; Markdown is the document for humans.
-
-Frontmatter duplication is allowed and expected when values must be visible.
+The Markdown body remains the sole source of visible article prose, headings, and bylines.
 
 ---
 

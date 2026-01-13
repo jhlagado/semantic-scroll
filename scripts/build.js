@@ -1099,7 +1099,7 @@ function renderTemplate(html, queryResults) {
     }
 
     const view = attrs['data-view'] || 'article';
-    if (!['article', 'summary', 'summary-list', 'tag-list'].includes(view)) {
+    if (!['article', 'summary', 'summary-list', 'tag-list', 'article-meta-top', 'article-meta-bottom'].includes(view)) {
       throw new Error(`Unknown data-view '${view}'`);
     }
     const wrap = attrs['data-wrap'];
@@ -1117,6 +1117,17 @@ function renderTemplate(html, queryResults) {
         return fallback;
       }
       return tagList;
+    }
+    if (view === 'article-meta-top' || view === 'article-meta-bottom') {
+      if (!items.length) {
+        return fallback;
+      }
+      const fragments = items.map((item) => {
+        return view === 'article-meta-top'
+          ? renderArticleMetaTop(item)
+          : renderArticleMetaBottom(item);
+      }).filter(Boolean);
+      return fragments.join('\n');
     }
     if (!items.length) {
       return fallback;
@@ -1153,43 +1164,33 @@ function renderArticleBody(article) {
   if (!parsed) {
     throw new Error(`Missing frontmatter in ${article.relDir}/article.md`);
   }
-  const body = linkHeaderMeta(parsed.body, article.publicPath);
-  return renderMarkdown(body, article.publicPath);
+  return renderMarkdown(parsed.body, article.publicPath);
 }
 
-function linkHeaderMeta(body, publicPath) {
-  const headerLine = /^([_*]?[A-Za-z]+\s+\d{1,2},\s+\d{4}[_*]?)(?:\s*\|\s*Series:\s*([^\n]+))?$/m;
-  const tagsLine = /^Tags(?:\s+include)?\s*:?\s*([^\n]+?)(?:\s+for context\.)?$/m;
-  const headerMatch = body.match(headerLine);
-  const tagsMatch = body.match(tagsLine);
-
-  let updated = body;
-
-  if (headerMatch) {
-    const dateText = headerMatch[1].trim();
-    const seriesText = headerMatch[2] ? headerMatch[2].trim() : '';
-    const seriesLink = seriesText
-      ? ` | Series: [${seriesText}](/series/${encodeURIComponent(seriesText)}/)`
-      : '';
-    const lineOne = `[${dateText}](${publicPath})${seriesLink}`;
-    const replacement = `By [John Hardy](/about/)<br>${lineOne}`;
-    updated = updated.replace(headerLine, replacement);
+function renderArticleMetaTop(article) {
+  const dateText = `${article.year}-${article.month}-${article.day}`;
+  const parts = [];
+  parts.push('<div class="article-meta-top">');
+  parts.push(`  <p class="article-meta-date"><em><a href="${article.publicPath}">${dateText}</a></em></p>`);
+  if (article.frontmatter.series) {
+    const seriesText = escapeHtml(article.frontmatter.series);
+    parts.push(`  <p class="article-meta-series">Series: <a href="/series/${encodeURIComponent(article.frontmatter.series)}/">${seriesText}</a></p>`);
   }
+  parts.push('</div>');
+  return parts.join('\n');
+}
 
-  if (tagsMatch) {
-    const tagsText = tagsMatch[1];
-    const tags = tagsText.split(',').map((tag) => tag.trim()).filter(Boolean);
-    const linkedTags = tags.map((tag) => {
-      const normalized = normalizeTag(tag);
-      if (!normalized) {
-        return tag;
-      }
-      return `[${tag}](/tags/${normalized}/)`;
-    }).join(', ');
-    updated = updated.replace(tagsLine, `Tags: ${linkedTags}`);
+function renderArticleMetaBottom(article) {
+  const tags = article.frontmatter.tags || [];
+  if (!tags.length) {
+    return '';
   }
-
-  return updated;
+  const tagLinks = tags.map((tag) => {
+    const safeTag = escapeHtml(tag);
+    const normalized = normalizeTag(tag);
+    return `<a rel="tag" href="/tags/${normalized}/">${safeTag}</a>`;
+  }).join(', ');
+  return `<p class="article-meta-tags">Tags: ${tagLinks}</p>`;
 }
 
 function renderSummary(article) {

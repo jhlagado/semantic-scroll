@@ -39,7 +39,7 @@ An article record is _not_ a rendered document. It is an intermediate representa
 - Frontmatter drives **discovery, indexing, and query selection**
 - Markdown body drives **what appears in rendered HTML**
 
-At no point may frontmatter values be injected directly into templates.
+Frontmatter values are never injected directly into templates. The only sanctioned exceptions are built-in render modes that are responsible for summaries and article metadata blocks.
 
 ---
 
@@ -75,7 +75,7 @@ Templates:
 - **must not read frontmatter or derived metadata**
 - declare only _where_ query results are inserted
 
-Templates are intentionally “dumb”. All intelligence lives outside them.
+Templates are intentionally “dumb”. All intelligence lives outside them, and any metadata-driven HTML is produced only by fixed render modes.
 
 ---
 
@@ -146,9 +146,9 @@ Rules:
 
 - `data-view` is optional
 - default view is `article`
-- allowed values are `article`, `summary`, and `summary-list`
+- allowed values are `article`, `summary`, `summary-list`, `tag-list`, `article-meta-top`, and `article-meta-bottom`
 
-`article` renders full Markdown bodies. `summary` renders a built-in summary block. `summary-list` renders the same summary block wrapped in a list item for use in `<ul>` or `<ol>` containers. `tag-list` renders a list of tags derived from the query results and returns `<li>` items for use in `<ul>` or `<ol>` containers.
+`article` renders full Markdown bodies. `summary` renders a built-in summary block. `summary-list` renders the same summary block wrapped in a list item for use in `<ul>` or `<ol>` containers. `tag-list` renders a list of tags derived from the query results and returns `<li>` items for use in `<ul>` or `<ol>` containers. `article-meta-top` and `article-meta-bottom` render fixed metadata blocks for full article pages.
 
 ---
 
@@ -206,7 +206,7 @@ If query `X` returns N article records:
 
 ### 3.4 Summary View Output
 
-Summary views are built-in and not user-definable. They are the only rendering mode that uses frontmatter values.
+Summary views are built-in and not user-definable. They are one of the rendering modes that use frontmatter values.
 
 Fields used:
 
@@ -253,13 +253,23 @@ Elements are omitted when their values are missing (for example, no `<figure>` w
 
 ---
 
-### 3.5 Template Element Removal
+### 3.5 Article Metadata Blocks
+
+Full article pages may include metadata blocks above and below the Markdown body. These blocks are rendered by built-in view modes and are fixed in structure. Templates place them with `<template data-view="article-meta-top">` and `<template data-view="article-meta-bottom">`.
+
+The top block renders a date line that links to the article permalink and a series line when a series is present. The bottom block renders a tag list when tags are present.
+
+The blocks are omitted when they would be empty, and they are the only full-article exceptions that render frontmatter.
+
+---
+
+### 3.6 Template Element Removal
 
 After stamping, the `<template data-query="X">` element itself must be removed from the output. Rendered HTML must not contain `<template>` elements.
 
 ---
 
-### 3.6 Ordering Guarantee
+### 3.7 Ordering Guarantee
 
 The order of rendered results is **entirely defined by the query**.
 
@@ -336,19 +346,15 @@ By default, no wrapper is imposed by the template. If a template needs each arti
 
 ### 5.2 Implications for Authors
 
-If an author wants any of the following to appear on the page:
+If an author wants any of the following to appear in the article body:
 
 - title
-- date
-- tags
 - headings
 - section structure
 
 They must be written **explicitly in the Markdown body**.
 
-Metadata is never implicitly rendered.
-
-This enforces clarity and avoids “magic” behaviour.
+Dates, series, and tags appear in the dedicated article metadata blocks instead of being duplicated in the body. This keeps the prose clean while still exposing metadata in predictable places.
 
 ---
 
@@ -647,7 +653,7 @@ This system avoids:
 The cost is verbosity.
 The benefit is durability.
 
-Head metadata is a controlled exception. The build may populate `<title>` and social meta tags in the document head using frontmatter and path-derived values, but templates remain metadata-blind and the body never renders frontmatter.
+Head metadata is a controlled exception. The build may populate `<title>` and social meta tags in the document head using frontmatter and path-derived values. Article metadata blocks are another controlled exception for full article pages. Templates remain metadata-blind outside those fixed render modes.
 
 ---
 
@@ -658,7 +664,7 @@ For MVP, the following are fixed:
 - Mode A stamping only
 - HTML templates only
 - named queries only
-- metadata never rendered
+- metadata rendered only by fixed summary and article metadata views
 - deterministic build order
 
 Anything else is additive and must not weaken these guarantees.

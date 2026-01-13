@@ -10,7 +10,6 @@ tags:
   - queries
 ---
 # Indexing as Queries
-_January 11, 2026_ | Series: indexing
 
 I treat indexing as a query problem, not a rendering problem. Every list on the site comes from a named query that selects a set of articles and a sort order. That keeps selection declarative and repeatable, and it keeps logic out of templates.
 
@@ -27,5 +26,3 @@ Series and tag pages use the same index but serve different reading modes. A ser
 Feeds follow the same rule, and the global feed plus tag or series feeds come from named queries that avoid scraped HTML. That keeps discovery aligned with the rest of the site and makes the outputs small and deterministic.
 
 I can change a template without changing the data, or refine a query without touching markup. Indexes remain mechanical outputs of named inputs. The result is no surprise lists and no invisible filters.
-
-Tags: indexing, queries
