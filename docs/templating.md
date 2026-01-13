@@ -150,16 +150,17 @@ The `<template>` element is chosen deliberately because it is:
 
 ### 2.2.1 Build-Time Placeholders (Non-Template)
 
-Templates may use a small set of build-time placeholders outside `<template>` elements to keep site-wide values declarative without introducing logic.
+Templates may use a small set of build-time placeholders outside `<template>` elements to keep site-wide values declarative without introducing logic. Head metadata is injected as a single block so the head stays readable and instance-owned.
 
 Approved placeholders:
 
 - `data-slot` for replacing inner HTML (for example, page titles or year lists)
-- `data-content` for meta tag values inside `<head>`
 - `data-href` for fixed links that depend on configuration (for example, the archive root)
-- `data-attr-<name>` for filling a specific attribute (for example, `data-attr-alt="site-name"` on the logo)
+- `<!-- meta:head -->` as a single marker for the generated head metadata block
 
-These are fill-only attributes. They never access metadata and never introduce conditional behaviour.
+These are fill-only placeholders. They never access metadata and never introduce conditional behaviour.
+
+The head metadata block is defined by `content/<contentDir>/meta.json`. Each instance owns that file and can order or remove entries without changing the build logic.
 
 ---
 
@@ -688,7 +689,7 @@ This system avoids:
 The cost is verbosity.
 The benefit is durability.
 
-Head metadata is a controlled exception. The build may populate `<title>` and social meta tags in the document head using frontmatter and path-derived values. Article metadata blocks are another controlled exception for full article pages. Templates remain metadata-blind outside those fixed render modes.
+Head metadata is a controlled exception. The build generates the head block from a fixed config file and injects it at `<!-- meta:head -->`, using frontmatter and path-derived values to fill the required fields. Article metadata blocks are another controlled exception for full article pages. Templates remain metadata-blind outside those fixed render modes.
 
 ---
 

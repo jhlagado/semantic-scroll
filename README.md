@@ -52,6 +52,40 @@ You can also run the dev server directly:
 npm run dev
 ```
 
+## Setup tutorial
+
+This is the end‑to‑end setup flow for a new blog instance using a fork, from first clone to a live GitHub Pages site and then a custom domain. It assumes you already installed Node.js and `nodemon` as above.
+
+Start by forking the repo on GitHub, then clone your fork locally and install dependencies:
+
+```sh
+git clone https://github.com/<your-username>/semantic-scroll.git
+cd semantic-scroll
+npm install
+```
+
+If you want to keep your fork in sync with upstream, wire up the remote and fetch it:
+
+```sh
+npm run init
+```
+
+Run the local dev server to confirm everything builds and watches:
+
+```sh
+npm start
+```
+
+When you are ready to publish, build the site so `build/` is current:
+
+```sh
+npm run build
+```
+
+Then publish the `build/` directory to the `gh-pages` branch and set GitHub Pages to serve from that branch. If you already have a CI workflow configured, pushing to `main` can handle this automatically. If not, use your preferred deployment method to ensure the contents of `build/` are what GitHub Pages serves.
+
+Once GitHub Pages is live on the default `*.github.io` URL, you can attach a custom domain. Add a `CNAME` file to the published output that contains your domain, then update the GitHub Pages settings to use that domain. Finally, configure your DNS provider with the required GitHub Pages records (apex A records or a `www` CNAME, depending on how you want the address to resolve). After DNS propagates, the site will be served from your custom domain.
+
 ## Build and lint
 
 `npm run build` checks prose quality first, then writes the site to `build/`:
