@@ -20,15 +20,37 @@ Identity and chronology derive naturally from the filesystem structure. Queries 
 
 Optional `site-config.json` overrides site metadata and the content root. This repo runs on the built-in defaults; use `site-config.example.json` when you want to set up a different instance without having upstream changes overwrite your local settings.
 
-## Local tooling
+## Installation
 
-Requires Node.js. Install `nodemon` globally for the development watcher:
+Install Node.js from the official site: https://nodejs.org/en
+
+Install `nodemon` globally for the development watcher:
 
 ```sh
 npm install -g nodemon
 ```
 
-See [scripts/README.md](scripts/README.md) for more detail.
+See [scripts/README.md](scripts/README.md) for more detail on the tooling.
+
+## Run locally
+
+For local development, `npm start` clears the terminal and runs the dev server. It currently runs `dev` twice to match the requested workflow:
+
+```sh
+git clone https://github.com/jhlagado/semantic-scroll.git
+cd semantic-scroll
+npm install
+```
+
+```sh
+npm start
+```
+
+You can also run the dev server directly:
+
+```sh
+npm run dev
+```
 
 ## Build and lint
 
@@ -46,17 +68,28 @@ npm run lint:all
 npm run lint:gate
 ```
 
-## Local development
+## Keeping your fork in sync
 
-`npm run dev` starts a development server with live reload. The server binds to `127.0.0.1` and rebuilds automatically when content, templates, assets, or config change:
+If you are using this repo as a base for your own blog, the helper scripts below wire up the upstream remote and pull changes from it:
 
 ```sh
-npm run dev
+npm run init
+npm run update
 ```
 
-## Publishing
+`npm run init` adds the upstream remote (if it does not exist yet) and fetches it. `npm run update` merges the latest upstream `main` into your branch so you can pick up platform changes without losing your instance content.
 
-Static output in `build/` can be deployed to any web host. GitHub Pages and custom domain configuration will be documented in an upcoming release.
+## Publishing to GitHub Pages
+
+Static output in `build/` can be deployed to any web host.
+
+For GitHub Pages, publish the contents of `build/` to the `gh-pages` branch (CI does this in the default setup) and set Pages to serve from that branch. GitHub’s guide is here: https://docs.github.com/en/pages
+
+## Custom domain and DNS
+
+If you want to use a custom domain, add a `CNAME` file to the published output containing your domain and configure your DNS provider to point the apex at GitHub Pages. You will also need to register the domain with a registrar and set the nameservers or DNS records per your provider’s instructions.
+
+Base URL considerations and a more detailed walk‑through are tracked for a future doc update.
 
 ## License
 

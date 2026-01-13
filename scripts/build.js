@@ -733,6 +733,33 @@ function absolutizeHtml(html) {
   return output;
 }
 
+function stripFeedHeaderHtml(html, title) {
+  let output = String(html || '');
+  const escapedTitle = escapeHtml(String(title || ''));
+  const titlePattern = escapedTitle
+    ? new RegExp(`^<h1>${escapedTitle}<\\/h1>\\s*`, 'i')
+    : /^<h1>[^<]*<\/h1>\s*/i;
+  output = output.replace(titlePattern, '');
+  output = output.replace(/^<p>By [^<]*<\/p>\s*/i, '');
+  return output;
+}
+
+function buildFeedDescription(article, fallbackLimit = 360) {
+  const summary = (article.frontmatter.summary || '').trim();
+  if (summary) {
+    return stripInlineMarkup(summary);
+  }
+  const html = stripFeedHeaderHtml(renderArticleBody(article), article.frontmatter.title);
+  const text = stripInlineMarkup(html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+  if (!text) {
+    return '';
+  }
+  if (text.length <= fallbackLimit) {
+    return text;
+  }
+  return `${text.slice(0, fallbackLimit).trim()}…`;
+}
+
 function buildFeedXml({ title, link, description, items, feedUrl }) {
   const lastBuild = new Date().toUTCString();
   const channelImage = siteImageUrl();
@@ -742,7 +769,9 @@ function buildFeedXml({ title, link, description, items, feedUrl }) {
     `    <link>${escapeHtml(link)}</link>`,
     `    <description>${escapeHtml(description)}</description>`,
     `    <lastBuildDate>${lastBuild}</lastBuildDate>`,
-    `    <language>${SITE_LANGUAGE}</language>`
+    `    <language>${SITE_LANGUAGE}</language>`,
+    '    <sy:updatePeriod>daily</sy:updatePeriod>',
+    '    <sy:updateFrequency>1</sy:updateFrequency>'
   ];
 
   if (feedUrl) {
@@ -759,14 +788,14 @@ function buildFeedXml({ title, link, description, items, feedUrl }) {
 
   const feedItems = items.map((article) => {
     const itemTitle = article.frontmatter.title || article.slug || 'Untitled';
-    const summary = article.frontmatter.summary || '';
     const url = joinUrl(SITE_URL, article.publicPath);
     const pubDate = formatRssDate(article);
     const tags = article.frontmatter.tags || [];
     const categories = tags.map((tag) => `      <category>${escapeHtml(tag)}</category>`).join('\n');
-    const bodyHtml = renderArticleBody(article);
+    const bodyHtml = stripFeedHeaderHtml(renderArticleBody(article), itemTitle);
     const encodedHtml = escapeCdata(absolutizeHtml(bodyHtml));
     const enclosure = buildFeedEnclosure(article);
+    const descriptionText = buildFeedDescription(article);
 
     const itemLines = [
       '    <item>',
@@ -774,8 +803,8 @@ function buildFeedXml({ title, link, description, items, feedUrl }) {
       `      <link>${escapeHtml(url)}</link>`,
       `      <guid isPermaLink="true">${escapeHtml(url)}</guid>`,
       `      <pubDate>${pubDate}</pubDate>`,
-      `      <dc:creator>${escapeHtml(FEED_AUTHOR)}</dc:creator>`,
-      `      <description>${escapeHtml(stripInlineMarkup(summary))}</description>`
+      `      <dc:creator><![CDATA[${escapeCdata(FEED_AUTHOR)}]]></dc:creator>`,
+      `      <description><![CDATA[${escapeCdata(descriptionText)}]]></description>`
     ];
 
     if (categories) {
@@ -795,6 +824,7 @@ function buildFeedXml({ title, link, description, items, feedUrl }) {
     '  xmlns:content="http://purl.org/rss/1.0/modules/content/"',
     '  xmlns:dc="http://purl.org/dc/elements/1.1/"',
     '  xmlns:atom="http://www.w3.org/2005/Atom"',
+    '  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"',
     '>',
     ...channelLines,
     feedItems,
@@ -1712,10 +1742,11 @@ function resolveAssetPath(src, basePath) {
   if (/^(https?:)?\/\//i.test(src) || src.startsWith('/')) {
     return src;
   }
+  const cleanedSrc = src.replace(/^\.\//, '');
   if (basePath) {
-    return joinUrl(basePath, src);
+    return joinUrl(basePath, cleanedSrc).replace(/\/\.\//g, '/');
   }
-  return src;
+  return cleanedSrc;
 }
 
 function parseFrontmatter(raw) {
