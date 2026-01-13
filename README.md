@@ -1,6 +1,6 @@
 # Semantic Scroll
 
-A minimalist blogging platform built on classic web values: semantic HTML, accessibility, and filesystem simplicity. No database, no build complexity—just content organized by date and rendered as clean, static pages.
+A minimalist blogging platform built on classic web values: semantic HTML, accessibility, and filesystem simplicity. No database, no build complexity—just content organised by date and rendered as clean, static pages.
 
 ## Design Philosophy
 
