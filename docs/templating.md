@@ -14,7 +14,7 @@ This specification is written to match the canonical content architecture:
 content/<contentDir>/YYYY/MM/DD/NN-slug/<files>
 ```
 
-`contentDir` defaults to `blog`. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
+`contentDir` defaults to `semantic-scroll` in this repo. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
 
 Any deviation from this specification is an architectural change and must be deliberate.
 
@@ -621,7 +621,7 @@ The build uses a fixed set of template files. Each one maps to a specific output
 
 - `templates/home.html` renders the site home page at `/`.
 - `templates/article.html` renders full article pages at their canonical content paths.
-- `templates/blog.html` renders the archive landing page at `/content/<contentDir>/` (default `/content/blog/`).
+- `templates/blog.html` renders the archive landing page at `/content/<contentDir>/` (default `/content/semantic-scroll/` in this repo).
 - `templates/year.html` renders yearly archive pages at `/content/<contentDir>/YYYY/`.
 - `templates/summary-index.html` renders summary lists for month pages and tag pages, including tag year pages.
 - `templates/tags.html` renders the tag index at `/tags/`.

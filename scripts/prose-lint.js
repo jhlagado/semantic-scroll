@@ -5,7 +5,7 @@ const path = require('path');
 
 const ROOT = process.cwd();
 const CONFIG_PATH = path.join(ROOT, 'site-config.json');
-const DEFAULT_CONTENT_DIR = 'blog';
+const DEFAULT_CONTENT_DIR = 'semantic-scroll';
 const CONTENT_DIR = resolveContentDir(CONFIG_PATH, DEFAULT_CONTENT_DIR);
 const DEFAULT_ROOT = path.join(ROOT, 'content', CONTENT_DIR);
 

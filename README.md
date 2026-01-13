@@ -6,7 +6,7 @@ A minimalist blogging platform built on classic web values: semantic HTML, acces
 
 Semantic Scroll embraces simplicity at every level:
 
-- **Filesystem as database**: Content lives in dated folders (`/content/<contentDir>/YYYY/MM/DD/NN-slug/`, default `content/blog/`), making your writing human-readable and version-control friendly
+- **Filesystem as database**: Content lives in dated folders (`/content/<contentDir>/YYYY/MM/DD/NN-slug/`, default `content/semantic-scroll/` in this repo), making your writing human-readable and version-control friendly
 - **HTML-first templates**: Pure, accessible markup without framework lock-in
 - **Mobile-first**: Responsive layouts that work everywhere
 - **Minimal JavaScript**: Progressive enhancement, never a dependency
@@ -18,7 +18,7 @@ The platform is designed for writers who want to publish quickly without fightin
 
 Identity and chronology derive naturally from the filesystem structure. Queries select content, templates remain pure HTML, and rendering produces static pages. For detailed goals and decisions, see the docs.
 
-Optional `site-config.json` overrides site metadata and the content root. If the file is missing, built-in defaults apply.
+Optional `site-config.json` overrides site metadata and the content root. This repo runs on the built-in defaults; use `site-config.example.json` when you want to set up a different instance without having upstream changes overwrite your local settings.
 
 ## Local tooling
 

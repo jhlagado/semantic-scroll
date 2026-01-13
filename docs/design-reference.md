@@ -25,7 +25,7 @@ initialize empty render plan
 ### 2. Discover Articles
 
 ```
-for each directory under content/<contentDir>/ (default content/blog/):
+for each directory under content/<contentDir>/ (default content/semantic-scroll/ in this repo):
   validate path matches YYYY/MM/DD/NN-slug
   validate zero-padded numeric components
   validate NN matches numeric prefix of NN-slug

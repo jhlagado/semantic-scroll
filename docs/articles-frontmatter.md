@@ -166,7 +166,7 @@ From the canonical article path:
 content/<contentDir>/YYYY/MM/DD/NN-slug/
 ```
 
-`contentDir` defaults to `blog`. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
+`contentDir` defaults to `semantic-scroll` in this repo. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
 
 Derived fields:
 

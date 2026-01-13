@@ -44,7 +44,7 @@ The dev loop prints a short status line when lint and build succeed. Lint issues
 
 ## Lint prose in drafts
 
-The prose linter scans `content/<contentDir>/**/article.md` (defaults to `content/blog/`).
+The prose linter scans `content/<contentDir>/**/article.md` (defaults to `content/semantic-scroll/` in this repo).
 If `site-config.json` is present, it uses the `contentDir` override.
 It only prints output when it finds issues.
 

@@ -16,7 +16,7 @@ const DEFAULT_SITE_CONFIG = {
   customDomain: 'semantic-scroll.com',
   author: 'John Hardy',
   language: 'en-AU',
-  contentDir: 'blog'
+  contentDir: 'semantic-scroll'
 };
 
 const SITE_CONFIG = loadSiteConfig(CONFIG_PATH, DEFAULT_SITE_CONFIG);

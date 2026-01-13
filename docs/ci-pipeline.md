@@ -64,7 +64,7 @@ content/<contentDir>/YYYY/MM/DD/NN-slug/
 
 The build optionally reads `site-config.json` at the repo root.
 If present, it may override site metadata and set `contentDir`, which selects the instance directory under `content/`.
-If the file is missing, defaults apply and the active instance is `content/blog/`.
+If the file is missing, defaults apply and the active instance is `content/semantic-scroll/` in this repo.
 
 Overrides are resolved in a strict order:
 
@@ -74,7 +74,7 @@ Overrides are resolved in a strict order:
 
 ### 3.4 Discovery Process
 
-For each directory under `content/<contentDir>/` (default `content/blog/`):
+For each directory under `content/<contentDir>/` (default `content/semantic-scroll/` in this repo):
 
 - verify `YYYY/MM/DD/NN-slug` structure
 - verify all numeric components are zero-padded
