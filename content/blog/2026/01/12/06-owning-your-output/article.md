@@ -10,6 +10,7 @@ tags:
   - openprotocols
 ---
 # Owning Your Output
+By John Hardy
 
 
 I keep returning to the early web’s ideas because they offered a clean technical answer to an ordinary human problem: publishing something and knowing it will still be there tomorrow. You could put a document on a server and give it a URL, and that link would mean something. The page lived on your server, and the link stayed stable because it pointed to a file you controlled.

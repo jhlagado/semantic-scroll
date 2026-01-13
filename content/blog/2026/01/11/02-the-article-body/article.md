@@ -7,6 +7,7 @@ series: contentstore
 summary: "Explains why the body stays plain Markdown and readable on its own. It commits to a reader surface that survives even if the build disappears."
 ---
 # The Article Body
+By John Hardy
 
 Frontmatter defines an article for the build, but the body carries the meaning for readers. It is the section a reader actually meets, so I treat it as the record that must survive every build. Everything below the YAML block exists to be read, and that focus drives the format and the discipline. The body holds the text and keeps links and code beside the media, so the file stays readable before and after the build touches it.
 

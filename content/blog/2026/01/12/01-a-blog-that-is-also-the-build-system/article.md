@@ -11,6 +11,7 @@ tags:
   - tooling
 ---
 # A Blog That Is Also the Build System
+By John Hardy
 
 This blog only works if it lets me publish day to day technical work without friction, with AI drafting alongside me and me keeping control of the final voice. That constraint is the reason the rest of the system exists.
 

@@ -11,6 +11,7 @@ tags:
   - automation
 ---
 # Why I'm Building This in Public
+By John Hardy
 
 I'm building this in public because writing details down changes how I think. When ideas stay private they remain vague and provisional. Writing for an imagined reader sharpens the ideas and shows the gaps as decisions harden on the page.
 

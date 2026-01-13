@@ -9,6 +9,7 @@ tags:
   - templating
 ---
 # Templates as Mechanical Stamps
+By John Hardy
 
 If you missed the earlier piece, start with [Why Websites Need Templates](/content/blog/2026/01/12/03-why-websites-need-templates/). It lays out why templates exist and why the shared frame matters. It also gives the baseline this piece argues against.
 

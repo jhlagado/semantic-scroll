@@ -9,6 +9,7 @@ tags:
   - domains
 ---
 # Your Address Is Your Domain
+By John Hardy
 
 When you publish on a platform, you are borrowing an address. Your writing lives under someone else’s name on someone else’s domain, and it stays there only as long as that company allows. You can share the link, but you do not control the address it points to.
 

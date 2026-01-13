@@ -10,6 +10,7 @@ tags:
   - queries
 ---
 # Indexing as Queries
+By John Hardy
 
 I treat indexing as a query problem, not a rendering problem. Every list on the site comes from a named query that selects a set of articles and a sort order. That keeps selection declarative and repeatable, and it keeps logic out of templates.
 
