@@ -163,8 +163,10 @@ If a thumbnail needs to be visible in the body, it must also be authored in the 
 From the canonical article path:
 
 ```
-content/blog/YYYY/MM/DD/NN-slug/
+content/<contentDir>/YYYY/MM/DD/NN-slug/
 ```
+
+`contentDir` defaults to `semantic-scroll` in this repo. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
 
 Derived fields:
 

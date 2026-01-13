@@ -18,7 +18,7 @@
   <meta property="article:section" data-content="article-section" />
   <!-- meta:article-tags -->
   <link rel="canonical" data-href="canonical-url" />
-  <link rel="alternate" type="application/rss+xml" title="Semantic Scroll" href="/feed.xml" />
+  <link rel="alternate" type="application/rss+xml" data-attr-title="site-name" href="/feed.xml" />
   <meta name="color-scheme" data-content="color-scheme" />
   <meta name="theme-color" data-content="theme-color" />
   <title data-slot="page-title"></title>
@@ -37,22 +37,24 @@
   <div class="page">
     <header class="site-header">
       <a class="site-mark" href="/">
-        <img src="/assets/semantic-scroll.svg" alt="Semantic Scroll" width="160" height="160" />
+        <img src="/assets/semantic-scroll.svg" data-attr-alt="site-name" width="160" height="160" />
       </a>
       <p class="site-subtitle">Writing into being.</p>
       <nav class="site-nav">
         <a href="/">Home</a>
-        <a href="/content/blog/">Archive</a>
+        <a data-href="archive-root">Archive</a>
         <a href="/tags/">Tags</a>
         <a href="/series/">Series</a>
         <a href="/about/">About</a>
       </nav>
     </header>
     <main id="main">
-      <h1 data-slot="year"></h1>
-      <div data-slot="month-sections">
-        <p class="summary-empty">No posts yet.</p>
-      </div>
+      <h1>Tags</h1>
+      <ul class="index-list">
+        <template data-query="all-published-posts" data-view="tag-list">
+          <li class="archive-empty">No tags yet.</li>
+        </template>
+      </ul>
     </main>
     <footer class="site-footer">
       <p>© 2026 John Hardy. GPL-3.0.</p>

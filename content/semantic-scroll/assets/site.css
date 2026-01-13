@@ -228,6 +228,12 @@ main h1:first-child {
   font-style: italic;
 }
 
+.listing {
+  margin: 1.4rem 0;
+  padding: 0;
+  width: 100%;
+}
+
 .summary-list,
 .archive-years,
 .tag-year-list,

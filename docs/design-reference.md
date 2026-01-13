@@ -25,7 +25,7 @@ initialize empty render plan
 ### 2. Discover Articles
 
 ```
-for each directory under content/blog/:
+for each directory under content/<contentDir>/ (default content/semantic-scroll/ in this repo):
   validate path matches YYYY/MM/DD/NN-slug
   validate zero-padded numeric components
   validate NN matches numeric prefix of NN-slug
@@ -262,7 +262,7 @@ Warnings must appear in CI logs but not fail the run.
 
 ---
 
-### Article (`content/blog/2026/01/08/01-first-post/article.md`)
+### Article (`content/<contentDir>/2026/01/08/01-first-post/article.md`)
 
 ```md
 ---

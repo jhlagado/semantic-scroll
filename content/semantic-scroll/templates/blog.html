@@ -18,7 +18,7 @@
   <meta property="article:section" data-content="article-section" />
   <!-- meta:article-tags -->
   <link rel="canonical" data-href="canonical-url" />
-  <link rel="alternate" type="application/rss+xml" title="Semantic Scroll" href="/feed.xml" />
+  <link rel="alternate" type="application/rss+xml" data-attr-title="site-name" href="/feed.xml" />
   <meta name="color-scheme" data-content="color-scheme" />
   <meta name="theme-color" data-content="theme-color" />
   <title data-slot="page-title"></title>
@@ -37,24 +37,22 @@
   <div class="page">
     <header class="site-header">
       <a class="site-mark" href="/">
-        <img src="/assets/semantic-scroll.svg" alt="Semantic Scroll" width="160" height="160" />
+        <img src="/assets/semantic-scroll.svg" data-attr-alt="site-name" width="160" height="160" />
       </a>
       <p class="site-subtitle">Writing into being.</p>
       <nav class="site-nav">
         <a href="/">Home</a>
-        <a href="/content/blog/">Archive</a>
+        <a data-href="archive-root">Archive</a>
         <a href="/tags/">Tags</a>
         <a href="/series/">Series</a>
         <a href="/about/">About</a>
       </nav>
     </header>
     <main id="main">
-      <h1>About</h1>
-      <p>This site and everything published through it is written and maintained by John Hardy.</p>
-      <p>The material here exists as a working archive rather than a finished product. Articles, tools, and formats evolve together. The structure on disk and the pages on the site come from the same source. Nothing sits behind a separate content system.</p>
-      <p>All writing, images, and build tooling in this repository are released under the GNU General Public License 3.0. That allows copying, redistribution, and modification, provided that the same license remains attached to derivative work. The intent is to keep the whole system open and forkable, including the words themselves.</p>
-      <p>I have spent most of my working life building systems that sit between software, tools, and documentation. That background shows up here. This project treats writing as part of a build process rather than something layered on top of it. Files, folders, and text all carry meaning.</p>
-      <p>This page will grow over time. It exists to anchor authorship and intent in the same place as everything else: inside the content store itself.</p>
+      <h1>Archive</h1>
+      <ul class="archive-years" data-slot="year-list">
+        <li class="archive-empty">No posts yet.</li>
+      </ul>
     </main>
     <footer class="site-footer">
       <p>© 2026 John Hardy. GPL-3.0.</p>

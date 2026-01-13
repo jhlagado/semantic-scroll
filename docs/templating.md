@@ -11,8 +11,26 @@ The intent is to:
 This specification is written to match the canonical content architecture:
 
 ```
-content/blog/YYYY/MM/DD/NN-slug/<files>
+content/<contentDir>/YYYY/MM/DD/NN-slug/<files>
 ```
+
+`contentDir` defaults to `semantic-scroll` in this repo. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
+
+### 1.4 Resource Resolution and Merge Isolation
+
+The build engine implements a hierarchical resource resolver. This allows users to fork the repository as an "Upstream" source while maintaining their local configuration and design in a namespaced directory.
+
+#### Resolution Order
+The engine resolves templates, assets, and queries by checking the instance directory first, then falling back to the core defaults:
+
+1.  **Instance Level**: `content/<contentDir>/<resource>/` (e.g., `content/my-site/templates/article.html`)
+2.  **Core Level**: `/<resource>/` (e.g., `/templates/article.html`)
+
+#### The "Upstream Merge Isolation" Design
+By placing all instance-specific files (content, templates, assets) within the `content/<contentDir>/` sibling namespace, we achieve two critical goals:
+
+- **Isolated Customization**: Users can modify their templates and styles in their local folder without touching core files.
+- **Merge Safety**: A `git pull upstream` from the original repository will only update the reference instance (`content/semantic-scroll/`) and the build logic (`scripts/`). Because the user's site lives in a sibling directory (e.g., `content/my-site/`), their changes are isolated from upstream conflicts.
 
 Any deviation from this specification is an architectural change and must be deliberate.
 
@@ -130,6 +148,21 @@ The `<template>` element is chosen deliberately because it is:
 
 ---
 
+### 2.2.1 Build-Time Placeholders (Non-Template)
+
+Templates may use a small set of build-time placeholders outside `<template>` elements to keep site-wide values declarative without introducing logic.
+
+Approved placeholders:
+
+- `data-slot` for replacing inner HTML (for example, page titles or year lists)
+- `data-content` for meta tag values inside `<head>`
+- `data-href` for fixed links that depend on configuration (for example, the archive root)
+- `data-attr-<name>` for filling a specific attribute (for example, `data-attr-alt="site-name"` on the logo)
+
+These are fill-only attributes. They never access metadata and never introduce conditional behaviour.
+
+---
+
 ### 2.3 Render Modes
 
 Render modes define what kind of output is stamped into a slot.
@@ -226,7 +259,7 @@ Summary block:
 <article class="summary">
   <header class="summary-header">
     <h2 class="summary-title">
-      <a href="/content/blog/YYYY/MM/DD/NN-slug/">Title</a>
+      <a href="/content/<contentDir>/YYYY/MM/DD/NN-slug/">Title</a>
     </h2>
     <time class="summary-date" datetime="YYYY-MM-DD">YYYY-MM-DD</time>
   </header>
@@ -425,7 +458,7 @@ This index is the sole data source for queries.
 For each directory matching:
 
 ```
-content/blog/YYYY/MM/DD/NN-slug/
+content/<contentDir>/YYYY/MM/DD/NN-slug/
 ```
 
 the build must:
@@ -445,7 +478,7 @@ Markdown body is **not rendered** during indexing.
 From path:
 
 ```
-content/blog/2026/01/08/02-z80-disassembly/
+content/<contentDir>/2026/01/08/02-z80-disassembly/
 ```
 
 derive:
@@ -583,6 +616,8 @@ Assets are never inferred or relocated automatically.
 
 For MVP, templates are explicitly enumerated.
 
+Templates may be overridden by an instance directory. If `content/<contentDir>/templates/<name>.html` exists, it is used in place of `templates/<name>.html`. This keeps core defaults stable while allowing per-site overrides.
+
 Example:
 
 - `templates/home.html`
@@ -602,8 +637,8 @@ The build uses a fixed set of template files. Each one maps to a specific output
 
 - `templates/home.html` renders the site home page at `/`.
 - `templates/article.html` renders full article pages at their canonical content paths.
-- `templates/blog.html` renders the archive landing page at `/content/blog/`.
-- `templates/year.html` renders yearly archive pages at `/content/blog/YYYY/`.
+- `templates/blog.html` renders the archive landing page at `/content/<contentDir>/` (default `/content/semantic-scroll/` in this repo).
+- `templates/year.html` renders yearly archive pages at `/content/<contentDir>/YYYY/`.
 - `templates/summary-index.html` renders summary lists for month pages and tag pages, including tag year pages.
 - `templates/tags.html` renders the tag index at `/tags/`.
 - `templates/series.html` renders the series index at `/series/`.

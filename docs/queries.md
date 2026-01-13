@@ -35,8 +35,10 @@ The first published content series should document the construction of the syste
 The canonical structure is:
 
 ```
-content/blog/YYYY/MM/DD/NN-slug/<files>
+content/<contentDir>/YYYY/MM/DD/NN-slug/<files>
 ```
+
+`contentDir` defaults to `blog`. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
 
 Where:
 
@@ -48,7 +50,7 @@ Where:
 ### 2.2 Article Example
 
 ```
-content/blog/2026/01/08/01-first-post/
+content/<contentDir>/2026/01/08/01-first-post/
   article.md
   assets/
     diagram.png
@@ -168,6 +170,8 @@ Templates never embed query logic.
   ```
   config/queries.json
   ```
+
+If `site-config.json` sets `contentDir`, the build checks `content/<contentDir>/queries.json` first and falls back to `config/queries.json` when no instance override exists.
 
 ### 7.2 Example
 
