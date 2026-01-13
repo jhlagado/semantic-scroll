@@ -2,7 +2,7 @@
 title: "Guarding Against the Machine Voice"
 status: draft
 series: genesis
-summary: "Documents the prose-lint script and its role in catching AI writing habits. It explains the scoring system, the rules it enforces, and how threshold-based gates prevent formulaic prose from entering published content."
+summary: "Documents the prose-lint script and its role in catching AI writing habits. Explains the scoring system, the rules it enforces, and how threshold-based gates prevent formulaic prose from entering published content."
 tags:
   - writing
   - automation
@@ -11,9 +11,9 @@ tags:
 # Guarding Against the Machine Voice
 _January 13, 2026_ | Series: genesis
 
-I built a linting script to flag the formulaic phrasing, contrast framing, and hedge words that creep into my prose when I write quickly with AI assistance. The script runs against drafts by default and stops the build if too many issues accumulate in a single file.
+I built a linting script to flag formulaic phrasing, contrast framing, and hedge words that creep into prose when I write quickly with AI assistance. The script runs against drafts by default and stops the build if too many issues accumulate in a single file.
 
-Speed matters to this project, but unexamined speed produces exactly the kind of writing I want to avoid. I need a mirror that catches when the prose drifts into explanation mode or starts sounding like a corporate blog post. The linter serves as that mirror.
+Speed matters to this project, yet unexamined speed produces exactly the kind of writing I want to avoid. I need a mirror that catches when prose drifts into explanation mode or starts sounding like a corporate blog post. The linter serves as that mirror.
 
 ## Rules and Weights
 
@@ -31,13 +31,13 @@ The script scores each contrast construction and caps the total penalty per para
 
 ## Sentence and Paragraph Metrics
 
-The script checks sentence-length variance, discourse-marker density, and paragraph uniformity. Low variance in sentence length produces a rhythmic monotony that makes prose feel generated. High use of discourse markers like "however" and "moreover" signals over-structured thinking.
+The script checks sentence-length variance, discourse-marker density, and paragraph uniformity. Low variance in sentence length produces rhythmic monotony that makes prose feel generated. High use of discourse markers like "however" and "moreover" signals over-structured thinking.
 
 Paragraphs that stay uniformly short or uniformly long create a flattened reading experience, so the script flags both extremes. It counts list blocks because bullet points can replace explanation when overused.
 
 ## Thresholds and Gates
 
-The script supports three severity levels: high, medium, and low. Issues get assigned a severity based on their weight, and files get evaluated against per-file thresholds. The default thresholds allow one high-severity issue, three medium, and six low before a file fails the gate.
+The script supports three severity levels: high, medium, and low. Issues get assigned a severity based on their weight. Files get evaluated against per-file thresholds. The default thresholds allow one high-severity issue, three medium, and six low before a file fails the gate.
 
 The build fails if any file exceeds its thresholds. During local development, the script prints warnings without blocking so I can keep moving forward while still seeing where the prose needs attention.
 
