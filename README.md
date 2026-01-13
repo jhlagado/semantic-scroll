@@ -1,40 +1,28 @@
 # Semantic Scroll
 
-A minimalist blogging platform built on classic web values: semantic HTML, accessibility, and filesystem simplicity. No database, no build complexity—just content organised by date and rendered as clean, static pages.
+Semantic Scroll is a small, opinionated blogging system for people who want to publish on their own domain with plain HTML and a clear folder structure. It does not use a database. Your content lives in folders, templates live beside it, and the build step writes static pages into `build/`.
 
-## Design Philosophy
+This repo is also designed to be forked. The instance owns templates, assets, CSS, client-side JavaScript, and content inside `content/<contentDir>/`. The scripts live at the repo root and stay shared. That split lets you pull upstream updates without overwriting your site design.
 
-Semantic Scroll embraces simplicity at every level:
+## What you get
 
-- **Filesystem as database**: Content, templates, and assets live in namespaced directories under `/content/<contentDir>/` (default `content/semantic-scroll/` in this repo). This ensures that upstream updates to the platform logic or the reference instance never overwrite your local customizations during a merge.
-- **HTML-first templates**: Pure, accessible markup without framework lock-in. Templates are resolved by checking the instance directory first, then falling back to the core defaults.
-- **Mobile-first**: Responsive layouts that work everywhere.
-- **Minimal JavaScript**: Progressive enhancement, never a dependency.
-- **Deterministic builds**: Same input always produces the same output.
+You can use this even if you are not a developer, as long as you are comfortable with a small set of commands. The system gives you:
 
-The platform is designed for writers who want to publish quickly without fighting tooling or memorizing commands.
+- a dated folder structure for posts
+- HTML templates you can edit directly
+- static output that works on GitHub Pages or any simple host
 
-## Architecture
-
-Identity and chronology derive naturally from the filesystem structure. Queries select content, templates remain pure HTML, and rendering produces static pages. For detailed goals and decisions, see the docs.
-
-Optional `site-config.json` overrides site metadata and the content root. This repo runs on the built-in defaults; use `site-config.example.json` when you want to set up a different instance without having upstream changes overwrite your local settings.
-
-## Installation
+## Quick start (local preview)
 
 Install Node.js from the official site: https://nodejs.org/en
 
-Install `nodemon` globally for the development watcher:
+Install the dev watcher once:
 
 ```sh
 npm install -g nodemon
 ```
 
-See [scripts/README.md](scripts/README.md) for more detail on the tooling.
-
-## Run locally
-
-For local development, `npm start` clears the terminal and runs the dev server. It currently runs `dev` twice to match the requested workflow:
+Clone the repo and install dependencies:
 
 ```sh
 git clone https://github.com/jhlagado/semantic-scroll.git
@@ -42,59 +30,29 @@ cd semantic-scroll
 npm install
 ```
 
-```sh
-npm start
-```
-
-You can also run the dev server directly:
-
-```sh
-npm run dev
-```
-
-## Setup tutorial
-
-This is the end‑to‑end setup flow for a new blog instance using a fork, from first clone to a live GitHub Pages site and then a custom domain. It assumes you already installed Node.js and `nodemon` as above.
-
-Start by forking the repo on GitHub, then clone your fork locally and install dependencies:
-
-```sh
-git clone https://github.com/<your-username>/semantic-scroll.git
-cd semantic-scroll
-npm install
-```
-
-If you want to keep your fork in sync with upstream, wire up the remote and fetch it:
-
-```sh
-npm run init
-```
-
-Run the local dev server to confirm everything builds and watches:
+Start the local server:
 
 ```sh
 npm start
 ```
 
-When you are ready to publish, build the site so `build/` is current:
+This builds the site and refreshes it when files change. If you prefer the short form, run `npm run dev` instead.
 
-```sh
-npm run build
-```
+## Where to edit
 
-Then publish the `build/` directory to the `gh-pages` branch and set GitHub Pages to serve from that branch. If you already have a CI workflow configured, pushing to `main` can handle this automatically. If not, use your preferred deployment method to ensure the contents of `build/` are what GitHub Pages serves.
+Your site instance lives under `content/semantic-scroll/` by default. Posts live in dated folders and templates live in `content/semantic-scroll/templates/`. Assets and CSS live in `content/semantic-scroll/assets/`.
 
-Once GitHub Pages is live on the default `*.github.io` URL, you can attach a custom domain. Add a `CNAME` file to the published output that contains your domain, then update the GitHub Pages settings to use that domain. Finally, configure your DNS provider with the required GitHub Pages records (apex A records or a `www` CNAME, depending on how you want the address to resolve). After DNS propagates, the site will be served from your custom domain.
+If you want a different instance name, copy `site-config.example.json` to `site-config.json` and change `contentDir`. This repo uses defaults, so you do not need `site-config.json` unless you want to override settings.
 
 ## Build and lint
 
-`npm run build` checks prose quality first, then writes the site to `build/`:
+When you are ready to publish, build the site:
 
 ```sh
 npm run build
 ```
 
-Lint commands: `npm run lint` (drafts only), `npm run lint:all` (all content), `npm run lint:gate` (CI thresholds).
+Prose linting is available if you want to check drafts:
 
 ```sh
 npm run lint
@@ -102,28 +60,32 @@ npm run lint:all
 npm run lint:gate
 ```
 
+## Publishing to GitHub Pages
+
+GitHub Pages serves the contents of `build/`. A typical flow is:
+
+1. Build the site so `build/` is current.
+2. Publish the `build/` directory to the `gh-pages` branch.
+3. Set GitHub Pages to serve from that branch.
+
+GitHub’s guide is here: https://docs.github.com/en/pages
+
+## Custom domain and DNS
+
+Once GitHub Pages is live, you can use a custom domain. Add a `CNAME` file to the published output with your domain name, then set the custom domain in the GitHub Pages settings. Your DNS provider will need the GitHub Pages records for apex and `www` depending on how you want the address to resolve.
+
 ## Keeping your fork in sync
 
-If you are using this repo as a base for your own blog, the helper scripts below wire up the upstream remote and pull changes from it:
+If you want to pull upstream changes, these helpers will wire up the remote and merge updates:
 
 ```sh
 npm run init
 npm run update
 ```
 
-`npm run init` adds the upstream remote (if it does not exist yet) and fetches it. `npm run update` merges the latest upstream `main` into your branch so you can pick up platform changes without losing your instance content.
+## Tooling notes
 
-## Publishing to GitHub Pages
-
-Static output in `build/` can be deployed to any web host.
-
-For GitHub Pages, publish the contents of `build/` to the `gh-pages` branch (CI does this in the default setup) and set Pages to serve from that branch. GitHub’s guide is here: https://docs.github.com/en/pages
-
-## Custom domain and DNS
-
-If you want to use a custom domain, add a `CNAME` file to the published output containing your domain and configure your DNS provider to point the apex at GitHub Pages. You will also need to register the domain with a registrar and set the nameservers or DNS records per your provider’s instructions.
-
-Base URL considerations and a more detailed walk‑through are tracked for a future doc update.
+More detail about the scripts is in [scripts/README.md](scripts/README.md).
 
 ## License
 
