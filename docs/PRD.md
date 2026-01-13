@@ -89,7 +89,7 @@ This section breaks down how each blog post comes to life, from the initial conv
 
 **Conversational Drafting** is at the heart of this workflow. Instead of starting with a blank page, you’ll have a dialogue with the AI. During this chat, the AI will help you figure out what the post is about, suggest a human-readable title, and identify relevant tags. It’ll also clarify the post’s status—whether it’s a draft, ready for review, or good to go live. Along the way, the AI will help you gather any necessary assets, like code snippets, images, or links, and figure out where they fit into the post.
 
-Once you’ve got all that figured out, the AI will generate a **folder-based output**. Each post will live in its own date-based folder (like `/content/blog/YYYY/MM/DD/NN-slug/`) and include a single markdown file plus an optional `assets/` subfolder for images, code, or media. The markdown file will have embedded frontmatter metadata for status, tags, title, optional summary, and optional thumbnail so index views are consistent while full article titles and dates remain authored in the body.
+Once you’ve got all that figured out, the AI will generate a **folder-based output**. Each post will live in its own date-based folder (like `/content/blog/YYYY/MM/DD/NN-slug/`) and include a single markdown file plus an optional `assets/` subfolder for images, code, or media. The markdown file will have embedded frontmatter metadata for status, tags, title, optional summary, and optional thumbnail so index views are consistent while full article titles remain authored in the body and dates are rendered in the article metadata header.
 
 **Linking and referencing** are also built into this workflow. You’ll be able to add internal links to other posts using relative paths or shortcodes and include external links that the AI can help curate. Eventually, we might wrap these links in semantic tags or add unobtrusive JavaScript enhancements like tooltips, but the core idea is to keep linking straightforward and reliable.
 
@@ -105,7 +105,7 @@ Prompts should accept explicit parameters such as target length, required links,
 
 Posts should support code snippets as first-class content. Snippets should live in fenced code blocks with language identifiers where possible, remain copyable without client-side tooling, and stay readable in plain HTML. If a snippet is large or likely to be reused, it should be stored as a separate file in the post folder and referenced explicitly from the markdown.
 
-The drafting flow should accept asset paths and image requests up front. If the author provides images, the AI should place and caption them; if images are requested, the AI should either generate them or leave explicit placeholders with filenames so the author can fill them later. Thumbnails, when used, should be stored in the article’s `assets/` folder and referenced in frontmatter for indexing or feeds, and any thumbnail that must appear in an index view must also be authored in the Markdown body since templates do not read metadata.
+The drafting flow should accept asset paths and image requests up front. If the author provides images, the AI should place and caption them; if images are requested, the AI should either generate them or leave explicit placeholders with filenames so the author can fill them later. Thumbnails, when used, should be stored in the article’s `assets/` folder and referenced in frontmatter for indexing or feeds. If a thumbnail must appear inside the article body, it must be authored in Markdown like any other figure.
 
 ## 4. Draft Lifecycle
 
@@ -129,7 +129,7 @@ Scheduling can remain simple: publication should be triggered by status changes 
 
 ## 5. Metadata & Tagging Rules
 
-This section is all about the backbone of how we organise and categorize each piece of content—through metadata and tags. The metadata lives in the frontmatter of each markdown file and acts as the single source of truth for discovery and indexing. It includes fields like status, tags, title, optional summary, and optional thumbnail, while dates are derived from the filesystem and article titles in the body remain free-form. The frontmatter title is for summary and index views and may differ from the body title. Title and summary support only minimal inline formatting (bold, italic, and links). Each of these fields helps determine where and how the post appears across the site.
+This section is all about the backbone of how we organise and categorize each piece of content—through metadata and tags. The metadata lives in the frontmatter of each markdown file and acts as the single source of truth for discovery and indexing. It includes fields like status, tags, title, optional summary, and optional thumbnail, while dates are derived from the filesystem and titles in the body remain free-form. The frontmatter title is for summary and index views and may differ from the body title. Title and summary support only minimal inline formatting (bold, italic, and links). Each of these fields helps determine where and how the post appears across the site.
 
 When it comes to **tags**, we’re taking a controlled and normalized approach. Tags are case-insensitive, which means it doesn’t matter if you write “Z80” or “z80”—they’ll be treated the same. We also ignore minor variations like hyphens or underscores, so “Z-80” and “Z_80” also get folded into the same tag. This helps keep our tagging system clean and prevents tag sprawl, where you end up with a bunch of near-duplicate tags that all mean the same thing.
 
@@ -137,11 +137,11 @@ We’ll choose a canonical form for each tag—typically all lowercase and free 
 
 In short, the metadata and tagging rules are here to keep everything organised and consistent. The metadata drives the visibility and categorization of each post, and the tagging rules ensure that your tags remain meaningful and easy to manage over time.
 
-**The Mirroring Requirement**: Because our templates are intentionally "dumb" and have zero access to frontmatter, any metadata that must be visible on the page (like the title, date, or tags) must be explicitly authored in the Markdown body. This "mirroring" preserves the durability and self-contained nature of our documents.
+**Metadata Blocks**: Templates remain "dumb," but full article pages include fixed metadata blocks above and below the Markdown body. These blocks render the date, permalink, series, and tags without requiring those values inside the body text. The body stays focused on the title, byline, and prose while still keeping metadata visible in consistent places.
 
 **Filesystem Authority**: The folder hierarchy (`/content/blog/YYYY/MM/DD/NN-slug/`) is the definitive source of truth for an article's creation date and its unique identity. Every post is contained in an **Article Unit** (see [article-spec.md](article-spec.md)) which ensures that even multiple posts on the same day are sorted correctly by the mandatory `NN-` ordinal prefix. If an article is updated, it keeps its chronological relationship with the folder hierarchy. Frontmatter `date` fields should be avoided to prevent drift; the system derives all temporal metadata from the path itself.
 
-Dates are derived from the filesystem; if both creation and publication dates need to be explicit for readers, they should be authored in the body rather than inferred from metadata. Summaries should be short and factual to support index pages and previews.
+Dates are derived from the filesystem; the article header metadata block exposes the canonical date and permalink for readers. Summaries should be short and factual to support index pages and previews.
 
 Tags and metadata should be rich enough to support multiple thematic tracks, from AI workflow experimentation to retrocomputing projects, while staying normalized and searchable. Over time, this metadata should also support reuse in other formats, such as compiling a **series** into a talk outline or grouping posts into a longer narrative.
 
@@ -149,7 +149,7 @@ Series are author-declared narrative arcs, with a single `series` value in front
 
 If separate blogs are eventually needed, the system should allow a clean split without rewriting content or breaking URLs. The default, however, is a single domain with multiple series and clear tag boundaries.
 
-Tag vocabulary should be curated over time. When new tags are introduced, they should either map to existing canonical tags or be added deliberately, so that long-term archives remain coherent and searchable. During the drafting process, the AI Agent is responsible for normalizing tags within the Markdown prose to ensure the visible content remains consistent with the searchable index.
+Tag vocabulary should be curated over time. When new tags are introduced, they should either map to existing canonical tags or be added deliberately, so that long-term archives remain coherent and searchable. During drafting, the AI Agent is responsible for normalizing tags in frontmatter so the visible metadata blocks remain consistent with the searchable index.
 
 ## 6. Internal Linking Conventions
 
@@ -183,7 +183,7 @@ Assets should be optimised before commit (compressed images, trimmed PDFs), and 
 
 AI-generated images are allowed but should be explicitly named and stored in the article’s `assets/` folder with clear filenames. If generation metadata or prompts are kept, they should live alongside the article in a separate file, not mixed into the assets folder.
 
-Thumbnails are optional but supported. If used, they should be small, lightweight images intended for index views or social sharing, and they should be generated or selected deliberately rather than inferred automatically. Thumbnails may be referenced in frontmatter for indexing or feeds, but any thumbnail that must be visible in an index view must also be authored in the Markdown body.
+Thumbnails are optional but supported. If used, they should be small, lightweight images intended for index views or social sharing, and they should be generated or selected deliberately rather than inferred automatically. Thumbnails may be referenced in frontmatter for indexing or feeds, but any thumbnail that must be visible inside the article body must be authored in Markdown.
 
 ## 8. Review Gate
 
