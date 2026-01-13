@@ -55,12 +55,26 @@ Discover all article directories and validate their filesystem structure.
 Articles must exist at:
 
 ```
-content/blog/YYYY/MM/DD/NN-slug/
+content/<contentDir>/YYYY/MM/DD/NN-slug/
 ```
 
-### 3.3 Discovery Process
+`contentDir` defaults to `blog`. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
 
-For each directory under `content/blog/`:
+### 3.3 Configuration and Instance Overrides
+
+The build optionally reads `site-config.json` at the repo root.
+If present, it may override site metadata and set `contentDir`, which selects the instance directory under `content/`.
+If the file is missing, defaults apply and the active instance is `content/blog/`.
+
+Overrides are resolved in a strict order:
+
+- Templates: `content/<contentDir>/templates/` overrides `templates/`
+- Assets: `assets/` copies first, then `content/<contentDir>/assets/` overlays it
+- Queries: `content/<contentDir>/queries.json` overrides `config/queries.json`
+
+### 3.4 Discovery Process
+
+For each directory under `content/<contentDir>/` (default `content/blog/`):
 
 - verify `YYYY/MM/DD/NN-slug` structure
 - verify all numeric components are zero-padded
@@ -68,7 +82,7 @@ For each directory under `content/blog/`:
 - locate the single canonical article Markdown file (canonical name, e.g. `article.md`)
 - fail if the article Markdown file is missing or ambiguous
 
-### 3.4 Discovery Outputs
+### 3.5 Discovery Outputs
 
 - list of article directories
 - derived path fields:

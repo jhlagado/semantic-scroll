@@ -4,38 +4,59 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = process.cwd();
-const CONTENT_ROOT = path.join(ROOT, 'content', 'blog');
-const TEMPLATE_DIR = path.join(ROOT, 'templates');
 const OUTPUT_DIR = path.join(ROOT, 'build');
-const ARCHIVE_OUTPUT_ROOT = path.join(OUTPUT_DIR, 'content', 'blog');
+const TEMPLATE_DIR = path.join(ROOT, 'templates');
 const STATIC_ASSETS_DIR = path.join(ROOT, 'assets');
-const QUERIES_PATH = path.join(ROOT, 'config', 'queries.json');
+const CONFIG_PATH = path.join(ROOT, 'site-config.json');
 
-const SITE_URL = process.env.SITE_URL || 'https://jhlagado.github.io/semantic-scroll';
+const DEFAULT_SITE_CONFIG = {
+  siteName: 'Semantic Scroll',
+  siteDescription: 'A public experiment in building a publishing system while using it, with essays and specs evolving alongside the code.',
+  siteUrl: 'https://jhlagado.github.io/semantic-scroll',
+  customDomain: 'semantic-scroll.com',
+  author: 'John Hardy',
+  language: 'en-AU',
+  contentDir: 'blog'
+};
+
+const SITE_CONFIG = loadSiteConfig(CONFIG_PATH, DEFAULT_SITE_CONFIG);
+const CONTENT_DIR = SITE_CONFIG.contentDir;
+const CONTENT_ROOT = path.join(ROOT, 'content', CONTENT_DIR);
+const INSTANCE_TEMPLATES_DIR = path.join(CONTENT_ROOT, 'templates');
+const INSTANCE_ASSETS_DIR = path.join(CONTENT_ROOT, 'assets');
+const INSTANCE_QUERIES_PATH = path.join(CONTENT_ROOT, 'queries.json');
+const QUERIES_PATH = fs.existsSync(INSTANCE_QUERIES_PATH)
+  ? INSTANCE_QUERIES_PATH
+  : path.join(ROOT, 'config', 'queries.json');
+const ARCHIVE_OUTPUT_ROOT = path.join(OUTPUT_DIR, 'content', CONTENT_DIR);
+const ARCHIVE_ROOT_PATH = `/content/${CONTENT_DIR}/`;
+
+const SITE_URL = process.env.SITE_URL || SITE_CONFIG.siteUrl;
 const BASE_PATH = normalizeBasePath(process.env.BASE_PATH || '');
-const CUSTOM_DOMAIN = process.env.CUSTOM_DOMAIN || 'semantic-scroll.com';
-const SITE_NAME = 'Semantic Scroll';
-const SITE_DESCRIPTION = 'A public experiment in building a publishing system while using it, with essays and specs evolving alongside the code.';
-const SITE_LANGUAGE = 'en-AU';
-const FEED_AUTHOR = 'John Hardy';
+const CUSTOM_DOMAIN = process.env.CUSTOM_DOMAIN || SITE_CONFIG.customDomain;
+const SITE_NAME = SITE_CONFIG.siteName;
+const SITE_DESCRIPTION = SITE_CONFIG.siteDescription;
+const SITE_LANGUAGE = SITE_CONFIG.language;
+const FEED_AUTHOR = SITE_CONFIG.author;
 const META_COLOR_SCHEME = 'light';
 const META_THEME_COLOR = '#ffffff';
 
-const ARTICLE_TEMPLATE = path.join(TEMPLATE_DIR, 'article.html');
-const HOME_TEMPLATE = path.join(TEMPLATE_DIR, 'home.html');
-const BLOG_TEMPLATE = path.join(TEMPLATE_DIR, 'blog.html');
-const YEAR_TEMPLATE = path.join(TEMPLATE_DIR, 'year.html');
-const SUMMARY_TEMPLATE = path.join(TEMPLATE_DIR, 'summary-index.html');
-const SERIES_ARTICLE_TEMPLATE = path.join(TEMPLATE_DIR, 'series-articles.html');
-const TAG_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'tags.html');
-const SERIES_INDEX_TEMPLATE = path.join(TEMPLATE_DIR, 'series.html');
-const ABOUT_TEMPLATE = path.join(TEMPLATE_DIR, 'about.html');
+const ARTICLE_TEMPLATE = resolveTemplatePath('article.html');
+const HOME_TEMPLATE = resolveTemplatePath('home.html');
+const BLOG_TEMPLATE = resolveTemplatePath('blog.html');
+const YEAR_TEMPLATE = resolveTemplatePath('year.html');
+const SUMMARY_TEMPLATE = resolveTemplatePath('summary-index.html');
+const SERIES_ARTICLE_TEMPLATE = resolveTemplatePath('series-articles.html');
+const TAG_INDEX_TEMPLATE = resolveTemplatePath('tags.html');
+const SERIES_INDEX_TEMPLATE = resolveTemplatePath('series.html');
+const ABOUT_TEMPLATE = resolveTemplatePath('about.html');
 const FEED_PATH = path.join(OUTPUT_DIR, 'feed.xml');
 const SITEMAP_PATH = path.join(OUTPUT_DIR, 'sitemap.xml');
 const ROBOTS_PATH = path.join(OUTPUT_DIR, 'robots.txt');
 
 const STATUS_VALUES = new Set(['draft', 'review', 'published', 'archived']);
 const INTERNAL_QUERY_NAMES = new Set(['article-page']);
+const ALLOWED_CONTENT_ROOT_DIRS = new Set(['assets', 'templates']);
 const ALLOWED_QUERY_KEYS = new Set([
   'source',
   'status',
@@ -86,6 +107,89 @@ function normalizeBasePath(raw) {
   return base.replace(/\/+$/, '');
 }
 
+function loadSiteConfig(filePath, defaults) {
+  if (!fs.existsSync(filePath)) {
+    return { ...defaults };
+  }
+
+  const raw = fs.readFileSync(filePath, 'utf8');
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON in ${filePath}`);
+  }
+
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error(`Site config must be a JSON object: ${filePath}`);
+  }
+
+  const merged = { ...defaults, ...parsed };
+  validateSiteConfig(merged, filePath);
+  merged.contentDir = normalizeContentDir(merged.contentDir, filePath);
+  return merged;
+}
+
+function validateSiteConfig(config, filePath) {
+  const errors = [];
+  const stringFields = [
+    'siteName',
+    'siteDescription',
+    'siteUrl',
+    'customDomain',
+    'author',
+    'language',
+    'contentDir'
+  ];
+
+  for (const field of stringFields) {
+    const value = config[field];
+    if (value === undefined || value === null) {
+      continue;
+    }
+    if (typeof value !== 'string') {
+      errors.push(`${field} must be a string`);
+    }
+  }
+
+  if (errors.length) {
+    throw new Error(`Invalid site config in ${filePath}:\n${errors.join('\n')}`);
+  }
+}
+
+function normalizeContentDir(contentDir, filePath) {
+  const value = String(contentDir || '').trim();
+  if (!value) {
+    throw new Error(`Invalid site config in ${filePath}: contentDir must not be empty`);
+  }
+  if (value.includes('/') || value.includes('\\') || value.includes('..')) {
+    throw new Error(`Invalid site config in ${filePath}: contentDir must be a single folder name`);
+  }
+  return value;
+}
+
+function resolveTemplatePath(filename) {
+  const instancePath = path.join(INSTANCE_TEMPLATES_DIR, filename);
+  if (fs.existsSync(instancePath)) {
+    return instancePath;
+  }
+  const corePath = path.join(TEMPLATE_DIR, filename);
+  if (!fs.existsSync(corePath)) {
+    throw new Error(`Missing template: ${filename}`);
+  }
+  return corePath;
+}
+
+function applySiteHrefs(html) {
+  let output = applyHrefAttributes(html, {
+    'archive-root': ARCHIVE_ROOT_PATH
+  });
+  output = applyAttributePlaceholders(output, {
+    'site-name': SITE_NAME
+  });
+  return output;
+}
+
 function applyBasePath(html) {
   if (!BASE_PATH) {
     return html;
@@ -114,6 +218,9 @@ function discoverArticles(rootDir) {
   const yearDirs = listDirs(rootDir);
   for (const year of yearDirs) {
     if (!/^\d{4}$/.test(year)) {
+      if (ALLOWED_CONTENT_ROOT_DIRS.has(year)) {
+        continue;
+      }
       errors.push(`Invalid year directory: ${year}`);
       continue;
     }
@@ -364,7 +471,7 @@ function renderSite(index, queryResults) {
       }),
       {
         'page-title': escapeHtml(composePageTitle(homeLabel)),
-        'year-list': buildYearList(published, '/content/blog/')
+        'year-list': buildYearList(published, ARCHIVE_ROOT_PATH)
       }
     ),
     queryResults
@@ -449,7 +556,7 @@ function renderFeed(queryResults, published) {
     : published.slice().sort(makeSortFn('date-desc')).slice(0, 25);
 
   const feed = buildFeedXml({
-    title: 'Semantic Scroll',
+    title: SITE_NAME,
     link: SITE_URL,
     description: SITE_DESCRIPTION,
     items,
@@ -468,7 +575,7 @@ function renderTagFeeds(published) {
   for (const [tag, entries] of tagMap.entries()) {
     const items = entries.map((entry) => entry.article).sort(makeSortFn('date-desc'));
     const feed = buildFeedXml({
-      title: `Tag: ${tag} - Semantic Scroll`,
+      title: `Tag: ${tag} - ${SITE_NAME}`,
       link: joinUrl(SITE_URL, `/tags/${tag}/`),
       description: `Tag feed for ${tag}.`,
       items,
@@ -487,7 +594,7 @@ function renderSeriesFeeds(published) {
   for (const [series, items] of seriesMap.entries()) {
     const ordered = items.slice().sort(makeSortFn('date-asc'));
     const feed = buildFeedXml({
-      title: `Series: ${series} - Semantic Scroll`,
+      title: `Series: ${series} - ${SITE_NAME}`,
       link: joinUrl(SITE_URL, `/series/${series}/`),
       description: `Series feed for ${series}.`,
       items: ordered,
@@ -511,7 +618,7 @@ function writeSitemap(published) {
 
   addUrl('/', latest);
   addUrl('/about/', latest);
-  addUrl('/content/blog/', latest);
+  addUrl(ARCHIVE_ROOT_PATH, latest);
   addUrl('/tags/', latest);
   addUrl('/series/', latest);
 
@@ -522,19 +629,19 @@ function writeSitemap(published) {
   const years = groupBy(published, (article) => article.year);
   for (const [year, items] of years.entries()) {
     const latestForYear = items.slice().sort(makeSortFn('date-desc'))[0];
-    addUrl(`/content/blog/${year}/`, latestForYear);
+    addUrl(`${ARCHIVE_ROOT_PATH}${year}/`, latestForYear);
   }
 
   const months = groupBy(published, (article) => `${article.year}/${article.month}`);
   for (const [key, items] of months.entries()) {
     const latestForMonth = items.slice().sort(makeSortFn('date-desc'))[0];
-    addUrl(`/content/blog/${key}/`, latestForMonth);
+    addUrl(`${ARCHIVE_ROOT_PATH}${key}/`, latestForMonth);
   }
 
   const days = groupBy(published, (article) => `${article.year}/${article.month}/${article.day}`);
   for (const [key, items] of days.entries()) {
     const latestForDay = items.slice().sort(makeSortFn('date-desc'))[0];
-    addUrl(`/content/blog/${key}/`, latestForDay);
+    addUrl(`${ARCHIVE_ROOT_PATH}${key}/`, latestForDay);
   }
 
   const tagMap = groupBy(published.flatMap((article) => {
@@ -749,22 +856,24 @@ function copyAssets(index) {
 }
 
 function copyStaticAssets() {
-  if (!fs.existsSync(STATIC_ASSETS_DIR)) {
-    return;
-  }
   const destDir = path.join(OUTPUT_DIR, 'assets');
-  copyDir(STATIC_ASSETS_DIR, destDir);
+  if (fs.existsSync(STATIC_ASSETS_DIR)) {
+    copyDir(STATIC_ASSETS_DIR, destDir);
+  }
+  if (fs.existsSync(INSTANCE_ASSETS_DIR)) {
+    copyDir(INSTANCE_ASSETS_DIR, destDir);
+  }
 }
 
 function renderArchiveRoot(published) {
   const template = fs.readFileSync(BLOG_TEMPLATE, 'utf8');
-  const yearList = buildYearList(published, '/content/blog/');
+  const yearList = buildYearList(published, ARCHIVE_ROOT_PATH);
   const label = 'Archive';
 
   const html = renderTemplate(
     applySlots(
       applyMeta(template, {
-        canonical: joinUrl(SITE_URL, '/content/blog/'),
+        canonical: joinUrl(SITE_URL, ARCHIVE_ROOT_PATH),
         description: SITE_DESCRIPTION,
         title: label
       }),
@@ -807,7 +916,7 @@ function renderYearArchives(published) {
       queryResults[queryName] = monthItems;
 
       const monthLabel = `${monthName(month)} ${year}`;
-      const monthLink = `/content/blog/${year}/${month}/`;
+      const monthLink = `${ARCHIVE_ROOT_PATH}${year}/${month}/`;
       return [
         '<section class="archive-month">',
         `  <h2><a href="${monthLink}">${escapeHtml(monthLabel)}</a></h2>`,
@@ -823,12 +932,12 @@ function renderYearArchives(published) {
     const content = monthSections || '<p class="summary-empty">No posts yet.</p>';
     const html = applySlots(
       applyMeta(template, {
-        canonical: joinUrl(SITE_URL, `/content/blog/${year}/`),
+        canonical: joinUrl(SITE_URL, `${ARCHIVE_ROOT_PATH}${year}/`),
         description: SITE_DESCRIPTION,
         title: `${year} Archive`
       }),
       {
-        'page-title': escapeHtml(`${year} - Archive - Semantic Scroll`),
+        'page-title': escapeHtml(`${year} - Archive - ${SITE_NAME}`),
         year: escapeHtml(year),
         'month-sections': content
       }
@@ -848,18 +957,18 @@ function renderMonthArchives(published) {
     const monthItems = sortItems(byMonth.get(key), 'date-asc');
     const label = `${monthName(month)} ${year}`;
     const slots = {
-      'page-title': escapeHtml(`${label} - Archive - Semantic Scroll`),
+      'page-title': escapeHtml(`${label} - Archive - ${SITE_NAME}`),
       'page-heading': escapeHtml(label),
       'page-intro': '',
       'page-extra': ''
     };
     const html = renderTemplate(
       applySlots(
-        applyMeta(template, {
-          canonical: joinUrl(SITE_URL, `/content/blog/${year}/${month}/`),
-          description: SITE_DESCRIPTION,
-          title: `${label} Archive`
-        }),
+      applyMeta(template, {
+        canonical: joinUrl(SITE_URL, `${ARCHIVE_ROOT_PATH}${year}/${month}/`),
+        description: SITE_DESCRIPTION,
+        title: `${label} Archive`
+      }),
         slots
       ),
       {
@@ -911,7 +1020,7 @@ function renderTagArchives(published) {
       : '';
 
     const slots = {
-      'page-title': escapeHtml(`Tag: ${tag} - Semantic Scroll`),
+      'page-title': escapeHtml(`Tag: ${tag} - ${SITE_NAME}`),
       'page-heading': escapeHtml(`Tag: ${tag}`),
       'page-intro': '',
       'page-extra': yearList
@@ -936,7 +1045,7 @@ function renderTagArchives(published) {
       const yearItems = items.filter((item) => item.year === year);
       const yearItemsDesc = sortItems(yearItems, 'date-desc');
       const yearSlots = {
-        'page-title': escapeHtml(`Tag: ${tag} - ${year} - Semantic Scroll`),
+        'page-title': escapeHtml(`Tag: ${tag} - ${year} - ${SITE_NAME}`),
         'page-heading': escapeHtml(`Tag: ${tag} - ${year}`),
         'page-intro': '',
         'page-extra': ''
@@ -1005,7 +1114,7 @@ function renderSeriesArchives(published) {
       : '';
 
     const slots = {
-      'page-title': escapeHtml(`Series: ${series} - Semantic Scroll`),
+      'page-title': escapeHtml(`Series: ${series} - ${SITE_NAME}`),
       'page-heading': escapeHtml(`Series: ${series}`),
       'page-intro': '',
       'page-extra': yearList
@@ -1030,7 +1139,7 @@ function renderSeriesArchives(published) {
       const yearItems = seriesItems.filter((item) => item.year === year);
       const yearItemsAsc = sortItems(yearItems, 'date-asc');
       const yearSlots = {
-        'page-title': escapeHtml(`Series: ${series} - ${year} - Semantic Scroll`),
+        'page-title': escapeHtml(`Series: ${series} - ${year} - ${SITE_NAME}`),
         'page-heading': escapeHtml(`Series: ${series} - ${year}`),
         'page-intro': '',
         'page-extra': yearList
@@ -1088,7 +1197,8 @@ function renderSeriesIndex(published) {
 function renderTemplate(html, queryResults) {
   const templateRegex = /<template\b([^>]*)>([\s\S]*?)<\/template>/g;
 
-  const rendered = html.replace(templateRegex, (full, attrText, fallback) => {
+  const hydrated = applySiteHrefs(html);
+  const rendered = hydrated.replace(templateRegex, (full, attrText, fallback) => {
     if (/<template\b/i.test(fallback)) {
       throw new Error('Nested <template> elements are not allowed');
     }
@@ -1848,6 +1958,23 @@ function escapeHtml(text) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function escapeRegExp(text) {
+  return String(text).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function applyAttributePlaceholders(html, values) {
+  let output = html;
+  for (const [key, value] of Object.entries(values)) {
+    if (value === null || value === undefined || value === '') {
+      continue;
+    }
+    const safeValue = escapeHtml(value);
+    const pattern = new RegExp(`\\sdata-attr-([a-zA-Z0-9:-]+)="${escapeRegExp(key)}"`, 'g');
+    output = output.replace(pattern, (match, attr) => ` ${attr}="${safeValue}"`);
+  }
+  return output;
 }
 
 function isNumeric(value) {

@@ -4,7 +4,10 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = process.cwd();
-const DEFAULT_ROOT = path.join(ROOT, 'content', 'blog');
+const CONFIG_PATH = path.join(ROOT, 'site-config.json');
+const DEFAULT_CONTENT_DIR = 'blog';
+const CONTENT_DIR = resolveContentDir(CONFIG_PATH, DEFAULT_CONTENT_DIR);
+const DEFAULT_ROOT = path.join(ROOT, 'content', CONTENT_DIR);
 
 const DEFAULT_THRESHOLDS = {
   high: 1,
@@ -22,6 +25,36 @@ const includeDocs = args.includes('--docs') || args.includes('--all');
 const report = args.includes('--report');
 const thresholds = resolveThresholds(args);
 const targets = extractTargets(args);
+
+function resolveContentDir(configPath, fallback) {
+  if (!fs.existsSync(configPath)) {
+    return fallback;
+  }
+  const raw = fs.readFileSync(configPath, 'utf8');
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON in ${configPath}`);
+  }
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error(`Site config must be a JSON object: ${configPath}`);
+  }
+  if (!Object.prototype.hasOwnProperty.call(parsed, 'contentDir')) {
+    return fallback;
+  }
+  if (typeof parsed.contentDir !== 'string') {
+    throw new Error(`Invalid contentDir in ${configPath}`);
+  }
+  const value = parsed.contentDir.trim();
+  if (!value) {
+    throw new Error(`Invalid contentDir in ${configPath}`);
+  }
+  if (value.includes('/') || value.includes('\\') || value.includes('..')) {
+    throw new Error(`Invalid contentDir in ${configPath}`);
+  }
+  return value;
+}
 
 const RULES = [
   {

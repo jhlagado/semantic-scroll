@@ -72,7 +72,7 @@ Rules:
 
 * required
 * string
-* currently must be `"blog"` (maps to `content/blog/`)
+* currently must be `"blog"` (maps to the active content root; default `content/blog/`, or `content/<contentDir>/` when `site-config.json` overrides it)
 * future sources may be added explicitly
 
 ---
