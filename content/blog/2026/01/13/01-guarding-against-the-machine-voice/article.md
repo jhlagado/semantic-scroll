@@ -17,15 +17,15 @@ Speed matters to this project, yet unexamined speed produces exactly the kind of
 
 ## Rules and Weights
 
-Each rule carries a numeric weight that contributes to a file's total score. High-weight rules target forbidden AI-isms: words like "delve", "unlock", and "seamless". These words almost never appear in careful writing, so the script flags them immediately.
+Each rule carries a numeric weight. High-weight rules target forbidden AI-isms: words like "delve", "unlock", and "seamless". These words almost never appear in careful writing, so the script flags them immediately.
 
 Medium-weight rules catch passive voice, weak paragraph openers, and scene-setting lines that stall the narrative. Lower-weight rules flag hedge words and empty intensifiers that dilute specificity.
 
-The script enforces UK spelling and watches for first-person plural pronouns, since this blog is a personal diary written in first person singular.
+The script enforces UK spelling and watches for first-person plural pronouns. This blog is a personal diary written in first person singular.
 
 ## Contrast Framing
 
-One of the heavier checks targets contrast framing: defining an idea by negation followed by correction. AI-generated text produces these constructions constantly because they simulate structure without requiring deeper thought.
+One of the heavier checks targets contrast framing: defining an idea by negation followed by correction. AI-generated text produces these constructions constantly. They simulate structure without requiring deeper thought.
 
 The script scores each contrast construction and caps the total penalty per paragraph so repetition doesn't blow out the score. When it catches these constructions, it samples the matches and shows exactly where the framing appeared.
 
@@ -33,11 +33,11 @@ The script scores each contrast construction and caps the total penalty per para
 
 The script checks sentence-length variance, discourse-marker density, and paragraph uniformity. Low variance in sentence length produces rhythmic monotony that makes prose feel generated. High use of discourse markers like "however" and "moreover" signals over-structured thinking.
 
-Paragraphs that stay uniformly short or uniformly long create a flattened reading experience, so the script flags both extremes. It counts list blocks because bullet points can replace explanation when overused.
+Paragraphs that stay uniformly short or uniformly long create a flattened reading experience, so the script flags both extremes. It counts list blocks. Bullet points can replace explanation when overused.
 
 ## Thresholds and Gates
 
-The script supports three severity levels: high, medium, and low. Issues get assigned a severity based on their weight. Files get evaluated against per-file thresholds. The default thresholds allow one high-severity issue, three medium, and six low before a file fails the gate.
+The script supports three severity levels: high, medium, and low. Issues receive a severity assignment based on their weight. Files undergo evaluation against per-file thresholds. The default thresholds allow one high-severity issue, three medium, and six low before a file fails the gate.
 
 The build fails if any file exceeds its thresholds. During local development, the script prints warnings without blocking so I can keep moving forward while still seeing where the prose needs attention.
 
