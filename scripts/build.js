@@ -19,9 +19,38 @@ const DEFAULT_SITE_CONFIG = {
   contentDir: 'semantic-scroll'
 };
 
+const DEFAULT_META_CONFIG = [
+  { tag: 'meta', attrs: { name: 'description' }, valueKey: 'meta-description' },
+  { tag: 'meta', attrs: { property: 'og:site_name' }, valueKey: 'og-site-name' },
+  { tag: 'meta', attrs: { property: 'og:title' }, valueKey: 'og-title' },
+  { tag: 'meta', attrs: { property: 'og:description' }, valueKey: 'og-description' },
+  { tag: 'meta', attrs: { property: 'og:url' }, valueKey: 'og-url' },
+  { tag: 'meta', attrs: { property: 'og:type' }, valueKey: 'og-type' },
+  { tag: 'meta', attrs: { property: 'og:image' }, valueKey: 'og-image' },
+  { tag: 'meta', attrs: { name: 'twitter:card' }, valueKey: 'twitter-card' },
+  { tag: 'meta', attrs: { name: 'twitter:title' }, valueKey: 'twitter-title' },
+  { tag: 'meta', attrs: { name: 'twitter:description' }, valueKey: 'twitter-description' },
+  { tag: 'meta', attrs: { name: 'twitter:image' }, valueKey: 'twitter-image' },
+  { tag: 'meta', attrs: { property: 'article:published_time' }, valueKey: 'article-published-time' },
+  { tag: 'meta', attrs: { property: 'article:section' }, valueKey: 'article-section' },
+  { tag: 'meta', attrs: { name: 'color-scheme' }, valueKey: 'color-scheme' },
+  { tag: 'meta', attrs: { name: 'theme-color' }, valueKey: 'theme-color' },
+  { tag: 'link', attrs: { rel: 'canonical' }, valueKey: 'canonical-url', valueAttr: 'href' },
+  {
+    tag: 'link',
+    attrs: { rel: 'alternate', type: 'application/rss+xml' },
+    valueKey: 'feed-url',
+    valueAttr: 'href',
+    titleKey: 'site-name'
+  },
+  { tag: 'title', valueKey: 'page-title', valueAttr: 'text' }
+];
+
 const SITE_CONFIG = loadSiteConfig(CONFIG_PATH, DEFAULT_SITE_CONFIG);
 const CONTENT_DIR = SITE_CONFIG.contentDir;
 const CONTENT_ROOT = path.join(ROOT, 'content', CONTENT_DIR);
+const META_CONFIG_PATH = path.join(CONTENT_ROOT, 'meta.json');
+const META_CONFIG = loadMetaConfig(META_CONFIG_PATH, DEFAULT_META_CONFIG);
 const INSTANCE_TEMPLATES_DIR = path.join(CONTENT_ROOT, 'templates');
 const INSTANCE_ASSETS_DIR = path.join(CONTENT_ROOT, 'assets');
 const INSTANCE_QUERIES_PATH = path.join(CONTENT_ROOT, 'queries.json');
@@ -128,6 +157,37 @@ function loadSiteConfig(filePath, defaults) {
   validateSiteConfig(merged, filePath);
   merged.contentDir = normalizeContentDir(merged.contentDir, filePath);
   return merged;
+}
+
+function loadMetaConfig(filePath, defaults) {
+  if (!fs.existsSync(filePath)) {
+    return defaults.map((entry) => ({ ...entry, attrs: { ...entry.attrs } }));
+  }
+
+  const raw = fs.readFileSync(filePath, 'utf8');
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON in ${filePath}`);
+  }
+
+  if (!Array.isArray(parsed)) {
+    throw new Error(`Meta config must be a JSON array: ${filePath}`);
+  }
+
+  return parsed.map((entry) => {
+    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+      throw new Error(`Invalid meta entry in ${filePath}`);
+    }
+    return {
+      tag: entry.tag,
+      attrs: entry.attrs || {},
+      valueKey: entry.valueKey,
+      valueAttr: entry.valueAttr,
+      titleKey: entry.titleKey
+    };
+  });
 }
 
 function validateSiteConfig(config, filePath) {
@@ -1446,15 +1506,6 @@ function applySlots(html, slots) {
   );
 }
 
-function applyContentAttributes(html, values) {
-  let output = html;
-  for (const [key, value] of Object.entries(values)) {
-    const marker = `data-content="${key}"`;
-    output = output.split(marker).join(`content="${escapeHtml(value)}"`);
-  }
-  return output;
-}
-
 function applyHrefAttributes(html, values) {
   let output = html;
   for (const [key, value] of Object.entries(values)) {
@@ -1490,16 +1541,49 @@ function articleOgImage(article) {
   return siteImageUrl();
 }
 
-function removeMetaTag(html, key) {
-  const pattern = new RegExp(`\\s*<meta\\s+[^>]*data-content="${key}"[^>]*>\\s*`, 'i');
-  return html.replace(pattern, '');
+function renderHeadMeta(config, values, tags) {
+  const entries = config.map((item) => renderHeadMetaEntry(item, values)).filter(Boolean);
+  if (tags && tags.length) {
+    entries.push(...tags.map((tag) => {
+      return `<meta property="article:tag" content="${escapeHtml(tag)}" />`;
+    }));
+  }
+  return entries.length ? `${entries.join('\n')}\n` : '';
 }
 
-function injectMetaTags(html, marker, tags) {
-  const tagMarkup = tags && tags.length
-    ? `${tags.map((tag) => `  <meta property="article:tag" content="${escapeHtml(tag)}" />`).join('\n')}\n`
-    : '';
-  return html.replace(marker, tagMarkup);
+function renderHeadMetaEntry(item, values) {
+  if (!item || !item.tag) {
+    return '';
+  }
+  const tagName = item.tag;
+  const valueKey = item.valueKey;
+  const valueAttr = item.valueAttr || (tagName === 'title' ? 'text' : (tagName === 'link' ? 'href' : 'content'));
+  const attrs = { ...(item.attrs || {}) };
+  const value = valueKey ? values[valueKey] : null;
+
+  if (value === null || value === undefined || value === '') {
+    return '';
+  }
+
+  if (item.titleKey) {
+    const titleValue = values[item.titleKey];
+    if (titleValue) {
+      attrs.title = titleValue;
+    }
+  }
+
+  if (valueAttr !== 'text') {
+    attrs[valueAttr] = value;
+  }
+
+  const attrList = Object.entries(attrs)
+    .map(([key, val]) => ` ${key}="${escapeHtml(val)}"`)
+    .join('');
+
+  if (valueAttr === 'text') {
+    return `<${tagName}${attrList}>${escapeHtml(value)}</${tagName}>`;
+  }
+  return `<${tagName}${attrList} />`;
 }
 
 function applyMeta(html, {
@@ -1519,7 +1603,7 @@ function applyMeta(html, {
   const metaCanonical = canonical || SITE_URL;
   const twitterCard = metaImage ? 'summary_large_image' : 'summary';
 
-  const contentValues = {
+  const metaValues = {
     'meta-description': metaDescription,
     'og-site-name': SITE_NAME,
     'og-title': metaTitle,
@@ -1534,23 +1618,14 @@ function applyMeta(html, {
     'article-published-time': publishedTime || null,
     'article-section': section || null,
     'color-scheme': META_COLOR_SCHEME,
-    'theme-color': META_THEME_COLOR
+    'theme-color': META_THEME_COLOR,
+    'canonical-url': metaCanonical,
+    'feed-url': joinUrl(SITE_URL, '/feed.xml'),
+    'site-name': SITE_NAME,
+    'page-title': metaTitle
   };
-  const hrefValues = {
-    'canonical-url': metaCanonical
-  };
-  let output = html;
-  for (const [key, value] of Object.entries(contentValues)) {
-    if (value === null || value === undefined || value === '') {
-      output = removeMetaTag(output, key);
-      continue;
-    }
-    const marker = `data-content="${key}"`;
-    output = output.split(marker).join(`content="${escapeHtml(value)}"`);
-  }
-  output = applyHrefAttributes(output, hrefValues);
-  output = injectMetaTags(output, '<!-- meta:article-tags -->', tags);
-  return output;
+  const headMarkup = renderHeadMeta(META_CONFIG, metaValues, tags);
+  return html.replace('<!-- meta:head -->', headMarkup);
 }
 
 function descriptionForArticle(article) {

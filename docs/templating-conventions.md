@@ -114,7 +114,7 @@ Use `article-meta-top` and `article-meta-bottom` only on full article pages, sin
 Templates must not:
 
 * use `<div data-query=…>`
-* use custom attributes outside `<template>`, except approved placeholders (`data-slot`, `data-content`, `data-href`)
+* use custom attributes outside `<template>`, except approved placeholders (`data-slot`, `data-href`)
 * contain multiple `data-query` attributes in one element
 * nest `<template>` elements
 
@@ -124,16 +124,17 @@ Nested templates are explicitly forbidden to avoid ambiguity.
 
 ## 4.3 Approved Placeholder Attributes
 
-Templates may use a small set of build-time placeholders outside `<template>` to keep HTML static while still injecting known values.
+Templates may use a small set of build-time placeholders outside `<template>` to keep HTML static while still injecting known values. Head metadata is injected via a single marker comment to keep the head section readable and instance-owned.
 
 Approved placeholders:
 
 * `data-slot` for replacing inner HTML with build-provided content
-* `data-content` for meta tag values in `<head>`
 * `data-href` for fixed links that depend on configuration (for example, the archive root link)
-* `data-attr-<name>` for filling a specific attribute (for example, `data-attr-alt="site-name"` on the logo)
+* `<!-- meta:head -->` as a single marker for the generated head metadata block
 
 These placeholders are **fill-only**. They do not introduce logic, conditions, or metadata access.
+
+The head metadata block is defined by `content/<contentDir>/meta.json` and injected at `<!-- meta:head -->`. Instances can change the order or subset of head tags by editing that file.
 
 ## 5. Fallback Content Conventions
 
