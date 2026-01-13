@@ -6,11 +6,11 @@ A minimalist blogging platform built on classic web values: semantic HTML, acces
 
 Semantic Scroll embraces simplicity at every level:
 
-- **Filesystem as database**: Content lives in dated folders (`/content/<contentDir>/YYYY/MM/DD/NN-slug/`, default `content/semantic-scroll/` in this repo), making your writing human-readable and version-control friendly
-- **HTML-first templates**: Pure, accessible markup without framework lock-in
-- **Mobile-first**: Responsive layouts that work everywhere
-- **Minimal JavaScript**: Progressive enhancement, never a dependency
-- **Deterministic builds**: Same input always produces the same output
+- **Filesystem as database**: Content, templates, and assets live in namespaced directories under `/content/<contentDir>/` (default `content/semantic-scroll/` in this repo). This ensures that upstream updates to the platform logic or the reference instance never overwrite your local customizations during a merge.
+- **HTML-first templates**: Pure, accessible markup without framework lock-in. Templates are resolved by checking the instance directory first, then falling back to the core defaults.
+- **Mobile-first**: Responsive layouts that work everywhere.
+- **Minimal JavaScript**: Progressive enhancement, never a dependency.
+- **Deterministic builds**: Same input always produces the same output.
 
 The platform is designed for writers who want to publish quickly without fighting tooling or memorizing commands.
 
