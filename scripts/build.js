@@ -1104,7 +1104,7 @@ function renderTemplate(html, queryResults) {
     }
 
     const view = attrs['data-view'] || 'article';
-    if (!['article', 'summary', 'summary-list', 'tag-list', 'article-meta-top', 'article-meta-bottom'].includes(view)) {
+    if (!['article', 'article-full', 'summary', 'summary-list', 'tag-list', 'article-meta-top', 'article-meta-bottom'].includes(view)) {
       throw new Error(`Unknown data-view '${view}'`);
     }
     const wrap = attrs['data-wrap'];
@@ -1145,6 +1145,9 @@ function renderTemplate(html, queryResults) {
           return `<article class="article-entry">\n${body}\n</article>`;
         }
         return body;
+      }
+      if (view === 'article-full') {
+        return renderFullArticle(item);
       }
       const summary = renderSummary(item);
       if (view === 'summary-list') {
@@ -1194,6 +1197,26 @@ function renderArticleMetaBottom(article) {
     return `<a rel="tag" href="/tags/${normalized}/">${safeTag}</a>`;
   }).join(', ');
   return `<p class="article-meta-tags">Tags: ${tagLinks}</p>`;
+}
+
+function renderFullArticle(article) {
+  const metaTop = renderArticleMetaTop(article);
+  const metaBottom = renderArticleMetaBottom(article);
+  const body = renderArticleBody(article);
+  const parts = ['<article class="article-entry">'];
+  if (metaTop) {
+    parts.push('  <header class="article-meta article-meta-top">');
+    parts.push(metaTop);
+    parts.push('  </header>');
+  }
+  parts.push(body);
+  if (metaBottom) {
+    parts.push('  <footer class="article-meta article-meta-bottom">');
+    parts.push(metaBottom);
+    parts.push('  </footer>');
+  }
+  parts.push('</article>');
+  return parts.join('\n');
 }
 
 function renderSummary(article) {
