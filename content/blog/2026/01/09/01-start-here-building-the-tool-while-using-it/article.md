@@ -19,6 +19,6 @@ I minimise imports and treat third-party tools as a last resort. When a problem 
 
 On the publishing side, I am aiming for the most boring convention that still works: a home page index with the newest post at the top. Each post also gets a dedicated article page with a stable permalink. That is the shape of the site I want to live inside. It lets me read the archive as a plain list without extra machinery. It also keeps the build simple enough to inspect.
 
-To follow the build as it forms, read the genesis series in order, starting here. After this post, read [Blog Philosophy](/content/blog/2026/01/12/02-blog-philosophy/). Next, read [A Blog That Is Also the Build System](/content/blog/2026/01/12/01-a-blog-that-is-also-the-build-system/) and continue forward through the series.
+To follow the build as it forms, read the genesis series in order, starting here. After this post, read [A Blog That Is Also the Build System](/content/blog/2026/01/12/01-a-blog-that-is-also-the-build-system/). Next, read [Why I'm Building This in Public](/content/blog/2026/01/09/02-why-im-building-this-in-public/) and continue forward through the series.
 
-Related posts: [Blog Philosophy](/content/blog/2026/01/12/02-blog-philosophy/), [A Blog That Is Also the Build System](/content/blog/2026/01/12/01-a-blog-that-is-also-the-build-system/).
+Related posts: [A Blog That Is Also the Build System](/content/blog/2026/01/12/01-a-blog-that-is-also-the-build-system/), [Why I'm Building This in Public](/content/blog/2026/01/09/02-why-im-building-this-in-public/).

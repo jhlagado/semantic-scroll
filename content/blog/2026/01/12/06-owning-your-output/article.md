@@ -15,7 +15,11 @@ _January 12, 2026_ | Series: openweb
 
 I keep returning to the early web’s ideas because they offered a clean technical answer to an ordinary human problem: publishing something and knowing it will still be there tomorrow. You could put a document on a server and give it a URL, and that link would mean something. The page lived on your server, and the link stayed stable because it pointed to a file you controlled.
 
-For a long time, I drifted away from that. Social platforms made publishing effortless by removing hosting work and day-to-day site upkeep, and they bundled identity with distribution and comments while the feed carried the rest. The friction was low and the audience was already there, so the trade felt reasonable even as I gave up control. That convenience has a cost because the platform controls the surface where your work appears and how long it stays visible. Your writing lasts only while it fits inside someone else’s system.
+![Tim Berners-Lee at the London 2012 Olympics with the words "This is for everyone."](./assets/this-is-for-everyone.jpg "This is for everyone — London 2012 Olympics.")
+
+The web’s original promise rested on open protocols and a light technical burden. HTTP and HTML were open enough for anyone to implement and small enough to understand. If you wanted to publish, you bought a domain and wrote a page. Then you put it online yourself and shared the link.
+
+For a long time, I drifted away from that. Social platforms made publishing effortless by removing hosting work and day-to-day site upkeep. They also bundled identity with distribution and comments while the feed carried the rest. The friction was low and the audience was already there, so the trade felt reasonable even as I gave up control. That convenience has a cost because the platform controls the surface where your work appears and how long it stays visible. Your writing lasts only while it fits inside someone else’s system.
 
 Self-publishing, for me, is a technical choice. Owning a domain and shipping plain HTML means I decide what appears and how long it stays online, with presentation under the same control. A piece of writing stays available while I keep it there, and a page I host will still exist tomorrow if I decide it should.
 

@@ -21,6 +21,6 @@ Owning a domain changes that relationship in practice. It gives you your own nam
 
 That matters because URLs are promises about where something can be found. When you publish a page, you are telling the world that something lives at a particular location. If that location belongs to someone else, the promise belongs to them. If you own the domain, the promise is yours to keep.
 
-That is why self-publishing on your own domain is about freedom as much as technology. A site on an address you control cannot be quietly erased or buried, and another party cannot reshape it. It becomes a place where your writing can exist on its own terms and persist for as long as you decide it should. 
+That is why self-publishing on your own domain is about freedom as much as technology. A site on an address you control cannot be quietly erased or buried, and another party cannot reshape it. It becomes a place where your writing can exist on its own terms and persist for as long as you decide it should.
 
 Tags: web, selfpublishing, domains
