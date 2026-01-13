@@ -31,13 +31,9 @@
       </nav>
     </header>
     <main id="main">
-      <h1 data-slot="page-heading"></h1>
+      <div data-slot="page-heading"></div>
       <div data-slot="page-intro"></div>
-      <ul class="summary-list">
-        <template data-query="page-posts" data-view="summary-list">
-          <li class="summary-empty">No posts yet.</li>
-        </template>
-      </ul>
+      <div data-slot="page-body"></div>
       <div data-slot="page-extra"></div>
     </main>
     <footer class="site-footer">

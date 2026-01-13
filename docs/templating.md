@@ -18,19 +18,16 @@ content/<contentDir>/YYYY/MM/DD/NN-slug/<files>
 
 ### 1.4 Resource Resolution and Merge Isolation
 
-The build engine implements a hierarchical resource resolver. This allows users to fork the repository as an "Upstream" source while maintaining their local configuration and design in a namespaced directory.
+The build engine resolves templates, assets, and queries inside the active instance directory under `content/<contentDir>/`. That directory is the source of truth for a site's presentation and configuration.
 
 #### Resolution Order
-The engine resolves templates, assets, and queries by checking the instance directory first, then falling back to the core defaults:
+The resolver checks the instance path first. A core fallback may exist at the repository root for upstream defaults and is used when the instance file is missing:
 
 1.  **Instance Level**: `content/<contentDir>/<resource>/` (e.g., `content/my-site/templates/article.html`)
-2.  **Core Level**: `/<resource>/` (e.g., `/templates/article.html`)
+2.  **Core Defaults (Optional)**: `/<resource>/` (e.g., `/templates/article.html`)
 
 #### The "Upstream Merge Isolation" Design
-By placing all instance-specific files (content, templates, assets) within the `content/<contentDir>/` sibling namespace, we achieve two critical goals:
-
-- **Isolated Customization**: Users can modify their templates and styles in their local folder without touching core files.
-- **Merge Safety**: A `git pull upstream` from the original repository will only update the reference instance (`content/semantic-scroll/`) and the build logic (`scripts/`). Because the user's site lives in a sibling directory (e.g., `content/my-site/`), their changes are isolated from upstream conflicts.
+By placing all instance-specific files (content, templates, assets) within the `content/<contentDir>/` sibling namespace, we keep local customisation separate from upstream changes and make pull-based updates predictable.
 
 Any deviation from this specification is an architectural change and must be deliberate.
 
@@ -615,36 +612,33 @@ Assets are never inferred or relocated automatically.
 
 ## 11. Template Discovery
 
-For MVP, templates are explicitly enumerated.
+For MVP, templates are explicitly enumerated. This repo now uses a minimal set of instance-owned templates to avoid duplication across index pages.
 
-Templates may be overridden by an instance directory. If `content/<contentDir>/templates/<name>.html` exists, it is used in place of `templates/<name>.html`. This keeps core defaults stable while allowing per-site overrides.
+Templates resolve from the instance directory. If `content/<contentDir>/templates/<name>.html` exists, it is used. A core default at `templates/<name>.html` may be used when the instance file is missing.
 
-Example:
+Current template set:
 
-- `templates/home.html`
-- `templates/tags.html`
-- `templates/blog.html`
+- `content/<contentDir>/templates/summary-index.html` for all list pages (home, archive, year/month, tag and series pages)
+- `content/<contentDir>/templates/article.html` for full article pages
+- `content/<contentDir>/templates/about.html` for the optional about page
 
-Later extensions may include:
-
-- a template registry
-- parameterized template selection
-
-Implicit template discovery is not allowed.
+Later extensions may include a template registry or parameterised selection, but implicit discovery is not allowed.
 
 ### 11.1 Template Glossary
 
 The build uses a fixed set of template files. Each one maps to a specific output family and should be understood as a stable part of the publishing surface.
 
-- `templates/home.html` renders the site home page at `/`.
-- `templates/article.html` renders full article pages at their canonical content paths.
-- `templates/blog.html` renders the archive landing page at `/content/<contentDir>/` (default `/content/semantic-scroll/` in this repo).
-- `templates/year.html` renders yearly archive pages at `/content/<contentDir>/YYYY/`.
-- `templates/summary-index.html` renders summary lists for month pages and tag pages, including tag year pages.
-- `templates/tags.html` renders the tag index at `/tags/`.
-- `templates/series.html` renders the series index at `/series/`.
-- `templates/series-articles.html` renders full-article series pages at `/series/<series>/` and `/series/<series>/<year>/`.
-- `templates/about.html` renders the about page at `/about/` when present.
+`content/<contentDir>/templates/summary-index.html` renders all list pages, including:
+
+- `/` (home, full article list)
+- `/content/<contentDir>/` (archive root)
+- `/content/<contentDir>/YYYY/` and `/content/<contentDir>/YYYY/MM/` (year/month archives)
+- `/tags/`, `/tags/<tag>/`, `/tags/<tag>/<year>/`
+- `/series/`, `/series/<series>/`, `/series/<series>/<year>/`
+
+`content/<contentDir>/templates/article.html` renders full article pages at their canonical content paths.
+
+`content/<contentDir>/templates/about.html` renders the about page at `/about/` when present.
 
 ---
 

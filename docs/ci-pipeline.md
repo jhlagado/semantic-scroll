@@ -58,7 +58,7 @@ Articles must exist at:
 content/<contentDir>/YYYY/MM/DD/NN-slug/
 ```
 
-`contentDir` defaults to `blog`. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
+`contentDir` defaults to `semantic-scroll`. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
 
 ### 3.3 Configuration and Instance Overrides
 
@@ -68,8 +68,8 @@ If the file is missing, defaults apply and the active instance is `content/seman
 
 Overrides are resolved in a strict order:
 
-- Templates: `content/<contentDir>/templates/` overrides `templates/`
-- Assets: `assets/` copies first, then `content/<contentDir>/assets/` overlays it
+- Templates: `content/<contentDir>/templates/` is primary; `/templates/` may act as a fallback
+- Assets: `/assets/` copies first, then `content/<contentDir>/assets/` overlays it
 - Queries: `content/<contentDir>/queries.json` overrides `config/queries.json`
 
 ### 3.4 Discovery Process
