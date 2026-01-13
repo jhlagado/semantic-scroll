@@ -16,6 +16,22 @@ content/<contentDir>/YYYY/MM/DD/NN-slug/<files>
 
 `contentDir` defaults to `semantic-scroll` in this repo. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
 
+### 1.4 Resource Resolution and Merge Isolation
+
+The build engine implements a hierarchical resource resolver. This allows users to fork the repository as an "Upstream" source while maintaining their local configuration and design in a namespaced directory.
+
+#### Resolution Order
+The engine resolves templates, assets, and queries by checking the instance directory first, then falling back to the core defaults:
+
+1.  **Instance Level**: `content/<contentDir>/<resource>/` (e.g., `content/my-site/templates/article.html`)
+2.  **Core Level**: `/<resource>/` (e.g., `/templates/article.html`)
+
+#### The "Upstream Merge Isolation" Design
+By placing all instance-specific files (content, templates, assets) within the `content/<contentDir>/` sibling namespace, we achieve two critical goals:
+
+- **Isolated Customization**: Users can modify their templates and styles in their local folder without touching core files.
+- **Merge Safety**: A `git pull upstream` from the original repository will only update the reference instance (`content/semantic-scroll/`) and the build logic (`scripts/`). Because the user's site lives in a sibling directory (e.g., `content/my-site/`), their changes are isolated from upstream conflicts.
+
 Any deviation from this specification is an architectural change and must be deliberate.
 
 ---
