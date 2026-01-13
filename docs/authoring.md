@@ -84,6 +84,23 @@ Better:
 
 Frontmatter summaries must be at least two sentences. Aim for two or three short, factual sentences that state what the piece covers and why it matters. Avoid fragments, slogans, or single-line summaries.
 
+### 3.6 Audience, Intent, and Two-Level Reading
+
+Every article must be written for a specific reader, not for “the internet”. That reader is a concrete person with a goal, a level of knowledge, and a reason to care. Before drafting, decide who you are writing for and what you want them to take away. This is non-negotiable because clarity comes from aiming at someone, not from polishing sentences in the abstract.
+
+Each article must operate on at least two levels at once. One level conveys information: facts, mechanics, or a decision. The other level conveys intent: the author’s purpose, stance, or reason for caring. The reader should be able to learn something concrete and also feel why the piece exists. This is the distinction practitioners of persuasive writing expect: the piece is not only accurate, it is motivated.
+
+If the intent is unclear, the article fails. The reader should be able to answer, in their own words, why the author wrote it and what the author wants the reader to believe, do, or notice.
+
+To keep that intent visible, keep these questions in mind while drafting:
+
+1. Who is the reader, and what do they already know?
+2. What question or tension does the article resolve?
+3. What should the reader understand or do by the end?
+4. What attitude or value does the author want to reinforce?
+
+Do not hide the intent behind scene-setting or “not this, but that” framing. State the point, then deepen it with concrete detail and a clear sense of purpose.
+
 ---
 
 ## 4. Technical Precision
@@ -104,6 +121,8 @@ Before emitting prose, run this mental audit:
 3. Are there more than three bulleted lists in a row without a paragraph between them?
 4. Does this sound like a human narrating their day, or a robot explaining a concept?
 5. Is the main point buried under "In conclusion..."? (Move it to the top.)
+6. Can I name the target reader and the reason this piece exists?
+7. Does the article deliver both information and intent?
 
 ---
 

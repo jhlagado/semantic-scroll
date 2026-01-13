@@ -1,6 +1,6 @@
 ---
 title: "Guarding Against the Machine Voice"
-status: draft
+status: published
 series: genesis
 summary: "Documents the prose-lint script and its role in catching AI writing habits. Explains the scoring system, the rules it enforces, and how threshold-based gates prevent formulaic prose from entering published content."
 tags:
