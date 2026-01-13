@@ -96,13 +96,14 @@ Rules:
 * `data-query` is mandatory
 * value must match a defined named query
 * fallback content must be valid HTML
-* `data-view` is optional and must be one of `article`, `summary`, `summary-list`, or `tag-list`
+* `data-view` is optional and must be one of `article`, `summary`, `summary-list`, `tag-list`, `article-meta-top`, or `article-meta-bottom`
 * `data-wrap` is optional and must be `article` when present
 
 Summary render modes are built-in and produce fixed HTML. Templates may only select a mode via `data-view` and may not attempt to re-create summary markup manually.
 
 Use `summary-list` only when the template slot is inside a `<ul>` or `<ol>` container, since it renders list items.
 Use `tag-list` only when the template slot is inside a `<ul>` or `<ol>` container, since it renders list items derived from tags.
+Use `article-meta-top` and `article-meta-bottom` only on full article pages, since they render fixed metadata blocks from the article record.
 
 `data-wrap="article"` is valid only when `data-view="article"` and wraps each rendered article body in `<article class="article-entry">`. Templates must not invent other wrapper values.
 

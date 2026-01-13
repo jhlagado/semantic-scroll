@@ -29,7 +29,7 @@ summary: "How this blog organises itself on disk instead of inside a database. T
 thumbnail: hero.jpg
 ```
 
-Dates stay filesystem-derived. If a date needs to appear in the article header, it belongs in the Markdown body.
+Dates stay filesystem-derived. The article header metadata block renders the date and permalink without requiring it in the Markdown body.
 
 ## Indexing Behaviour
 

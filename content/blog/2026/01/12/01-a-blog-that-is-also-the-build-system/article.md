@@ -11,7 +11,7 @@ tags:
   - tooling
 ---
 # A Blog That Is Also the Build System
-_January 12, 2026_ | Series: genesis
+By John Hardy
 
 This blog only works if it lets me publish day to day technical work without friction, with AI drafting alongside me and me keeping control of the final voice. That constraint is the reason the rest of the system exists.
 
@@ -30,5 +30,3 @@ Automation has a narrower role here and stays focused on repetition. I rely on a
 Templates are plain HTML and only stamp content into a page. Queries decide what exists, and those queries live beside the content they select. That is the heart of this approach. The data stays visible and the selection stays visible. The render stays visible once the build runs. When I say the blog is the build system, I mean the path from idea to page is traceable inside one repository.
 
 Pick any entry and follow its folder path to trace the decision trail that produced it. If I drop these constraints, the archive loses its promise and the project fails its own test.
-
-Tags: philosophy, web, tooling

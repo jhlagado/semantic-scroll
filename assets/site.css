@@ -237,8 +237,31 @@ main h1:first-child {
   margin: 0;
 }
 
+.article-meta {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.article-meta-top {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.article-meta-top p,
+.article-meta-bottom p {
+  margin: 0 0 0.5rem;
+}
+
+.article-meta-bottom {
+  margin-top: 2rem;
+}
+
 .article-entry {
   margin-top: 5rem;
+}
+
+.article-entry > h1 {
+  margin-top: 0.5em;
 }
 
 .summary-item + .summary-item,

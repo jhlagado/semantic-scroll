@@ -701,6 +701,11 @@ function formatRssDate(article) {
   return date.toUTCString();
 }
 
+function formatDisplayDate(article) {
+  const monthLabel = monthName(article.month);
+  return `${monthLabel} ${Number(article.day)}, ${article.year}`;
+}
+
 function formatSitemapDate(article) {
   return `${article.year}-${article.month}-${article.day}`;
 }
@@ -1099,7 +1104,7 @@ function renderTemplate(html, queryResults) {
     }
 
     const view = attrs['data-view'] || 'article';
-    if (!['article', 'summary', 'summary-list', 'tag-list'].includes(view)) {
+    if (!['article', 'article-full', 'summary', 'summary-list', 'tag-list', 'article-meta-top', 'article-meta-bottom'].includes(view)) {
       throw new Error(`Unknown data-view '${view}'`);
     }
     const wrap = attrs['data-wrap'];
@@ -1118,6 +1123,17 @@ function renderTemplate(html, queryResults) {
       }
       return tagList;
     }
+    if (view === 'article-meta-top' || view === 'article-meta-bottom') {
+      if (!items.length) {
+        return fallback;
+      }
+      const fragments = items.map((item) => {
+        return view === 'article-meta-top'
+          ? renderArticleMetaTop(item)
+          : renderArticleMetaBottom(item);
+      }).filter(Boolean);
+      return fragments.join('\n');
+    }
     if (!items.length) {
       return fallback;
     }
@@ -1129,6 +1145,9 @@ function renderTemplate(html, queryResults) {
           return `<article class="article-entry">\n${body}\n</article>`;
         }
         return body;
+      }
+      if (view === 'article-full') {
+        return renderFullArticle(item);
       }
       const summary = renderSummary(item);
       if (view === 'summary-list') {
@@ -1153,43 +1172,52 @@ function renderArticleBody(article) {
   if (!parsed) {
     throw new Error(`Missing frontmatter in ${article.relDir}/article.md`);
   }
-  const body = linkHeaderMeta(parsed.body, article.publicPath);
-  return renderMarkdown(body, article.publicPath);
+  return renderMarkdown(parsed.body, article.publicPath);
 }
 
-function linkHeaderMeta(body, publicPath) {
-  const headerLine = /^([_*]?[A-Za-z]+\s+\d{1,2},\s+\d{4}[_*]?)(?:\s*\|\s*Series:\s*([^\n]+))?$/m;
-  const tagsLine = /^Tags(?:\s+include)?\s*:?\s*([^\n]+?)(?:\s+for context\.)?$/m;
-  const headerMatch = body.match(headerLine);
-  const tagsMatch = body.match(tagsLine);
-
-  let updated = body;
-
-  if (headerMatch) {
-    const dateText = headerMatch[1].trim();
-    const seriesText = headerMatch[2] ? headerMatch[2].trim() : '';
-    const seriesLink = seriesText
-      ? ` | Series: [${seriesText}](/series/${encodeURIComponent(seriesText)}/)`
-      : '';
-    const lineOne = `[${dateText}](${publicPath})${seriesLink}`;
-    const replacement = `By [John Hardy](/about/)<br>${lineOne}`;
-    updated = updated.replace(headerLine, replacement);
+function renderArticleMetaTop(article) {
+  const dateText = formatDisplayDate(article);
+  const parts = [];
+  if (article.frontmatter.series) {
+    const seriesText = escapeHtml(article.frontmatter.series);
+    parts.push(`  <p class="article-meta-date"><em><a href="${article.publicPath}">${dateText}</a></em> | Series: <a href="/series/${encodeURIComponent(article.frontmatter.series)}/">${seriesText}</a></p>`);
+  } else {
+    parts.push(`  <p class="article-meta-date"><em><a href="${article.publicPath}">${dateText}</a></em></p>`);
   }
+  return parts.join('\n');
+}
 
-  if (tagsMatch) {
-    const tagsText = tagsMatch[1];
-    const tags = tagsText.split(',').map((tag) => tag.trim()).filter(Boolean);
-    const linkedTags = tags.map((tag) => {
-      const normalized = normalizeTag(tag);
-      if (!normalized) {
-        return tag;
-      }
-      return `[${tag}](/tags/${normalized}/)`;
-    }).join(', ');
-    updated = updated.replace(tagsLine, `Tags: ${linkedTags}`);
+function renderArticleMetaBottom(article) {
+  const tags = article.frontmatter.tags || [];
+  if (!tags.length) {
+    return '';
   }
+  const tagLinks = tags.map((tag) => {
+    const safeTag = escapeHtml(tag);
+    const normalized = normalizeTag(tag);
+    return `<a rel="tag" href="/tags/${normalized}/">${safeTag}</a>`;
+  }).join(', ');
+  return `<p class="article-meta-tags">Tags: ${tagLinks}</p>`;
+}
 
-  return updated;
+function renderFullArticle(article) {
+  const metaTop = renderArticleMetaTop(article);
+  const metaBottom = renderArticleMetaBottom(article);
+  const body = renderArticleBody(article);
+  const parts = ['<article class="article-entry">'];
+  if (metaTop) {
+    parts.push('  <header class="article-meta article-meta-top">');
+    parts.push(metaTop);
+    parts.push('  </header>');
+  }
+  parts.push(body);
+  if (metaBottom) {
+    parts.push('  <footer class="article-meta article-meta-bottom">');
+    parts.push(metaBottom);
+    parts.push('  </footer>');
+  }
+  parts.push('</article>');
+  return parts.join('\n');
 }
 
 function renderSummary(article) {
