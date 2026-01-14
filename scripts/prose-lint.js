@@ -15,14 +15,14 @@ const DEFAULT_THRESHOLDS = {
   low: 6
 };
 
-const FLAGS_WITH_VALUES = new Set(['--max-high', '--max-medium', '--max-low']);
+const FLAGS_WITH_VALUES = new Set(['--max-high', '--max-medium', '--max-low', '--report-path', '--report-json']);
 
 const args = process.argv.slice(2);
 const includePublished = args.includes('--all') || args.includes('--include-published');
 const strict = args.includes('--strict');
 const gate = args.includes('--gate') || args.includes('--ci');
 const includeDocs = args.includes('--docs') || args.includes('--all');
-const report = args.includes('--report');
+const reportPath = resolveReportPath(args);
 const thresholds = resolveThresholds(args);
 const targets = extractTargets(args);
 
@@ -476,8 +476,8 @@ function main() {
     return;
   }
 
-  if (report) {
-    writeReport({
+  if (reportPath) {
+    writeReport(reportPath, {
       checked,
       skipped,
       totalIssues,
@@ -590,6 +590,38 @@ function resolveThresholds(entries) {
   }
 
   return thresholds;
+}
+
+function resolveReportPath(entries) {
+  const defaultPath = path.join(ROOT, 'temp', 'lint-report.json');
+  const withEquals = entries.find((arg) => arg.startsWith('--report-path=') || arg.startsWith('--report-json='));
+  if (withEquals) {
+    const value = withEquals.split('=')[1];
+    if (value) {
+      return path.resolve(value);
+    }
+    return defaultPath;
+  }
+  const pathIndex = entries.indexOf('--report-path');
+  if (pathIndex !== -1) {
+    const value = entries[pathIndex + 1];
+    if (value && !value.startsWith('--')) {
+      return path.resolve(value);
+    }
+    return defaultPath;
+  }
+  const jsonIndex = entries.indexOf('--report-json');
+  if (jsonIndex !== -1) {
+    const value = entries[jsonIndex + 1];
+    if (value && !value.startsWith('--')) {
+      return path.resolve(value);
+    }
+    return defaultPath;
+  }
+  if (entries.includes('--report')) {
+    return defaultPath;
+  }
+  return null;
 }
 
 function readNumericFlag(entries, flag) {
@@ -1322,10 +1354,9 @@ function countMatches(text, regex) {
   return matches ? matches.length : 0;
 }
 
-function writeReport(payload) {
-  const reportDir = path.join(ROOT, 'temp');
-  const reportPath = path.join(reportDir, 'lint-report.json');
-  fs.mkdirSync(reportDir, { recursive: true });
+function writeReport(reportPath, payload) {
+  const dir = path.dirname(reportPath);
+  fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(reportPath, JSON.stringify(payload, null, 2));
 }
 

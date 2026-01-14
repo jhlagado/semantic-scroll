@@ -25,6 +25,8 @@ The pipeline must be:
 - runnable locally and in CI
 - boring by design
 
+Prose linting is treated as editorial feedback, not a hard gate. CI builds should succeed even when the lint report contains issues. The report is still generated for visibility, but it does not block publication.
+
 ---
 
 ## 2. High-Level Pipeline Stages
