@@ -559,9 +559,17 @@ function renderSite(index, queryResults) {
     : index.filter((item) => item.frontmatter.status === 'published').sort(makeSortFn('date-asc'));
 
   const indexTemplate = fs.readFileSync(INDEX_TEMPLATE, 'utf8');
-  const lintHomeSection = buildLintHomeSection(index);
-  const homeBody = `${lintHomeSection}${buildArticleListSection('home-posts')}`;
+  const homeBody = buildArticleListSection('home-posts');
   const homeExtra = buildYearListSection(published, ARCHIVE_ROOT_PATH, 'Years');
+  const renderQueries = LINT_REPORTS_BY_PATH
+    ? {
+        ...queryResults,
+        'home-posts': sortItems(
+          index.filter((item) => item.frontmatter.status !== 'archived'),
+          'date-desc'
+        ).slice(0, 25)
+      }
+    : queryResults;
   const homeHtml = renderTemplate(
     applySlots(
       applyMeta(indexTemplate, {
@@ -576,7 +584,7 @@ function renderSite(index, queryResults) {
         'page-extra': homeExtra
       }
     ),
-    queryResults
+    renderQueries
   );
   writeFile(path.join(OUTPUT_DIR, 'index.html'), homeHtml);
 
@@ -655,21 +663,6 @@ function renderSite(index, queryResults) {
   writeRobots();
 }
 
-function buildLintHomeSection(index) {
-  if (!LINT_REPORTS_BY_PATH) {
-    return '';
-  }
-  const entries = collectLintEntries(index);
-  if (!entries.length) {
-    return '';
-  }
-  return [
-    '<section class="lint-home">',
-    '  <h2>Draft issues</h2>',
-    buildLintIndexList(entries),
-    '</section>'
-  ].join('\n');
-}
 
 function renderFeed(queryResults, published) {
   const items = queryResults['latest-posts']
@@ -1678,8 +1671,16 @@ function renderLintBanner(article) {
     return '';
   }
   const report = LINT_REPORTS_BY_PATH.get(path.resolve(article.mdPath));
-  if (!report || !report.issues || report.issues.length === 0) {
+  const isDraft = article.frontmatter.status === 'draft';
+  if ((!report || !report.issues || report.issues.length === 0) && !isDraft) {
     return '';
+  }
+  if (!report || !report.issues || report.issues.length === 0) {
+    return [
+      '  <div class="lint-banner" role="note" aria-label="Draft status">',
+      '    <p class="lint-banner-title">Draft status: no lint issues</p>',
+      '  </div>'
+    ].join('\n');
   }
   const counts = report.severityCounts || tallyLintSeverities(report.issues);
   const summaryParts = [];
