@@ -48,6 +48,8 @@ The prose linter scans `content/<contentDir>/**/article.md` (defaults to `conten
 If `site-config.json` is present, it uses the `contentDir` override.
 It only prints output when it finds issues.
 
+Rules, thresholds, and metrics live in `config/prose-lint.json`. You can disable a rule by setting `"enabled": false`. CLI flags still override config values.
+
 ```sh
 npm run lint
 ```
