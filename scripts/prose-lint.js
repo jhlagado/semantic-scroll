@@ -9,22 +9,13 @@ const DEFAULT_CONTENT_DIR = 'semantic-scroll';
 const CONTENT_DIR = resolveContentDir(CONFIG_PATH, DEFAULT_CONTENT_DIR);
 const DEFAULT_ROOT = path.join(ROOT, 'content', CONTENT_DIR);
 
-const DEFAULT_THRESHOLDS = {
+const BASE_THRESHOLDS = {
   high: 1,
   medium: 3,
   low: 6
 };
 
 const FLAGS_WITH_VALUES = new Set(['--max-high', '--max-medium', '--max-low', '--report-path', '--report-json']);
-
-const args = process.argv.slice(2);
-const includePublished = args.includes('--all') || args.includes('--include-published');
-const strict = args.includes('--strict');
-const gate = args.includes('--gate') || args.includes('--ci');
-const includeDocs = args.includes('--docs') || args.includes('--all');
-const reportPath = resolveReportPath(args);
-const thresholds = resolveThresholds(args);
-const targets = extractTargets(args);
 
 function resolveContentDir(configPath, fallback) {
   if (!fs.existsSync(configPath)) {
@@ -56,7 +47,137 @@ function resolveContentDir(configPath, fallback) {
   return value;
 }
 
-const RULES = [
+function loadProseLintConfig(filePath, defaults) {
+  if (!fs.existsSync(filePath)) {
+    return normalizeProseLintConfig(defaults, filePath);
+  }
+  const raw = fs.readFileSync(filePath, 'utf8');
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON in ${filePath}`);
+  }
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error(`Prose lint config must be a JSON object: ${filePath}`);
+  }
+  const merged = mergeConfig(defaults, parsed);
+  return normalizeProseLintConfig(merged, filePath);
+}
+
+function mergeConfig(base, override) {
+  const merged = { ...base };
+  for (const [key, value] of Object.entries(override)) {
+    if (Array.isArray(value)) {
+      merged[key] = value;
+    } else if (value && typeof value === 'object' && !Array.isArray(value)) {
+      merged[key] = { ...(base[key] || {}), ...value };
+    } else if (value !== undefined) {
+      merged[key] = value;
+    }
+  }
+  return merged;
+}
+
+function normalizeProseLintConfig(config, filePath) {
+  const thresholds = config.thresholds || {};
+  const metrics = config.metrics || {};
+  const normalized = {
+    thresholds: {
+      high: normalizeNumber(thresholds.high, BASE_THRESHOLDS.high, filePath, 'thresholds.high'),
+      medium: normalizeNumber(thresholds.medium, BASE_THRESHOLDS.medium, filePath, 'thresholds.medium'),
+      low: normalizeNumber(thresholds.low, BASE_THRESHOLDS.low, filePath, 'thresholds.low')
+    },
+    metrics: {
+      contrastParagraphCap: normalizeNumber(metrics.contrastParagraphCap, BASE_METRICS.contrastParagraphCap, filePath, 'metrics.contrastParagraphCap'),
+      emdashLinesPer: normalizeNumber(metrics.emdashLinesPer, BASE_METRICS.emdashLinesPer, filePath, 'metrics.emdashLinesPer'),
+      shortSentenceMax: normalizeNumber(metrics.shortSentenceMax, BASE_METRICS.shortSentenceMax, filePath, 'metrics.shortSentenceMax')
+    },
+    discourseMarkers: Array.isArray(config.discourseMarkers) ? config.discourseMarkers.filter(Boolean) : [],
+    weakVerbs: Array.isArray(config.weakVerbs) ? config.weakVerbs.filter(Boolean) : [],
+    rules: compileRules(Array.isArray(config.rules) ? config.rules : [], filePath),
+    contrastPatterns: compileContrastPatterns(Array.isArray(config.contrastPatterns) ? config.contrastPatterns : [], filePath),
+    punctuationRules: compilePunctuationRules(Array.isArray(config.punctuationRules) ? config.punctuationRules : [], filePath)
+  };
+  return normalized;
+}
+
+function normalizeNumber(value, fallback, filePath, label) {
+  if (Number.isFinite(value)) {
+    return value;
+  }
+  if (value === undefined || value === null) {
+    return fallback;
+  }
+  throw new Error(`Invalid prose lint config value for ${label} in ${filePath}`);
+}
+
+function compileRules(rules, filePath) {
+  return rules
+    .filter((rule) => rule && rule.enabled !== false)
+    .map((rule) => {
+      const patterns = compilePatternList(rule.patterns || [], filePath, `rule ${rule.name || 'unnamed'}`);
+      return {
+        ...rule,
+        patterns,
+        paragraphStart: Boolean(rule.paragraphStart),
+        skipInlineCode: Boolean(rule.skipInlineCode),
+        docs: Boolean(rule.docs)
+      };
+    });
+}
+
+function compileContrastPatterns(patterns, filePath) {
+  return patterns
+    .filter((pattern) => pattern && pattern.enabled !== false)
+    .map((pattern) => {
+      const regex = compilePattern(pattern.pattern || pattern.regex || pattern, filePath, `contrast pattern ${pattern.label || 'unnamed'}`);
+      return {
+        ...pattern,
+        regex
+      };
+    });
+}
+
+function compilePunctuationRules(rules, filePath) {
+  return rules
+    .filter((rule) => rule && rule.enabled !== false)
+    .map((rule) => {
+      const regex = compilePattern(rule.pattern || rule.regex || rule, filePath, `punctuation rule ${rule.label || 'unnamed'}`);
+      return {
+        ...rule,
+        regex
+      };
+    });
+}
+
+function compilePatternList(patterns, filePath, context) {
+  return patterns.map((pattern) => compilePattern(pattern, filePath, context)).filter(Boolean);
+}
+
+function compilePattern(pattern, filePath, context) {
+  if (!pattern) {
+    return null;
+  }
+  if (pattern instanceof RegExp) {
+    return pattern;
+  }
+  if (typeof pattern === 'string') {
+    return new RegExp(pattern);
+  }
+  if (pattern.regex instanceof RegExp) {
+    return pattern.regex;
+  }
+  if (typeof pattern.regex === 'string') {
+    return new RegExp(pattern.regex, pattern.flags || '');
+  }
+  if (typeof pattern.pattern === 'string') {
+    return new RegExp(pattern.pattern, pattern.flags || '');
+  }
+  throw new Error(`Invalid prose lint pattern in ${filePath} (${context})`);
+}
+
+const BASE_RULES = [
   {
     name: 'ai-writing-blacklist',
     weight: 10,
@@ -285,7 +406,7 @@ const RULES = [
   }
 ];
 
-const CONTRAST_PATTERNS = [
+const BASE_CONTRAST_PATTERNS = [
   {
     label: 'not X. it is Y',
     weight: 8,
@@ -348,11 +469,13 @@ const CONTRAST_PATTERNS = [
   }
 ];
 
-const CONTRAST_PARAGRAPH_CAP = 12;
-const EMDASH_LINES_PER = 20;
-const SHORT_SENTENCE_MAX = 6;
+const BASE_METRICS = {
+  contrastParagraphCap: 12,
+  emdashLinesPer: 20,
+  shortSentenceMax: 6
+};
 const EMDASH_PATTERN = /—/g;
-const PUNCTUATION_RULES = [
+const BASE_PUNCTUATION_RULES = [
   {
     label: 'ellipsis',
     weight: 2,
@@ -379,7 +502,7 @@ const PUNCTUATION_RULES = [
   }
 ];
 
-const DISCOURSE_MARKERS = [
+const BASE_DISCOURSE_MARKERS = [
   'however',
   'therefore',
   'moreover',
@@ -391,7 +514,7 @@ const DISCOURSE_MARKERS = [
   'on the other hand'
 ];
 
-const WEAK_VERBS = [
+const BASE_WEAK_VERBS = [
   'do',
   'does',
   'did',
@@ -408,6 +531,36 @@ const WEAK_VERBS = [
   'uses',
   'used'
 ];
+
+const PROSE_LINT_CONFIG_PATH = path.join(ROOT, 'config', 'prose-lint.json');
+const PROSE_LINT_CONFIG = loadProseLintConfig(PROSE_LINT_CONFIG_PATH, {
+  thresholds: BASE_THRESHOLDS,
+  metrics: BASE_METRICS,
+  rules: BASE_RULES,
+  contrastPatterns: BASE_CONTRAST_PATTERNS,
+  punctuationRules: BASE_PUNCTUATION_RULES,
+  discourseMarkers: BASE_DISCOURSE_MARKERS,
+  weakVerbs: BASE_WEAK_VERBS
+});
+
+const DEFAULT_THRESHOLDS = { ...PROSE_LINT_CONFIG.thresholds };
+const CONTRAST_PARAGRAPH_CAP = PROSE_LINT_CONFIG.metrics.contrastParagraphCap;
+const EMDASH_LINES_PER = PROSE_LINT_CONFIG.metrics.emdashLinesPer;
+const SHORT_SENTENCE_MAX = PROSE_LINT_CONFIG.metrics.shortSentenceMax;
+const RULES = PROSE_LINT_CONFIG.rules;
+const CONTRAST_PATTERNS = PROSE_LINT_CONFIG.contrastPatterns;
+const PUNCTUATION_RULES = PROSE_LINT_CONFIG.punctuationRules;
+const DISCOURSE_MARKERS = PROSE_LINT_CONFIG.discourseMarkers;
+const WEAK_VERBS = PROSE_LINT_CONFIG.weakVerbs;
+
+const args = process.argv.slice(2);
+const includePublished = args.includes('--all') || args.includes('--include-published');
+const strict = args.includes('--strict');
+const gate = args.includes('--gate') || args.includes('--ci');
+const includeDocs = args.includes('--docs') || args.includes('--all');
+const reportPath = resolveReportPath(args);
+const thresholds = resolveThresholds(args);
+const targets = extractTargets(args);
 
 function main() {
   const defaultTargets = targets.length ? targets : [DEFAULT_ROOT];
