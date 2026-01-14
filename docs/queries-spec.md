@@ -35,7 +35,7 @@ Queries are stored as **named objects** in a JSON file.
 Example location:
 
 ```
-config/queries.json
+content/<contentDir>/queries.json
 ```
 
 Example structure:
