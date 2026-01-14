@@ -559,7 +559,8 @@ function renderSite(index, queryResults) {
     : index.filter((item) => item.frontmatter.status === 'published').sort(makeSortFn('date-asc'));
 
   const indexTemplate = fs.readFileSync(INDEX_TEMPLATE, 'utf8');
-  const homeBody = buildArticleListSection('home-posts');
+  const lintHomeSection = buildLintHomeSection(index);
+  const homeBody = `${lintHomeSection}${buildArticleListSection('home-posts')}`;
   const homeExtra = buildYearListSection(published, ARCHIVE_ROOT_PATH, 'Years');
   const homeHtml = renderTemplate(
     applySlots(
@@ -598,7 +599,9 @@ function renderSite(index, queryResults) {
   }
 
   const articleTemplate = fs.readFileSync(ARTICLE_TEMPLATE, 'utf8');
-  const articleCandidates = queryResults['article-pages'] || [];
+  const articleCandidates = LINT_REPORTS_BY_PATH
+    ? index
+    : (queryResults['article-pages'] || []);
 
   const outputPaths = new Set();
 
@@ -650,6 +653,22 @@ function renderSite(index, queryResults) {
   renderSeriesFeeds(published);
   writeSitemap(published);
   writeRobots();
+}
+
+function buildLintHomeSection(index) {
+  if (!LINT_REPORTS_BY_PATH) {
+    return '';
+  }
+  const entries = collectLintEntries(index);
+  if (!entries.length) {
+    return '';
+  }
+  return [
+    '<section class="lint-home">',
+    '  <h2>Draft issues</h2>',
+    buildLintIndexList(entries),
+    '</section>'
+  ].join('\n');
 }
 
 function renderFeed(queryResults, published) {

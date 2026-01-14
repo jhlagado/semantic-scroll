@@ -1,14 +1,14 @@
 ---
 
 
-title: "Templates as Mechanical Stamps"
+title: "Templates as Pure HTML"
 status: published
 series: templating
 summary: "Presents the stamp model where queries select and templates place prepared content, with a concrete example. It aims for templates that read like documents and still produce reliable pages."
 tags:
   - templating
 ---
-# Templates as Mechanical Stamps
+# Templates as Pure HTML
 By John Hardy
 
 If you missed the earlier piece, start with [Why Websites Need Templates](/content/blog/2026/01/12/03-why-websites-need-templates/). It lays out why templates exist and why the shared frame matters. It also gives the baseline this piece argues against.
