@@ -77,3 +77,11 @@ If you want fail-fast instead of thresholds:
 ```sh
 npm run lint:strict
 ```
+
+## Test prose lint config loading
+
+The prose-lint config loader has a small Node test suite in `scripts/__tests__/prose-lint.test.js` so changes to the config format are easier to verify.
+
+```sh
+node --test scripts/__tests__/prose-lint.test.js
+```
