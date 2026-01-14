@@ -68,13 +68,13 @@ content/<contentDir>/YYYY/MM/DD/NN-slug/
 
 The build optionally reads `site-config.json` at the repo root.
 If present, it may override site metadata and set `contentDir`, which selects the instance directory under `content/`.
-If the file is missing, defaults apply and the active instance is `content/semantic-scroll/` in this repo.
+If the file is missing, defaults apply and the active instance is `content/semantic-scroll/` in this repo. Instance metadata and head tags are owned by `content/<contentDir>/site.json`.
 
-Overrides are resolved in a strict order:
+Instance resources are resolved from the active instance only:
 
-- Templates: `content/<contentDir>/templates/` is primary; `/templates/` may act as a fallback
-- Assets: `/assets/` copies first, then `content/<contentDir>/assets/` overlays it
-- Queries: `content/<contentDir>/queries.json` overrides `config/queries.json`
+- Templates: `content/<contentDir>/templates/`
+- Assets: `content/<contentDir>/assets/`
+- Queries: `content/<contentDir>/queries.json`
 
 ### 3.4 Discovery Process
 
@@ -138,7 +138,7 @@ Ensure all named queries are valid **before execution**.
 
 ### 5.2 Validation Rules
 
-For each query in `config/queries.json`:
+For each query in `content/<contentDir>/queries.json`:
 
 - conforms to query schema
 - contains required `source`

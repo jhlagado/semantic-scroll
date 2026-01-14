@@ -38,7 +38,7 @@ The canonical structure is:
 content/<contentDir>/YYYY/MM/DD/NN-slug/<files>
 ```
 
-`contentDir` defaults to `blog`. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
+`contentDir` defaults to `semantic-scroll`. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
 
 Where:
 
@@ -168,10 +168,10 @@ Templates never embed query logic.
 - Example location:
 
   ```
-  config/queries.json
+  content/<contentDir>/queries.json
   ```
 
-If `site-config.json` sets `contentDir`, the build checks `content/<contentDir>/queries.json` first and falls back to `config/queries.json` when no instance override exists.
+Queries are instance-owned. The build loads `content/<contentDir>/queries.json` and does not fall back to a root copy.
 
 ### 7.2 Example
 

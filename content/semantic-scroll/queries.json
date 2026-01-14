@@ -1,10 +1,4 @@
 {
-  "home-posts": {
-    "source": "blog",
-    "status": "published",
-    "sort": "date-desc",
-    "limit": 25
-  },
   "article-pages": {
     "source": "blog",
     "status": "published",
