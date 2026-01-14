@@ -1,0 +1,82 @@
+# Scribere
+
+Scribere is a small, opinionated blogging engine for people who want to publish plain HTML with a predictable folder structure. The scripts live at the repo root. Each blog instance owns its content, templates, assets, queries, and client‑side JavaScript under `content/<contentDir>/`. This split lets you pull engine updates without overwriting your site design.
+
+The engine ships with an `content/example/` instance so you can run it immediately. When you are ready to start your own blog, you copy that example into a new instance folder and point the engine at it using `site-config.json`.
+
+## Prerequisites
+
+Install Node.js from the official site: https://nodejs.org/en
+
+The dev server uses `nodemon` for file watching. Install it once globally:
+
+```sh
+npm install -g nodemon
+```
+
+## Create a new blog from scratch
+
+This flow starts from an empty repository. It pulls the engine in from the Scribere upstream, then uses the setup script to create your instance.
+
+1) Create a new empty repo on GitHub.
+2) Initialise a local folder and pull the engine from upstream:
+
+```sh
+mkdir my-blog
+cd my-blog
+git init
+
+git remote add upstream https://github.com/jhlagado/scribere.git
+git pull upstream main
+```
+
+3) Add your own origin and push the code:
+
+```sh
+git remote add origin git@github.com:YOUR-USERNAME/YOUR-REPO.git
+git push -u origin main
+```
+
+4) Install dependencies and run the setup script:
+
+```sh
+npm install
+npm run setup
+```
+
+The setup script copies the example instance to `content/<contentDir>/`, writes `site-config.json`, and updates `content/<contentDir>/site.json` with your details.
+
+5) Start the local server:
+
+```sh
+npm start
+```
+
+## Where your site lives
+
+Your instance lives under `content/<contentDir>/`. Posts are dated folders with a two‑digit ordinal. Templates and assets live beside your posts, and the build reads only from your instance directory. If you want to change your instance name later, update `site-config.json` and rename the folder to match.
+
+## Publishing to GitHub Pages
+
+The workflow in `.github/workflows/deploy-pages.yml` builds and publishes to GitHub Pages on every push to `main`. In your repo settings, set Pages to use **GitHub Actions** as the source.
+
+Make sure the `SITE_URL` value in the workflow matches your public URL. That value also needs to match `siteUrl` in `site-config.json` and `content/<contentDir>/site.json`, because it is used for the sitemap, RSS feed, and canonical links.
+
+## Custom domain
+
+Once GitHub Pages is live, you can set a custom domain in the repository settings. Add a `CNAME` file to the published output containing your domain, and create the DNS records that GitHub Pages expects.
+
+## Keeping up with engine updates
+
+If you want upstream changes later, run:
+
+```sh
+npm run init
+npm run update
+```
+
+Conflicts are rare if your edits stay inside `content/<contentDir>/`, but they can happen if you modify engine files. Treat those merges as you would any other Git change.
+
+## Tooling notes
+
+Script details live in [scripts/README.md](scripts/README.md).
