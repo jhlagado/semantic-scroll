@@ -5,8 +5,6 @@ const path = require('path');
 
 const ROOT = process.cwd();
 const OUTPUT_DIR = path.join(ROOT, 'build');
-const TEMPLATE_DIR = path.join(ROOT, 'templates');
-const STATIC_ASSETS_DIR = path.join(ROOT, 'assets');
 const CONFIG_PATH = path.join(ROOT, 'site-config.json');
 
 const DEFAULT_SITE_CONFIG = {
@@ -46,17 +44,17 @@ const DEFAULT_META_CONFIG = [
   { tag: 'title', valueKey: 'page-title', valueAttr: 'text' }
 ];
 
-const SITE_CONFIG = loadSiteConfig(CONFIG_PATH, DEFAULT_SITE_CONFIG);
-const CONTENT_DIR = SITE_CONFIG.contentDir;
+const BASE_SITE_CONFIG = loadSiteConfig(CONFIG_PATH, DEFAULT_SITE_CONFIG);
+const CONTENT_DIR = BASE_SITE_CONFIG.contentDir;
 const CONTENT_ROOT = path.join(ROOT, 'content', CONTENT_DIR);
-const META_CONFIG_PATH = path.join(CONTENT_ROOT, 'meta.json');
-const META_CONFIG = loadMetaConfig(META_CONFIG_PATH, DEFAULT_META_CONFIG);
+const INSTANCE_SITE_PATH = path.join(CONTENT_ROOT, 'site.json');
+const INSTANCE_SITE = loadInstanceSite(INSTANCE_SITE_PATH);
+const SITE_CONFIG = applySiteOverrides(BASE_SITE_CONFIG, INSTANCE_SITE.site, INSTANCE_SITE_PATH);
+const META_CONFIG = resolveMetaConfig(INSTANCE_SITE.meta, path.join(CONTENT_ROOT, 'meta.json'), DEFAULT_META_CONFIG);
 const INSTANCE_TEMPLATES_DIR = path.join(CONTENT_ROOT, 'templates');
 const INSTANCE_ASSETS_DIR = path.join(CONTENT_ROOT, 'assets');
 const INSTANCE_QUERIES_PATH = path.join(CONTENT_ROOT, 'queries.json');
-const QUERIES_PATH = fs.existsSync(INSTANCE_QUERIES_PATH)
-  ? INSTANCE_QUERIES_PATH
-  : path.join(ROOT, 'config', 'queries.json');
+const QUERIES_PATH = INSTANCE_QUERIES_PATH;
 const ARCHIVE_OUTPUT_ROOT = path.join(OUTPUT_DIR, 'content', CONTENT_DIR);
 const ARCHIVE_ROOT_PATH = `/content/${CONTENT_DIR}/`;
 
@@ -73,6 +71,7 @@ const LINT_REPORT_PATH = resolveLintReportPath(process.env.LINT_REPORT_PATH);
 const LINT_REPORT = loadLintReport(LINT_REPORT_PATH);
 const LINT_REPORTS_BY_PATH = LINT_REPORT ? buildLintReportMap(LINT_REPORT) : null;
 const SOFT_FAIL = process.env.SOFT_FAIL === '1';
+const BUILD_REPORT_PATH = resolveBuildReportPath(process.env.BUILD_REPORT_PATH);
 const BUILD_WARNINGS = [];
 
 const ARTICLE_TEMPLATE = resolveTemplatePath('article.html');
@@ -122,6 +121,7 @@ function main() {
   writeCname();
   copyStaticAssets();
   copyAssets(index);
+  writeBuildReport();
   flushBuildWarnings();
 }
 
@@ -150,6 +150,20 @@ function resolveLintReportPath(raw) {
   return path.join(ROOT, value);
 }
 
+function resolveBuildReportPath(raw) {
+  if (!raw) {
+    return path.join(ROOT, 'temp', 'build-report.json');
+  }
+  const value = String(raw).trim();
+  if (!value) {
+    return path.join(ROOT, 'temp', 'build-report.json');
+  }
+  if (path.isAbsolute(value)) {
+    return value;
+  }
+  return path.join(ROOT, value);
+}
+
 function recordBuildWarning(message) {
   if (!message) {
     return;
@@ -163,6 +177,24 @@ function flushBuildWarnings() {
   }
   const lines = BUILD_WARNINGS.map((warning) => `- ${warning}`);
   console.warn(`[build] warnings:\n${lines.join('\n')}`);
+}
+
+function writeBuildReport() {
+  if (!BUILD_REPORT_PATH) {
+    return;
+  }
+  if (!LINT_REPORT && BUILD_WARNINGS.length === 0) {
+    return;
+  }
+  ensureDir(path.dirname(BUILD_REPORT_PATH));
+  const payload = {
+    generatedAt: new Date().toISOString(),
+    softFail: SOFT_FAIL,
+    warnings: BUILD_WARNINGS.slice(),
+    lintReportPath: LINT_REPORT_PATH || null,
+    lintReport: LINT_REPORT || null
+  };
+  writeFile(BUILD_REPORT_PATH, `${JSON.stringify(payload, null, 2)}\n`);
 }
 
 function handleBuildErrors(errors, contextLabel) {
@@ -228,6 +260,73 @@ function loadSiteConfig(filePath, defaults) {
   return merged;
 }
 
+function loadInstanceSite(filePath) {
+  if (!fs.existsSync(filePath)) {
+    return { site: null, meta: null };
+  }
+
+  const raw = fs.readFileSync(filePath, 'utf8');
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Invalid JSON in ${filePath}`);
+  }
+
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error(`Instance site config must be a JSON object: ${filePath}`);
+  }
+
+  const { meta, ...site } = parsed;
+  if (Object.prototype.hasOwnProperty.call(site, 'contentDir')) {
+    throw new Error(`Instance site config must not set contentDir: ${filePath}`);
+  }
+
+  const allowedKeys = new Set([
+    'siteName',
+    'siteDescription',
+    'siteUrl',
+    'customDomain',
+    'author',
+    'language'
+  ]);
+
+  for (const [key, value] of Object.entries(site)) {
+    if (!allowedKeys.has(key)) {
+      throw new Error(`Unknown site config key '${key}' in ${filePath}`);
+    }
+    if (value !== undefined && value !== null && typeof value !== 'string') {
+      throw new Error(`Site config '${key}' must be a string in ${filePath}`);
+    }
+  }
+
+  let metaEntries = null;
+  if (meta !== undefined) {
+    if (!Array.isArray(meta)) {
+      throw new Error(`Site meta must be a JSON array: ${filePath}`);
+    }
+    metaEntries = meta;
+  }
+
+  return { site, meta: metaEntries };
+}
+
+function applySiteOverrides(base, overrides, filePath) {
+  if (!overrides || !Object.keys(overrides).length) {
+    return base;
+  }
+  const merged = { ...base, ...overrides, contentDir: base.contentDir };
+  validateSiteConfig(merged, filePath);
+  return merged;
+}
+
+function resolveMetaConfig(metaOverride, filePath, defaults) {
+  if (Array.isArray(metaOverride)) {
+    return normalizeMetaConfigArray(metaOverride, filePath);
+  }
+  return loadMetaConfig(filePath, defaults);
+}
+
 function loadMetaConfig(filePath, defaults) {
   if (!fs.existsSync(filePath)) {
     return defaults.map((entry) => ({ ...entry, attrs: { ...entry.attrs } }));
@@ -245,7 +344,11 @@ function loadMetaConfig(filePath, defaults) {
     throw new Error(`Meta config must be a JSON array: ${filePath}`);
   }
 
-  return parsed.map((entry) => {
+  return normalizeMetaConfigArray(parsed, filePath);
+}
+
+function normalizeMetaConfigArray(entries, filePath) {
+  return entries.map((entry) => {
     if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
       throw new Error(`Invalid meta entry in ${filePath}`);
     }
@@ -299,14 +402,10 @@ function normalizeContentDir(contentDir, filePath) {
 
 function resolveTemplatePath(filename) {
   const instancePath = path.join(INSTANCE_TEMPLATES_DIR, filename);
-  if (fs.existsSync(instancePath)) {
-    return instancePath;
-  }
-  const corePath = path.join(TEMPLATE_DIR, filename);
-  if (!fs.existsSync(corePath)) {
+  if (!fs.existsSync(instancePath)) {
     throw new Error(`Missing template: ${filename}`);
   }
-  return corePath;
+  return instancePath;
 }
 
 function applySiteHrefs(html) {
@@ -621,12 +720,12 @@ function renderSite(index, queryResults) {
     : index.filter((item) => item.frontmatter.status === 'published').sort(makeSortFn('date-asc'));
 
   const indexTemplate = fs.readFileSync(INDEX_TEMPLATE, 'utf8');
-  const homeBody = buildArticleListSection('home-posts');
+  const homeBody = buildArticleListSection('latest-posts');
   const homeExtra = buildYearListSection(published, ARCHIVE_ROOT_PATH, 'Years');
   const renderQueries = LINT_REPORTS_BY_PATH
     ? {
         ...queryResults,
-        'home-posts': sortItems(
+        'latest-posts': sortItems(
           index.filter((item) => item.frontmatter.status !== 'archived'),
           'date-desc'
         ).slice(0, 25)
@@ -1075,9 +1174,6 @@ function copyAssets(index) {
 
 function copyStaticAssets() {
   const destDir = path.join(OUTPUT_DIR, 'assets');
-  if (fs.existsSync(STATIC_ASSETS_DIR)) {
-    copyDir(STATIC_ASSETS_DIR, destDir);
-  }
   if (fs.existsSync(INSTANCE_ASSETS_DIR)) {
     copyDir(INSTANCE_ASSETS_DIR, destDir);
   }

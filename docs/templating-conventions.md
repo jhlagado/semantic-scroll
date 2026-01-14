@@ -134,7 +134,7 @@ Approved placeholders:
 
 These placeholders are **fill-only**. They do not introduce logic, conditions, or metadata access.
 
-The head metadata block is defined by `content/<contentDir>/meta.json` and injected at `<!-- meta:head -->`. Instances can change the order or subset of head tags by editing that file.
+The head metadata block is defined by `content/<contentDir>/site.json` under the `meta` key and injected at `<!-- meta:head -->`. Instances can change the order or subset of head tags by editing that file. If `site.json` omits `meta`, the build will fall back to `content/<contentDir>/meta.json` for compatibility.
 
 ## 5. Fallback Content Conventions
 

@@ -16,11 +16,11 @@ The instance owns its presentation and content. Templates, assets, CSS, client J
 
 ## Stage 1: Formalise the Boundary (No structural change)
 
-The first step is to make the boundary explicit without changing the repository layout. The engine is everything in `scripts/` plus the default configuration. The instance is everything under `content/<contentDir>/`. `site-config.json` selects the instance. Templates resolve from the instance first, and assets and queries resolve from the instance as well.
+The first step is to make the boundary explicit without changing the repository layout. The engine is everything in `scripts/` plus the root defaults, and the instance is everything under `content/<contentDir>/`. `site-config.json` selects the instance. Templates, assets, and queries are instance-owned and resolve only from the instance path.
 
 This stage only requires documentation and minor cleanup. It gives authors a stable mental model and creates the foundation for future separation without disrupting current users.
 
-Status: In progress. The resolver already checks instance paths first. The remaining work is to make the boundary explicit in the public docs so new users understand where changes belong and why upstream pulls do not overwrite instance design.
+Status: Complete. The resolver now treats instance templates, assets, and queries as the only source of truth, and the documentation reflects that boundary.
 
 ## Stage 2: Optional Engine Extraction (Split without a registry)
 

@@ -71,10 +71,11 @@ These invariants must never be eroded:
 5. **Filesystem layout is canonical**
 
    ```
-   content/blog/YYYY/MM/DD/NN-slug/
+  content/<contentDir>/YYYY/MM/DD/NN-slug/
    ```
 
    Where `NN` is a mandatory 2-digit ordinal prefix within the leaf directory. Any attempt to remove, flatten, or conflate this prefix is an architectural violation.
+   `contentDir` defaults to `semantic-scroll` in this repo and can be overridden via `site-config.json` for other instances.
 
 If a proposed change weakens any of these, it is invalid.
 

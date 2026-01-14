@@ -38,7 +38,7 @@ npm install -g nodemon
 npm run dev
 ```
 
-This runs the lint report, builds the site, starts the local server, and rebuilds on changes in `content/`, `config/`, and `site-config.json`. If a root `templates/` or `assets/` directory exists, changes there are watched as well. By default the dev server binds to `127.0.0.1`; set `HOST=0.0.0.0` if you need to reach it from another device, and override the port with `PORT=xxxx` if needed.
+This runs the lint report, builds the site, starts the local server, and rebuilds on changes in `content/`, `config/`, and `site-config.json`. By default the dev server binds to `127.0.0.1`; set `HOST=0.0.0.0` if you need to reach it from another device, and override the port with `PORT=xxxx` if needed.
 
 The dev loop prints a short status line when lint and build succeed. Lint issues are reported without stopping the server.
 
@@ -77,3 +77,5 @@ If you want fail-fast instead of thresholds:
 ```sh
 npm run lint:strict
 ```
+
+When the dev build emits warnings or lint issues, it also writes `temp/build-report.json` with the combined warnings and lint report. This gives the preview UI one place to read diagnostics without stopping the server.

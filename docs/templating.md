@@ -18,13 +18,10 @@ content/<contentDir>/YYYY/MM/DD/NN-slug/<files>
 
 ### 1.4 Resource Resolution and Merge Isolation
 
-The build engine resolves templates, assets, and queries inside the active instance directory under `content/<contentDir>/`. That directory is the source of truth for a site's presentation and configuration. Queries are loaded from `content/<contentDir>/queries.json` when present and fall back to `config/queries.json` when not.
+The build engine resolves templates, assets, and queries inside the active instance directory under `content/<contentDir>/`. That directory is the source of truth for a site's presentation and configuration. Queries are loaded from `content/<contentDir>/queries.json` and do not fall back to a root copy.
 
 #### Resolution Order
-The resolver checks the instance path first. A core fallback may exist at the repository root for upstream defaults and is used when the instance file is missing:
-
-1.  **Instance Level**: `content/<contentDir>/<resource>/` (e.g., `content/my-site/templates/article.html`)
-2.  **Core Defaults (Optional)**: `/<resource>/` (e.g., `/templates/article.html`)
+Templates, assets, and queries are instance-owned. The build only reads from `content/<contentDir>/` and fails if required instance files are missing.
 
 #### The "Upstream Merge Isolation" Design
 By placing all instance-specific files (content, templates, assets) within the `content/<contentDir>/` sibling namespace, we keep local customisation separate from upstream changes and make pull-based updates predictable.
@@ -64,7 +61,7 @@ A **named query** is a declarative selector that returns an ordered list of arti
 
 Properties:
 
-- stored centrally (for example `config/queries.json`)
+- stored centrally (for example `content/<contentDir>/queries.json`)
 - referenced **only by name** from templates
 - defined using a restricted JSON schema
 - evaluated entirely at build time
@@ -157,7 +154,7 @@ Approved placeholders:
 
 These are fill-only placeholders. They never access metadata and never introduce conditional behaviour.
 
-The head metadata block is defined by `content/<contentDir>/meta.json`. Each instance owns that file and can order or remove entries without changing the build logic.
+The head metadata block is defined by `content/<contentDir>/site.json` under the `meta` key. Each instance owns that file and can order or remove entries without changing the build logic. If `site.json` omits `meta`, the build will fall back to `content/<contentDir>/meta.json` for compatibility.
 
 ---
 
@@ -614,7 +611,7 @@ Assets are never inferred or relocated automatically.
 
 For MVP, templates are explicitly enumerated. This repo now uses a minimal set of instance-owned templates to avoid duplication across index pages.
 
-Templates resolve from the instance directory. If `content/<contentDir>/templates/<name>.html` exists, it is used. A core default at `templates/<name>.html` may be used when the instance file is missing.
+Templates resolve from the instance directory. Each required template must exist under `content/<contentDir>/templates/`.
 
 Current template set:
 

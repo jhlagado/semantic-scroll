@@ -2,7 +2,7 @@
 
 Semantic Scroll is a small, opinionated blogging system for people who want to publish on their own domain with plain HTML and a clear folder structure. It does not use a database. Your content lives in folders, templates live beside it, and the build step writes static pages into `build/`.
 
-This repo is also designed to be forked. The instance owns templates, assets, CSS, client-side JavaScript, and content inside `content/<contentDir>/`. The scripts live at the repo root and stay shared. That split lets you pull upstream updates without overwriting your site design. Instance files override any core defaults at the repository root; if a template or query is missing in the instance, the engine uses the core fallback.
+This repo is also designed to be forked. The instance owns templates, assets, CSS, client-side JavaScript, and content inside `content/<contentDir>/`. The scripts live at the repo root and stay shared. That split lets you pull upstream updates without overwriting your site design. Instance files are the only source of templates, assets, and queries, so the site remains self-contained.
 
 ## What you get
 
@@ -40,9 +40,9 @@ This builds the site and refreshes it when files change. If you prefer the short
 
 ## Where to edit
 
-Your site instance lives under `content/semantic-scroll/` by default. Posts live in dated folders and templates live in `content/semantic-scroll/templates/`. Assets and CSS live in `content/semantic-scroll/assets/`.
+Your site instance lives under `content/semantic-scroll/` by default. Posts live in dated folders and templates live in `content/semantic-scroll/templates/`. Assets and CSS live in `content/semantic-scroll/assets/`. Head metadata and site settings live in `content/semantic-scroll/site.json`.
 
-If you want a different instance name, copy `site-config.example.json` to `site-config.json` and change `contentDir`. This repo uses defaults, so you do not need `site-config.json` unless you want to override settings. Instance queries live in `content/<contentDir>/queries.json` and fall back to `config/queries.json` when absent.
+If you want a different instance name, copy `site-config.example.json` to `site-config.json` and change `contentDir`. This repo uses defaults, so you do not need `site-config.json` unless you want to override settings. Instance queries live in `content/<contentDir>/queries.json` and do not fall back to a root copy.
 
 ## Build and lint
 

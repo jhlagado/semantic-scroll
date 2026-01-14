@@ -14,7 +14,7 @@ Any implementation that deviates from this order is incorrect.
 ### 1. Initialize
 
 ```
-load config/queries.json
+load content/<contentDir>/queries.json
 load template files
 initialize empty article index
 initialize empty render plan
@@ -153,10 +153,12 @@ This layout is **canonical**.
 │     │  ├─ article.html
 │     │  ├─ summary-index.html
 │     │  └─ about.html
-│     └─ assets/
+│     ├─ queries.json
+│     ├─ assets/
+│     └─ site.json
 │
 ├─ config/
-│  └─ queries.json
+│  └─ prose-lint.json
 │
 ├─ scripts/
 │  ├─ discover.*
@@ -224,7 +226,7 @@ Warnings must appear in CI logs but not fail the run.
 
 ## Part 4: First Concrete Example (End-to-End)
 
-### Query (`config/queries.json`)
+### Query (`content/<contentDir>/queries.json`)
 
 ```json
 {
