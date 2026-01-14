@@ -18,7 +18,7 @@ content/<contentDir>/YYYY/MM/DD/NN-slug/<files>
 
 ### 1.4 Resource Resolution and Merge Isolation
 
-The build engine resolves templates, assets, and queries inside the active instance directory under `content/<contentDir>/`. That directory is the source of truth for a site's presentation and configuration.
+The build engine resolves templates, assets, and queries inside the active instance directory under `content/<contentDir>/`. That directory is the source of truth for a site's presentation and configuration. Queries are loaded from `content/<contentDir>/queries.json` when present and fall back to `config/queries.json` when not.
 
 #### Resolution Order
 The resolver checks the instance path first. A core fallback may exist at the repository root for upstream defaults and is used when the instance file is missing:

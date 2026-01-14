@@ -72,6 +72,8 @@ const META_THEME_COLOR = '#ffffff';
 const LINT_REPORT_PATH = resolveLintReportPath(process.env.LINT_REPORT_PATH);
 const LINT_REPORT = loadLintReport(LINT_REPORT_PATH);
 const LINT_REPORTS_BY_PATH = LINT_REPORT ? buildLintReportMap(LINT_REPORT) : null;
+const SOFT_FAIL = process.env.SOFT_FAIL === '1';
+const BUILD_WARNINGS = [];
 
 const ARTICLE_TEMPLATE = resolveTemplatePath('article.html');
 const INDEX_TEMPLATE = resolveTemplatePath('summary-index.html');
@@ -120,6 +122,7 @@ function main() {
   writeCname();
   copyStaticAssets();
   copyAssets(index);
+  flushBuildWarnings();
 }
 
 function normalizeBasePath(raw) {
@@ -145,6 +148,34 @@ function resolveLintReportPath(raw) {
     return value;
   }
   return path.join(ROOT, value);
+}
+
+function recordBuildWarning(message) {
+  if (!message) {
+    return;
+  }
+  BUILD_WARNINGS.push(message);
+}
+
+function flushBuildWarnings() {
+  if (!BUILD_WARNINGS.length) {
+    return;
+  }
+  const lines = BUILD_WARNINGS.map((warning) => `- ${warning}`);
+  console.warn(`[build] warnings:\n${lines.join('\n')}`);
+}
+
+function handleBuildErrors(errors, contextLabel) {
+  if (!errors.length) {
+    return;
+  }
+  if (!SOFT_FAIL) {
+    throw new Error(errors.join('\n'));
+  }
+  for (const message of errors) {
+    const prefix = contextLabel ? `${contextLabel}: ` : '';
+    recordBuildWarning(`${prefix}${message}`);
+  }
 }
 
 function loadLintReport(filePath) {
@@ -377,7 +408,7 @@ function discoverArticles(rootDir) {
   }
 
   if (errors.length) {
-    throw new Error(errors.join('\n'));
+    handleBuildErrors(errors, 'Discover');
   }
 
   return records;
@@ -391,15 +422,26 @@ function buildIndex(records) {
     const raw = fs.readFileSync(record.mdPath, 'utf8');
     const parsed = parseFrontmatter(raw);
 
+    let frontmatter = null;
     if (!parsed) {
-      errors.push(`Missing frontmatter in ${record.relDir}/article.md`);
-      continue;
+      if (SOFT_FAIL) {
+        recordBuildWarning(`Missing frontmatter in ${record.relDir}/article.md (defaulting to draft)`);
+        frontmatter = { status: 'draft' };
+      } else {
+        errors.push(`Missing frontmatter in ${record.relDir}/article.md`);
+        continue;
+      }
+    } else {
+      frontmatter = parsed.frontmatter;
     }
 
-    const { frontmatter } = parsed;
-
     if (!frontmatter.status || !STATUS_VALUES.has(frontmatter.status)) {
-      errors.push(`Invalid or missing status in ${record.relDir}/article.md`);
+      if (SOFT_FAIL) {
+        recordBuildWarning(`Invalid or missing status in ${record.relDir}/article.md (defaulting to draft)`);
+        frontmatter.status = 'draft';
+      } else {
+        errors.push(`Invalid or missing status in ${record.relDir}/article.md`);
+      }
     }
 
     for (const derivedField of ['year', 'month', 'day', 'ordinal', 'slug']) {
@@ -414,7 +456,19 @@ function buildIndex(records) {
 
     if (frontmatter.tags) {
       if (!Array.isArray(frontmatter.tags)) {
-        errors.push(`Tags must be a list in ${record.relDir}/article.md`);
+        if (SOFT_FAIL) {
+          recordBuildWarning(`Tags must be a list in ${record.relDir}/article.md (coercing to list)`);
+          if (typeof frontmatter.tags === 'string' || typeof frontmatter.tags === 'number') {
+            frontmatter.tags = String(frontmatter.tags)
+              .split(',')
+              .map((tag) => tag.trim())
+              .filter(Boolean);
+          } else {
+            frontmatter.tags = [];
+          }
+        } else {
+          errors.push(`Tags must be a list in ${record.relDir}/article.md`);
+        }
       } else {
         frontmatter.tags = frontmatter.tags
           .map((tag) => normalizeTag(tag))
@@ -422,12 +476,20 @@ function buildIndex(records) {
       }
     }
     if (frontmatter.series) {
+      if (typeof frontmatter.series !== 'string' && !SOFT_FAIL) {
+        errors.push(`Frontmatter 'series' must be a string in ${record.relDir}/article.md`);
+      }
       frontmatter.series = normalizeTag(frontmatter.series);
     }
 
-    for (const key of ['title', 'summary', 'thumbnail', 'series']) {
+    for (const key of ['title', 'summary', 'thumbnail']) {
       if (frontmatter[key] && typeof frontmatter[key] !== 'string') {
-        errors.push(`Frontmatter '${key}' must be a string in ${record.relDir}/article.md`);
+        if (SOFT_FAIL) {
+          recordBuildWarning(`Frontmatter '${key}' must be a string in ${record.relDir}/article.md (dropping value)`);
+          delete frontmatter[key];
+        } else {
+          errors.push(`Frontmatter '${key}' must be a string in ${record.relDir}/article.md`);
+        }
       }
     }
 
@@ -443,7 +505,7 @@ function buildIndex(records) {
   }
 
   if (errors.length) {
-    throw new Error(errors.join('\n'));
+    handleBuildErrors(errors, 'Frontmatter');
   }
 
   return index;
@@ -1612,7 +1674,11 @@ function renderArticleBody(article) {
   const raw = fs.readFileSync(article.mdPath, 'utf8');
   const parsed = parseFrontmatter(raw);
   if (!parsed) {
-    throw new Error(`Missing frontmatter in ${article.relDir}/article.md`);
+    if (!SOFT_FAIL) {
+      throw new Error(`Missing frontmatter in ${article.relDir}/article.md`);
+    }
+    recordBuildWarning(`Missing frontmatter in ${article.relDir}/article.md (rendering full file as body)`);
+    return renderMarkdown(raw, article.publicPath);
   }
   return renderMarkdown(parsed.body, article.publicPath);
 }
@@ -1713,11 +1779,14 @@ function renderLintBanner(article) {
 
 function renderSummary(article) {
   const fm = article.frontmatter;
-  if (!fm.title) {
-    throw new Error(`Summary view requires frontmatter title in ${article.relDir}/article.md`);
+  let titleText = fm.title;
+  if (!titleText) {
+    if (!SOFT_FAIL) {
+      throw new Error(`Summary view requires frontmatter title in ${article.relDir}/article.md`);
+    }
+    recordBuildWarning(`Missing frontmatter title in ${article.relDir}/article.md (using slug fallback)`);
+    titleText = articleMetaTitle(article);
   }
-
-  const titleText = fm.title;
   const titleHtml = renderInline(titleText);
   const summaryHtml = fm.summary ? renderInline(fm.summary) : null;
   const dateText = `${article.year}-${article.month}-${article.day}`;

@@ -27,6 +27,8 @@ The pipeline must be:
 
 Prose linting is treated as editorial feedback, not a hard gate. CI builds should succeed even when the lint report contains issues. The report is still generated for visibility, but it does not block publication.
 
+Local development may run with `SOFT_FAIL=1`, which downgrades hard errors in discovery and frontmatter validation to warnings and skips invalid entries so previews stay usable. CI and release builds must run without `SOFT_FAIL` so the hard-error matrix remains authoritative.
+
 ---
 
 ## 2. High-Level Pipeline Stages
