@@ -24,7 +24,7 @@ brew install node
 npm run build
 ```
 
-The build script runs the strict prose linter first and stops on lint errors.
+The build script writes the site output only. Prose linting is a separate step you run when you want it.
 
 ## Build on change and serve
 
