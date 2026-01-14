@@ -52,7 +52,7 @@ When you are ready to publish, build the site:
 npm run build
 ```
 
-Prose linting is available if you want to check drafts:
+Prose linting is optional and runs on demand:
 
 ```sh
 npm run lint
