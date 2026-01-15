@@ -25,7 +25,7 @@ npm start
 
 ## Instance configuration
 
-`site-config.json` sets `contentDir` to `semantic-scroll` so the engine uses this instance. Instance metadata lives in `content/semantic-scroll/site.json`.
+Instance metadata lives in `content/site.json`.
 
 ## Pulling engine updates
 

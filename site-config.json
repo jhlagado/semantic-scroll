@@ -1,9 +1,0 @@
-{
-  "siteName": "Semantic Scroll",
-  "siteDescription": "A public experiment in building a publishing system while using it, with essays and specs evolving alongside the code.",
-  "siteUrl": "https://semantic-scroll.com",
-  "customDomain": "semantic-scroll.com",
-  "author": "John Hardy",
-  "language": "en-AU",
-  "contentDir": "semantic-scroll"
-}

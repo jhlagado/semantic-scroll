@@ -1,9 +1,0 @@
-{
-  "siteName": "Example Blog",
-  "siteDescription": "Short description used in feeds and meta tags.",
-  "siteUrl": "https://example.com",
-  "customDomain": "example.com",
-  "author": "Your Name",
-  "language": "en-AU",
-  "contentDir": "example-site"
-}

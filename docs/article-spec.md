@@ -6,9 +6,9 @@ This document defines the **Article Unit**, the fundamental atomic unit of the b
 
 ## 1. Filesystem Identity and the Ordinal Invariant
 
-The identity of an article is rooted in the filesystem, which serves as the sole authoritative source for its chronological position and unique identity. We use a structured path hierarchy: `/content/<contentDir>/YYYY/MM/DD/NN-slug/article.md` (default `content/semantic-scroll/` in this repo).
+The identity of an article is rooted in the filesystem, which serves as the sole authoritative source for its chronological position and unique identity. We use a structured path hierarchy: `/content/YYYY/MM/DD/NN-slug/article.md`. The engine falls back to `/example/` only when `/content/` is missing.
 
-`contentDir` acts as a **Namespace**. This structure isolates all instance-specific data (content, templates, assets) into a single folder. The primary benefit is **Upstream Merge Isolation**: when you fork the repository and pull updates from the original source, your local customizations in `content/my-blog/` are never overwritten by updates to the reference instance (`content/semantic-scroll/`).
+This structure isolates instance-specific data (content, templates, assets) inside `/content/`, which is intentionally absent from the upstream engine. That keeps local work insulated from upstream pulls while the example site remains available as a reference.
 
 The article directory may also contain an `assets/` subfolder for images, code, PDFs, and other media. Aside from `article.md`, the root of the directory should not contain other files.
 

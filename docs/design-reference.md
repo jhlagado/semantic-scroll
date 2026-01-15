@@ -14,7 +14,7 @@ Any implementation that deviates from this order is incorrect.
 ### 1. Initialize
 
 ```
-load content/<contentDir>/queries.json
+load content/queries.json
 load template files
 initialize empty article index
 initialize empty render plan
@@ -25,7 +25,7 @@ initialize empty render plan
 ### 2. Discover Articles
 
 ```
-for each directory under content/<contentDir>/ (default content/semantic-scroll/ in this repo):
+for each directory under content/ (or example/ if content/ is missing):
   validate path matches YYYY/MM/DD/NN-slug
   validate zero-padded numeric components
   validate NN matches numeric prefix of NN-slug
@@ -226,7 +226,7 @@ Warnings must appear in CI logs but not fail the run.
 
 ## Part 4: First Concrete Example (End-to-End)
 
-### Query (`content/<contentDir>/queries.json`)
+### Query (`content/queries.json`)
 
 ```json
 {
@@ -241,7 +241,7 @@ Warnings must appear in CI logs but not fail the run.
 
 ---
 
-### Template (`content/<contentDir>/templates/summary-index.html`)
+### Template (`content/templates/summary-index.html`)
 
 ```html
 <!doctype html>
@@ -261,7 +261,7 @@ Warnings must appear in CI logs but not fail the run.
 
 ---
 
-### Article (`content/<contentDir>/2026/01/08/01-first-post/article.md`)
+### Article (`content/2026/01/08/01-first-post/article.md`)
 
 ```md
 ---

@@ -13,8 +13,7 @@ const DEFAULT_SITE_CONFIG = {
   siteUrl: 'https://jhlagado.github.io/semantic-scroll',
   customDomain: 'semantic-scroll.com',
   author: 'John Hardy',
-  language: 'en-AU',
-  contentDir: 'semantic-scroll'
+  language: 'en-AU'
 };
 
 const DEFAULT_META_CONFIG = [
@@ -44,19 +43,18 @@ const DEFAULT_META_CONFIG = [
   { tag: 'title', valueKey: 'page-title', valueAttr: 'text' }
 ];
 
-const BASE_SITE_CONFIG = loadSiteConfig(CONFIG_PATH, DEFAULT_SITE_CONFIG);
-const CONTENT_DIR = BASE_SITE_CONFIG.contentDir;
-const CONTENT_ROOT = path.join(ROOT, 'content', CONTENT_DIR);
-const INSTANCE_SITE_PATH = path.join(CONTENT_ROOT, 'site.json');
+const BASE_SITE_CONFIG = { ...DEFAULT_SITE_CONFIG };
+const INSTANCE_ROOT = resolveInstanceRoot(ROOT);
+const INSTANCE_SITE_PATH = path.join(INSTANCE_ROOT, 'site.json');
 const INSTANCE_SITE = loadInstanceSite(INSTANCE_SITE_PATH);
 const SITE_CONFIG = applySiteOverrides(BASE_SITE_CONFIG, INSTANCE_SITE.site, INSTANCE_SITE_PATH);
-const META_CONFIG = resolveMetaConfig(INSTANCE_SITE.meta, path.join(CONTENT_ROOT, 'meta.json'), DEFAULT_META_CONFIG);
-const INSTANCE_TEMPLATES_DIR = path.join(CONTENT_ROOT, 'templates');
-const INSTANCE_ASSETS_DIR = path.join(CONTENT_ROOT, 'assets');
-const INSTANCE_QUERIES_PATH = path.join(CONTENT_ROOT, 'queries.json');
+const META_CONFIG = resolveMetaConfig(INSTANCE_SITE.meta, path.join(INSTANCE_ROOT, 'meta.json'), DEFAULT_META_CONFIG);
+const INSTANCE_TEMPLATES_DIR = path.join(INSTANCE_ROOT, 'templates');
+const INSTANCE_ASSETS_DIR = path.join(INSTANCE_ROOT, 'assets');
+const INSTANCE_QUERIES_PATH = path.join(INSTANCE_ROOT, 'queries.json');
 const QUERIES_PATH = INSTANCE_QUERIES_PATH;
-const ARCHIVE_OUTPUT_ROOT = path.join(OUTPUT_DIR, 'content', CONTENT_DIR);
-const ARCHIVE_ROOT_PATH = `/content/${CONTENT_DIR}/`;
+const ARCHIVE_OUTPUT_ROOT = path.join(OUTPUT_DIR, 'content');
+const ARCHIVE_ROOT_PATH = '/content/';
 
 const SITE_URL = process.env.SITE_URL || SITE_CONFIG.siteUrl;
 const BASE_PATH = normalizeBasePath(process.env.BASE_PATH || '');
@@ -113,7 +111,10 @@ const MONTH_NAMES = [
 ];
 
 function main() {
-  const articles = discoverArticles(CONTENT_ROOT);
+  if (fs.existsSync(CONFIG_PATH)) {
+    recordBuildWarning('site-config.json is ignored; move settings into content/site.json.');
+  }
+  const articles = discoverArticles(INSTANCE_ROOT);
   const index = buildIndex(articles);
   const queries = loadQueries(QUERIES_PATH);
   const queryResults = executeQueries(index, queries);
@@ -237,29 +238,6 @@ function buildLintReportMap(report) {
   return map;
 }
 
-function loadSiteConfig(filePath, defaults) {
-  if (!fs.existsSync(filePath)) {
-    return { ...defaults };
-  }
-
-  const raw = fs.readFileSync(filePath, 'utf8');
-  let parsed;
-  try {
-    parsed = JSON.parse(raw);
-  } catch (error) {
-    throw new Error(`Invalid JSON in ${filePath}`);
-  }
-
-  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-    throw new Error(`Site config must be a JSON object: ${filePath}`);
-  }
-
-  const merged = { ...defaults, ...parsed };
-  validateSiteConfig(merged, filePath);
-  merged.contentDir = normalizeContentDir(merged.contentDir, filePath);
-  return merged;
-}
-
 function loadInstanceSite(filePath) {
   if (!fs.existsSync(filePath)) {
     return { site: null, meta: null };
@@ -279,7 +257,8 @@ function loadInstanceSite(filePath) {
 
   const { meta, ...site } = parsed;
   if (Object.prototype.hasOwnProperty.call(site, 'contentDir')) {
-    throw new Error(`Instance site config must not set contentDir: ${filePath}`);
+    recordBuildWarning(`Ignoring deprecated contentDir in ${filePath}; content now lives at /content/.`);
+    delete site.contentDir;
   }
 
   const allowedKeys = new Set([
@@ -315,7 +294,7 @@ function applySiteOverrides(base, overrides, filePath) {
   if (!overrides || !Object.keys(overrides).length) {
     return base;
   }
-  const merged = { ...base, ...overrides, contentDir: base.contentDir };
+  const merged = { ...base, ...overrides };
   validateSiteConfig(merged, filePath);
   return merged;
 }
@@ -370,8 +349,7 @@ function validateSiteConfig(config, filePath) {
     'siteUrl',
     'customDomain',
     'author',
-    'language',
-    'contentDir'
+    'language'
   ];
 
   for (const field of stringFields) {
@@ -389,15 +367,16 @@ function validateSiteConfig(config, filePath) {
   }
 }
 
-function normalizeContentDir(contentDir, filePath) {
-  const value = String(contentDir || '').trim();
-  if (!value) {
-    throw new Error(`Invalid site config in ${filePath}: contentDir must not be empty`);
+function resolveInstanceRoot(rootDir) {
+  const contentRoot = path.join(rootDir, 'content');
+  const exampleRoot = path.join(rootDir, 'example');
+  if (fs.existsSync(contentRoot)) {
+    return contentRoot;
   }
-  if (value.includes('/') || value.includes('\\') || value.includes('..')) {
-    throw new Error(`Invalid site config in ${filePath}: contentDir must be a single folder name`);
+  if (fs.existsSync(exampleRoot)) {
+    return exampleRoot;
   }
-  return value;
+  throw new Error('Missing /content and /example. Create /content via setup, or keep /example for defaults.');
 }
 
 function resolveTemplatePath(filename) {
