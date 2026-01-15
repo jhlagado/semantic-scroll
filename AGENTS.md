@@ -71,11 +71,11 @@ These invariants must never be eroded:
 5. **Filesystem layout is canonical**
 
    ```
-  content/<contentDir>/YYYY/MM/DD/NN-slug/
+  content/YYYY/MM/DD/NN-slug/
    ```
 
    Where `NN` is a mandatory 2-digit ordinal prefix within the leaf directory. Any attempt to remove, flatten, or conflate this prefix is an architectural violation.
-   `contentDir` defaults to `example` in this repo and can be overridden via `site-config.json` for other instances.
+   Scribere ships with an `example/` instance. The engine uses `/content/` when it exists and falls back to `/example/` otherwise.
 
 If a proposed change weakens any of these, it is invalid.
 

@@ -11,4 +11,4 @@ By Example Author
 
 Each article lives in a dated directory with a two-digit ordinal. The folder name becomes the public URL, so the path is part of the identity. This keeps ordering clear and the archive readable.
 
-Templates, assets, and queries live beside your content under `content/<contentDir>/`. The build reads only from that instance directory, which lets you pull engine updates without touching your site design. When you make your own blog, copy the example folder and replace the posts.
+Templates, assets, and queries live beside your content under `content/`. The build reads only from that instance directory, which lets you pull engine updates without touching your site design. When you make your own blog, run the setup script to copy `/example/` into `/content/`, then replace the posts.

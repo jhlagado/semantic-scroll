@@ -35,10 +35,10 @@ The first published content series should document the construction of the syste
 The canonical structure is:
 
 ```
-content/<contentDir>/YYYY/MM/DD/NN-slug/<files>
+content/YYYY/MM/DD/NN-slug/<files>
 ```
 
-`contentDir` defaults to `example`. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
+Scribere uses `/content/` as the live instance root. If `/content/` is missing, the engine falls back to `/example/` for the bundled reference site.
 
 Where:
 
@@ -50,7 +50,7 @@ Where:
 ### 2.2 Article Example
 
 ```
-content/<contentDir>/2026/01/08/01-first-post/
+content/2026/01/08/01-first-post/
   article.md
   assets/
     diagram.png
@@ -168,10 +168,10 @@ Templates never embed query logic.
 - Example location:
 
   ```
-  content/<contentDir>/queries.json
+  content/queries.json
   ```
 
-Queries are instance-owned. The build loads `content/<contentDir>/queries.json` and does not fall back to a root copy.
+Queries are instance-owned. The build loads `content/queries.json` and does not fall back to a root copy.
 
 ### 7.2 Example
 

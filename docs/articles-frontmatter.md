@@ -163,10 +163,10 @@ If a thumbnail needs to be visible in the body, it must also be authored in the 
 From the canonical article path:
 
 ```
-content/<contentDir>/YYYY/MM/DD/NN-slug/
+content/YYYY/MM/DD/NN-slug/
 ```
 
-`contentDir` defaults to `example` in this repo. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
+Scribere uses `/content/` as the live instance root. If `/content/` is missing, the engine falls back to `/example/` for the bundled reference site.
 
 Derived fields:
 

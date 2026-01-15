@@ -11,20 +11,20 @@ The intent is to:
 This specification is written to match the canonical content architecture:
 
 ```
-content/<contentDir>/YYYY/MM/DD/NN-slug/<files>
+content/YYYY/MM/DD/NN-slug/<files>
 ```
 
-`contentDir` defaults to `example` in this repo. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
+Scribere uses `/content/` as the instance root. If `/content/` is missing, it falls back to `/example/` for the bundled reference site.
 
 ### 1.4 Resource Resolution and Merge Isolation
 
-The build engine resolves templates, assets, and queries inside the active instance directory under `content/<contentDir>/`. That directory is the source of truth for a site's presentation and configuration. Queries are loaded from `content/<contentDir>/queries.json` and do not fall back to a root copy.
+The build engine resolves templates, assets, and queries inside the active instance directory under `content/`. That directory is the source of truth for a site's presentation and configuration. Queries are loaded from `content/queries.json` and do not fall back to a root copy.
 
 #### Resolution Order
-Templates, assets, and queries are instance-owned. The build only reads from `content/<contentDir>/` and fails if required instance files are missing.
+Templates, assets, and queries are instance-owned. The build only reads from `content/` and fails if required instance files are missing.
 
 #### The "Upstream Merge Isolation" Design
-By placing all instance-specific files (content, templates, assets) within the `content/<contentDir>/` sibling namespace, we keep local customisation separate from upstream changes and make pull-based updates predictable.
+By placing all instance-specific files (content, templates, assets) within the `content/` sibling namespace, we keep local customisation separate from upstream changes and make pull-based updates predictable.
 
 Any deviation from this specification is an architectural change and must be deliberate.
 
@@ -61,7 +61,7 @@ A **named query** is a declarative selector that returns an ordered list of arti
 
 Properties:
 
-- stored centrally (for example `content/<contentDir>/queries.json`)
+- stored centrally (for example `content/queries.json`)
 - referenced **only by name** from templates
 - defined using a restricted JSON schema
 - evaluated entirely at build time
@@ -154,7 +154,7 @@ Approved placeholders:
 
 These are fill-only placeholders. They never access metadata and never introduce conditional behaviour.
 
-The head metadata block is defined by `content/<contentDir>/site.json` under the `meta` key. Each instance owns that file and can order or remove entries without changing the build logic. If `site.json` omits `meta`, the build will fall back to `content/<contentDir>/meta.json` for compatibility.
+The head metadata block is defined by `content/site.json` under the `meta` key. Each instance owns that file and can order or remove entries without changing the build logic. If `site.json` omits `meta`, the build will fall back to `content/meta.json` for compatibility.
 
 ---
 
@@ -254,7 +254,7 @@ Summary block:
 <article class="summary">
   <header class="summary-header">
     <h2 class="summary-title">
-      <a href="/content/<contentDir>/YYYY/MM/DD/NN-slug/">Title</a>
+      <a href="/content/YYYY/MM/DD/NN-slug/">Title</a>
     </h2>
     <time class="summary-date" datetime="YYYY-MM-DD">YYYY-MM-DD</time>
   </header>
@@ -453,7 +453,7 @@ This index is the sole data source for queries.
 For each directory matching:
 
 ```
-content/<contentDir>/YYYY/MM/DD/NN-slug/
+content/YYYY/MM/DD/NN-slug/
 ```
 
 the build must:
@@ -473,7 +473,7 @@ Markdown body is **not rendered** during indexing.
 From path:
 
 ```
-content/<contentDir>/2026/01/08/02-z80-disassembly/
+content/2026/01/08/02-z80-disassembly/
 ```
 
 derive:
@@ -611,13 +611,13 @@ Assets are never inferred or relocated automatically.
 
 For MVP, templates are explicitly enumerated. This repo now uses a minimal set of instance-owned templates to avoid duplication across index pages.
 
-Templates resolve from the instance directory. Each required template must exist under `content/<contentDir>/templates/`.
+Templates resolve from the instance directory. Each required template must exist under `content/templates/`.
 
 Current template set:
 
-- `content/<contentDir>/templates/summary-index.html` for all list pages (home, archive, year/month, tag and series pages)
-- `content/<contentDir>/templates/article.html` for full article pages
-- `content/<contentDir>/templates/about.html` for the optional about page
+- `content/templates/summary-index.html` for all list pages (home, archive, year/month, tag and series pages)
+- `content/templates/article.html` for full article pages
+- `content/templates/about.html` for the optional about page
 
 Later extensions may include a template registry or parameterised selection, but implicit discovery is not allowed.
 
@@ -625,17 +625,17 @@ Later extensions may include a template registry or parameterised selection, but
 
 The build uses a fixed set of template files. Each one maps to a specific output family and should be understood as a stable part of the publishing surface.
 
-`content/<contentDir>/templates/summary-index.html` renders all list pages, including:
+`content/templates/summary-index.html` renders all list pages, including:
 
 - `/` (home, full article list)
-- `/content/<contentDir>/` (archive root)
-- `/content/<contentDir>/YYYY/` and `/content/<contentDir>/YYYY/MM/` (year/month archives)
+- `/content/` (archive root)
+- `/content/YYYY/` and `/content/YYYY/MM/` (year/month archives)
 - `/tags/`, `/tags/<tag>/`, `/tags/<tag>/<year>/`
 - `/series/`, `/series/<series>/`, `/series/<series>/<year>/`
 
-`content/<contentDir>/templates/article.html` renders full article pages at their canonical content paths.
+`content/templates/article.html` renders full article pages at their canonical content paths.
 
-`content/<contentDir>/templates/about.html` renders the about page at `/about/` when present.
+`content/templates/about.html` renders the about page at `/about/` when present.
 
 ---
 

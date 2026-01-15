@@ -1,8 +1,10 @@
 # Scribere
 
-Scribere is a small, opinionated blogging engine for people who want to publish plain HTML with a predictable folder structure. The scripts live at the repo root. Each blog instance owns its content, templates, assets, queries, and client‑side JavaScript under `content/<contentDir>/`. This split lets you pull engine updates without overwriting your site design.
+Scribere is a small, opinionated blogging engine for people who want to publish plain HTML with a predictable folder structure. The scripts live at the repo root. Each blog instance owns its content, templates, assets, queries, and client‑side JavaScript under `content/`. This split lets you pull engine updates without overwriting your site design.
 
-The engine ships with an `content/example/` instance so you can run it immediately. When you are ready to start your own blog, you copy that example into a new instance folder and point the engine at it using `site-config.json`.
+The engine ships with an `/example/` instance so you can run it immediately. When you are ready to start your own blog, you copy that example into `content/` using the setup script.
+
+If `/content/` does not exist, the build uses `/example/` as the live instance. This lets the Scribere repo publish its own GitHub Pages site without running setup. As soon as you create `/content/`, the build switches to that instance automatically.
 
 ## Prerequisites
 
@@ -44,7 +46,7 @@ npm install
 npm run setup
 ```
 
-The setup script copies the example instance to `content/<contentDir>/`, writes `site-config.json`, and updates `content/<contentDir>/site.json` with your details.
+The setup script copies `/example/` to `content/` and updates `content/site.json` with your details.
 
 5) Start the local server:
 
@@ -54,13 +56,13 @@ npm start
 
 ## Where your site lives
 
-Your instance lives under `content/<contentDir>/`. Posts are dated folders with a two‑digit ordinal. Templates and assets live beside your posts, and the build reads only from your instance directory. If you want to change your instance name later, update `site-config.json` and rename the folder to match.
+Your instance lives under `content/`. Posts are dated folders with a two‑digit ordinal. Templates and assets live beside your posts, and the build reads only from your instance directory.
 
 ## Publishing to GitHub Pages
 
 The workflow in `.github/workflows/deploy-pages.yml` builds and publishes to GitHub Pages on every push to `main`. In your repo settings, set Pages to use **GitHub Actions** as the source.
 
-Make sure the `SITE_URL` value in the workflow matches your public URL. That value also needs to match `siteUrl` in `site-config.json` and `content/<contentDir>/site.json`, because it is used for the sitemap, RSS feed, and canonical links.
+Make sure the `SITE_URL` value in the workflow matches your public URL. That value also needs to match `siteUrl` in `content/site.json`, because it is used for the sitemap, RSS feed, and canonical links.
 
 ## Custom domain
 
@@ -75,7 +77,7 @@ npm run init
 npm run update
 ```
 
-Conflicts are rare if your edits stay inside `content/<contentDir>/`, but they can happen if you modify engine files. Treat those merges as you would any other Git change.
+Conflicts are rare if your edits stay inside `content/`, but they can happen if you modify engine files. Treat those merges as you would any other Git change.
 
 ## Tooling notes
 

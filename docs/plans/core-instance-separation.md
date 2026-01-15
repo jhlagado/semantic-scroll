@@ -16,7 +16,7 @@ The instance owns its presentation and content. Templates, assets, CSS, client J
 
 ## Stage 1: Formalise the Boundary (No structural change)
 
-The first step is to make the boundary explicit without changing the repository layout. The engine is everything in `scripts/` plus the root defaults, and the instance is everything under `content/<contentDir>/`. `site-config.json` selects the instance. Templates, assets, and queries are instance-owned and resolve only from the instance path.
+The first step is to make the boundary explicit without changing the repository layout. The engine is everything in `scripts/` plus the root defaults, and the instance is everything under `content/`. Templates, assets, and queries are instance-owned and resolve only from the instance path.
 
 This stage only requires documentation and minor cleanup. It gives authors a stable mental model and creates the foundation for future separation without disrupting current users.
 
@@ -24,7 +24,7 @@ Status: Complete. The resolver now treats instance templates, assets, and querie
 
 ## Stage 2: Optional Engine Extraction (Split without a registry)
 
-If separation becomes a priority, the engine can move to a dedicated repository such as `scribere`. The instance repository would carry only `content/<contentDir>/`, instance assets, templates, and site configuration. The engine repo would be pulled in using a simple upstream mechanism such as `git subtree` or a scripted vendor copy.
+If separation becomes a priority, the engine can move to a dedicated repository such as `scribere`. The instance repository would carry only `content/`, instance assets, templates, and site configuration. The engine repo would be pulled in using a simple upstream mechanism such as `git subtree` or a scripted vendor copy.
 
 This keeps the release cycle informal. There is no npm publish step. Updates happen by pulling from an upstream repository when desired, which aligns with the current “fork and merge” approach.
 

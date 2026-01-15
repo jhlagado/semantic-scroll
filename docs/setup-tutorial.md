@@ -1,6 +1,6 @@
 # Set up your own Scribere blog
 
-This tutorial starts from an empty repository and ends with a live blog on GitHub Pages. It assumes you want engine updates without inheriting someone else’s content. The key idea is simple: the engine lives in the root, while your site lives under `content/<contentDir>/`.
+This tutorial starts from an empty repository and ends with a live blog on GitHub Pages. It assumes you want engine updates without inheriting someone else’s content. The key idea is simple: the engine lives in the root, while your site lives under `content/`.
 
 ## 1. Create an empty repo
 
@@ -19,7 +19,7 @@ git remote add upstream https://github.com/jhlagado/scribere.git
 git pull upstream main
 ```
 
-At this point you have the engine code plus the example instance.
+At this point you have the engine code plus the example instance in `/example/`.
 
 ## 3. Point the repo at your origin
 
@@ -32,14 +32,14 @@ git push -u origin main
 
 ## 4. Install dependencies and run setup
 
-Install Node dependencies and run the setup script. The script copies the example instance into a new folder, then writes your `site-config.json` and `content/<contentDir>/site.json` values.
+Install Node dependencies and run the setup script. The script copies `/example/` into `/content/`, then updates your `content/site.json` values.
 
 ```sh
 npm install
 npm run setup
 ```
 
-You can run the script again later if you want a different instance folder. If the destination already exists, the script will stop to avoid overwriting your work.
+If `/content/` already exists, the script will stop to avoid overwriting your work.
 
 ## 5. Run the local server
 
@@ -53,7 +53,7 @@ This builds the site and starts a watcher that rebuilds when you edit content, t
 
 The repository ships with a GitHub Actions workflow that builds and publishes to Pages on every push to `main`. In **Settings → Pages**, set the source to **GitHub Actions**. Then update the `SITE_URL` value inside `.github/workflows/deploy-pages.yml` so it matches your public URL.
 
-That same URL should be used in both `site-config.json` and `content/<contentDir>/site.json`. It feeds the sitemap, RSS, and canonical links.
+That same URL should be used in `content/site.json`. It feeds the sitemap, RSS, and canonical links.
 
 ## 7. Add a custom domain (optional)
 
@@ -68,4 +68,4 @@ npm run init
 npm run update
 ```
 
-Your content stays safe because it lives under `content/<contentDir>/`. Conflicts can still happen if you edit engine files, so treat merges carefully.
+Your content stays safe because it lives under `content/`. Conflicts can still happen if you edit engine files, so treat merges carefully.

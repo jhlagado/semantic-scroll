@@ -35,7 +35,7 @@ Queries are stored as **named objects** in a JSON file.
 Example location:
 
 ```
-content/<contentDir>/queries.json
+content/queries.json
 ```
 
 Example structure:
@@ -72,7 +72,7 @@ Rules:
 
 * required
 * string
-* currently must be `"blog"` (maps to the active content root; default `content/example/` in this repo, or `content/<contentDir>/` when `site-config.json` overrides it)
+* currently must be `"blog"` (maps to the active content root; `/content/` when present, otherwise `/example/`)
 * future sources may be added explicitly
 
 ---

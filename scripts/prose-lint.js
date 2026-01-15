@@ -4,10 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = process.cwd();
-const CONFIG_PATH = path.join(ROOT, 'site-config.json');
-const DEFAULT_CONTENT_DIR = 'example';
-const CONTENT_DIR = resolveContentDir(CONFIG_PATH, DEFAULT_CONTENT_DIR);
-const DEFAULT_ROOT = path.join(ROOT, 'content', CONTENT_DIR);
+const DEFAULT_ROOT = resolveInstanceRoot(ROOT);
 
 const BASE_THRESHOLDS = {
   high: 1,
@@ -17,34 +14,16 @@ const BASE_THRESHOLDS = {
 
 const FLAGS_WITH_VALUES = new Set(['--max-high', '--max-medium', '--max-low', '--report-path', '--report-json']);
 
-function resolveContentDir(configPath, fallback) {
-  if (!fs.existsSync(configPath)) {
-    return fallback;
+function resolveInstanceRoot(rootDir) {
+  const contentRoot = path.join(rootDir, 'content');
+  const exampleRoot = path.join(rootDir, 'example');
+  if (fs.existsSync(contentRoot)) {
+    return contentRoot;
   }
-  const raw = fs.readFileSync(configPath, 'utf8');
-  let parsed;
-  try {
-    parsed = JSON.parse(raw);
-  } catch (error) {
-    throw new Error(`Invalid JSON in ${configPath}`);
+  if (fs.existsSync(exampleRoot)) {
+    return exampleRoot;
   }
-  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-    throw new Error(`Site config must be a JSON object: ${configPath}`);
-  }
-  if (!Object.prototype.hasOwnProperty.call(parsed, 'contentDir')) {
-    return fallback;
-  }
-  if (typeof parsed.contentDir !== 'string') {
-    throw new Error(`Invalid contentDir in ${configPath}`);
-  }
-  const value = parsed.contentDir.trim();
-  if (!value) {
-    throw new Error(`Invalid contentDir in ${configPath}`);
-  }
-  if (value.includes('/') || value.includes('\\') || value.includes('..')) {
-    throw new Error(`Invalid contentDir in ${configPath}`);
-  }
-  return value;
+  throw new Error('Missing /content and /example. Create /content via setup, or keep /example for defaults.');
 }
 
 function loadProseLintConfig(filePath, defaults) {

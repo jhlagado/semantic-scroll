@@ -38,14 +38,13 @@ npm install -g nodemon
 npm run dev
 ```
 
-This runs the lint report, builds the site, starts the local server, and rebuilds on changes in `content/`, `config/`, and `site-config.json`. By default the dev server binds to `127.0.0.1`; set `HOST=0.0.0.0` if you need to reach it from another device, and override the port with `PORT=xxxx` if needed.
+This runs the lint report, builds the site, starts the local server, and rebuilds on changes in `content/`, `example/`, and `config/`. By default the dev server binds to `127.0.0.1`; set `HOST=0.0.0.0` if you need to reach it from another device, and override the port with `PORT=xxxx` if needed.
 
 The dev loop prints a short status line when lint and build succeed. Lint issues are reported without stopping the server.
 
 ## Lint prose in drafts
 
-The prose linter scans `content/<contentDir>/**/article.md` (defaults to `content/example/` in this repo).
-If `site-config.json` is present, it uses the `contentDir` override.
+The prose linter scans `content/**/article.md` when `/content/` exists. If not, it falls back to `example/**/article.md`.
 It only prints output when it finds issues.
 
 Rules, thresholds, and metrics live in `config/prose-lint.json`. You can disable a rule by setting `"enabled": false`. CLI flags still override config values.

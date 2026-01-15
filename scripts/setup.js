@@ -5,10 +5,8 @@ const path = require('path');
 const readline = require('readline');
 
 const ROOT = process.cwd();
-const EXAMPLE_CONFIG_PATH = path.join(ROOT, 'site-config.example.json');
-const CONFIG_PATH = path.join(ROOT, 'site-config.json');
 const CONTENT_ROOT = path.join(ROOT, 'content');
-const EXAMPLE_INSTANCE = path.join(CONTENT_ROOT, 'example');
+const EXAMPLE_INSTANCE = path.join(ROOT, 'example');
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -50,13 +48,7 @@ function prompt(question, fallback) {
 
 function assertExampleInstance() {
   if (!fs.existsSync(EXAMPLE_INSTANCE)) {
-    throw new Error('Missing content/example. The engine ships with an example instance.');
-  }
-}
-
-function assertInstanceDir(name) {
-  if (!name || name.includes('/') || name.includes('\\')) {
-    throw new Error('contentDir must be a single folder name.');
+    throw new Error('Missing /example. The engine ships with an example instance.');
   }
 }
 
@@ -72,16 +64,15 @@ const rl = readline.createInterface({
 async function main() {
   assertExampleInstance();
 
-  const defaults = fs.existsSync(EXAMPLE_CONFIG_PATH)
-    ? readJson(EXAMPLE_CONFIG_PATH)
+  const defaults = fs.existsSync(path.join(EXAMPLE_INSTANCE, 'site.json'))
+    ? readJson(path.join(EXAMPLE_INSTANCE, 'site.json'))
     : {
         siteName: 'My Blog',
         siteDescription: 'Short description used in feeds and meta tags.',
         siteUrl: 'https://example.com',
         customDomain: '',
         author: 'Your Name',
-        language: 'en-AU',
-        contentDir: 'my-blog'
+        language: 'en-AU'
       };
 
   const siteName = await prompt('Site name', defaults.siteName);
@@ -90,28 +81,13 @@ async function main() {
   const customDomain = await prompt('Custom domain (optional)', defaults.customDomain);
   const author = await prompt('Author name', defaults.author);
   const language = await prompt('Language tag', defaults.language);
-  const contentDir = await prompt('Instance folder name', defaults.contentDir);
 
-  assertInstanceDir(contentDir);
-
-  const instanceDir = path.join(CONTENT_ROOT, contentDir);
+  const instanceDir = CONTENT_ROOT;
   if (hasFiles(instanceDir)) {
-    throw new Error(`content/${contentDir} already exists and is not empty.`);
+    throw new Error('content/ already exists and is not empty.');
   }
 
   copyDir(EXAMPLE_INSTANCE, instanceDir);
-
-  const siteConfig = {
-    siteName,
-    siteDescription,
-    siteUrl,
-    customDomain,
-    author,
-    language,
-    contentDir
-  };
-
-  writeJson(CONFIG_PATH, siteConfig);
 
   const siteJsonPath = path.join(instanceDir, 'site.json');
   if (fs.existsSync(siteJsonPath)) {
@@ -126,8 +102,7 @@ async function main() {
   }
 
   console.log('\nSetup complete.');
-  console.log(`- Instance folder: content/${contentDir}`);
-  console.log('- Config: site-config.json');
+  console.log('- Instance folder: content/');
   console.log('Next: npm install, then npm start.');
 }
 
