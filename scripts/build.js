@@ -5,7 +5,6 @@ const path = require('path');
 
 const ROOT = process.cwd();
 const OUTPUT_DIR = path.join(ROOT, 'build');
-const CONFIG_PATH = path.join(ROOT, 'site-config.json');
 
 const DEFAULT_SITE_CONFIG = {
   siteName: 'Semantic Scroll',
@@ -111,9 +110,6 @@ const MONTH_NAMES = [
 ];
 
 function main() {
-  if (fs.existsSync(CONFIG_PATH)) {
-    recordBuildWarning('site-config.json is ignored; move settings into content/site.json.');
-  }
   const articles = discoverArticles(INSTANCE_ROOT);
   const index = buildIndex(articles);
   const queries = loadQueries(QUERIES_PATH);

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- meta:head -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
+  </noscript>
+  <link rel="icon" type="image/png" href="/assets/semantic-scroll-fav.png" />
+  <link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body class="page-article">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page">
+    <header class="site-header">
+      <a class="site-mark" href="/">
+        <img src="/assets/semantic-scroll.svg" alt="Scribere Example" width="160" height="160" />
+      </a>
+      <p class="site-subtitle">An example Scribere site.</p>
+      <nav class="site-nav">
+        <a href="/">Home</a>
+        <a data-href="archive-root">Archive</a>
+        <a href="/tags/">Tags</a>
+        <a href="/series/">Series</a>
+        <a href="/about/">About</a>
+      </nav>
+    </header>
+    <main id="main">
+      <article class="article-entry">
+        <header class="article-meta article-meta-top">
+          <template data-query="article-page" data-view="article-meta-top"></template>
+        </header>
+        <template data-query="article-page">
+          <p>Article missing.</p>
+        </template>
+        <footer class="article-meta article-meta-bottom">
+          <template data-query="article-page" data-view="article-meta-bottom"></template>
+        </footer>
+      </article>
+    </main>
+    <footer class="site-footer">
+      <p>© 2026 Scribere Example. GPL-3.0.</p>
+      <p>Published from the same repo that builds this site. <a href="https://github.com/jhlagado/scribere">GitHub</a>.</p>
+    </footer>
+  </div>
+  <script>
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+      const es = new EventSource('/__reload');
+      es.onmessage = () => location.reload();
+    }
+  </script>
+</body>
+</html>
