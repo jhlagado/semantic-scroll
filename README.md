@@ -43,6 +43,8 @@ npm run setup
 ```
 
 The setup script copies `/example/` to `content/` and updates `content/site.json` with your details.
+It also makes sure an `upstream` remote exists and fetches it so later updates work.
+If you run setup again after you have content, it will skip the copy and leave your data untouched.
 
 5) Start the local server:
 
@@ -73,7 +75,7 @@ npm run init
 npm run update
 ```
 
-Conflicts are rare if your edits stay inside `content/`, but they can happen if you modify engine files. Treat those merges as you would any other Git change.
+Setup now adds the upstream remote automatically, so `npm run init` is optional if you only need to refresh it. Conflicts are rare if your edits stay inside `content/`, but they can happen if you modify engine files. Treat those merges as you would any other Git change.
 
 ## Tooling notes
 

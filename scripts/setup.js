@@ -2,11 +2,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 const readline = require('readline');
 
 const ROOT = process.cwd();
 const CONTENT_ROOT = path.join(ROOT, 'content');
 const EXAMPLE_INSTANCE = path.join(ROOT, 'example');
+const UPSTREAM_REMOTE = 'upstream';
+const UPSTREAM_URL = 'https://github.com/jhlagado/scribere.git';
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -56,6 +59,34 @@ function hasFiles(dirPath) {
   return fs.existsSync(dirPath) && fs.readdirSync(dirPath).length > 0;
 }
 
+function ensureUpstreamRemote() {
+  try {
+    execSync('git rev-parse --is-inside-work-tree', { stdio: 'ignore' });
+  } catch {
+    console.warn('[setup] Git repo not detected. Skipping upstream remote setup.');
+    return;
+  }
+
+  try {
+    execSync(`git remote get-url ${UPSTREAM_REMOTE}`, { stdio: 'ignore' });
+  } catch {
+    try {
+      execSync(`git remote add ${UPSTREAM_REMOTE} ${UPSTREAM_URL}`, { stdio: 'ignore' });
+      console.log(`[setup] Added ${UPSTREAM_REMOTE} remote.`);
+    } catch {
+      console.warn('[setup] Could not add upstream remote.');
+      return;
+    }
+  }
+
+  try {
+    execSync(`git fetch ${UPSTREAM_REMOTE}`, { stdio: 'ignore' });
+    console.log(`[setup] Fetched ${UPSTREAM_REMOTE}.`);
+  } catch {
+    console.warn('[setup] Could not fetch upstream.');
+  }
+}
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
@@ -63,6 +94,7 @@ const rl = readline.createInterface({
 
 async function main() {
   assertExampleInstance();
+  ensureUpstreamRemote();
 
   const defaults = fs.existsSync(path.join(EXAMPLE_INSTANCE, 'site.json'))
     ? readJson(path.join(EXAMPLE_INSTANCE, 'site.json'))
@@ -84,7 +116,12 @@ async function main() {
 
   const instanceDir = CONTENT_ROOT;
   if (hasFiles(instanceDir)) {
-    throw new Error('content/ already exists and is not empty.');
+    console.log('[setup] content/ already exists. Skipping copy and metadata prompts.');
+    const siteJsonPath = path.join(instanceDir, 'site.json');
+    if (!fs.existsSync(siteJsonPath)) {
+      console.warn('[setup] Missing content/site.json. Create it before building.');
+    }
+    return;
   }
 
   copyDir(EXAMPLE_INSTANCE, instanceDir);
