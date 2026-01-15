@@ -26,7 +26,6 @@ Instance metadata lives in `content/site.json`.
 This repo can pull updates from Scribere without overwriting instance files:
 
 ```sh
-npm run init
 npm run update
 ```
 
