@@ -2,12 +2,12 @@
   "name": "semantic-scroll",
   "private": true,
   "scripts": {
-    "start": "scribere-start",
-    "build": "scribere-build",
-    "lint": "scribere-lint",
-    "rebuild": "scribere-rebuild",
-    "publish": "scribere-publish",
-    "update": "scribere-update"
+    "start": "node node_modules/scribere/scripts/start.js",
+    "build": "node node_modules/scribere/scripts/build.js",
+    "lint": "node node_modules/scribere/scripts/prose-lint.js",
+    "rebuild": "node node_modules/scribere/scripts/rebuild.js",
+    "publish": "node node_modules/scribere/scripts/publish.js",
+    "update": "node node_modules/scribere/scripts/update.js"
   },
   "dependencies": {
     "scribere": "github:jhlagado/scribere#main"
