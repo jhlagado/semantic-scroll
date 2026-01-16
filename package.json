@@ -10,6 +10,6 @@
     "update": "scribere-update"
   },
   "dependencies": {
-    "scribere": "git+https://github.com/jhlagado/scribere.git"
+    "scribere": "github:jhlagado/scribere#main"
   }
 }
