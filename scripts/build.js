@@ -14,7 +14,7 @@ const DEFAULT_SITE_CONFIG = {
   customDomain: 'semantic-scroll.com',
   author: 'John Hardy',
   language: 'en-AU',
-  contentDir: 'semantic-scroll'
+  contentDir: ''
 };
 
 const DEFAULT_META_CONFIG = [
@@ -45,8 +45,8 @@ const DEFAULT_META_CONFIG = [
 ];
 
 const BASE_SITE_CONFIG = loadSiteConfig(CONFIG_PATH, DEFAULT_SITE_CONFIG);
-const CONTENT_DIR = BASE_SITE_CONFIG.contentDir;
-const CONTENT_ROOT = path.join(ROOT, 'content', CONTENT_DIR);
+const CONTENT_DIR = BASE_SITE_CONFIG.contentDir ? BASE_SITE_CONFIG.contentDir : '';
+const CONTENT_ROOT = CONTENT_DIR ? path.join(ROOT, 'content', CONTENT_DIR) : path.join(ROOT, 'content');
 const INSTANCE_SITE_PATH = path.join(CONTENT_ROOT, 'site.json');
 const INSTANCE_SITE = loadInstanceSite(INSTANCE_SITE_PATH);
 const SITE_CONFIG = applySiteOverrides(BASE_SITE_CONFIG, INSTANCE_SITE.site, INSTANCE_SITE_PATH);
@@ -55,8 +55,10 @@ const INSTANCE_TEMPLATES_DIR = path.join(CONTENT_ROOT, 'templates');
 const INSTANCE_ASSETS_DIR = path.join(CONTENT_ROOT, 'assets');
 const INSTANCE_QUERIES_PATH = path.join(CONTENT_ROOT, 'queries.json');
 const QUERIES_PATH = INSTANCE_QUERIES_PATH;
-const ARCHIVE_OUTPUT_ROOT = path.join(OUTPUT_DIR, 'content', CONTENT_DIR);
-const ARCHIVE_ROOT_PATH = `/content/${CONTENT_DIR}/`;
+const ARCHIVE_OUTPUT_ROOT = CONTENT_DIR
+  ? path.join(OUTPUT_DIR, 'content', CONTENT_DIR)
+  : path.join(OUTPUT_DIR, 'content');
+const ARCHIVE_ROOT_PATH = CONTENT_DIR ? `/content/${CONTENT_DIR}/` : '/content/';
 
 const SITE_URL = process.env.SITE_URL || SITE_CONFIG.siteUrl;
 const BASE_PATH = normalizeBasePath(process.env.BASE_PATH || '');
@@ -390,9 +392,9 @@ function validateSiteConfig(config, filePath) {
 }
 
 function normalizeContentDir(contentDir, filePath) {
-  const value = String(contentDir || '').trim();
+  const value = contentDir === undefined || contentDir === null ? '' : String(contentDir).trim();
   if (!value) {
-    throw new Error(`Invalid site config in ${filePath}: contentDir must not be empty`);
+    return '';
   }
   if (value.includes('/') || value.includes('\\') || value.includes('..')) {
     throw new Error(`Invalid site config in ${filePath}: contentDir must be a single folder name`);
