@@ -24,18 +24,18 @@ Do **not** introduce tools, abstractions, or patterns "for safety" or "best prac
 
 The following documents are authoritative and must not be contradicted:
 
-- `docs/PRD.md`
-- `docs/queries.md`
-- `docs/articles-frontmatter.md`
-- `docs/article-spec.md`
-- `docs/queries-spec.md`
-- `docs/queries-builtin.md`
-- `docs/templating.md`
-- `docs/templating-conventions.md`
-- `docs/templating-javascript.md`
-- `docs/styling.md`
-- `docs/ci-pipeline.md`
-- `docs/design-reference.md`
+- `node_modules/scribere/docs/PRD.md`
+- `node_modules/scribere/docs/queries.md`
+- `node_modules/scribere/docs/articles-frontmatter.md`
+- `node_modules/scribere/docs/article-spec.md`
+- `node_modules/scribere/docs/queries-spec.md`
+- `node_modules/scribere/docs/queries-builtin.md`
+- `node_modules/scribere/docs/templating.md`
+- `node_modules/scribere/docs/templating-conventions.md`
+- `node_modules/scribere/docs/templating-javascript.md`
+- `node_modules/scribere/docs/styling.md`
+- `node_modules/scribere/docs/ci-pipeline.md`
+- `node_modules/scribere/docs/design-reference.md`
 
 If you detect an ambiguity or tension between documents, do not resolve it silently. Surface the issue explicitly and ask for clarification.
 
@@ -240,7 +240,7 @@ If the answer is no, expand the prose.
 
 ### 9.7 Writing Style Compliance
 
-Any prose generation must comply with [authoring.md](docs/authoring.md).
+Any prose generation must comply with `node_modules/scribere/docs/authoring.md`.
 
 ---
 
