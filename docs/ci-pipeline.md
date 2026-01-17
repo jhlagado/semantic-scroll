@@ -59,26 +59,22 @@ Discover all article directories and validate their filesystem structure.
 Articles must exist at:
 
 ```
-content/<contentDir>/YYYY/MM/DD/NN-slug/
+content/YYYY/MM/DD/NN-slug/
 ```
-
-`contentDir` defaults to `semantic-scroll`. If `site-config.json` sets `contentDir`, the same structure applies inside that instance directory.
 
 ### 3.3 Configuration and Instance Overrides
 
-The build optionally reads `site-config.json` at the repo root.
-If present, it may override site metadata and set `contentDir`, which selects the instance directory under `content/`.
-If the file is missing, defaults apply and the active instance is `content/semantic-scroll/` in this repo. Instance metadata and head tags are owned by `content/<contentDir>/site.json`.
+Instance metadata and head tags are owned by `content/site.json`.
 
 Instance resources are resolved from the active instance only:
 
-- Templates: `content/<contentDir>/templates/`
-- Assets: `content/<contentDir>/assets/`
-- Queries: `content/<contentDir>/queries.json`
+- Templates: `content/templates/`
+- Assets: `content/assets/`
+- Queries: `content/queries.json`
 
 ### 3.4 Discovery Process
 
-For each directory under `content/<contentDir>/` (default `content/semantic-scroll/` in this repo):
+For each directory under `content/`:
 
 - verify `YYYY/MM/DD/NN-slug` structure
 - verify all numeric components are zero-padded
@@ -138,7 +134,7 @@ Ensure all named queries are valid **before execution**.
 
 ### 5.2 Validation Rules
 
-For each query in `content/<contentDir>/queries.json`:
+For each query in `content/queries.json`:
 
 - conforms to query schema
 - contains required `source`

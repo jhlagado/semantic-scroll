@@ -44,27 +44,13 @@ npm run init
 
 If you want to see or edit the upstream URL, run `git remote -v` and update it manually. The helper is just a shortcut.
 
-## Step 4: Create your own instance directory and site config
+## Step 4: Update site metadata and content
 
-Your site lives under `content/<contentDir>/`. This repo ships with the reference instance in `content/semantic-scroll/`. For your own blog, create a new instance directory so upstream updates do not collide with your templates or posts.
+Your site lives under `content/`. Templates are in `content/templates/`, assets are in `content/assets/`, and the site metadata lives in `content/site.json`.
 
-Start by copying the example site config, then pick a new `contentDir` value that matches the directory you will create.
+Open `content/site.json` and replace the site name, description, author, and URL values. This file controls the metadata used by the build.
 
-```sh
-cp site-config.example.json site-config.json
-```
-
-Open `site-config.json` and change the values for your site name, URL, author, and `contentDir`. The `contentDir` value must match the directory name you are about to create.
-
-Next, copy the reference instance to your new instance directory. Replace `my-blog` with whatever you set in `contentDir`.
-
-```sh
-cp -R content/semantic-scroll content/my-blog
-```
-
-Now open `content/my-blog/site.json` and replace the site name, description, author, and URL values. This file controls the metadata used by the build.
-
-If you do not want the reference posts, remove the dated folders inside `content/my-blog/` and add your own posts. Keep the directory structure intact so the build scripts can find them.
+If you do not want the reference posts, remove the dated folders inside `content/` and add your own posts. Keep the directory structure intact so the build scripts can find them.
 
 ## Step 5: Update GitHub Pages settings and site URLs
 
@@ -74,7 +60,7 @@ Open **Settings → Pages** in your repository and select **GitHub Actions** as 
 
 The workflow file also sets a `SITE_URL` environment variable that should match your public site URL. Open `.github/workflows/deploy-pages.yml` and change the value in the build step. Use the GitHub Pages URL for your repo, or your custom domain if you have one configured.
 
-Make sure the `siteUrl` field in `site-config.json` and the `siteUrl` inside `content/my-blog/site.json` match the same public URL. That value is used for canonical links, feeds, and sitemap entries.
+Make sure the `siteUrl` field in `content/site.json` matches the same public URL. That value is used for canonical links, feeds, and sitemap entries.
 
 ## Step 6: Build locally, commit, and push
 
@@ -84,7 +70,7 @@ Install dependencies, build the site, then commit your changes and push them to 
 npm install
 npm run build
 
-git add site-config.json content/my-blog .github/workflows/deploy-pages.yml
+git add content .github/workflows/deploy-pages.yml
 
 git commit -m "Set up my site instance"
 
@@ -101,8 +87,8 @@ When you want the latest fixes and features from the original repo, run the upda
 npm run update
 ```
 
-Conflicts are uncommon because your content lives in `content/<contentDir>/`, but they can happen if you have edited shared files such as scripts or workflow settings. Resolve conflicts the same way you would for any Git merge, then commit the result.
+Conflicts are uncommon because your content lives in `content/`, but they can happen if you have edited shared files such as scripts or workflow settings. Resolve conflicts the same way you would for any Git merge, then commit the result.
 
 ## Ideas to make this flow easier
 
-There are a few places where the setup could be friendlier for non-technical users. One way forward is to add a short script that asks for the site name, URL, and content directory, then copies the instance folder and updates `site-config.json` and `site.json` in one pass. Another small improvement would be a GitHub template repository that avoids the fork label while still including the upstream remote helper. A third option is a short “first run” checklist in the README with the exact fields to edit and the GitHub Pages setting to flip, so that users do not need to hunt in several documents.
+There are a few places where the setup could be friendlier for non-technical users. One way forward is to add a short script that asks for the site name and URL, then updates `content/site.json` in one pass. Another small improvement would be a GitHub template repository that avoids the fork label while still including the upstream remote helper. A third option is a short “first run” checklist in the README with the exact fields to edit and the GitHub Pages setting to flip, so that users do not need to hunt in several documents.
