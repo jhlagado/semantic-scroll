@@ -24,18 +24,18 @@ Do **not** introduce tools, abstractions, or patterns "for safety" or "best prac
 
 The following documents are authoritative and must not be contradicted:
 
-- `node_modules/scribere/docs/PRD.md`
-- `node_modules/scribere/docs/queries.md`
-- `node_modules/scribere/docs/articles-frontmatter.md`
-- `node_modules/scribere/docs/article-spec.md`
-- `node_modules/scribere/docs/queries-spec.md`
-- `node_modules/scribere/docs/queries-builtin.md`
-- `node_modules/scribere/docs/templating.md`
-- `node_modules/scribere/docs/templating-conventions.md`
-- `node_modules/scribere/docs/templating-javascript.md`
-- `node_modules/scribere/docs/styling.md`
-- `node_modules/scribere/docs/ci-pipeline.md`
-- `node_modules/scribere/docs/design-reference.md`
+- `docs/PRD.md`
+- `docs/queries.md`
+- `docs/articles-frontmatter.md`
+- `docs/article-spec.md`
+- `docs/queries-spec.md`
+- `docs/queries-builtin.md`
+- `docs/templating.md`
+- `docs/templating-conventions.md`
+- `docs/templating-javascript.md`
+- `docs/styling.md`
+- `docs/ci-pipeline.md`
+- `docs/design-reference.md`
 
 If you detect an ambiguity or tension between documents, do not resolve it silently. Surface the issue explicitly and ask for clarification.
 
@@ -71,11 +71,11 @@ These invariants must never be eroded:
 5. **Filesystem layout is canonical**
 
    ```
-  content/<contentDir>/YYYY/MM/DD/NN-slug/
+  content/YYYY/MM/DD/NN-slug/
    ```
 
    Where `NN` is a mandatory 2-digit ordinal prefix within the leaf directory. Any attempt to remove, flatten, or conflate this prefix is an architectural violation.
-   `contentDir` defaults to `semantic-scroll` in this repo and can be overridden via `site-config.json` for other instances.
+   Scribere ships with an `example/` instance. The engine uses `/content/` when it exists and falls back to `/example/` otherwise.
 
 If a proposed change weakens any of these, it is invalid.
 
@@ -169,6 +169,8 @@ Silent environmental changes are considered an architectural breach.
 
 Before proposing changes, scan for existing guidance documents beyond this file, including any project docs that define AI behavior, operations, or workflow. If a relevant document exists, update it instead of creating a new one. Do not add new guidance documents without explicit approval.
 
+This repo also includes AI skills under `docs/skills/`. When a request matches those skills, read the relevant `SKILL.md` and follow it.
+
 ---
 
 ## 8. Preferred AI Behavior
@@ -240,7 +242,7 @@ If the answer is no, expand the prose.
 
 ### 9.7 Writing Style Compliance
 
-Any prose generation must comply with `node_modules/scribere/docs/authoring.md`.
+Any prose generation must comply with [authoring.md](docs/authoring.md).
 
 ---
 
