@@ -22,20 +22,18 @@ Do **not** introduce tools, abstractions, or patterns "for safety" or "best prac
 
 ## 2. Canonical Specifications (Must Be Obeyed)
 
-The following documents are authoritative and must not be contradicted:
+This blog depends on Scribere. The canonical specs live in `node_modules/scribere/docs/` and must be obeyed.
 
-- `docs/PRD.md`
-- `docs/queries.md`
-- `docs/articles-frontmatter.md`
-- `docs/article-spec.md`
-- `docs/queries-spec.md`
-- `docs/queries-builtin.md`
-- `docs/templating.md`
-- `docs/templating-conventions.md`
-- `docs/templating-javascript.md`
-- `docs/styling.md`
-- `docs/ci-pipeline.md`
-- `docs/design-reference.md`
+- `node_modules/scribere/docs/article.md`
+- `node_modules/scribere/docs/authoring.md`
+- `node_modules/scribere/docs/templating.md`
+- `node_modules/scribere/docs/queries.md`
+- `node_modules/scribere/docs/build.md`
+- `node_modules/scribere/docs/ops.md`
+- `node_modules/scribere/docs/styling.md`
+- `node_modules/scribere/docs/feeds.md`
+- `node_modules/scribere/docs/philosophy.md`
+- `node_modules/scribere/docs/roadmap.md`
 
 If you detect an ambiguity or tension between documents, do not resolve it silently. Surface the issue explicitly and ask for clarification.
 
