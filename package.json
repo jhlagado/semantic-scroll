@@ -10,7 +10,9 @@
     "publish": "node node_modules/scribere/scripts/publish.js",
     "setup": "node node_modules/scribere/scripts/setup.js",
     "new": "node node_modules/scribere/scripts/new.js",
-    "edit": "node node_modules/scribere/scripts/edit.js"
+    "edit": "node node_modules/scribere/scripts/edit.js",
+    "domain": "node node_modules/scribere/scripts/domain.js",
+    "find": "node node_modules/scribere/scripts/find.js"
   },
   "dependencies": {
     "scribere": "github:jhlagado/scribere"
