@@ -14,7 +14,7 @@ thumbnail: assets/tec1-blue-prototype.jpg
 
 # Why I Came Back to the Z80
 
-My involvement with the Z80 predates the TEC-1 by several years. In the late 1970s, I designing systems on paper while considering instruction sets and memory layouts. I also thought about the requirements for building a usable computer around an affordable processor. Like many people at the time, access to hardware lagged behind understanding. The ideas came first; the opportunity to realise them came later.
+My involvement with the Z80 predates the TEC-1 by several years. In the late 1970s, I was designing systems on paper. During this period, I considered instruction sets. I also considered memory layouts and thought about the requirements for building a usable computer around an affordable processor. Like many people at the time, access to hardware lagged behind understanding. The ideas came first; the opportunity to realise them came later.
 
 ![The TEC-1 Blue Prototype](./assets/tec1-blue-prototype.jpg "The TEC-1 blue prototype: a bridge between 1983 and the modern debugger.")
 
@@ -24,11 +24,11 @@ The TEC-1 was a product of its time. It reflected available components and the e
 
 ## Working close to the machine
 
-Programming the TEC-1 meant engaging directly with the processor. Input was via a hexadecimal keypad and output appeared on a small numeric display. Programmers entered commands as machine code for immediate execution. Storage was minimal. The system encouraged careful and incremental work.
+Programming the TEC-1 meant engaging directly with the processor. Input was via a hexadecimal keypad and output appeared on a small numeric display. Programmers entered commands as machine code for immediate execution, and because storage remained minimal, the system encouraged careful and incremental work.
 
 I wrote the original monitor software, MON1, to support that style of interaction. It provided controlled access to memory and execution while staying out of the way. Its role was to make the processor usable rather than to abstract it. Over time, users developed a working familiarity with registers, addresses, and instruction flow simply by using the machine.
 
-The Z80 itself suited this mode of work. It was capable enough to do interesting tasks, yet sufficiently compact that developers could program and debug it without elaborate tooling. While an assembler proved helpful, it remained optional, and a symbolic debugger provided utility without being a strict requirement. The architecture was knowable and that mattered.
+The Z80 itself suited this mode of work. It was capable enough to do interesting tasks, yet sufficiently compact that developers could program and debug it without elaborate tooling. While an assembler proved helpful, it remained optional. Furthermore, a symbolic debugger provided utility without being a strict requirement. The architecture was knowable and that mattered.
 
 ## Returning with modern tools
 
@@ -36,7 +36,7 @@ When I began working on Debug80, I was not attempting to invent a new category o
 
 What prompted this project was a set of practical limitations I encountered while using existing Z80 tools. They did not align with how I think about programs or how I read listings. Rather than work around those constraints indefinitely, I decided to build something aligned with my own workflow. At the same time, the available platform had changed dramatically.
 
-VS Code provides a mature and cross-platform environment with a well-developed debugging infrastructure that runs on macOS, Windows, and Linux. It supports rich interaction models and extension points. Combined with my experience in JavaScript, it forms a practical foundation for building a debugger without reinventing the surrounding ecosystem.
+VS Code provides a mature and cross-platform environment with a well-developed debugging infrastructure. It runs on macOS as well as on Windows and Linux systems. It supports rich interaction models and extension points. Combined with my experience in JavaScript, it forms a practical foundation for building a debugger without reinventing the surrounding ecosystem.
 
 Emulating the target hardware entirely in software is a natural consequence of that choice. I have explored TEC-1 emulation before, and extending that work into a debugger-capable environment follows directly from it.
 
@@ -44,4 +44,4 @@ Emulating the target hardware entirely in software is a natural consequence of t
 
 Designing Debug80 first and foremost centres on creating a working environment for my own use. It reflects my personal background and habits along with my expectations of what a debugger should provide. From there, it naturally extends to other Z80-based systems beyond the TEC-1 and eventually to other classic platforms.
 
-The emphasis throughout remains on coherence and immediacy: keeping the number of moving components low while providing enough visibility to reason effectively about a running system. Building ROMs for real hardware remains an important outcome, but it is not the primary driver at this stage. The focus here is on understanding, iteration and control.
+The emphasis throughout remains on coherence and immediacy: keeping the number of moving components low while providing enough visibility to reason effectively about a running system. Building ROMs for real hardware remains an important outcome, but it is not the primary driver at this stage. The focus here remains on the process of understanding, iteration, and control.

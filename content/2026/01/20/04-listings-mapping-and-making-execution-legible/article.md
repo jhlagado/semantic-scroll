@@ -20,15 +20,13 @@ The assembler used by Debug80, asm80, produces listing files that record how sou
 
 ## Why listings matter
 
-A listing captures a moment of agreement between developer intention and machine execution. It records which source line produced which bytes and where the assembler placed that code. This information remains precise even when the source language utilizes macros, conditionals, or repeated constructs.
+A listing captures a moment of agreement between developer intention and machine execution. It records which source line produced which bytes and where the assembler placed that code. This information remains precise even when the source language utilizes macros and conditionals, or involves repeated constructs.
 
-Because of this precision, listings provide a reliable foundation for mapping. They allow Debug80 to reason about execution without guessing how the assembler interpreted the original source. The resulting mapping reflects what actually happened during assembly.
-
-This approach aligns with traditional Z80 development practices. Historically, programmers worked directly from listings by reading addresses and opcodes alongside their source. Debug80 builds on that legacy while extending the concept into a live debugging context.
+Because of this precision, listings provide a reliable foundation for mapping. They allow Debug80 to reason about execution without guessing how the assembler interpreted the original source. The resulting mapping reflects what actually happened during assembly. This approach aligns with traditional Z80 development practices, where programmers worked directly from listings by reading addresses and opcodes alongside their source. Debug80 builds on that legacy while extending the concept into a live debugging context.
 
 ## Building the mapping
 
-From the listing output, Debug80 constructs a set of explicit relationships that connect source files and line numbers while identifying assembled address ranges and instruction boundaries. These relationships form a mapping table that bridges the text editor and the execution engine.
+From the listing output, Debug80 constructs a set of explicit relationships. These connections link source files and line numbers while identifying assembled address ranges and instruction boundaries. These relationships form a mapping table that bridges the text editor and the execution engine.
 
 The mapping process remains mechanical and deterministic because it follows the assembler’s output without relying on inference. When execution reaches a particular address, the debugger identifies the corresponding source location. When a user sets a breakpoint on a line of source, Debug80 resolves that location to one or more concrete machine addresses.
 
@@ -36,7 +34,9 @@ The mapping process remains mechanical and deterministic because it follows the 
 
 Stepping through a Z80 program involves more than simply advancing the program counter. Instructions vary in length, and macros or pseudo-operations often expand into multiple machine instructions. Furthermore, some source lines correspond to no emitted machine code at all.
 
-The mapping layer allows Debug80 to step through code in ways that respect the source structure. A single step can advance execution to the next relevant source line, even when the operation involves multiple instructions. At the same time, the underlying address-level execution remains visible and accessible to the user. This dual view supports two styles of reasoning: reading the program as written and inspecting the machine as it runs.
+The mapping layer allows Debug80 to step through code in ways that respect the source structure. A single step can advance execution to the next relevant source line, even when the operation involves multiple instructions.
+
+At the same time, the underlying address-level execution remains visible and accessible to the user. This dual view supports two styles of reasoning: reading the program as written and inspecting the machine as it runs.
 
 ## Breakpoints and visibility
 

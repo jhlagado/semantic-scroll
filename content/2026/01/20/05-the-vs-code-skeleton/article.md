@@ -18,11 +18,11 @@ A debugger in VS Code lives in two distinct worlds. One world encompasses the us
 
 ## The common language of DAP
 
-The Debug Adapter Protocol provides a standardized way for editors to interact with debuggers. Instead of developers writing custom interfaces for every language or architecture, VS Code expects a debug adapter to handle a specific set of requests like `initialize` and `launch` along with `setBreakpoints`. This abstraction allows me to focus on Z80 specific logic while VS Code handles the heavy lifting of the graphical interface. When a user clicks the margin to set a breakpoint, VS Code sends a `setBreakpoints` request. My adapter then translates that request into a machine address and instructs the engine to stop when it reaches that location.
+The Debug Adapter Protocol provides a standardized way for editors to interact with debuggers. Instead of developers writing custom interfaces for every language or architecture, VS Code expects a debug adapter to handle specific requests like `initialize` as well as `launch` and `setBreakpoints`. This abstraction allows me to focus on Z80 specific logic while VS Code handles the heavy lifting of the graphical interface. When a user clicks the margin to set a breakpoint, VS Code sends a `setBreakpoints` request. My adapter then translates that request into a machine address and instructs the engine to stop when it reaches that location.
 
 ## Why I chose an Inline implementation
 
-Debug adapters typically run as separate processes to provide stability, as a crash in the debugger will not take down the editor. However, Debug80 utilizes an "inline" implementation where the adapter runs directly inside the extension process. I chose this approach to simplify the communication between the debugger and my custom UI panels, such as the TEC-1 emulator view. Running inline eliminates the need for complex inter-process communication when synchronizing the machine state with the visual hardware representation. This tight integration ensures that the LED displays and speaker output remain perfectly in sync with the underlying code execution.
+Debug adapters typically run as separate processes to provide stability, as a crash in the debugger will not take down the editor. However, Debug80 utilizes an "inline" implementation where the adapter runs directly inside the extension process. I chose this approach to simplify the communication between the debugger and my custom UI panels, such as the TEC-1 emulator view. Running inline avoids the need for complex inter-process communication when synchronizing the machine state with the visual hardware representation. This tight integration ensures that the LED displays and speaker output remain perfectly in sync with the underlying code execution.
 
 ## Activation and the Resolution cycle
 
@@ -40,4 +40,6 @@ When a user initiates a session, VS Code triggers an initialization handshake. T
 
 The heart of the skeleton resides in the `Z80DebugSession` class. This component inherits from the standard `DebugSession` base and acts as a central coordinator for the entire system. It manages the runtime state while utilizing the mapping data I established in previous articles and routing commands directly to the CPU engine.
 
-By implementing this backbone first, I created a stable platform for the more complex work that follows. With the skeleton in place, I could finally begin the technical task of simulating the Z80 heartbeat—the execution loop that truly brings the machine to life. This structural readiness allowed me to transition from protocol management to physical system simulation without revisiting my architectural assumptions.
+By implementing this backbone first, I created a stable platform for the more complex work that follows. With the skeleton in place, I could finally begin the technical task of simulating the Z80 heartbeat—the execution loop that truly brings the machine to life.
+
+This structural readiness allowed me to transition from protocol management to physical system simulation without revisiting my architectural assumptions.
