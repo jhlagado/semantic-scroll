@@ -18,7 +18,7 @@ My involvement with the Z80 predates the TEC-1 by several years. In the late 197
 
 ![The TEC-1 Blue Prototype](./assets/tec1-blue-prototype.jpg "The TEC-1 blue prototype: a bridge between 1983 and the modern debugger.")
 
-By the early 1980s that opportunity arrived. I built a sequence of Z80-based prototypes while refining the hardware and my understanding of how people might interact with such a machine. Those prototypes eventually became the basis for a collaboration with Ken Stone that resulted in the TEC-1 computer kit. *Talking Electronics* magazine published this kit in 1983.
+By the early 1980s that opportunity arrived. I built a sequence of Z80-based prototypes while refining the hardware and my understanding of how people might interact with such a machine. Those prototypes eventually became the basis for a collaboration with Ken Stone, and together we produced the TEC-1 computer kit. *Talking Electronics* magazine published this kit in 1983.
 
 The TEC-1 was a product of its time. It reflected available components and the expectations of hobbyists who prepared to work close to the machine. It also reflected a long period of prior thinking about the minimal infrastructure required to make a computer programmable.
 
