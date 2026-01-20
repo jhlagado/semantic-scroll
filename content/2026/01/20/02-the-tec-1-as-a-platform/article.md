@@ -8,7 +8,7 @@ tags:
   - tec1
   - platforms
   - hardware
-series: debug80-diaries
+series: debug80diaries
 thumbnail: assets/tec1-blue-prototype.jpg
 ---
 

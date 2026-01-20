@@ -8,7 +8,7 @@ tags:
   - tec1
   - retrocomputing
   - tooling
-series: debug80-diaries
+series: debug80diaries
 thumbnail: assets/tec1-blue-prototype.jpg
 ---
 

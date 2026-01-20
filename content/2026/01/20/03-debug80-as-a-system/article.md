@@ -8,7 +8,7 @@ tags:
   - asm80
   - debugging
   - architecture
-series: debug80-diaries
+series: debug80diaries
 ---
 
 # Debug80 as a System

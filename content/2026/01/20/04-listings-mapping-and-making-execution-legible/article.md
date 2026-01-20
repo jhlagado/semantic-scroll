@@ -8,7 +8,7 @@ tags:
   - mapping
   - debugging
   - z80
-series: debug80-diaries
+series: debug80diaries
 thumbnail: assets/tec1-blue-prototype.jpg
 ---
 
