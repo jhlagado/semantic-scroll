@@ -13,7 +13,7 @@ series: debug80diaries
 
 # Bringing Legibility to Execution: Terminal I/O and Register States
 
-A debugger that only tracks memory addresses and hex codes is an exercise in mental overhead. To be truly useful, a debugging environment must provide a legible, high-level view of the machine’s state and a way to interact with its execution. In the second phase of Debug80’s development, I focused on two critical visibility features: rich register formatting and an integrated terminal I/O system.
+A debugger that only tracks memory addresses and hex codes is an exercise in mental overhead. To be useful, a debugging environment must provide a legible high-level view of the machine’s state and a way to interact with its execution. In the second phase of Debug80’s development, I focused on register formatting and terminal I/O so the machine state could be read at a glance.
 
 ## The I/O Handler Interface
 
@@ -28,7 +28,7 @@ export interface IoHandlers {
 }
 ```
 
-By providing custom handlers to the `Z80Runtime`, we can emulate a serial port or a simple terminal by simply mapping specific ports to the debug session's state. When the Z80 emulator encounters an `OUT (P), A` instruction, it triggers the registered `write` handler. In the case of the "Simple" platform, the handler redirects this write to the VS Code terminal through a DAP `OutputEvent`.
+By providing custom handlers to the `Z80Runtime`, we can emulate a terminal by mapping specific ports to the debug session's state. When the Z80 emulator encounters an `OUT (P), A` instruction, it triggers the registered `write` handler. In the case of the "Simple" platform, the handler redirects this write to the VS Code terminal through a DAP `OutputEvent`.
 
 ```typescript
 // Conceptual implementation in adapter.ts
@@ -48,9 +48,9 @@ const ioHandlers: IoHandlers = {
 };
 ```
 
-This simple mapping turns the abstract `OUT` instruction into a real-time character on the screen, allowing users to see "Hello World" or debug logs directly in the VS Code environment.
+This simple mapping turns the abstract `OUT` instruction into a real-time character on the screen, so output appears directly in the VS Code environment.
 
-The Z80 has a unique register set. It features shadow registers like `AF'` and `HL'` alongside index registers such as `IX`. Seeing these in a raw hex block is tedious. I wanted the VS Code Variables view to feel like a purpose-built Z80 dashboard. To achieve this, I implemented a heavy formatting layer in the `variablesRequest` handler. This layer converts the numeric register values into formatted hex strings. It also expands the flag byte into its individual named bits, such as S, Z, and C.
+The Z80 has a unique register set with shadow pairs and index registers that don’t show up clearly in a raw hex block. Seeing these in a raw hex block is tedious. I wanted the VS Code Variables view to feel like a purpose-built Z80 dashboard. To achieve this, I implemented a heavy formatting layer in the `variablesRequest` handler. This layer converts the numeric register values into formatted hex strings. It also expands the flag byte into named bits so the state reads as letters instead of numbers.
 
 ```typescript
 // From src/debug/adapter.ts

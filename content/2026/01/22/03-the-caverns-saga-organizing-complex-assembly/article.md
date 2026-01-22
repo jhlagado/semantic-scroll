@@ -13,20 +13,15 @@ series: debug80diaries
 
 # The Caverns Saga: Organising Complex Assembly
 
-While building the Debug80 environment, I needed a non-trivial project to test its limits. I chose to port an old adventure game to Z80 assembly: *Caverns*. What started as a simple exercise quickly became a lesson in assembly project management. As the codebase grew past 2,000 lines, the "standard" approach of monolithic files and hardcoded logic became unscalable. I had to rethink the architecture, moving toward a modular, data-driven system.
+While building the Debug80 environment, I needed a non-trivial project to test its limits. I chose to port an old adventure game to Z80 assembly: *Caverns*. What started as a simple exercise quickly became a lesson in assembly project management. As the codebase grew past 2,000 lines the "standard" approach of monolithic files and hardcoded logic became unscalable. I had to rethink the architecture, moving toward a modular, data-driven system.
 
 ## Modular Architecture: The "Great Unbundling"
 
-The first step was breaking the project into logical components. In Z80 assembly, without a high-level linker, this means careful use of `INCLUDE` directives and symbolic constants. Each file would have a clear, single responsibility, making the codebase easier to navigate and maintain.
-
-- **main.asm**: The entry point and primary game loop.
-- **game.asm**: This file contains the high-level command handlers, such as look, get, drop, and attack.
-- **tables.asm**: The declarative heart of the game—movement grids and object locations.
-- **strings.asm**: A central repository for all textual data, preventing string duplication in the logic.
+The first step was breaking the project into logical components. In Z80 assembly, without a high-level linker, I leaned on `INCLUDE` directives to keep shared values in one place. Symbolic constants did the same for literal values across files. Each file would have a clear single responsibility, which made the codebase easier to navigate and maintain. I split the code into four anchors. `main.asm` holds the entry point for the game loop, which keeps startup logic in one place. `game.asm` handles the command verbs for player input. `tables.asm` carries the movement grids that drive navigation. Object locations live there as data, not logic. `strings.asm` collects the textual data so I could change wording without touching logic.
 
 ## The Declarative Rule Engine
 
-Instead of writing complex `if/else` logic for every room, I moved the world logic into data tables. This "rule engine" approach allowed me to define the entire map in a single, compact table.
+Instead of writing complex `if/else` logic for every room, I moved the world logic into data tables. This "rule engine" approach allowed me to define the entire map in a single, compact table. It also forced me to name every transition explicitly, which exposed missing links early.
 
 ```asm
 ; From src/tables.asm
@@ -38,11 +33,11 @@ movementTable:
     ; ...
 ```
 
-The movement logic then becomes a generic lookup. The system takes the current room ID and finds its row in the table. It then jumps to the ID listed in the column corresponding to the player's direction. This approach eliminated hundreds of lines of conditional branching and made the game world trivially easy to modify or expand.
+The movement logic then becomes a generic lookup. The system takes the current room ID. It finds the matching row in the table and jumps to the destination listed for the player's direction. This approach eliminated hundreds of lines of conditional branching and made the game world trivially easy to modify or expand.
 
 ## Orderless Input Scanning
 
-One of the most modern-feeling features of the port is the input parser. Traditional Z80 parsers are often rigid, expecting "VERB NOUN" in exactly that order. In Caverns, I implemented an orderless token scanner. The scanner pads the input with spaces and then searches for matches against a `verbTokenTable` and `nounTokenTable`.
+One of the most modern-feeling features of the port is the input parser. Traditional Z80 parsers are often rigid, expecting "VERB NOUN" in exactly that order. In Caverns, I implemented an orderless token scanner. The scanner pads the input with spaces, then searches for matches against the verb table. It repeats the scan against the noun table.
 
 ```asm
 ; From src/game.asm
@@ -60,11 +55,11 @@ sv_loop:
     ; ...
 ```
 
-By searching for patterns like " GET " or " TAKE ", the engine doesn't care if the user types "GET THE LAMP" or "LAMP GET". This flexibility makes the game feel far more intuitive than a typical 8-bit title.
+The engine looks for padded tokens such as " GET ". It treats "TAKE" in the same way. Order no longer matters, so the parser treats different word orders as equivalent. This flexibility makes the game feel more intuitive than a typical 8-bit title.
 
 ## Dynamic Exit Patching
 
-Static tables are great for fixed geometry, but adventure games need changing worlds. I implemented a `dynamicExitPatchTable` that allows the game state to modify the `movementTable` at runtime.
+Static tables are great for fixed geometry, but adventure games need changing worlds. I implemented a `dynamicExitPatchTable` that allows the game state to modify the `movementTable` at runtime. I kept the table small so I could audit it by hand.
 
 ```asm
 ; From src/tables.asm
@@ -73,10 +68,8 @@ dynamicExitPatchTable:
     DW bridgeCondition  ; Variable holding the runtime destination
 ```
 
-When the player lowers a bridge, the game updates the `bridgeCondition` variable. A periodic system routine reads this table and "patches" the movement logic, seamlessly opening a new path for the player.
+When the player lowers a bridge, the game updates the `bridgeCondition` variable. A periodic system routine reads this table and "patches" the movement logic, opening a new path for the player. That change happens without rebuilding the map tables, which keeps the runtime logic simple.
 
 ## Conclusion
 
-The Caverns port proved that complex software on the Z80 is a matter of data organization. I treated the processor as an executor for data-driven rules rather than a bucket for branching logic. This kept the project manageable and bug-free.
-
-Next, we’ll see how I solved the ultimate "legibility" problem: mapping these complex assembly files back to the debugger's source view through the D8 Mapping Specification.
+The Caverns port proved that complex software on the Z80 is a matter of data organization. I treated the processor as an executor for data-driven rules rather than a bucket for branching logic. This kept the project manageable and easy to test. Next, I will show how I solved the "legibility" problem by mapping these complex assembly files back to the debugger's source view through the D8 Mapping Specification.

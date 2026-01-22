@@ -1,7 +1,7 @@
 ---
 status: published
-title: "Listings, Mapping, and Making Execution Legible"
-summary: "Debug80 treats assembler listings as primary data and uses them to build explicit mappings between source code, addresses, and runtime execution."
+title: "Listings and Mapping: Making Execution Legible"
+summary: "Debug80 treats assembler listings as primary data and uses them to build explicit mappings between source code and runtime execution."
 tags:
   - debug80
   - asm80
@@ -12,21 +12,21 @@ series: debug80diaries
 thumbnail: assets/tec1-blue-prototype.jpg
 ---
 
-# Listings, Mapping, and Making Execution Legible
+# Listings and Mapping: Making Execution Legible
 
-Z80 programs execute at specific addresses while developers author code in source files. understanding is either preserved or lost in the space between these two views. In the Debug80 environment, the assembler listing occupies that critical gap.
+Z80 programs execute at specific addresses while developers author code in source files. Understanding is either preserved or lost in the space between these two views. In the Debug80 environment, the assembler listing occupies that critical gap.
 
 The assembler used by Debug80, asm80, produces listing files that record how source text expands into bytes at specific addresses. These files remain simple and direct because they show the assembled output exactly as it will appear in memory. Debug80 treats these listings as primary input rather than secondary artefacts.
 
 ## Why listings matter
 
-A listing captures a moment of agreement between developer intention and machine execution. It records which source line produced which bytes and where the assembler placed that code. This information remains precise even when the source language utilizes macros and conditionals, or involves repeated constructs.
+A listing captures a moment of agreement between developer intention and machine execution. It records which source line produced each byte at its final address. This information remains precise even when the source language expands into generated code.
 
-Because of this precision, listings provide a reliable foundation for mapping. They allow Debug80 to reason about execution without guessing how the assembler interpreted the original source. The resulting mapping reflects what actually happened during assembly. This approach aligns with traditional Z80 development practices, where programmers worked directly from listings by reading addresses and opcodes alongside their source. Debug80 builds on that legacy while extending the concept into a live debugging context.
+Because of this precision, listings provide a reliable foundation for mapping. They allow Debug80 to reason about execution without guessing how the assembler interpreted the original source. The resulting mapping reflects what actually happened during assembly. This approach aligns with traditional Z80 development practices, where programmers worked directly from listings and read the machine output alongside their source. Debug80 builds on that legacy while extending the concept into a live debugging context.
 
 ## Building the mapping
 
-From the listing output, Debug80 constructs a set of explicit relationships. These connections link source files and line numbers while identifying assembled address ranges and instruction boundaries. These relationships form a mapping table that bridges the text editor and the execution engine.
+From the listing output, Debug80 constructs a set of explicit relationships. It links source files to assembled address ranges. Line numbers fill in the rest of the map down to instruction boundaries. These relationships form a mapping table that bridges the text editor and the execution engine.
 
 The mapping process remains mechanical and deterministic because it follows the assembler’s output without relying on inference. When execution reaches a particular address, the debugger identifies the corresponding source location. When a user sets a breakpoint on a line of source, Debug80 resolves that location to one or more concrete machine addresses.
 
@@ -36,13 +36,13 @@ Stepping through a Z80 program involves more than simply advancing the program c
 
 The mapping layer allows Debug80 to step through code in ways that respect the source structure. A single step can advance execution to the next relevant source line, even when the operation involves multiple instructions.
 
-At the same time, the underlying address-level execution remains visible and accessible to the user. This dual view supports two styles of reasoning: reading the program as written and inspecting the machine as it runs.
+At the same time, the underlying address-level execution remains visible and accessible to the user. This dual view supports reading the program as written while still inspecting the machine as it runs.
 
 ## Breakpoints and visibility
 
 Breakpoints operate through this same mapping layer. When a developer sets a breakpoint in the editor, Debug80 resolves it to the appropriate machine addresses based on the listing data. When execution reaches one of those addresses, the debugger stops so that the developer can inspect the current machine state.
 
-Because the mapping remains explicit, the debugger shows how the stopped location relates to both the source and the assembled output. The user can then inspect registers and memory along with the I/O state to gain a clear understanding of exactly how the program arrived at that point.
+Because the mapping remains explicit, the debugger shows how the stopped location relates to the source. The assembled output remains visible beside it. The user can then inspect registers and memory along with the I/O state to gain a clear understanding of exactly how the program arrived at that point.
 
 ## Mapping as structure
 

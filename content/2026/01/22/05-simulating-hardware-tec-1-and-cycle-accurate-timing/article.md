@@ -17,11 +17,11 @@ In the initial versions of Debug80, the emulator ran as fast as the host process
 
 ## The Problem with Real-Time
 
-If you use `Date.now()` to time a 4MHz Z80, you are at the mercy of the host OS's scheduling jitter. A 16ms delay might actually be 20ms or 30ms. This variance is unnoticeable to a human but fatal for a 9600 baud serial routine. The solution is the `CycleClock`. Instead of measuring milliseconds, it measures T-states—the internal clock cycles of the Z80 CPU.
+If you use `Date.now()` to time a 4MHz Z80, you are at the mercy of the host OS's scheduling jitter. A 16ms delay might actually be 20ms or 30ms. This variance is unnoticeable to a human but fatal for a 9600 baud serial routine. The solution is the `CycleClock`, a time base that counts CPU cycles instead of milliseconds. It measures T-states—the internal clock cycles of the Z80 CPU.
 
 ## The CycleClock Implementation
 
-The `CycleClock` is a deterministic scheduler. Every instruction executed by the CPU returns the number of cycles it consumed, such as 4 cycles for `NOP` or 17 for `CALL`. We then advance the clock by this specific amount.
+The `CycleClock` is a deterministic scheduler that advances time by counting CPU cycles. Every instruction executed by the CPU returns the number of cycles it consumed, such as 4 cycles for `NOP` or 17 for `CALL`. We then advance the clock by this specific amount.
 
 ```typescript
 // From src/platforms/cycle-clock.ts
