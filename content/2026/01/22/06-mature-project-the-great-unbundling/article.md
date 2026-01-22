@@ -25,8 +25,4 @@ The bridge between the generic core and the specific platform is the `debug80.js
 
 ## Decoupling the Ecosystem
 
-With the core now generic, specific platforms can live in their own repositories. `debug80-tec1` contains the TEC-1 specific monitor code and configuration templates. `caverns80` owns its game logic and assembly organization. When a developer wants to debug a new machine, they don't need to submit a PR to the main Debug80 repo. They create a new repository and include `debug80` as a tool. Then they provide their own `debug80.json`.
-
-## Conclusion: The Path Forward
-
-The Debug80 Diaries series has traced the evolution of this project from a simple hex-loader to a cycle-accurate, modular debugging environment. We've covered the foundational DAP integration and terminal I/O. We then moved through the D8 source map specification and hardware simulation. Building Debug80 has been a journey through both 1980s constraints and 2020s tooling. It is a tribute to the fact that even a 50-year-old processor can benefit from a modern, high-fidelity development environment. Thank you for following along with the Debug80 Diaries.
+With the core now generic, specific platforms can live in their own repositories. `debug80-tec1` contains the TEC-1 specific monitor code and configuration templates. `caverns80` owns its game logic and assembly organization. When a developer wants to debug a new machine, they don't need to submit a PR to the main Debug80 repo. They create a new repository and include `debug80` as a tool, along with their own `debug80.json`.
