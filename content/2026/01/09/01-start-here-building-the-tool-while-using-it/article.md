@@ -4,16 +4,16 @@
 title: "Start Here: Building the Tool While Using It"
 status: published
 series: genesis
-summary: "An entry map for the project that frames the live build log. It tells readers to start with the genesis series and follow the next posts in order."
+summary: "An entry map for the project that frames the live build log. It starts with the genesis series, then moves forward through the next posts in order."
 ---
 # Start Here: Building the Tool While Using It
 By John Hardy
 
-This project exists to test a new model of software development and content production in public. The repository is both the lab and the record, and the system I am building will publish the discoveries that come out of its own construction. If you want the map of how the system thinks, treat this series as a lab notebook with working notes and decisions in view. I want readers to see the system forming alongside the result.
+This project exists to test a new model of software development and content production in public. The repository is both the lab and the record, and the system I am building will publish the discoveries that come out of building it. If you want the map of how the system is built, treat this series as a lab notebook with working notes and decisions in view. I want readers to see the system forming alongside the result.
 
 The first content is the documentation process itself, so I write while I build and treat the conversation and decisions as raw material with constraints and contradictions kept visible. The Q/A process I am working out here is the real work, and it becomes the content. Each entry shows a decision while it is still forming, before it hardens into tooling.
 
-Over time, this back-and-forth will harden into scripts as the workflow stabilises and the content aligns with the system it describes. The point of doing it in the open is that the system proves itself by publishing its own formation. The diary becomes the tool because each change leaves a record I can test and reuse.
+Over time, this back-and-forth will harden into scripts as the workflow stabilises and the content aligns with the system it describes. The point of doing it in the open is that I can test the system by publishing its formation. The diary becomes the tool because each change leaves a record I can test and reuse.
 
 I minimise imports and treat third-party tools as a last resort. When a problem fits in a small script, I write it and keep it in the repo so the implementation stays visible. When the problem is larger than that, I import a library and document the specific gap it fills.
 

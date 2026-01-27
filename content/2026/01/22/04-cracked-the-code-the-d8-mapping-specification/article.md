@@ -1,7 +1,7 @@
 ---
 status: published
 title: "Cracked the Code: The D8 Mapping Specification"
-summary: "Source-level debugging in VS Code expects a precise mapping between machine addresses and source lines. This article details how I developed the D8 Mapping Specification to bridge the gap between Z80 machine code and original assembly source."
+summary: "Source-level debugging in VS Code requires a precise mapping between machine addresses and source lines. This article details how I developed the D8 Mapping Specification to bridge the gap between Z80 machine code and original assembly source."
 tags:
   - debug80
   - z80

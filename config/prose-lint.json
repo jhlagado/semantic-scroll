@@ -265,6 +265,17 @@
             ]
         },
         {
+            "name": "anthropomorphic-agency",
+            "weight": 2,
+            "message": "Anthropomorphic agency (avoid assigning intent or cognition to tools)",
+            "patterns": [
+                {
+                    "pattern": "\\bthe\\s+(machine|system|build|template|site|tool|toolchain|debugger|adapter|panel|editor|extension|repo|platform|engine|interface)\\s+(?:can|could|will|would|should|may|might)?\\s*(think|know|decide|expect|understand|explain|tell|want|prefer|care|hope|remember|forget|learn|believe|feel)s?\\b",
+                    "flags": "i"
+                }
+            ]
+        },
+        {
             "name": "hedge-words",
             "weight": 2,
             "message": "Hedge word",

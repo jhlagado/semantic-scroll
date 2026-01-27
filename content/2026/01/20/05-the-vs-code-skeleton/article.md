@@ -18,7 +18,7 @@ A debugger in VS Code lives in two distinct worlds. One world is the user interf
 
 ## The common language of DAP
 
-The Debug Adapter Protocol provides a standardized way for editors to interact with debuggers. Instead of developers writing custom interfaces for every language, VS Code expects a debug adapter to handle a small set of requests so the editor can control execution. This abstraction allows me to focus on Z80 specific logic while VS Code handles the heavy lifting of the graphical interface. When a user clicks the margin to set a breakpoint, VS Code sends a `setBreakpoints` request. My adapter translates that request into a machine address. The engine stops when it reaches that location.
+The Debug Adapter Protocol provides a standardized way for editors to interact with debuggers. Instead of developers writing custom interfaces for every language, VS Code requires a debug adapter to handle a small set of requests so the editor can control execution. This abstraction allows me to focus on Z80 specific logic while VS Code handles the heavy lifting of the graphical interface. When a user clicks the margin to set a breakpoint, VS Code sends a `setBreakpoints` request. My adapter translates that request into a machine address. The engine stops when it reaches that location.
 
 ## Why I chose an Inline implementation
 
@@ -34,7 +34,7 @@ The lifecycle of a Debug80 session begins with activation. In the `package.json`
 ]
 ```
 
-When a user initiates a session, VS Code triggers an initialization handshake. The adapter responds with a capabilities description so VS Code knows how to drive the session. Once this handshake completes, the environment is ready to load the Z80 program. The execution cycle then bridges the final gap between the static JSON configuration and the live machine.
+When a user initiates a session, VS Code triggers an initialization handshake. The adapter responds with a capabilities description so VS Code can drive the session. Once this handshake completes, the environment is ready to load the Z80 program. The execution cycle then bridges the final gap between the static JSON configuration and the live machine.
 
 ## The Z80DebugSession
 
