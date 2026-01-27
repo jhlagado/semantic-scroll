@@ -8,15 +8,14 @@ tags:
   - tec1
   - retrocomputing
   - tooling
-series: debug80diaries
-thumbnail: assets/tec1-blue-prototype.jpg
+thumbnail: assets/talking_electronics_10001.png
 ---
 
 # Why I Came Back to the Z80
 
 My involvement with the Z80 predates the TEC-1 by several years. In the late 1970s, I was designing systems on paper. Most days I was working through the constraints of building a usable computer around an affordable processor. The work lived in the instruction set. The memory layout kept the constraints visible. Like many people at the time, access to hardware lagged behind understanding. The ideas came first; the opportunity to realise them came later.
 
-![The TEC-1 Blue Prototype](./assets/tec1-blue-prototype.jpg "The TEC-1 blue prototype: a bridge between 1983 and the modern debugger.")
+![Talking Electronics TEC-1 coverage](./assets/talking_electronics_10001.png "Talking Electronics coverage of the TEC-1 computer kit.")
 
 By the early 1980s that opportunity arrived. I built a sequence of Z80-based prototypes. I refined the hardware as I went. That work sharpened my sense of how people might interact with such a machine. Those prototypes eventually became the basis for a collaboration with Ken Stone, and together we produced the TEC-1 computer kit. *Talking Electronics* magazine published this kit in 1983.
 

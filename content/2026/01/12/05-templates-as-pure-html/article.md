@@ -40,9 +40,9 @@ By the time a template enters the pipeline, the interesting work is already comp
 
 That is what lets templates stay simple. It keeps the scope small when I need to debug. It also keeps the source legible when I return to it months later.
 
-A template contains ordinary HTML and one or more `<template>` tags that act as render slots. Each slot names a query so the build knows what to stamp. At build time, the system takes the results of that query and stamps the corresponding content into the slot. If the query returned nothing, the system uses the fallback HTML inside the `<template>` tag instead. After stamping, the build removes the `<template>` tag itself, leaving only normal HTML behind.
+A template contains ordinary HTML and one or more `<template>` tags that act as render slots. Each slot names a query so the build has a precise target to stamp. At build time, the system takes the results of that query and stamps the corresponding content into the slot. If the query returned nothing, the system uses the fallback HTML inside the `<template>` tag instead. After stamping, the build removes the `<template>` tag itself, leaving only normal HTML behind.
 
-Because of this, a template never needs conditionals or loops. It never needs to know how many articles exist or whether a tag is empty, and it does not decide ordering. The build resolves all of that earlier. The template defines where the stamped output should appear and what should show up when there is nothing to stamp.
+Because of this, a template has no conditionals or loops. It does not handle counts or empty tags, and the build resolves ordering earlier. The template defines where the stamped output should appear and what should show up when there is nothing to stamp.
 
 This turns templating into a mechanical operation. Given the same set of article records and the same queries, the same templates will always produce the same HTML. There is no hidden state and no branching behaviour inside the template files themselves.
 

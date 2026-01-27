@@ -14,9 +14,9 @@ By John Hardy
 
 I treat indexing as a query problem, not a rendering problem. Every list on the site comes from a named query that selects a set of articles and a sort order. That keeps selection declarative and repeatable, and it keeps logic out of templates.
 
-Queries live in JSON, not inside templates. A template names the query and provides a slot. Then the build fills that slot with either summaries or full article bodies. The template never decides what exists, and it never learns how selection works.
+Queries live in JSON, not inside templates. A template names the query and provides a slot. Then the build fills that slot with either summaries or full article bodies. The template never determines what exists, and it never contains selection logic.
 
-This separation keeps indexing logic small and inspectable. If a list looks wrong, I can read the query and see exactly why those items appear. The build avoids inference and guesswork, which prevents hidden selection and keeps the lists predictable.
+This separation keeps indexing logic small and inspectable. If a list looks wrong, I can read the query and see exactly why those items appear. Queries make selection explicit and remove inference and guesswork, which prevents hidden selection and keeps the lists predictable.
 
 The constraint is intentional because queries are plain objects, not a DSL. They cannot grow into a second programming language. That limit is a feature: it prevents hidden logic and keeps the system declarative, not imperative.
 

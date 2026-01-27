@@ -15,6 +15,10 @@ series: debug80diaries
 
 As Debug80 reached maturity, it faced a classic architectural crossroads. We started with a simple debugger and quickly added support for the TEC-1 platform. ROM loaders and example games like *Caverns* followed. The repository was becoming a "mono-blob" that cluttered the codebase with machine-specific binary data and logic. To ensure the long-term stability of the core debugger, I initiated what I called "The Great Unbundling."
 
+![Debug80 TEC-1 interface, January 23, 2026](./assets/tec1-ui-2026-01-23.png "Debug80 TEC-1 interface, January 23, 2026.")
+
+This capture shows the interface state that framed the unbundling work.
+
 ## Identifying the Core
 
 The core of Debug80 is the VS Code Debug Adapter Protocol (DAP) implementation plus the Z80 emulator. I treat everything beyond that as peripheral. That peripheral layer includes the TEC-1 ROMs and its RAM initialization files. Scalability meant that a developer should be able to use Debug80 for *any* Z80 project without the core repository needing to know about that project's specifics.
