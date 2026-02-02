@@ -22,6 +22,7 @@ The platform UI (seven-segment displays, LCD, keypad simulation) used to open as
 The migration touched several architectural concerns: onboarding new users with a welcome view, preserving state when the sidebar is hidden (since `retainContextWhenHidden` is unavailable on WebviewView), and preventing stale updates from ended debug sessions through session-aware event routing. The result is a platform UI that feels integrated rather than bolted on.
 
 **Key topics:**
+
 - Why WebviewView instead of WebviewPanel for permanent UI
 - The welcome/onboarding flow and the `debug80.hasProject` context key
 - The `uiRevision` counter pattern for handling visibility changes
@@ -30,6 +31,7 @@ The migration touched several architectural concerns: onboarding new users with 
 - Routing all platform events through a single `PlatformViewProvider`
 
 **Code samples:**
+
 - The `package.json` contributions for activity bar and views
 - The WebviewViewProvider skeleton with session tracking
 - Re-hydrating state on `onDidChangeVisibility`
@@ -49,6 +51,7 @@ The earlier LCD simulation handled the basics—clear, home, DDRAM addressing, d
 The first half addresses the instruction set gaps: entry mode (increment vs decrement, display shift on write), display on/off control (the interplay of display, cursor, and blink flags), cursor/display shift (moving the window vs moving the cursor), and function set (stored but not enforced since the LCD2004 is fixed at 8-bit, 2-line). The second half adds CGRAM support: parsing the CGRAM address set instruction, routing writes to a 64-byte buffer, and rendering custom glyphs as 5×8 pixel grids in the webview.
 
 **Key topics:**
+
 - Entry mode set: `lcdEntryIncrement` and `lcdEntryShift` state variables
 - Display on/off control: `lcdDisplayOn`, `lcdCursorOn`, `lcdCursorBlink`
 - Cursor/display shift: `lcdDisplayShift` offset applied at render time
@@ -58,6 +61,7 @@ The first half addresses the instruction set gaps: entry mode (increment vs decr
 - Rendering custom characters in the webview font lookup
 
 **Code samples:**
+
 - The expanded LCD state interface
 - Instruction parsing in `lcdWriteCommand`
 - The `lcdCgram: Uint8Array(64)` buffer
@@ -77,6 +81,7 @@ The TEC-1G has two key registers: the system latch at port 0xFF (SYS_CTRL) and t
 The first half covers the registers. SYS_CTRL gains bank select (E_A14), caps lock, and reserved bits. SYS_INPUT gains shift key, raw key detection, GIMP, and the cartridge flag. A bug is fixed where bit 3 of SYS_INPUT was incorrectly mirroring the expand flag instead of indicating cartridge presence. The second half implements expansion banking: allocating a 32K buffer, routing memory access through a bank index controlled by E_A14, and respecting the CONFIG DIP switch default on reset.
 
 **Key topics:**
+
 - Reading the TEC-1G schematic (v1.21) to identify bit assignments
 - SYS_CTRL full decode: shadow, protect, expand, bank select, caps, reserved
 - SYS_INPUT full decode: shift key, protect, expand, cart, raw key, GIMP, KDA, RX
@@ -86,6 +91,7 @@ The first half covers the registers. SYS_CTRL gains bank select (E_A14), caps lo
 - CONFIG switch 3: setting the default bank on reset
 
 **Code samples:**
+
 - The expanded `Tec1gSysCtrlState` type with all 8 bits
 - The corrected port 0x03 read handler
 - Memory read/write routing through `tec1g-memory.ts`
@@ -98,13 +104,14 @@ The first half covers the registers. SYS_CTRL gains bank select (E_A14), caps lo
 
 ## Summary
 
-| # | Title | Date | Theme |
-|---|-------|------|-------|
-| 1 | Moving to the Sidebar | 2026-01-29 | UX and VS Code integration |
-| 2 | Completing the HD44780 | 2026-01-30 | LCD simulation fidelity |
-| 3 | TEC-1G Hardware Fidelity | 2026-01-31 | Schematic-driven emulation |
+| #   | Title                    | Date       | Theme                      |
+| --- | ------------------------ | ---------- | -------------------------- |
+| 1   | Moving to the Sidebar    | 2026-01-29 | UX and VS Code integration |
+| 2   | Completing the HD44780   | 2026-01-30 | LCD simulation fidelity    |
+| 3   | TEC-1G Hardware Fidelity | 2026-01-31 | Schematic-driven emulation |
 
 **Deferred topics** (can become future articles):
+
 - The Great Refactoring: adapter helper extraction and Vitest setup
 - CI and Quality: GitHub Actions and coverage thresholds
 - TEC-1G Emulation Review: the full audit document (could be a reference post)
