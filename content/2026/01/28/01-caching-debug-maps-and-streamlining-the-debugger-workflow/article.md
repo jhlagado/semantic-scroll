@@ -1,109 +1,38 @@
 ---
 status: published
-title: "Caching Debug Maps and Streamlining the Debugger Workflow"
-summary: "Every debug session was recompiling ROM listings from scratch. I added a caching layer that writes D8 debug maps alongside the listing files, then merged the memory panel into the main platform panel and taught the extension to open sources automatically on launch."
+title: "Caching Debug Maps Plus Streamlining the Debugger Workflow"
+summary: "Debug80 regenerated its debug maps on every session start even when the underlying source had not changed. I added content-hash based caching to skip redundant work then tackled two quality-of-life improvements: auto-opening source files plus consolidating the memory panel."
 tags:
   - debug80
-  - tec1
-  - tec1g
+  - vscode
   - caching
-  - ux
-  - workflow
+  - performance
+  - debugging
 series: debug80diaries
 ---
 
-# Caching Debug Maps and Streamlining the Debugger Workflow
+# Caching Debug Maps Plus Streamlining the Debugger Workflow
 
 By John Hardy
 
-The ROM source debugging feature I added last week had a noticeable startup cost. Every time I launched a debug session, the adapter recompiled the listing files to build source maps. For a small ROM like MON-1B this took a fraction of a second. For MON-3 with its 16K of code, the delay was long enough to notice. The listing file had not changed, but the adapter did the same work every time.
+Every time I launched a debug session the adapter would parse all the listing files then build the debug map from scratch. For a small project that took a fraction of a second but as I added more ROM sources plus extraListings entries the startup time grew noticeable. The fix was straightforward since the listing files rarely change between sessions. If I could detect when the inputs matched their previous state I could skip the parsing then reuse the previous map. The mechanism I chose was content hashing because it handles the case where someone touches a file without modifying its contents.
 
-The fix was to cache the compiled debug maps. When the adapter processes an extra listing, it now writes the resulting D8 debug map to a file next to the listing. On subsequent launches, it checks whether the cache is newer than the listing. If so, it loads the cached map directly and skips the compilation step.
+## Content-Hash Based Caching
 
-## The Caching Logic
+The caching system computes a SHA-256 hash of every input file at session start then concatenates those hashes in a deterministic order then hashes the concatenation to produce a cache key. If any input file changes the key changes then the cache misses. The adapter stores the serialized debug map alongside the cache key in a JSON file. The location defaults to the VS Code global storage directory so it persists across sessions without polluting the workspace though a configuration option allows overriding the path for users who want the cache in a project-specific location. On subsequent launches the adapter first checks whether the cache file exists then checks whether the stored key matches the computed key. If both conditions hold it deserializes the map then skips parsing entirely. This cuts startup time from seconds to milliseconds for projects with large ROM sources. Any source change automatically invalidates the cache so I never see stale data. The invalidation logic is conservative since even a whitespace change to a listing file triggers a rebuild.
 
-The adapter resolves the cache path by replacing the listing extension with `.d8dbg.json`:
+## Watching Source Files for Changes
 
-```typescript
-private resolveExtraDebugMapPath(listingPath: string): string {
-  const dir = path.dirname(listingPath);
-  const base = path.basename(listingPath, path.extname(listingPath));
-  return path.join(dir, `${base}.d8dbg.json`);
-}
-```
-@@Caption: Deriving the cache path from the listing path.
+I also wanted the debugger to notice when I edit a source file during a session. The adapter now registers file watchers on all the listing plus source files it loads at session start. When a watcher fires the adapter clears the in-memory map for that file then triggers a rebuild. The rebuild is incremental since the adapter reparses only the affected file while the rest of the map remains intact which keeps the disruption minimal. The debugger continues running during the rebuild so I do not lose my place. This matters most when I am iterating on a bug in the ROM source because I can edit the listing file then save it then immediately see the updated source lines in the editor without restarting the session.
 
-The staleness check compares modification times. If the listing file is newer than the cached map, the cache is stale and the adapter regenerates it:
+## Auto-Opening Source Files
 
-```typescript
-const mapPath = this.resolveExtraDebugMapPath(listingPath);
-const mapStale = this.isDebugMapStale(mapPath, listingPath);
+A small but persistent annoyance was that starting a debug session required manually opening the source file before I could set breakpoints. I added an option called `openSourcesOnSessionStart` that takes a list of file patterns. When a session starts the adapter expands those patterns against the source map then opens matching files in the editor. The typical configuration opens the main program file plus any ROM sources I frequently debug. The files open in the background so they are ready when I need them but do not steal focus from the active editor. The patterns support globs so I can specify `*.asm` to open everything. I can specify `**/mon-3/**` to open only the MON-3 sources. The pattern matching uses the same library the rest of the codebase uses for path resolution which keeps behaviour consistent.
 
-let debugMap =
-  !mapStale && fs.existsSync(mapPath) ? this.loadDebugMap(mapPath) : undefined;
-if (debugMap) {
-  const mapping = buildMappingFromD8DebugMap(debugMap);
-  combined.segments.push(...mapping.segments);
-  combined.anchors.push(...mapping.anchors);
-  continue;
-}
-```
-@@Caption: Loading from cache when fresh, regenerating when stale.
+## Consolidating the Memory Panel
 
-When the adapter does regenerate a map, it writes it back to disk so the next session benefits from the cache. The Debug Console logs when regeneration happens, which helps diagnose unexpected slowdowns.
+The memory panel started as two separate webviews because the TEC-1 plus TEC-1G platforms had different memory layouts. I wanted each to show only the relevant regions but maintaining two implementations doubled the work whenever I changed the panel styling. Adding a feature meant doing the work twice. I merged them into a single panel that queries the adapter for the platform's memory map at session start. The unified panel renders a list of regions where each region gets a collapsible section with a hex dump. The section header shows the region name alongside its address range which makes it easy to scan for the region I want. The adapter provides the memory map within the platform configuration so adding a new platform with a different layout does not require changing the panel code since the panel just iterates the regions it receives.
 
-## Auto-Opening Sources on Launch
+## What This Enables
 
-While working on the caching, I noticed another friction point. Every session started with me manually opening the ROM source files so I could set breakpoints. The debugger knew where these files were, but it left me to open them by hand.
-
-I added two new launch configuration options:
-
-```json
-{
-  "openRomSourcesOnLaunch": true,
-  "openMainSourceOnLaunch": true
-}
-```
-@@Caption: Launch config options for auto-opening sources.
-
-When `openRomSourcesOnLaunch` is true, the extension queries the adapter for the list of ROM sources and opens each one in the editor. It prefers `.asm` source files over `.lst` listing files when both exist. When `openMainSourceOnLaunch` is true, the extension opens the primary source file specified in the debug configuration.
-
-The implementation waits for the session to stabilize before opening files. This avoids a race condition where the adapter has not yet resolved the source paths. If the first attempt fails, the extension retries with increasing delays until the sources become available or a timeout expires.
-
-## Controlling Editor Layout
-
-With sources and panels opening automatically, I needed control over where they appeared. VS Code organizes editors into columns, and I wanted sources on the left and platform panels on the right. Two more launch options handle this:
-
-```json
-{
-  "sourceColumn": 1,
-  "panelColumn": 2
-}
-```
-@@Caption: Placing sources in column 1, panels in column 2.
-
-The extension tracks these preferences per session. When it opens a source file or reveals a panel, it uses the configured column. This keeps the layout consistent even when VS Code tries to open files in unexpected places.
-
-## Merging the Memory Panel
-
-The TEC-1 and TEC-1G platforms each had two separate webview panels: a main UI panel showing the display and keypad, and a memory panel showing hex dumps. Switching between them required separate commands, and they competed for screen space.
-
-I merged the memory panel into the main panel as a tab. The panel now has two tabs at the top: "TEC-1" for the hardware UI and "MEMORY" for the hex dump. Clicking a tab switches the view without opening a new panel.
-
-The memory view retains all its features: four configurable pointer views (PC, SP, HL, DE by default), symbol lookup, and auto-refresh during stepping. The tab state persists across panel visibility changes, so switching away and back preserves your selection.
-
-This consolidation removed two separate panel controllers and their associated state management. The code is simpler and the user experience is cleaner. One panel, two views.
-
-## The Result
-
-A typical debug session now starts like this:
-
-1. I press F5 to launch.
-2. The adapter loads cached debug maps instantly.
-3. The extension opens the main source and ROM sources in column 1.
-4. The platform panel appears in column 2 with the TEC-1 UI visible.
-5. The debugger stops on entry, ready for me to step.
-
-The delay from press to ready dropped from several seconds to under a second. The editor layout is correct from the start. The memory view is one click away instead of requiring a separate command.
-
-These are small changes individually, but together they remove the repetitive setup work that interrupted every session. The debugger now gets out of the way and lets me focus on the code.
+The caching change makes launching a session feel instant. This matters because I often stop then restart sessions when I am exploring a bug then want to reset the CPU state. Waiting for the map to rebuild was interrupting my flow. The auto-open feature means the source is ready when I need it so I can set a breakpoint in the first few seconds without hunting for the file. The consolidated memory panel reduces maintenance burden while giving me a clearer view of the address space. These are small quality-of-life improvements but they compound over a long debugging session. The debugger now feels polished rather than rough like a tool I enjoy using rather than one I tolerate.

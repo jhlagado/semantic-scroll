@@ -15,6 +15,6 @@
     "find": "node node_modules/scribere/scripts/find.js"
   },
   "dependencies": {
-    "scribere": "github:jhlagado/scribere"
+    "scribere": "file:../scribere"
   }
 }
