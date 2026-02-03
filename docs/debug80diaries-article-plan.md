@@ -15,15 +15,15 @@ After reviewing the development activity, three strong narratives emerged. Two p
 ### 1. Moving to the Sidebar: A Permanent Home for the Platform UI
 
 **Target date:** 2026-01-29  
-**Narrative focus:** The migration from ephemeral WebviewPanels to a permanent sidebar view.
+**Narrative focus:** The migration from ephemeral ViewPanels to a permanent sidebar view.
 
 The platform UI (seven-segment displays, LCD, keypad simulation) used to open as an editor tab that competed with source files for space. Users who installed the extension had no visible entry point—they had to know the command palette incantation. This article documents the decision to move to a VS Code activity bar view container, giving Debug80 a permanent presence in the IDE.
 
-The migration touched several architectural concerns: onboarding new users with a welcome view, preserving state when the sidebar is hidden (since `retainContextWhenHidden` is unavailable on WebviewView), and preventing stale updates from ended debug sessions through session-aware event routing. The result is a platform UI that feels integrated rather than bolted on.
+The migration touched several architectural concerns: onboarding new users with a welcome view, preserving state when the sidebar is hidden (since `retainContextWhenHidden` is unavailable on View), and preventing stale updates from ended debug sessions through session-aware event routing. The result is a platform UI that feels integrated rather than bolted on.
 
 **Key topics:**
 
-- Why WebviewView instead of WebviewPanel for permanent UI
+- Why View instead of ViewPanel for permanent UI
 - The welcome/onboarding flow and the `debug80.hasProject` context key
 - The `uiRevision` counter pattern for handling visibility changes
 - Session ID filtering to ignore events from ended sessions
@@ -33,7 +33,7 @@ The migration touched several architectural concerns: onboarding new users with 
 **Code samples:**
 
 - The `package.json` contributions for activity bar and views
-- The WebviewViewProvider skeleton with session tracking
+- The ViewProvider skeleton with session tracking
 - Re-hydrating state on `onDidChangeVisibility`
 - Event filtering by session ID
 
