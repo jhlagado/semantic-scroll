@@ -16,6 +16,19 @@
 </head>
 <body class="page-article">
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="corner-menu" id="corner-menu">
+    <button class="corner-toggle" type="button" aria-expanded="false" aria-controls="side-menu" aria-label="Open site menu"></button>
+    <aside class="side-menu" id="side-menu">
+      <nav class="side-menu-nav" aria-label="Site menu">
+        <a href="/">Home</a>
+        <a href="/series/">Series</a>
+        <a href="/assets/media.html">Media</a>
+        <a href="/tags/">Tags</a>
+        <a data-href="archive-root">Archive</a>
+        <a href="/about/">About</a>
+      </nav>
+    </aside>
+  </div>
   <div class="page">
     <header class="site-header">
       <a class="site-mark" href="/">
@@ -24,14 +37,16 @@
       <p class="site-subtitle">Writing into being.</p>
       <nav class="site-nav">
         <a href="/">Home</a>
-        <a data-href="archive-root">Archive</a>
-        <a href="/tags/">Tags</a>
         <a href="/series/">Series</a>
+        <a href="/assets/media.html">Media</a>
+        <a href="/tags/">Tags</a>
+        <a data-href="archive-root">Archive</a>
         <a href="/about/">About</a>
       </nav>
     </header>
     <main id="main">
       <article class="article-entry">
+        <button class="article-back-btn" type="button" id="article-back-btn" aria-label="Go back to previous page">Back</button>
         <header class="article-meta article-meta-top">
           <template data-query="article-page" data-view="article-meta-top"></template>
         </header>
@@ -54,6 +69,178 @@
       const es = new EventSource('/__reload');
       es.onmessage = () => location.reload();
     }
+
+    (function () {
+      const backButton = document.getElementById('article-back-btn');
+      if (!backButton) {
+        return;
+      }
+      backButton.addEventListener('click', function () {
+        if (window.history.length > 1) {
+          window.history.back();
+          return;
+        }
+        window.location.href = '/';
+      });
+    })();
+
+    (function () {
+      const entries = Array.from(document.querySelectorAll('.article-entry'));
+      entries.forEach(function (entry) {
+        const heading = entry.querySelector('h1');
+        const permalink = entry.querySelector('.article-meta-date a[href]');
+        if (!heading || heading.querySelector('a')) {
+          return;
+        }
+        const link = document.createElement('a');
+        link.href = permalink ? permalink.getAttribute('href') : location.pathname;
+        link.className = 'article-title-link';
+        link.innerHTML = heading.innerHTML;
+        heading.replaceChildren(link);
+      });
+    })();
+
+    (function () {
+      const paragraphs = Array.from(document.querySelectorAll('.article-entry p'));
+      paragraphs.forEach(function (paragraph) {
+        const text = (paragraph.textContent || '').trim();
+        if (/^By\s+/i.test(text)) {
+          paragraph.classList.add('article-byline');
+        }
+      });
+    })();
+
+    (function () {
+      const banners = Array.from(document.querySelectorAll('.lint-banner'));
+      banners.forEach(function (banner) {
+        const list = banner.querySelector('.lint-banner-list');
+        if (!list) {
+          return;
+        }
+        const toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'lint-banner-toggle';
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.textContent = 'Show issues';
+        list.insertAdjacentElement('beforebegin', toggle);
+        list.hidden = true;
+        banner.classList.add('is-collapsed');
+        toggle.addEventListener('click', function () {
+          const collapsed = banner.classList.toggle('is-collapsed');
+          list.hidden = collapsed;
+          toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+          toggle.textContent = collapsed ? 'Show issues' : 'Hide issues';
+        });
+      });
+    })();
+
+    (function () {
+      const cornerMenu = document.getElementById('corner-menu');
+      if (!cornerMenu) {
+        return;
+      }
+      const toggle = cornerMenu.querySelector('.corner-toggle');
+      const menuLinks = Array.from(cornerMenu.querySelectorAll('.side-menu-nav a'));
+      if (!toggle) {
+        return;
+      }
+      const supportsHover = window.matchMedia('(hover: hover)').matches;
+      const hoverDelayMs = 420;
+      let hoverTimer = null;
+
+      function syncState() {
+        const open = cornerMenu.classList.contains('is-open') || cornerMenu.classList.contains('is-hover-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      toggle.addEventListener('click', function () {
+        cornerMenu.classList.remove('is-hover-open');
+        const open = cornerMenu.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+
+      if (supportsHover) {
+        cornerMenu.addEventListener('mouseenter', function () {
+          clearTimeout(hoverTimer);
+          if (cornerMenu.classList.contains('is-open')) {
+            return;
+          }
+          hoverTimer = setTimeout(function () {
+            cornerMenu.classList.add('is-hover-open');
+            syncState();
+          }, hoverDelayMs);
+        });
+        cornerMenu.addEventListener('mouseleave', function () {
+          clearTimeout(hoverTimer);
+          cornerMenu.classList.remove('is-hover-open');
+          syncState();
+        });
+      }
+
+      menuLinks.forEach(function (link) {
+        link.addEventListener('click', function () {
+          cornerMenu.classList.remove('is-hover-open');
+          cornerMenu.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+
+    (function () {
+      const entries = Array.from(document.querySelectorAll('.article-entry, .summary'));
+      entries.forEach(function (entry) {
+        const seriesLink = entry.querySelector('.article-meta-date a[href^="/series/"]');
+        if (!seriesLink || entry.querySelector('.series-tab')) {
+          return;
+        }
+
+        const href = seriesLink.getAttribute('href') || '';
+        const match = href.match(/\/series\/([^/]+)\//);
+        if (!match) {
+          return;
+        }
+
+        const tab = document.createElement('a');
+        tab.className = 'series-tab';
+        tab.href = href;
+        tab.dataset.series = match[1];
+        tab.setAttribute('aria-label', 'Open series ' + match[1]);
+        entry.insertAdjacentElement('afterbegin', tab);
+      });
+    })();
+
+    (function () {
+      const mediaParam = new URLSearchParams(location.search).get('media');
+      if (!mediaParam) {
+        return;
+      }
+
+      function normalizePath(value) {
+        try {
+          return new URL(value, location.origin).pathname;
+        } catch (error) {
+          return value || '';
+        }
+      }
+
+      const targetPath = normalizePath(mediaParam);
+      const images = Array.from(document.querySelectorAll('.article-entry img'));
+      const targetImage = images.find((img) => {
+        const srcPath = normalizePath(img.currentSrc || img.src);
+        return srcPath === targetPath;
+      });
+
+      if (!targetImage) {
+        return;
+      }
+
+      requestAnimationFrame(function () {
+        targetImage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
+      const cleanUrl = location.pathname + location.hash;
+      history.replaceState(null, '', cleanUrl);
+    })();
   </script>
 </body>
 </html>
