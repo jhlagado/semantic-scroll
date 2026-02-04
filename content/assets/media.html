@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Media - Semantic Scroll</title>
+  <meta name="description" content="Image gallery of article assets from Semantic Scroll." />
+  <link rel="icon" type="image/png" href="/assets/semantic-scroll-fav.png" />
+  <link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body class="media-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="corner-menu" id="corner-menu">
+    <button class="corner-toggle" type="button" aria-expanded="false" aria-controls="side-menu" aria-label="Open site menu"></button>
+    <aside class="side-menu" id="side-menu">
+      <nav class="side-menu-nav" aria-label="Site menu">
+        <a href="/">Home</a>
+        <a href="/series/">Series</a>
+        <a href="/assets/media.html">Media</a>
+        <a href="/tags/">Tags</a>
+        <a href="/content/">Archive</a>
+        <a href="/about/">About</a>
+      </nav>
+    </aside>
+  </div>
+  <div class="page">
+    <header class="site-header">
+      <a class="site-mark" href="/">
+        <img src="/assets/semantic-scroll.svg" alt="Semantic Scroll" width="160" height="160" />
+      </a>
+      <p class="site-subtitle">Writing into being.</p>
+      <nav class="site-nav">
+        <a href="/">Home</a>
+        <a href="/series/">Series</a>
+        <a href="/assets/media.html">Media</a>
+        <a href="/tags/">Tags</a>
+        <a href="/content/">Archive</a>
+        <a href="/about/">About</a>
+      </nav>
+    </header>
+    <main id="main">
+      <h1>Media</h1>
+      <p>Images embedded in published articles.</p>
+      <ul class="media-grid">
+        <li class="media-item">
+          <a class="media-link" data-article="/content/2026/01/12/06-owning-your-output/" href="/content/2026/01/12/06-owning-your-output/assets/this-is-for-everyone.jpg">
+            <img src="/content/2026/01/12/06-owning-your-output/assets/this-is-for-everyone.jpg" alt="this-is-for-everyone.jpg" loading="lazy" />
+          </a>
+        </li>
+        <li class="media-item">
+          <a class="media-link" data-article="/content/2026/01/12/08-your-address-is-your-domain/" href="/content/2026/01/12/08-your-address-is-your-domain/assets/reeve-and-serfs.jpg">
+            <img src="/content/2026/01/12/08-your-address-is-your-domain/assets/reeve-and-serfs.jpg" alt="reeve-and-serfs.jpg" loading="lazy" />
+          </a>
+        </li>
+        <li class="media-item">
+          <a class="media-link" data-article="/content/2026/01/20/01-why-i-came-back-to-the-z80/" href="/content/2026/01/20/01-why-i-came-back-to-the-z80/assets/talking_electronics_10001.png">
+            <img src="/content/2026/01/20/01-why-i-came-back-to-the-z80/assets/talking_electronics_10001.png" alt="talking_electronics_10001.png" loading="lazy" />
+          </a>
+        </li>
+        <li class="media-item">
+          <a class="media-link" data-article="/content/2026/01/20/02-the-tec-1-as-a-platform/" href="/content/2026/01/20/02-the-tec-1-as-a-platform/assets/tec1-blue-prototype.jpg">
+            <img src="/content/2026/01/20/02-the-tec-1-as-a-platform/assets/tec1-blue-prototype.jpg" alt="tec1-blue-prototype.jpg" loading="lazy" />
+          </a>
+        </li>
+        <li class="media-item">
+          <a class="media-link" data-article="/content/2026/01/22/06-mature-project-the-great-unbundling/" href="/content/2026/01/22/06-mature-project-the-great-unbundling/assets/tec1-ui-2026-01-23.png">
+            <img src="/content/2026/01/22/06-mature-project-the-great-unbundling/assets/tec1-ui-2026-01-23.png" alt="tec1-ui-2026-01-23.png" loading="lazy" />
+          </a>
+        </li>
+        <li class="media-item">
+          <a class="media-link" data-article="/content/2026/01/23/01-memory-panel-as-a-debugging-surface/" href="/content/2026/01/23/01-memory-panel-as-a-debugging-surface/assets/tec1-memory-panel-2026-01-23.png">
+            <img src="/content/2026/01/23/01-memory-panel-as-a-debugging-surface/assets/tec1-memory-panel-2026-01-23.png" alt="tec1-memory-panel-2026-01-23.png" loading="lazy" />
+          </a>
+        </li>
+        <li class="media-item">
+          <a class="media-link" data-article="/content/2026/01/24/01-simulating-the-hd44780-lcd/" href="/content/2026/01/24/01-simulating-the-hd44780-lcd/assets/hd44780-charset.png">
+            <img src="/content/2026/01/24/01-simulating-the-hd44780-lcd/assets/hd44780-charset.png" alt="hd44780-charset.png" loading="lazy" />
+          </a>
+        </li>
+      </ul>
+    </main>
+    <footer class="site-footer">
+      <p>© 2026 John Hardy. GPL-3.0.</p>
+      <p>Made with <a href="https://github.com/jhlagado/scribere">Scribere</a>.</p>
+      <p>Published from the same repo that builds this site. <a href="https://github.com/jhlagado/semantic-scroll">GitHub</a>.</p>
+    </footer>
+  </div>
+  <div class="media-lightbox" id="media-lightbox" hidden>
+    <div class="media-lightbox-backdrop" data-lightbox-close></div>
+    <div class="media-lightbox-panel" role="dialog" aria-modal="true" aria-label="Image preview">
+      <div class="media-lightbox-frame">
+        <button class="media-lightbox-nav media-lightbox-prev" type="button" data-lightbox-prev aria-label="Previous image"><span class="media-lightbox-glyph">&#8249;</span></button>
+        <button class="media-lightbox-nav media-lightbox-next" type="button" data-lightbox-next aria-label="Next image"><span class="media-lightbox-glyph">&#8250;</span></button>
+        <button class="media-lightbox-close" type="button" data-lightbox-close aria-label="Close image preview">&times;</button>
+        <a class="media-lightbox-image-link" id="media-lightbox-image-link" href="#">
+          <img class="media-lightbox-image" id="media-lightbox-image" alt="" />
+        </a>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const lightbox = document.getElementById('media-lightbox');
+      const lightboxImage = document.getElementById('media-lightbox-image');
+      const lightboxImageLink = document.getElementById('media-lightbox-image-link');
+      const prevButton = lightbox.querySelector('[data-lightbox-prev]');
+      const nextButton = lightbox.querySelector('[data-lightbox-next]');
+      if (!lightbox || !lightboxImage || !lightboxImageLink) {
+        return;
+      }
+
+      const links = Array.from(document.querySelectorAll('.media-link'));
+      let activeTrigger = null;
+      let activeArticleHref = '';
+      let currentIndex = -1;
+
+      function openAt(index) {
+        if (!links.length) {
+          return;
+        }
+        const wrappedIndex = ((index % links.length) + links.length) % links.length;
+        const link = links[wrappedIndex];
+        const image = link.querySelector('img');
+        const src = link.getAttribute('href');
+        const articlePath = link.getAttribute('data-article');
+        if (!src) {
+          return;
+        }
+
+        currentIndex = wrappedIndex;
+        activeTrigger = link;
+        activeArticleHref = articlePath
+          ? `${articlePath}?media=${encodeURIComponent(src)}`
+          : '';
+        lightboxImage.src = src;
+        lightboxImage.alt = image ? image.alt : '';
+        lightboxImageLink.href = activeArticleHref || '#';
+      }
+
+      function step(direction) {
+        if (currentIndex < 0) {
+          return;
+        }
+        openAt(currentIndex + direction);
+      }
+
+      function closeLightbox() {
+        lightbox.hidden = true;
+        lightbox.classList.remove('is-open');
+        lightboxImage.removeAttribute('src');
+        lightboxImage.removeAttribute('alt');
+        lightboxImageLink.setAttribute('href', '#');
+        activeArticleHref = '';
+        currentIndex = -1;
+        document.body.style.overflow = '';
+        if (activeTrigger) {
+          activeTrigger.focus();
+        }
+      }
+
+      links.forEach(function (link) {
+        link.addEventListener('click', function (event) {
+          event.preventDefault();
+          const index = links.indexOf(link);
+          openAt(index);
+          lightbox.hidden = false;
+          lightbox.classList.add('is-open');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      lightbox.addEventListener('click', function (event) {
+        if (event.target && event.target.hasAttribute('data-lightbox-close')) {
+          closeLightbox();
+        }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && !lightbox.hidden) {
+          closeLightbox();
+        }
+        if (event.key === 'ArrowLeft' && !lightbox.hidden) {
+          step(-1);
+        }
+        if (event.key === 'ArrowRight' && !lightbox.hidden) {
+          step(1);
+        }
+      });
+
+      lightboxImageLink.addEventListener('click', function (event) {
+        if (!activeArticleHref) {
+          event.preventDefault();
+        }
+      });
+
+      if (prevButton) {
+        prevButton.addEventListener('click', function () {
+          step(-1);
+        });
+      }
+
+      if (nextButton) {
+        nextButton.addEventListener('click', function () {
+          step(1);
+        });
+      }
+    })();
+
+    (function () {
+      const cornerMenu = document.getElementById('corner-menu');
+      if (!cornerMenu) {
+        return;
+      }
+      const toggle = cornerMenu.querySelector('.corner-toggle');
+      const menuLinks = Array.from(cornerMenu.querySelectorAll('.side-menu-nav a'));
+      if (!toggle) {
+        return;
+      }
+      const supportsHover = window.matchMedia('(hover: hover)').matches;
+      const hoverDelayMs = 420;
+      let hoverTimer = null;
+
+      function syncState() {
+        const open = cornerMenu.classList.contains('is-open') || cornerMenu.classList.contains('is-hover-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      toggle.addEventListener('click', function () {
+        cornerMenu.classList.remove('is-hover-open');
+        const open = cornerMenu.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+
+      if (supportsHover) {
+        cornerMenu.addEventListener('mouseenter', function () {
+          clearTimeout(hoverTimer);
+          if (cornerMenu.classList.contains('is-open')) {
+            return;
+          }
+          hoverTimer = setTimeout(function () {
+            cornerMenu.classList.add('is-hover-open');
+            syncState();
+          }, hoverDelayMs);
+        });
+        cornerMenu.addEventListener('mouseleave', function () {
+          clearTimeout(hoverTimer);
+          cornerMenu.classList.remove('is-hover-open');
+          syncState();
+        });
+      }
+
+      menuLinks.forEach(function (link) {
+        link.addEventListener('click', function () {
+          cornerMenu.classList.remove('is-hover-open');
+          cornerMenu.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

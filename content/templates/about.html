@@ -16,6 +16,19 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="corner-menu" id="corner-menu">
+    <button class="corner-toggle" type="button" aria-expanded="false" aria-controls="side-menu" aria-label="Open site menu"></button>
+    <aside class="side-menu" id="side-menu">
+      <nav class="side-menu-nav" aria-label="Site menu">
+        <a href="/">Home</a>
+        <a href="/series/">Series</a>
+        <a href="/assets/media.html">Media</a>
+        <a href="/tags/">Tags</a>
+        <a data-href="archive-root">Archive</a>
+        <a href="/about/">About</a>
+      </nav>
+    </aside>
+  </div>
   <div class="page">
     <header class="site-header">
       <a class="site-mark" href="/">
@@ -24,9 +37,10 @@
       <p class="site-subtitle">Writing into being.</p>
       <nav class="site-nav">
         <a href="/">Home</a>
-        <a data-href="archive-root">Archive</a>
-        <a href="/tags/">Tags</a>
         <a href="/series/">Series</a>
+        <a href="/assets/media.html">Media</a>
+        <a href="/tags/">Tags</a>
+        <a data-href="archive-root">Archive</a>
         <a href="/about/">About</a>
       </nav>
     </header>
@@ -49,6 +63,58 @@
       const es = new EventSource('/__reload');
       es.onmessage = () => location.reload();
     }
+
+    (function () {
+      const cornerMenu = document.getElementById('corner-menu');
+      if (!cornerMenu) {
+        return;
+      }
+      const toggle = cornerMenu.querySelector('.corner-toggle');
+      const menuLinks = Array.from(cornerMenu.querySelectorAll('.side-menu-nav a'));
+      if (!toggle) {
+        return;
+      }
+      const supportsHover = window.matchMedia('(hover: hover)').matches;
+      const hoverDelayMs = 420;
+      let hoverTimer = null;
+
+      function syncState() {
+        const open = cornerMenu.classList.contains('is-open') || cornerMenu.classList.contains('is-hover-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      toggle.addEventListener('click', function () {
+        cornerMenu.classList.remove('is-hover-open');
+        const open = cornerMenu.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+
+      if (supportsHover) {
+        cornerMenu.addEventListener('mouseenter', function () {
+          clearTimeout(hoverTimer);
+          if (cornerMenu.classList.contains('is-open')) {
+            return;
+          }
+          hoverTimer = setTimeout(function () {
+            cornerMenu.classList.add('is-hover-open');
+            syncState();
+          }, hoverDelayMs);
+        });
+        cornerMenu.addEventListener('mouseleave', function () {
+          clearTimeout(hoverTimer);
+          cornerMenu.classList.remove('is-hover-open');
+          syncState();
+        });
+      }
+
+      menuLinks.forEach(function (link) {
+        link.addEventListener('click', function () {
+          cornerMenu.classList.remove('is-hover-open');
+          cornerMenu.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
   </script>
 </body>
 </html>
