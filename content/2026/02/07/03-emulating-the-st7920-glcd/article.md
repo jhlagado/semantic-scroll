@@ -18,11 +18,11 @@ By John Hardy
 
 The TEC-1G includes support for the ST7920 graphical LCD controller, a chip that drives 128×64 pixel displays using a parallel interface. Programs can write pixels to display buffer memory and read them back for verification or manipulation. The read path has a quirk that tripped me up: the first read after setting an address returns the data from the *previous* address, not the address you just specified.
 
-I discovered this while testing a graphics routine that drew shapes and then verified the framebuffer contents. The routine worked correctly on real hardware but failed in my emulator. The verification loop expected specific pixel patterns and found zeros instead. The writes were landing correctly—I could see the display updating—but the reads returned wrong values.
+I discovered this while testing a graphics routine that drew shapes and then verified the framebuffer contents. The routine worked correctly on real hardware but failed in my emulator. The verification loop expected specific pixel patterns and found zeros instead. The writes were landing correctly (I could see the display updating) but the reads returned wrong values.
 
 ## The pipeline behaviour
 
-The ST7920's data sheet explains the read pipeline in a few terse sentences. When you set the address counter with a command, the controller latches the new address but does not immediately fetch the corresponding data. The data bus still holds whatever was fetched previously. To read the data at the new address, you must perform a dummy read that primes the pipeline, then perform the actual read that returns the wanted value.
+The ST7920's data sheet explains the read pipeline in a few terse sentences. When you set the address counter with a command, the controller latches the new address but does not immediately fetch the corresponding data. The data bus still holds the previously fetched value. To read the data at the new address, you must perform a dummy read that primes the pipeline, then perform the actual read that returns the wanted value.
 
 The sequence looks like this:
 
@@ -37,7 +37,7 @@ The dummy read triggers an internal fetch from address N. That fetch completes d
 
 A naive emulator models the data read as a simple array lookup: given address N, return `memory[N]`. This works for writes, which take effect immediately, but fails for reads because it ignores the pipeline delay. The real chip does not deliver data from address N until one read cycle after you request it.
 
-My initial implementation did exactly this. The read handler received the address and returned the corresponding byte from the display buffer. Writes worked. Single reads worked. But any code that set an address and immediately read from it returned the wrong value.
+My initial implementation did exactly this: the read handler received the address and returned the corresponding byte from the display buffer. Writes worked, and single reads worked, yet any code that set an address and immediately read from it returned the wrong value.
 
 The fix required modelling the pipeline state. The emulator now tracks two values: the current address counter and the pending read value. When code sets a new address, the pending value stays stale. The first read returns the pending value and then loads the new address into the pipeline. Subsequent reads continue through the buffer with automatic incrementing.
 
@@ -92,5 +92,5 @@ The data sheet describes this behaviour, but the description is easy to overlook
 
 Peripheral emulation often requires modelling internal timing and sequencing, not just the logical contents of registers. The ST7920's read pipeline is invisible to code that only writes to the display—writes take effect immediately—but becomes critical for code that reads back. An emulator that supports only writes might pass basic tests and fail on more sophisticated programs.
 
-The fix was small: a few lines of state management. Finding the bug took longer because the symptoms—reads returning zero—could have indicated many different problems. Once I understood the real chip's behaviour, the solution was obvious. The lesson is familiar: when emulation diverges from hardware, the data sheet usually contains the answer, even if it takes a second reading to find it.
+The fix was small, just a few lines of state management. Finding the bug took longer because the symptoms (reads returning zero) could have indicated many different problems. Once I understood the real chip's behaviour, the solution was obvious. The lesson is familiar: when emulation diverges from hardware, the data sheet usually contains the answer, even if it takes a second reading to find it.
 

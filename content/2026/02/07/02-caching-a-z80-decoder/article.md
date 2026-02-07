@@ -39,7 +39,7 @@ The split made each module independently testable. I could verify `CB` instructi
 
 A debugger decodes instructions constantly. Single-stepping through code means decoding the current instruction, then the next, then the next. Memory views decode ranges of bytes to show disassembly. Breakpoint displays decode the instruction at each breakpoint address. The same instructions decode repeatedly during a debugging session.
 
-The Z80's instruction encoding is deterministic. The byte sequence `21 00 40` always decodes to `LD HL, 4000h`. There is no context dependency, no mode switching, no hidden state that changes the interpretation. Once decoded, an instruction's representation is fixed. This determinism makes caching straightforward.
+The Z80's instruction encoding is deterministic: the byte sequence `21 00 40` always decodes to `LD HL, 4000h` regardless of context. No mode switching or hidden state changes the interpretation, so once decoded, an instruction's representation remains constant forever. This determinism makes caching straightforward.
 
 ## WeakMap as a cache
 
