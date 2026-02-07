@@ -1,6 +1,6 @@
 ---
 status: published
-title: "Emulating the ST7920 GLCD: Why Your First Read Returns Zero"
+title: "First Read, Wrong Data: Emulating the ST7920's Pipeline"
 summary: "The ST7920 graphical LCD controller has a read pipeline that returns stale data on the first read after setting an address. I discovered this behaviour while debugging a display routine that worked on hardware but failed in emulation. Fixing the emulator required understanding how the real chip sequences its internal operations."
 tags:
   - debug80
@@ -12,7 +12,7 @@ tags:
 series: debug80diaries
 ---
 
-# Emulating the ST7920 GLCD: Why Your First Read Returns Zero
+# First Read, Wrong Data: Emulating the ST7920's Pipeline
 
 By John Hardy
 
