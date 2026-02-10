@@ -144,4 +144,3 @@ ret           ; return to caller
 The exact instruction sequences vary based on optimisation opportunities, but the structure remains: save the original SP, reserve space, push the return path, and let user code run. At any `RET`, control flows through the epilogue, which restores SP and returns.
 
 This mechanism emerged from the constraint that ZAX must support `RET` anywhere in the function body without requiring the programmer to think about cleanup. The trampoline makes early returns just work, at the cost of a few bytes of stack space and a few extra instructions in the prologue and epilogue.
-

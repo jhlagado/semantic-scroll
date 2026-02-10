@@ -162,4 +162,3 @@ For relative branches (`JR` instead of `JP`), the compiler checks displacement l
 Using condition codes directly takes adjustment if you come from high-level languages. Adjustment means learning which instruction sets which flags. You learn the common patterns: `or a` to test if A is zero plus `bit n, reg` to test a bit plus `cp value` to compare.
 
 The payoff is precise control and readable structure. You know exactly what code executes because you wrote it, and you know exactly which flags the control flow tests because you chose them. The structure makes the intent visible without hiding the mechanism.
-

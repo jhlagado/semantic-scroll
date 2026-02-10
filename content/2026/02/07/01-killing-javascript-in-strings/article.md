@@ -39,10 +39,12 @@ I created a `webview/` directory at the project root. For each platform, there i
 The HTML files use placeholder tokens that the extension replaces at runtime:
 
 ```html
-<meta http-equiv="Content-Security-Policy"
-      content="default-src 'none'; style-src {{cspSource}}; script-src 'nonce-{{nonce}}';">
-<link rel="stylesheet" href="{{commonStyleUri}}">
-<link rel="stylesheet" href="{{styleUri}}">
+<meta
+  http-equiv="Content-Security-Policy"
+  content="default-src 'none'; style-src {{cspSource}}; script-src 'nonce-{{nonce}}';"
+/>
+<link rel="stylesheet" href="{{commonStyleUri}}" />
+<link rel="stylesheet" href="{{styleUri}}" />
 <script nonce="{{nonce}}" src="{{scriptUri}}"></script>
 ```
 
@@ -54,8 +56,8 @@ I added a build script at `scripts/build-webview.js` that handles both platforms
 
 ```javascript
 const entryPoints = [
-  path.join(webviewDir, 'tec1', 'index.ts'),
-  path.join(webviewDir, 'tec1g', 'index.ts'),
+  path.join(webviewDir, "tec1", "index.ts"),
+  path.join(webviewDir, "tec1g", "index.ts"),
 ];
 
 await esbuild.build({
@@ -63,9 +65,9 @@ await esbuild.build({
   outdir: outDir,
   outbase: webviewDir,
   bundle: true,
-  platform: 'browser',
-  format: 'iife',
-  target: ['es2020'],
+  platform: "browser",
+  format: "iife",
+  target: ["es2020"],
   sourcemap: true,
 });
 ```
@@ -77,7 +79,10 @@ The `outbase` option preserves the directory structure so that `webview/tec1/ind
 The old `getTec1Html` function generated everything inline. The new version reads a template file and performs token substitution:
 
 ```typescript
-function renderTemplate(template: string, replacements: Record<string, string>): string {
+function renderTemplate(
+  template: string,
+  replacements: Record<string, string>,
+): string {
   return template.replace(/{{(\w+)}}/g, (match: string, key: string) => {
     return replacements[key] ?? match;
   });
@@ -99,4 +104,3 @@ The build adds a step to the release process, but the tradeoff is worthwhile. De
 I should have structured the webview code this way from the start. The JavaScript-in-strings pattern emerged because I wanted to keep everything in one file during early prototyping. That convenience became a liability as the panels grew more complex. The refactoring cost was modest—a few hours of work—but it would have been cheaper to establish the pattern before the code reached 2,866 lines.
 
 The extraction pattern applies to any VS Code extension with non-trivial webview content. Template files with token substitution work alongside a bundler for TypeScript with a resolver that handles both development paths plus production paths. The structure scales to multiple webviews without duplicating the infrastructure code.
-
