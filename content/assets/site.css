@@ -11,7 +11,7 @@
   --color-lint-bg: #fff4f4;
   --color-lint-border: #f0b4b4;
   --color-lint-text: #7a1f1f;
-  --color-article-border: #e24b1a;
+  --color-article-border: #f04f21;
   --color-article-shadow: rgba(104, 92, 78, 0.2);
   --color-article-shadow-warm: rgba(121, 88, 56, 0.14);
   --color-article-shadow-directional: rgba(110, 86, 62, 0.34);
@@ -39,11 +39,28 @@
     --color-lint-bg: #2a1515;
     --color-lint-border: #5a2a2a;
     --color-lint-text: #f1b4b4;
-    --color-article-border: #ff6a3d;
+    --color-article-border: #ff7a4a;
     --color-article-shadow: rgba(0, 0, 0, 0.28);
     --color-article-shadow-warm: rgba(0, 0, 0, 0.22);
     --color-article-shadow-directional: rgba(0, 0, 0, 0.46);
     --color-grid-line: rgba(255, 255, 255, 0.07);
+  }
+
+  .site-mark {
+    position: relative;
+  }
+
+  .site-mark img {
+    opacity: 0;
+  }
+
+  .site-mark::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-article-border);
+    -webkit-mask: url("/assets/semantic-scroll.svg") center / contain no-repeat;
+    mask: url("/assets/semantic-scroll.svg") center / contain no-repeat;
   }
 }
 
@@ -904,6 +921,10 @@ main h1:first-child {
 }
 
 @media (max-width: 768px) {
+  :root {
+    --color-bg: #fffcfa;
+  }
+
   body {
     font-size: 0.95rem;
     padding: 0.1rem 0.75rem 2rem;
