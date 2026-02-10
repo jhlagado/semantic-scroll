@@ -1,25 +1,31 @@
-## status: published
-
+---
 title: "Condition Codes as Control Flow: How ZAX Turns CPU Flags into If Statements"
 summary: "Most structured languages evaluate boolean expressions to drive control flow. ZAX takes a different path: it uses the Z80's native condition codes directly. You set flags with normal instructions, then branch on them with if, while, and repeat. The CPU already knows how to test conditions. ZAX just gives that mechanism readable syntax."
 tags:
-
-- zax
-- z80
-- control-flow
-- condition-codes
-- compiler-design
-  series: zaxassembler
-
+  - zax
+  - z80
+  - control-flow
+  - condition-codes
+  - compiler-design
+series: zaxassembler
+status: published
+---
 ---
 
 # Condition Codes as Control Flow: How ZAX Turns CPU Flags into If Statements
 
-By John Hardy
+By John Hardy, ZAX design notes and compiler diary
 
 When I designed ZAX's control flow, I faced a choice. I could invent a boolean expression syntax that generates comparison code. Alternatively, I could use what the Z80 already provides: condition codes that test CPU flags. I chose the second path for ZAX.
 
-The Z80 has a flags register with four testable bits: Zero (Z), Carry (C), Sign (S), and Parity/Overflow (P/V). The CPU sets these flags as side effects of arithmetic and logical operations. Conditional jump instructions test these flags directly. The instruction `JP Z` jumps if Zero is set. The instruction `JP NC` jumps if Carry is clear.
+The Z80 exposes four testable flag bits. The CPU sets these flags as side effects of arithmetic and logical operations, and conditional jump instructions test them directly. For example, `JP Z` jumps if Zero is set, while `JP NC` jumps if Carry is clear.
+
+The four testable bits are:
+
+- Zero (Z)
+- Carry (C)
+- Sign (S)
+- Parity/Overflow (P/V)
 
 ZAX's structured control flow uses these same condition codes. Instead of writing `JP Z, label`, you write `if Z`, then the body, and finally `end`. The syntax changes, but the underlying mechanism remains identical. This approach keeps the connection between source code and CPU behaviour transparent.
 
@@ -32,13 +38,11 @@ ZAX supports eight condition codes matching the Z80's conditional branch instruc
 - For Sign, `M` indicates minus, while `P` indicates plus.
 - For parity, `PE` indicates even, while `PO` indicates odd.
 
-Each code is mapped directly to a Z80 branch instruction, making the correspondence explicit.
+Each code maps directly to a Z80 branch instruction, making the correspondence explicit.
 
 Before using a control flow statement, programmers must establish the flag state. This is typically done with a comparison, but arithmetic operations and bit tests can also set the relevant flags. By making flag-setting explicit, ZAX gives the programmer direct control over branching logic.
 
 ## Setting flags before testing them
-
-Consider a simple bounds check. You want to execute code if register A is less than 10:
 
 Consider a simple bounds check. Suppose you want to execute code if register A is less than 10. In ZAX, you write:
 
@@ -76,9 +80,7 @@ Each example uses a different instruction to set flags. The structured test that
 
 ## Loops and condition evaluation
 
-ZAX provides three loop forms, each testing conditions at different points.
-
-The `while` loop tests the condition at entry before executing the body. This means the loop may not execute at all if the condition is not met. It is a familiar pattern for most programmers. In ZAX, the condition is always a CPU flag, not a boolean expression.
+ZAX provides three loop forms, each testing conditions at different points. The `while` loop tests the condition at entry before executing the body, so the loop may not execute if the condition fails. It is a familiar pattern for most programmers. In ZAX, the condition is always a CPU flag, not a boolean expression.
 
 ```
 while NZ
@@ -110,11 +112,11 @@ I considered adding boolean expression syntax, perhaps `if A < 10` that would co
 
 I rejected this approach for several reasons.
 
-First, it would require the compiler to generate comparison code. The programmer would lose control over exactly which instructions execute. For performance-critical code on an 8-bit processor, this matters.
+First, it would require the compiler to generate comparison code, and the programmer would lose control over exactly which instructions execute. For performance-critical code on an 8-bit processor, this matters.
 
-Second, the Z80's condition codes do not map cleanly to boolean algebra. The Parity flag doubles as an overflow indicator for signed arithmetic. The Sign flag has subtleties in edge cases. A boolean abstraction would need to hide these details or expose them awkwardly.
+Second, the Z80's condition codes do not map cleanly to boolean algebra. The Parity flag doubles as an overflow indicator for signed arithmetic, and the Sign flag has subtleties in edge cases. A boolean abstraction would need to hide these details or expose them awkwardly.
 
-Third, many flag-setting operations are not comparisons. Bit tests set flags alongside logical operations alongside decrements alongside rotates. A boolean expression syntax would not cover these cases elegantly.
+Third, many flag-setting operations are not comparisons. Bit tests, logical operations, decrements, and rotates all set flags. A boolean expression syntax would not cover these cases elegantly.
 
 By using condition codes directly, ZAX stays close to the machine. You can see exactly which flags the control flow tests, and you can use any instruction that sets flags. The deliberate thin abstraction keeps the programmer in control. This design choice makes ZAX both powerful and predictable for those who understand the Z80's flag system.
 
@@ -167,6 +169,6 @@ For relative branches (`JR` instead of `JP`), the compiler checks displacement l
 
 ## Living with condition codes
 
-Using condition codes directly takes adjustment if you come from high-level languages. Adjustment means learning which instruction sets which flags. You learn the common patterns: `or a` to test if A is zero plus `bit n, reg` to test a bit plus `cp value` to compare.
+Using condition codes directly takes adjustment if you come from high-level languages. It means learning which instruction sets which flags. You learn the common patterns: `or a` to test if A is zero, `bit n, reg` to test a bit, and `cp value` to compare.
 
 The payoff is precise control and readable structure. You know exactly what code executes because you wrote it, and you know exactly which flags the control flow tests because you chose them. The structure makes the intent visible without hiding the mechanism.

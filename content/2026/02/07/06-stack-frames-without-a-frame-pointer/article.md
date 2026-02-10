@@ -13,7 +13,7 @@ series: zaxassembler
 
 # Stack Frames Without a Frame Pointer
 
-By John Hardy
+By John Hardy, ZAX design notes and implementation log
 
 Most calling conventions dedicate a register as the frame pointer. On x86, EBP points to the base of the current stack frame. On ARM, the frame pointer register (R11 or FP) serves the same purpose. Code accesses local variables and function arguments as fixed offsets from this pointer. This approach provides a stable reference for stack-based data, making it easier to generate and debug code across different architectures.
 
@@ -23,7 +23,7 @@ ZAX does not use a frame pointer. Instead, the compiler tracks the stack pointer
 
 ## The cost of a frame pointer
 
-Dedicating IX (or IY) to stack frame access has costs because the Z80 has limited registers, and losing an index register hurts. IX and IY are the only registers that support displacement addressing. If IX holds the frame pointer, you cannot use `(IX+d)` for other purposes without saving and restoring it. Many Z80 programs use IX along with IY for data structure access or game sprite tables or other pointer operations. Reserving one for the stack frame eliminates this option.
+Dedicating IX (or IY) to stack frame access has costs because the Z80 has limited registers, and losing an index register hurts. IX and IY are the only registers that support displacement addressing. If IX holds the frame pointer, you cannot use `(IX+d)` for other purposes without saving and restoring it. Many Z80 programs use IX and IY for data structure access, sprite tables, or other pointer-heavy work. Reserving one for the stack frame eliminates this option.
 
 Frame pointer setup also adds overhead. The standard prologue must push the old frame pointer and copy SP to IX. The epilogue reverses this sequence, meaning every function pays this cost whether it needs locals or not. This overhead accumulates, especially in code with many small functions. Over time, these small costs add up, making the program less efficient than it could be.
 
