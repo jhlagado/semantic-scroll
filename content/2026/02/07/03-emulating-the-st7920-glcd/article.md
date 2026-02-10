@@ -14,7 +14,7 @@ series: debug80diaries
 
 # First Read, Wrong Data: Emulating the ST7920's Pipeline
 
-By John Hardy
+Written by John Hardy on February 7th, 2026
 
 The TEC-1G includes support for the ST7920 graphical LCD controller, a chip that drives 128×64 pixel displays using a parallel interface. Programs can write pixels to display buffer memory and read them back for verification or manipulation. The read path has a quirk that tripped me up: the first read after setting an address returns the data from the *previous* address, not the address you just specified.
 
@@ -24,12 +24,7 @@ I discovered this while testing a graphics routine that drew shapes and then ver
 
 The ST7920's data sheet explains the read pipeline in a few terse sentences. When you set the address counter with a command, the controller latches the new address but does not immediately fetch the corresponding data. The data bus still holds the previously fetched value. To read the data at the new address, you must perform a dummy read that primes the pipeline, then perform the actual read that returns the wanted value.
 
-The sequence looks like this:
-
-1. Write a command to set the address counter to address N
-2. Perform a dummy read (discard the result)
-3. Perform the real read (returns data at address N)
-4. Subsequent reads return data at N+1, N+2, etc. (address auto-increments)
+The correct read sequence proceeds through four steps. First, write a command to set the address counter to address N. Second, perform a dummy read and discard the result. Third, perform the real read which returns data at address N. Fourth, subsequent reads return data at incrementing addresses starting from N+1 as the address auto-increments.
 
 The dummy read triggers an internal fetch from address N. That fetch completes during the read cycle, and the data becomes available for the next read. If you skip the dummy read, you get stale data from whatever address was previously active.
 
@@ -37,7 +32,7 @@ The dummy read triggers an internal fetch from address N. That fetch completes d
 
 A naive emulator models the data read as a simple array lookup: given address N, return `memory[N]`. This works for writes, which take effect immediately, but fails for reads because it ignores the pipeline delay. The real chip does not deliver data from address N until one read cycle after you request it.
 
-My initial implementation did exactly this: the read handler received the address and returned the corresponding byte from the display buffer. Writes worked, and single reads worked, yet any code that set an address and immediately read from it returned the wrong value.
+My initial implementation did exactly this: the read handler received the address and returned the corresponding byte from the display buffer. Writes worked as I expected them to work. Single reads without address changes also worked correctly. Yet any code that set an address then immediately read from it returned the wrong value.
 
 The fix required modelling the pipeline state. The emulator now tracks two values: the current address counter and the pending read value. When code sets a new address, the pending value stays stale. The first read returns the pending value and then loads the new address into the pipeline. Subsequent reads continue through the buffer with automatic incrementing.
 
@@ -63,7 +58,7 @@ setGlcdAddress(address: number): void {
 }
 ```
 
-The dummy read that programs must perform consumes the zero, primes the pipeline with the actual data at the new address, and leaves subsequent reads returning correct values.
+The dummy read that programs must perform consumes the zero then primes the pipeline with the actual data at the new address. Subsequent reads then return correct values from the buffer.
 
 ## Testing the fix
 
@@ -84,7 +79,7 @@ The test captures the exact behaviour that the original routine depended on. Wit
 
 ## Hardware verification
 
-I confirmed the behaviour on a physical TEC-1G with an ST7920 display attached. A short Z80 program writes a known pattern to display memory, sets the address, performs reads, and reports the values through the serial port. The first read after setting the address returned zero. The second read returned the written value. The emulator now matches.
+I confirmed the behaviour on a physical TEC-1G with an ST7920 display attached. A short Z80 program writes a known pattern to display memory then sets the address then performs reads then reports the values through the serial port. The first read after setting the address returned zero. The second read returned the written value. The emulator now matches the hardware behaviour.
 
 The data sheet describes this behaviour, but the description is easy to overlook. The phrase "dummy read" appears once without much context. I had read the data sheet before and missed the implication. Seeing the actual hardware behaviour made the documentation make sense retroactively.
 
