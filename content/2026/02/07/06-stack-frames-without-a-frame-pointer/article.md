@@ -13,7 +13,7 @@ series: zaxassembler
 
 # Stack Frames Without a Frame Pointer
 
-By John Hardy
+By John Hardy, ZAX design notes and implementation log
 
 Most calling conventions dedicate a register as the frame pointer. On x86, EBP points to the base of the current stack frame. On ARM, the frame pointer register (R11 or FP) serves the same purpose. Code accesses local variables and function arguments as fixed offsets from this pointer. This approach provides a stable reference for stack-based data, making it easier to generate and debug code across different architectures.
 
@@ -23,9 +23,9 @@ ZAX does not use a frame pointer. Instead, the compiler tracks the stack pointer
 
 ## The cost of a frame pointer
 
-Dedicating IX (or IY) to stack frame access has costs because the Z80 has limited registers, and losing an index register hurts. IX and IY are the only registers that support displacement addressing. If IX holds the frame pointer, you cannot use `(IX+d)` for other purposes without saving and restoring it. Many Z80 programs use IX along with IY for data structure access or game sprite tables or other pointer operations. Reserving one for the stack frame eliminates this option.
+Dedicating IX (or IY) to stack frame access has costs because the Z80 has limited registers, and losing an index register hurts. IX and IY are the only registers that support displacement addressing. If IX holds the frame pointer, you cannot use `(IX+d)` for other purposes without saving and restoring it. Many Z80 programs use IX and IY for data structure access. They also use them for sprite tables or other pointer-heavy work. Reserving one for the stack frame eliminates this option.
 
-Frame pointer setup also adds overhead. The standard prologue must push the old frame pointer and copy SP to IX. The epilogue reverses this sequence, meaning every function pays this cost whether it needs locals or not. This overhead accumulates, especially in code with many small functions. Over time, these small costs add up, making the program less efficient than it could be.
+Frame pointer setup also adds overhead on every call. The standard prologue must push the old frame pointer and copy SP to IX. The epilogue reverses this sequence, meaning every function pays this cost whether it needs locals or not. This overhead accumulates, especially in code with many small functions. Over time, these small costs add up, making the program less efficient than it could be.
 
 ## SP-relative addressing
 
@@ -33,7 +33,7 @@ ZAX takes a different approach based on precise stack tracking at every point in
 
 Given this tracking, the compiler can compute the offset from SP to any local variable or argument. A local at offset 8 from the function's base frame is at SP+8 if no pushes have occurred. After one push, that local moves to SP+10. Each additional push increases the offset by two.
 
-When you reference a local in an instruction, the compiler generates code to compute its current address. First, it loads the offset into HL. Then, it adds HL to SP. This two-step process is straightforward and easy to follow. It ensures that local variable access remains efficient, even without a dedicated frame pointer.
+When you reference a local in an instruction, the compiler generates code to compute its current address. First, it loads the offset into HL. Then it adds HL to SP to reach the correct address. This two-step process is straightforward and easy to follow. It ensures that local variable access remains efficient, even without a dedicated frame pointer.
 
 ```
 ld hl, local_offset
@@ -57,7 +57,7 @@ SP+4: local variables start here
 ...
 ```
 
-When user code executes `RET`, it pops the trampoline address into PC. Control transfers to the epilogue, which pops the saved SP then restores it then executes the real return to the caller. This trampoline mechanism ensures that every return, no matter where it occurs in the function, results in proper stack cleanup and a safe transfer of control.
+When user code executes `RET`, it pops the trampoline address into PC. Control transfers to the epilogue, which pops the saved SP then restores it then executes the real return to the caller. This trampoline mechanism ensures proper stack cleanup on every return. It also guarantees a safe transfer of control, no matter where the return occurs in the function.
 
 This mechanism lets the programmer write `RET` anywhere in the function. The compiler ensures that every return path goes through the epilogue, which properly cleans up the stack frame. This design makes writing and maintaining functions easier, since you do not have to worry about stack cleanup in every return branch.
 
@@ -73,15 +73,15 @@ This optimisation matters for leaf functions and small utility routines. Most fu
 
 The compiler must track stack depth precisely for SP-relative addressing to work. Every instruction that modifies SP updates the compiler's internal offset:
 
-- `PUSH` decreases SP by 2. The stack grows downward, so every push moves SP to a lower address.
-- `POP` increases SP by 2. When you pop, SP returns toward its original value.
-- `CALL` decreases SP by 2. Each call pushes the return address onto the stack. The function will use this address when it finishes.
-- `RET` increases SP by 2. This pops the return address from the stack.
+- `PUSH` decreases SP by 2. The stack grows downward, so each push moves SP to a lower address.
+- `POP` increases SP by 2 on each pop. When you pop, SP returns toward its original value.
+- `CALL` decreases SP by 2 for the return address. Each call pushes the return address onto the stack for the callee.
+- `RET` increases SP by 2 for the return address. This pops the return address from the stack.
 - `INC SP` and `DEC SP` adjust by 1. These instructions increment or decrement the stack pointer by one.
 
-At control flow joins (the end of an `if`/`else`, loop back-edges, and `select` arm exits), the stack depth must match across all paths. If one path pushes a value that another path does not, the join point would have inconsistent SP offsets. The compiler rejects such programs at compile time.
+At control flow joins, the stack depth must match across all paths. That includes the end of an `if`/`else`. It also includes loop back-edges and `select` arm exits. If one path pushes a value that another path does not, the join point would have inconsistent SP offsets. The compiler rejects such programs at compile time.
 
-This constraint requires discipline. You cannot conditionally push a value and expect to access locals correctly afterward. The structured control flow forms enforce matched stack depths at their boundaries. This rule helps prevent subtle bugs and keeps stack management predictable.
+This constraint requires discipline in every branch. You cannot conditionally push a value and expect to access locals correctly afterward. The structured control flow forms enforce matched stack depths at their boundaries. This rule helps prevent subtle bugs and keeps stack management predictable.
 
 ## Argument access
 
@@ -139,6 +139,6 @@ ld sp, hl     ; restore SP
 ret           ; return to caller
 ```
 
-The exact instruction sequences vary based on optimisation opportunities, but the structure remains: save the original SP, reserve space, push the return path, and let user code run. At any `RET`, control flows through the epilogue, which restores SP and returns. This mechanism covers all valid return paths, ensuring stack cleanup is always handled correctly, regardless of how the function exits. By centralising cleanup, the design reduces the risk of subtle stack errors and makes the calling convention easier to reason about.
+The exact instruction sequences vary based on optimisation opportunities, but the structure remains consistent. It always saves the original SP and reserves space. It pushes the return path, then lets user code run. At any `RET`, control flows through the epilogue. The epilogue restores SP, then returns to the caller. This mechanism covers all valid return paths, ensuring stack cleanup is always handled correctly, regardless of how the function exits. By centralising cleanup, the design reduces the risk of subtle stack errors and makes the calling convention easier to reason about.
 
 This mechanism emerged from the constraint that ZAX must support `RET` anywhere in the function body without requiring the programmer to think about cleanup. The trampoline makes early returns just work, at the cost of a few bytes of stack space and a few extra instructions in the prologue and epilogue.
