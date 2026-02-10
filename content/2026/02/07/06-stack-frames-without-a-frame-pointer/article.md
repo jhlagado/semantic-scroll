@@ -79,13 +79,11 @@ The compiler must track stack depth precisely for SP-relative addressing to work
 - `RET` increases SP by 2. This pops the return address from the stack.
 - `INC SP` and `DEC SP` adjust by 1. These instructions increment or decrement the stack pointer by one.
 
-
 At control flow joins (the end of an `if`/`else`, loop back-edges, and `select` arm exits), the stack depth must match across all paths. If one path pushes a value that another path does not, the join point would have inconsistent SP offsets. The compiler rejects such programs at compile time.
 
 This constraint requires discipline. You cannot conditionally push a value and expect to access locals correctly afterward. The structured control flow forms enforce matched stack depths at their boundaries. This rule helps prevent subtle bugs and keeps stack management predictable.
 
 ## Argument access
-
 
 The caller passes arguments on the stack, pushing them right-to-left so that the first argument ends up closest to the return address. The caller cleans up arguments after the call returns. This convention ensures that arguments are always in a known location relative to the stack frame.
 
@@ -109,14 +107,11 @@ When you reference an argument in your code, the compiler generates the same `LD
 
 SP-relative addressing has trade-offs since each local or argument access costs two instructions instead of one. Functions that access locals frequently may generate more code than a frame pointer approach would.
 
-
 The benefit is architectural freedom because IX and IY remain available for whatever the programmer needs. On a register-starved processor like the Z80, this flexibility matters. Many programs need index registers for data structure access more than they need slightly faster local variable access. The trade-off is usually worth it for most real-world Z80 projects.
-
 
 The trampoline mechanism adds overhead for functions with locals, but only for those functions. The common case of small functions without locals incurs no penalty. This selective overhead keeps the majority of functions lean and efficient.
 
 ## Implementation notes
-
 
 The prologue for a function with locals looks approximately like this:
 
@@ -143,8 +138,6 @@ pop hl        ; get saved old SP
 ld sp, hl     ; restore SP
 ret           ; return to caller
 ```
-
-
 
 The exact instruction sequences vary based on optimisation opportunities, but the structure remains: save the original SP, reserve space, push the return path, and let user code run. At any `RET`, control flows through the epilogue, which restores SP and returns. This mechanism covers all valid return paths, ensuring stack cleanup is always handled correctly, regardless of how the function exits. By centralising cleanup, the design reduces the risk of subtle stack errors and makes the calling convention easier to reason about.
 

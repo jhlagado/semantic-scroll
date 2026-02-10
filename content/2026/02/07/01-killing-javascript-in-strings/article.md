@@ -36,10 +36,7 @@ The problems with this approach were immediate: the editor provided no syntax hi
 
 I created a `webview/` directory at the project root. For each platform, there is a dedicated subdirectory: `webview/tec1/` and `webview/tec1g/`. Inside each platform folder, the structure is clear. The `index.html` file defines the layout and structure. The `styles.css` file handles presentation and visual details. The `index.ts` file manages behaviour and interactivity. To avoid duplication, a shared `webview/common/styles.css` holds styles used by both panels. This separation makes it easier to maintain and update each aspect of the webview independently.
 
-
 The HTML files use placeholder tokens that the extension replaces at runtime. Each file is responsible for a specific function: structure, presentation, or interactivity. This division of responsibilities makes the codebase easier to navigate and reason about. Instead of treating structure, presentation, and interactivity as a single concern, the new approach gives each its own file and clear role. This makes the codebase more maintainable and easier to understand. The structure is now clear, and each responsibility stands on its own. Every section of the webview is now clearly defined and easy to locate.
-
-
 
 ```html
 <meta

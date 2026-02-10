@@ -1,14 +1,16 @@
-status: published
----
+## status: published
+
 title: "Condition Codes as Control Flow: How ZAX Turns CPU Flags into If Statements"
 summary: "Most structured languages evaluate boolean expressions to drive control flow. ZAX takes a different path: it uses the Z80's native condition codes directly. You set flags with normal instructions, then branch on them with if, while, and repeat. The CPU already knows how to test conditions. ZAX just gives that mechanism readable syntax."
 tags:
-  - zax
-  - z80
-  - control-flow
-  - condition-codes
-  - compiler-design
-series: zaxassembler
+
+- zax
+- z80
+- control-flow
+- condition-codes
+- compiler-design
+  series: zaxassembler
+
 ---
 
 # Condition Codes as Control Flow: How ZAX Turns CPU Flags into If Statements
@@ -17,13 +19,11 @@ By John Hardy
 
 When I designed ZAX's control flow, I faced a choice. I could invent a boolean expression syntax that generates comparison code. Alternatively, I could use what the Z80 already provides: condition codes that test CPU flags. I chose the second path for ZAX.
 
-
 The Z80 has a flags register with four testable bits: Zero (Z), Carry (C), Sign (S), and Parity/Overflow (P/V). The CPU sets these flags as side effects of arithmetic and logical operations. Conditional jump instructions test these flags directly. The instruction `JP Z` jumps if Zero is set. The instruction `JP NC` jumps if Carry is clear.
 
 ZAX's structured control flow uses these same condition codes. Instead of writing `JP Z, label`, you write `if Z`, then the body, and finally `end`. The syntax changes, but the underlying mechanism remains identical. This approach keeps the connection between source code and CPU behaviour transparent.
 
 ## The eight condition codes
-
 
 ZAX supports eight condition codes matching the Z80's conditional branch instructions. Each condition tests a single flag bit:
 
@@ -51,7 +51,6 @@ end
 
 The `CP 10` instruction subtracts 10 from A without storing the result. If A is less than 10, the subtraction borrows, so the Carry flag is set. The `if C` statement tests this flag and executes the body if Carry is set.
 
-
 This pattern might feel backwards if you come from C or Pascal, where you write `if (a < 10)` and the compiler figures out the comparison. In ZAX, you write the comparison explicitly and then test the result. This explicit approach has advantages. You control exactly which instruction sets the flags. You can use any flag-setting operation, not just comparisons. This flexibility is a core strength of ZAX.
 
 For example, you can use bitwise operations to set flags:
@@ -73,12 +72,9 @@ if NZ
 end
 ```
 
-
-
 Each example uses a different instruction to set flags. The structured test that follows makes the intent clear and keeps the code readable. This approach helps programmers see exactly how control flow is determined by the CPU's native mechanisms.
 
 ## Loops and condition evaluation
-
 
 ZAX provides three loop forms, each testing conditions at different points.
 
@@ -91,7 +87,6 @@ while NZ
   or a
 end
 ```
-
 
 The compiler evaluates the condition at the `while` keyword. If the condition passes, the body executes. At the end of the body, control returns to the `while` for another test. The body must set flags for the next iteration. In the example above, `or a` sets the Zero flag if A has reached zero.
 
@@ -120,7 +115,6 @@ First, it would require the compiler to generate comparison code. The programmer
 Second, the Z80's condition codes do not map cleanly to boolean algebra. The Parity flag doubles as an overflow indicator for signed arithmetic. The Sign flag has subtleties in edge cases. A boolean abstraction would need to hide these details or expose them awkwardly.
 
 Third, many flag-setting operations are not comparisons. Bit tests set flags alongside logical operations alongside decrements alongside rotates. A boolean expression syntax would not cover these cases elegantly.
-
 
 By using condition codes directly, ZAX stays close to the machine. You can see exactly which flags the control flow tests, and you can use any instruction that sets flags. The deliberate thin abstraction keeps the programmer in control. This design choice makes ZAX both powerful and predictable for those who understand the Z80's flag system.
 
