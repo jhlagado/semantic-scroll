@@ -1,7 +1,7 @@
 ---
 status: published
 title: "Programming in Clay"
-summary: "On the January 2025 Copyright Office ruling that vibe-coded software is public domain, why chat-window prompting fails to transfer authorial intent, and what a clay-like programming interface would need to do differently."
+summary: "On the January 2025 Copyright Office advice that vibe-coded software is public domain, why chat-window prompting fails to transfer authorial intent, and what a clay-like programming interface would need to do differently."
 tags:
   - ai
   - programming
@@ -16,7 +16,7 @@ By John Hardy
 
 In January 2025, the US Copyright Office concluded its review of AI-generated content with a finding that every software developer should read carefully. Code produced through conversational prompting of a large language model has no legal author. The human who typed the prompts is not, in the eyes of the law, the creator of the output. The work lands in the public domain by default, unprotectable by any open source or commercial licence. No GPL. No MIT. No proprietary rights of any kind. The code cannot be owned.
 
-That ruling arrived just as vibe coding was becoming the default mode of AI-assisted development. The term, coined by researcher Andrej Karpathy early in 2025, describes a workflow most developers now recognise: you describe what you want in a chat window, the model returns code, you iterate on the result, and you ship it. The process is fast and feels productive. What it does not do, under the January 2025 ruling, is produce software that anyone legally owns.
+That advice arrived just as vibe coding was becoming the default mode of AI-assisted development. The term, coined by researcher Andrej Karpathy early in 2025, describes a workflow most developers now recognise: you describe what you want in a chat window, the model returns code, you iterate on the result, and you ship it. The process is fast and feels productive. What it does not do, per the Copyright Office's January 2025 advice, is produce software that anyone legally owns.
 
 The reason is structural, not incidental. When a programmer describes what they want to an LLM in a chat window, they are modulating an autonomous system rather than controlling a deterministic one. The model makes its own creative decisions about how to fulfil the request. Those decisions, not the programmer's description of them, are what give the code its particular shape. The Copyright Office is measuring the distance between intent and output: when that distance passes through a black box that makes independent creative choices, the human's authorial claim does not survive the crossing.
 
@@ -48,13 +48,13 @@ A sculptor working in clay is in direct contact with the medium. Every decision 
 
 A patron who describes a sculpture to a skilled artisan and reviews the result is doing something different. The description might be detailed. The patron might give corrections over several rounds. The final object might match their vision closely. But the creative decisions that went into the making, the moment-by-moment choices about form and surface, belong to the artisan. The patron commissioned the work. They did not make it.
 
-Vibe coding is patron work. The LLM is the artisan. The copyright ruling reflects this accurately.
+Vibe coding is patron work. The LLM is the artisan. The Copyright Office's advice reflects this accurately.
 
 ## The Industry Consequence
 
 The implication for the software industry is large.
 
-Development is moving fast toward vibe-coded workflows. The AI companies are pushing this direction with intent: faster adoption, more usage, more dependence. But every line of vibe-coded software is, under the January 2025 ruling, public domain on delivery. It cannot be protected by GPL, BSD, MIT, or any open source licence. It cannot be protected by commercial copyright. A company that ships a product built through vibe coding has nothing to licence and nothing to sell. An open source project that accepts vibe-coded contributions cannot meaningfully extend its licence terms to cover those contributions.
+Development is moving fast toward vibe-coded workflows. The AI companies are pushing this direction with intent: faster adoption, more usage, more dependence. But every line of vibe-coded software is, per the Copyright Office's advice, public domain on delivery. It cannot be protected by GPL, BSD, MIT, or any open source licence. It cannot be protected by commercial copyright. A company that ships a product built through vibe coding has nothing to licence and nothing to sell. An open source project that accepts vibe-coded contributions cannot meaningfully extend its licence terms to cover those contributions.
 
 Open source licensing depends entirely on the assumption that code has an author whose rights are transferable. If the underlying code cannot be owned, the licence terms have nothing to attach to. Copyleft dies first, because copyleft is a mechanism for asserting ownership strategically. Commercial licence dies alongside it.
 
@@ -74,7 +74,7 @@ This is what compilers have always done. The innovation is applying the same pri
 
 ## The Choice Ahead
 
-The choice the industry faces now is real. The path being actively marketed, faster outputs, more automation, less friction, leads to a world where programmers are patrons and the software they commission belongs to no one. The copyright ruling is not a warning about a possible future. It describes the present.
+The choice the industry faces now is real. The path being actively marketed, faster outputs, more automation, less friction, leads to a world where programmers are patrons and the software they commission belongs to no one. The Copyright Office's advice is not a warning about a possible future. It describes the present.
 
 The sculptor metaphor captures what needs to change. Direct contact with the medium. Choices embedded in the work at every stage. A feedback loop tight enough that the output is a derivative of specific human decisions rather than the autonomous product of a system that was merely pointed in a direction.
 
