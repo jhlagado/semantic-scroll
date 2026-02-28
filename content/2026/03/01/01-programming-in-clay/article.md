@@ -14,6 +14,8 @@ tags:
 
 By John Hardy
 
+![A potter's hands pressing and shaping a rectangular block of grey clay on a wooden workboard, with a wooden modelling tool resting nearby.](./assets/julia-still.webp "Direct contact with the medium.")
+
 In January 2025, the US Copyright Office concluded its review of AI-generated content with a finding that every software developer should read carefully. Code produced through conversational prompting of a large language model has no legal author. The human who typed the prompts is not, in the eyes of the law, the creator of the output. The work lands in the public domain by default, unprotectable by any open source or commercial licence. No GPL. No MIT. No proprietary rights of any kind. The code cannot be owned.
 
 That advice arrived just as vibe coding was becoming the default mode of AI-assisted development. The term, coined by researcher Andrej Karpathy early in 2025, describes a workflow most developers now recognise: you describe what you want in a chat window, the model returns code, you iterate on the result, and you ship it. The process is fast and feels productive. What it does not do, per the Copyright Office's January 2025 advice, is produce software that anyone legally owns.
