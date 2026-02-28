@@ -15,7 +15,7 @@ series: zaxassembler
 
 By John Hardy
 
-A clear week in February marked a turning point for ZAX development. Commit activity stayed high from Friday, February 7, 2026 through Saturday, February 14, 2026. That span included sustained documentation work across the repo. Parser code changed in parallel with lowering code and tests. Raw volume alone never proves maturity, yet the direction of edits during that window shows a stronger contract between language specification and compiler behaviour.
+This week marked a turning point for ZAX development. Commit activity stayed high across docs, frontend parsing, lowering, and tests. Raw volume alone never proves maturity, yet the direction of edits during the week shows a stronger contract between language specification and compiler behaviour.
 
 Early commits in that week pushed feature coverage and parser breadth. Midweek commits focused on semantic precision with scalar value semantics and qualified enum member access. Tighter indexing rules also landed in that phase. The same window introduced `offsetof` behaviour with dedicated tests. Late-week changes added diagnostics and lint behaviour that reinforced consistency across source files and tooling output.
 
