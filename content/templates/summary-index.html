@@ -171,9 +171,9 @@
         }
         entry.insertBefore(body, footer);
 
-        const maxEntryHeight = Math.round(window.innerHeight * 0.88);
+        const maxEntryHeight = Math.round(window.innerHeight * 1.76);
         const reserved = (header ? header.offsetHeight : 0) + footer.offsetHeight + 130;
-        const maxBodyHeight = Math.max(220, maxEntryHeight - reserved);
+        const maxBodyHeight = Math.max(440, maxEntryHeight - reserved);
         if (body.scrollHeight <= maxBodyHeight + 24) {
           return;
         }

@@ -14,7 +14,7 @@ tags:
 
 By John Hardy
 
-![A potter's hands pressing and shaping a rectangular block of grey clay on a wooden workboard, with a wooden modelling tool resting nearby.](./assets/julia-still.webp "Direct contact with the medium.")
+![A potter's hands pressing and shaping a rectangular block of grey clay on a wooden workboard, with a wooden modelling tool resting nearby.](./assets/julia-still.webp "The sculptor works without intermediary. Each movement of the hand leaves its mark, and every mark was a choice.")
 
 In January 2025, the US Copyright Office concluded its review of AI-generated content with a finding that every software developer should read carefully. Code produced through conversational prompting of a large language model has no legal author. The human who typed the prompts is not, in the eyes of the law, the creator of the output. The work lands in the public domain by default, unprotectable by any open source or commercial licence. No GPL. No MIT. No proprietary rights of any kind. The code cannot be owned.
 
