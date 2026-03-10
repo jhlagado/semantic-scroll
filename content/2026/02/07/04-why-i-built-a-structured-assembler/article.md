@@ -1,5 +1,5 @@
 ---
-status: published
+status: draft
 title: "Why I Built a Structured Assembler for the Z80"
 summary: "Traditional Z80 assemblers give you mnemonics and macros, but the control flow remains a tangle of labels and jumps. ZAX adds structured programming constructs while keeping explicit register control. The result is assembly code that reads like Pascal but compiles like raw machine code."
 tags:
@@ -88,4 +88,3 @@ The approach eliminates linkers because object files disappear when the compiler
 Existing Z80 tools fall into two camps. Traditional assemblers give you mnemonics with macros but nothing more. High-level compilers like SDCC generate code from C but hide the machine entirely. ZAX sits between these camps by letting you write instructions while managing registers just like traditional assembly. Yet you also get structured control flow with typed layouts alongside a proper calling convention that uses stack-based arguments. The code remains low-level and predictable while becoming easier to read and maintain.
 
 I built ZAX because I wanted to write Z80 programs the way I think about them: as structured code that happens to target a specific processor. The result is a language that feels like assembly when you need precision and like Pascal when you need structure.
-

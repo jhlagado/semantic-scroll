@@ -1,7 +1,7 @@
 ---
 status: published
-title: "Typed AST Ops in ZAX"
-summary: "ZAX defines reusable instruction patterns as typed `op` blocks that match parsed operands and expand through AST transforms. This article explains why that model fits long-lived assembly projects and how it improves diagnostics during daily work. The design keeps code readable while preserving clear control over the emitted instructions."
+title: "Why ZAX Replaces Macros with Typed Ops"
+summary: "ZAX uses typed inline `op` declarations instead of text macros so reusable instruction patterns stay readable, predictable, and grounded in real operand shapes."
 tags:
   - zax
   - z80
@@ -11,17 +11,17 @@ tags:
 series: zaxassembler
 ---
 
-# Typed AST Ops in ZAX
+# Why ZAX Replaces Macros with Typed Ops
 
 By John Hardy
 
-ZAX grew from a simple need that kept returning in project after project. I wanted reusable instruction patterns with clear names, and I wanted each expansion step to stay visible in compiler diagnostics. Macro systems gave me reuse, yet the debugging loop slowed down once nested expansions entered the file. Error spans drifted away from the line I wrote. Each correction required another pass through generated text.
+One of the most distinctive parts of ZAX is `op`, a way to define new instruction-shaped building blocks with typed operands. I wanted this because reusable patterns appear constantly in assembly work, especially on the Z80, and traditional macro systems do a poor job of carrying those patterns once a project becomes large. ZAX keeps the convenience of reusable instruction families while grounding them in the actual operands that appear at the call site.
 
-Typed ops in ZAX carry a different contract. An `op` declaration defines operand matchers and overload signatures. The same declaration also holds a body that the compiler lowers after parsing. Parsed operands already have structure at that stage, so the compiler can evaluate matcher compatibility with direct type information. The implementation detail changes the full writing experience because each failure maps back to explicit source positions in the call site and in the selected overload.
+## Reuse at the instruction level
 
-Compiler design choices usually look abstract on paper, though this one changed my day-to-day workflow in a direct way. I spend less time inspecting expanded code and more time writing routines with clear names. Diagnostic messages now report the matching overload and explain each rejected candidate. That feedback loop keeps momentum during long sessions that move between parser work and lowering work while tests evolve in parallel.
+An `op` looks and reads like an instruction. It expands inline, so there is no call overhead, and it can be overloaded so a single name covers a family of related operand shapes. That makes it useful for the repetitive low-level work that assemblers have always needed macros for.
 
-This small example shows the style I use for typed overloads:
+This is a small example:
 
 ```zax
 op add16(dst: HL, src: reg16)
@@ -35,10 +35,16 @@ op add16(dst: DE, src: reg16)
 end
 ```
 
-Each overload declares a precise operand contract, so the call site stays compact while lowering remains deterministic. Parser output drives matcher selection in a deterministic step. The selected matcher then drives substitution before emission begins. That sequence keeps every step inspectable during testing because no stage hides a textual expansion layer outside the AST.
+At the call site, `add16 DE, BC` reads like a normal instruction. The compiler sees that the destination is `DE`, selects the matching form, substitutes the operands, and emits the correct inline sequence. The source stays compact and the machine behaviour stays visible.
 
-Overloading also lets me treat instructions as families with explicit boundaries. A family name like `add16` can cover several valid register combinations while still rejecting accidental forms early. Rejections matter in assembler work because a silent expansion bug can survive into runtime before anyone notices. Typed matching catches those mismatches during compile time and points at the exact operand slot that broke the rule.
+## The operands are part of the contract
 
-Current ZAX work adds matcher forms such as `idx16` and condition-code matchers for control-flow oriented ops. Those additions widen the design space without weakening type clarity. I can add another overload and keep the same reasoning model. Parsing always runs before matcher resolution begins. Lowering then applies explicit substitutions and emits deterministic machine code.
+The important idea is that operands are matched by kind. A declaration can require `HL`, any `reg16`, an immediate, a condition code, or another specific operand class. That gives reusable patterns clear boundaries. If I pass the wrong shape, the compiler can reject the call in terms that make sense for the original source.
 
-Readers who build tooling for mature assembly codebases care about maintenance cost across months and years. Typed ops address that cost through clear contracts and predictable diagnostics. Reusable patterns then stay tied to machine semantics throughout the codebase. ZAX keeps assembly direct while giving repeated instruction shapes a compiler-level home.
+This is a practical improvement over text substitution. The tool understands that `DE` is a register pair and `Z` is a condition code. It is working with the parsed program rather than a stream of pasted tokens. That keeps reusable instruction forms connected to the machine concepts they represent.
+
+## A better fit for long-lived assembler code
+
+Typed ops matter because they let an assembler project grow without pushing more logic into fragile macro text. I can give a repeated pattern a name, define the valid operand forms once, and keep the final expansion inline and inspectable. That is exactly the kind of facility a structured assembler should offer.
+
+ZAX uses typed ops because they are a better unit of reuse for assembly code. They keep the language close to the machine while giving repeated instruction patterns a clear and durable home.

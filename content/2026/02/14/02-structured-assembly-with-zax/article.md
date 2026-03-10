@@ -1,7 +1,7 @@
 ---
 status: published
-title: "Structured Assembly With ZAX"
-summary: "ZAX brings structured programming shape to assembly source while keeping register and flag control explicit. This article explains the programming model that connects familiar module-level structure with direct Z80 instruction work. The goal is code that remains readable months later and still compiles into predictable machine output."
+title: "How ZAX Makes Larger Z80 Programs Manageable"
+summary: "ZAX gives larger Z80 programs a stronger shape through modules, named sections, typed layouts, stable call boundaries, and structured control flow that still follows the machine."
 tags:
   - zax
   - z80
@@ -11,34 +11,54 @@ tags:
 series: zaxassembler
 ---
 
-# Structured Assembly With ZAX
+# How ZAX Makes Larger Z80 Programs Manageable
 
 By John Hardy
 
-Long-lived assembly projects succeed when source files preserve intent after the original sprint ends. My early Z80 projects solved the immediate task and ran on hardware. Maintenance sessions then became slow because control flow and layout intent had scattered through labels and comments plus informal naming conventions. ZAX exists to keep intent in the source through explicit structure that survives refactoring and late-stage feature work.
+ZAX matters most when a Z80 program stops being a single routine and starts becoming a codebase. At that point the problem is not instruction syntax. The problem is keeping modules, memory layouts, call boundaries, and control flow understandable as the program grows. ZAX gives those parts a clear place in the language so the source continues to read like a program instead of a pile of local assembler conventions.
 
-Structured form in ZAX starts with file organisation. Declarations for constants and layouts sit in predictable sections. Globals and callable routines follow the same ordering rule. Data shape and executable logic therefore appear in a stable order. That organisation helps during code review because each file reads like a designed module with clear boundaries. New contributors can scan memory layout first and follow executable flow with fewer jumps through the file.
+## Files read like modules
 
-Control flow follows CPU flags directly inside `asm` blocks. Instructions set flags, then structured keywords consume those conditions through explicit condition codes. I rely on codes such as `Z` and `NZ` during most routines, then switch to carry codes when needed. This model keeps branch intent visible and keeps branch mechanics attached to the same flag rules that the processor already enforces.
+ZAX starts by treating the source file as a module. Imports live at module scope. Code and data live in named sections. Public entry points are marked with `export`. External routines at fixed addresses can be declared once and then called through a normal function-like surface. This gives a project a stable shape from the first screenful of source onward.
 
-A small loop demonstrates the style:
+That structure is useful because it reduces hidden knowledge. I do not need to remember which label is intended as an entry point or which block of bytes belongs to which subsystem. The file tells me.
+
+## Memory layout lives in the source
+
+The next improvement comes from typed layout declarations. ZAX supports arrays, records, unions, and enums so the source can describe memory the same way the program uses it. The compiler then handles the offset arithmetic that would otherwise live in comments or hard-coded constants.
+
+That changes the way addressing reads. A form like `sprites[C].x` expresses the same intent that exists in my head when I write the code. The addressing model still lowers to ordinary Z80 work, but the layout calculation moves into the compiler where it belongs. The result is less drift between the program design and the addresses in the source.
+
+## Calls have a stable shape
+
+ZAX also gives functions a real boundary. A function declaration names the arguments, return type, and locals. An external ROM or BIOS routine can be declared with the same surface, including its fixed address. Call sites then stay compact and readable while the compiler handles the push, call, and cleanup sequence consistently.
+
+That consistency matters in assembly. A large program collects many tiny calling conventions if the tool does not provide one. ZAX gives the project a single calling model that I can rely on across modules.
+
+## Control flow stays readable
+
+Structured control flow completes the picture. ZAX provides `if`, `while`, `repeat`, and `select`, and each one still depends on the flags that the instructions have already set. The source gains the shape of a loop or branch without losing the underlying machine logic.
+
+This kind of loop is typical:
 
 ```zax
 ld b, MsgLen
 repeat
-  ld hl, (p)
+  ld hl, p
   ld a, (hl)
   inc hl
-  ld (p), hl
-  call bios_putc
+  ld p, hl
+  push bc
+  bios_putc A
+  pop bc
   dec b
 until Z
 ```
 
-Source layout and machine semantics stay aligned in this pattern. The body states memory movement and call boundaries in plain instruction form. The terminating condition points to the `Z` flag produced by `dec b`. I can read that block after a long break and recover the execution story quickly.
+The machine story is still there. `dec b` sets the zero flag and `until Z` uses it. ZAX simply carries the branch bookkeeping so the source keeps its shape.
 
-Typed layout support extends the same clarity to memory addressing. Arrays and records plus `offsetof` let the compiler calculate offsets from declared structure. Explicit load and store instructions remain in source. Address expressions stay meaningful in source, and emitted code keeps the exact register-level behaviour that assembly programmers expect.
+## A better environment for real assembly work
 
-Function calls follow stable conventions with compile-time checking for typed arguments and return placement. Preservation rules stay explicit in call boundaries. Stack discipline remains visible in the generated code and in lowering diagnostics. That discipline matters on Z80 because register pressure appears quickly in routines that mix loops with table lookups and device access.
+ZAX does not try to hide the hard parts of assembly programming. It gives those hard parts a better environment. Source files gain a module structure. Layouts stay attached to the code that uses them. Calls follow a single convention. Control flow reads cleanly. That is enough to make a large difference in a long-lived Z80 project.
 
-Readers coming from C or Pascal can recognise familiar structural rhythm in ZAX files and drop into direct instruction work without switching languages. Developers with classic assembler backgrounds can keep full control of machine state while gaining stronger source structure. ZAX treats structure as a practical tool for maintainability in real assembly codebases.
+That is the practical promise of ZAX. It keeps assembly direct and makes bigger programs easier to hold in my head.

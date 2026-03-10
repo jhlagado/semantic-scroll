@@ -8,7 +8,7 @@ tags:
   - condition-codes
   - compiler-design
 series: zaxassembler
-status: published
+status: draft
 ---
 
 # Condition Codes as Control Flow: How ZAX Turns CPU Flags into If Statements

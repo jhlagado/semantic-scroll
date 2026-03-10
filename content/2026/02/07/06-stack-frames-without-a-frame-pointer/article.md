@@ -1,5 +1,5 @@
 ---
-status: published
+status: draft
 title: "Stack Frames Without a Frame Pointer"
 summary: "Traditional calling conventions dedicate a register as a frame pointer to access local variables and arguments. ZAX takes a different approach for the Z80: it uses SP-relative addressing with compiler-tracked offsets. The result frees IX and IY for other uses while still supporting functions with locals, arguments, and nested returns."
 tags:

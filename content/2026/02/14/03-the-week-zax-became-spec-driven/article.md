@@ -1,5 +1,5 @@
 ---
-status: published
+status: draft
 title: "The Week ZAX Became Spec-Driven"
 summary: "Between February 7 and February 14, 2026, ZAX moved from rapid feature expansion toward tighter language contracts and stronger behavioural tests. This article records that transition through concrete work in docs, parser rules, lowering logic, and fixture growth. The result is a clearer spec surface that guides future implementation decisions."
 tags:
