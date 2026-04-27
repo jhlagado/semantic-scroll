@@ -16,7 +16,7 @@ By John Hardy
 
 There is a metaphor doing a lot of work in current AI discussion. We talk as though the brain is hardware and the mind is software. Once that picture takes hold, the rest feels obvious. If minds are basically programs, then a sufficiently large and well-designed machine ought to be able to run one. Consciousness becomes a scale problem. Add enough memory, enough data, enough compute, enough architectural sophistication, and the software should eventually come alive.
 
-I think that picture is doing more harm than good. It is useful up to a point, because it helps explain some aspects of cognition in familiar engineering terms. Then it quietly overreaches. It moves from being a model of thought to being a claim about what thought is. That shift matters. A model can describe a process with great accuracy without becoming the thing it describes.
+I think that picture is doing more harm than good. It is useful up to a point, because it helps explain some aspects of cognition in familiar engineering terms. Then it quietly overreaches and moves from being a model of thought to being a claim about what thought is. A model can describe a process with great accuracy without becoming the thing it describes.
 
 This is the distinction I want to defend here. Current AI systems can model thought in impressive ways. They can produce language, solve problems, classify patterns, and often behave like capable reasoning systems. None of that by itself shows that a model has crossed over into consciousness. The gap is not just one of more scale or more engineering effort. The gap begins with the difference between representing experience and having experience.
 
@@ -32,33 +32,33 @@ This is where I think a lot of AI discussion goes off the rails. As systems beco
 
 ## Computers Do Physics First, Computation Second
 
-There is another confusion underneath the first one. We often talk as though computation is just sitting there in the machine as a natural property of matter. At the physical level, though, a computer is a device moving through state changes. Voltages rise and fall. Charges shift. Storage flips. Signals propagate through hardware.
+Another confusion sits underneath the first one. We often talk as though computation is just sitting there in the machine as a natural property of matter. At the physical level, though, a computer is a device moving through state changes. Voltages rise and fall, charges shift, storage flips, and signals propagate through hardware.
 
-The language of symbols sits on top of that. We say a state means `1` or `0`. We say a sequence is an instruction. We say some memory layout is a program. Those descriptions are real and useful, but they are also interpretive. They are ways conscious beings organise the physical behaviour of a device into a system of symbols and operations.
+Symbolic language sits on top of that physical activity. We say a state means `1` or `0`, a sequence is an instruction, and a memory layout is a program. Those descriptions are real and useful, but they are also interpretive. Conscious beings organise the physical behaviour of a device into a system of symbols and operations, then use that system to reason about what the machine is doing.
 
-That matters because people often try to make computation explain consciousness, when the very concept of computation already belongs to a world described by conscious beings. We use mathematics to describe falling objects, orbital motion, electricity, and machine behaviour. The falling rock is not solving equations. We are. Computation is one of the tools consciousness uses to make the world legible.
+This becomes important when people try to make computation explain consciousness, because the very concept of computation already belongs to a world described by conscious beings. We use mathematics to describe falling objects, orbital motion, electricity, and machine behaviour. The falling rock is not solving equations. We are. Computation is one of the tools consciousness uses to make the world legible.
 
 So when someone says a machine may become conscious because it is computing, I think the first question should be: what work is the word "computing" doing here? If it means the system is undergoing physical state transitions, that describes every physical process. If it means the system is performing symbolic operations, then we are already inside a human frame of interpretation.
 
 ## Syntax Has a Ceiling
 
-The most interesting AI systems operate on form. They work on tokens, vectors, weights, probabilities, and update rules. That is why they can be so effective. Formal systems scale well. They can search huge spaces, compress regularities, and produce outputs that look uncannily intelligent.
+The most interesting AI systems operate on form. They work on tokens, vectors, weights, probabilities, and update rules, which is why they can be so effective. Formal systems scale well. They can search huge spaces, compress regularities, and produce outputs that look uncannily intelligent.
 
-But formal systems also have limits. Turing's halting problem is a famous example. There is no general procedure that can determine for every arbitrary program whether it will halt or run forever. That is not a temporary tooling issue. It is a limit built into formal computation itself.
+Formal systems also have limits. Turing's halting problem is a famous example. There is no general procedure that can determine for every arbitrary program whether it will halt or run forever. This is not a temporary tooling issue. It is a limit built into formal computation itself.
 
-This matters because computers operate at the level of syntax. They manipulate symbols according to rules. They preserve structure. They transform sequences. What they do not get for free is meaning. A system can process a symbol for pain without feeling pain. It can produce a perfect explanation of grief without grieving. It can generate a warning about an infinite loop without there being anything it is like for the system to understand that loop.
+Computers operate at the level of syntax. They manipulate symbols according to rules, preserve structure, and transform sequences. Meaning does not arrive automatically with that process. A system can process a symbol for pain without feeling pain. It can produce a perfect explanation of grief without grieving. It can generate a warning about an infinite loop without there being anything it is like for the system to understand that loop.
 
 Humans operate in syntax too, of course, but they also grasp meaning. A developer can look at code and see what a bug means in the context of a system. A reader can understand tone, intent, and implication. A person can recognise that a contradiction matters, not just that a token sequence is malformed.
 
-That is why I think there is a real ceiling here. More compute gives you more speed, more scale, and more capacity to model patterns. It does not automatically move a system from syntax into semantics, from formal structure into lived understanding.
+I think there is a real ceiling here. More compute gives you more speed, more scale, and more capacity to model patterns. It does not automatically move a system from syntax into semantics, from formal structure into lived understanding.
 
 ## Life Is Not Just Processing
 
-There is also a difference between a machine executing operations and a living system maintaining itself. A cell is not simply processing information in the abstract. It is processing information as part of the work of staying alive. Repair, metabolism, reproduction, and adaptation are all tied together. The "code" is part of a self-maintaining system whose continued existence is at stake.
+There is also a difference between a machine executing operations and a living system maintaining itself. A cell is not simply processing information in the abstract. It processes information as part of the work of staying alive. Repair, metabolism, reproduction, and adaptation are all tied together, and the "code" is part of a self-maintaining system whose continued existence is at stake.
 
-That is different from a software stack running on hardware. In computing, we can conceptually separate the program from the machine. In biology, the separation is much harder to make. The information inside a living system participates in building, repairing, and reproducing the very system that uses it.
+That differs from a software stack running on hardware. In computing, we can conceptually separate the program from the machine. In biology, the separation is much harder to make. The information inside a living system participates in building, repairing, and reproducing the very system that uses it.
 
-I do not think this is a side issue. It may be central. Consciousness may depend on being the kind of thing for which existence matters. A living organism has needs, vulnerabilities, limits, and a real relation to damage and survival. That gives its information processing a context that digital systems do not obviously possess.
+I do not treat this as a side issue. It may be central. Consciousness may depend on being the sort of entity for which existence matters. A living organism has needs, vulnerabilities, limits, and a real relation to damage and survival, which gives its information processing a context that digital systems do not obviously possess.
 
 Put more bluntly: a server farm can execute instructions at enormous scale without anything being at stake for it. A living thing processes the world under the pressure of its own continued existence.
 
@@ -72,18 +72,18 @@ That is why behavioural success does not close the case. A system may look smart
 
 ## The Model Trap in LLMs
 
-Large Language Models intensify the confusion because they are so good at producing mind-like outputs. They write fluently. They summarise, explain, translate, imitate, and often sound reflective. Once a machine can keep up its side of a conversation, people naturally start to project inwardness onto it.
+Large Language Models intensify the confusion because they are so good at producing mind-like outputs. They write fluently, summarise, explain, translate, imitate, and often sound reflective. Once a machine can keep up its side of a conversation, people naturally start to project inwardness onto it.
 
-But the clue is right there in the name. The `M` stands for model. An LLM is a model of linguistic output. It is trained on traces of human expression and tuned to continue sequences in ways that preserve coherence and plausibility. That is a remarkable technical achievement. It also tells us what kind of thing we are dealing with.
+The clue is right there in the name. The `M` stands for model. An LLM is a model of linguistic output. It is trained on traces of human expression and tuned to continue sequences in ways that preserve coherence and plausibility. That is a remarkable technical achievement, and it also tells us what kind of system we are dealing with.
 
 When an LLM feels like a mind, the feeling is real on our side. The system has been built to trigger exactly that response. This is a modern version of the ELIZA effect. We are highly susceptible to treating fluent output as evidence of a subject behind it.
 
-That matters beyond philosophy. If we start treating human-like output as equivalent to human being, we flatten our understanding of life. We start valuing performance over presence. We begin to talk as though generating the right sentences is enough to count as having a mind. I do not think that is a safe assumption, and I do not think developers should adopt it casually just because the outputs are impressive.
+The issue extends beyond philosophy. If we start treating human-like output as equivalent to human being, we flatten our understanding of life. We start valuing performance over presence. We begin to talk as though generating the right sentences is enough to count as having a mind. I do not think that is a safe assumption, and developers should not adopt it casually just because the outputs are impressive.
 
 ## The Real Question
 
-None of this means AI is trivial or unimportant. Quite the opposite. The current generation of models shows how much structure there is in language, reasoning, and public behaviour, and how much of that structure can be captured formally. That is a very large discovery. It changes software, search, programming, writing, education, and probably a great deal more.
+None of this means AI is trivial or unimportant. The current generation of models shows how much structure there is in language, reasoning, and public behaviour, and how much of that structure can be captured formally. That is a large discovery with consequences for software, search, programming, writing, education, and more.
 
-But I think we should describe the discovery accurately. We are building better maps of thought, not necessarily building minds. Those maps may become astonishingly useful. They may even force us to rethink what parts of intelligence can be externalised into tools. What they do not yet do is explain why a formal system would become a subject.
+I think we should describe that discovery accurately. We are building better maps of thought, not necessarily building minds. Those maps may become astonishingly useful. They may even force us to rethink which parts of intelligence can be externalised into tools. They still do not explain why a formal system would become a subject.
 
-That is why I keep coming back to the same line: your AI is a map, not a mind. The map may be brilliant. It may outperform people in some tasks. It may help write code, design systems, and organise knowledge. It still does not follow that there is anyone home inside it.
+I keep coming back to the same line because it describes the situation cleanly: your AI is a map, not a mind. The map may be brilliant. It may outperform people in some tasks. It may help write code, design systems, and organise knowledge. None of that establishes that there is anyone home inside it.
