@@ -26,7 +26,7 @@ The clearest entry point is simulation. A weather model can become extraordinari
 
 Simulations capture structure. They preserve relationships. They let me reason about a system. They stay descriptions of the system, however detailed they get.
 
-The same applies to the mind. A model can cover recognition, memory, speech, planning, and prediction. A model can cover much of what gets called thinking from the outside. Modelling alone supplies no reason to expect an inner point of view to appear inside the system. Greater fidelity in the model leaves the question of inner experience exactly where it stood.
+The same applies to the mind. A model can cover recognition, memory, speech, planning, and prediction. It can capture much of what gets called thinking from the outside. Modelling alone supplies no reason to expect an inner point of view to appear inside the system. Greater fidelity in the model leaves the question of inner experience exactly where it stood.
 
 A lot of AI commentary slips here. As systems become more convincing, people drift into assuming that realism in the model must eventually become reality in the modelled subject. The move is an abstraction error. A more detailed map stays a map.
 
@@ -70,13 +70,13 @@ Behavioural success therefore leaves the case open. A system may look smart, use
 
 ## The Model Trap in LLMs
 
-Large Language Models intensify the confusion because they produce mind-like outputs with such fluency. They write, summarise, explain, translate, imitate, and often sound reflective. Once a machine holds up its side of a conversation, projection of inwardness follows almost automatically.
+Large Language Models intensify the confusion because they produce mind-like outputs with such fluency. They write, summarise, explain, translate, imitate, and often sound reflective. Once a machine holds up its side of a conversation, listeners almost automatically project inwardness onto it.
 
-The clue is in the name. The `M` stands for model. An LLM models linguistic output. Training runs over traces of human expression and tunes the model to continue sequences in ways that preserve coherence and plausibility. The technical achievement is significant. The description also fixes the category of object on the table.
+The clue is in the name. The `M` stands for model. An LLM models linguistic output. Training runs over traces of human expression and tunes the model to continue sequences in ways that preserve coherence and plausibility. The technical achievement is significant. The description also pins down the type of object I am dealing with.
 
 The feeling of meeting a mind in an LLM is real on my side. The system has been built to trigger exactly that response. This is a modern descendant of the ELIZA effect. Humans treat fluent output as evidence of a subject behind it.
 
-The stakes show up in daily life. Treating human-like output as equivalent to human being flattens my picture of a person. Performance starts to count as presence. The "right sentences" start to look like a sufficient definition of a mind. Developers especially should resist that slide, no matter how impressive the outputs become.
+The stakes show up in daily life. Treating human-like output as equivalent to a human being flattens my picture of a person. Performance starts to count as presence. The "right sentences" start to look like a sufficient definition of a mind. Developers especially should resist that slide, no matter how impressive the outputs become.
 
 ## The Real Question
 
