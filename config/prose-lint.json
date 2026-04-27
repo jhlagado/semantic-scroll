@@ -270,7 +270,7 @@
             "message": "Anthropomorphic agency (avoid assigning intent or cognition to tools)",
             "patterns": [
                 {
-                    "pattern": "\\bthe\\s+(machine|system|build|template|site|tool|toolchain|debugger|adapter|panel|editor|extension|repo|platform|engine|interface)\\s+(?:can|could|will|would|should|may|might)?\\s*(think|know|decide|expect|understand|explain|tell|want|prefer|care|hope|remember|forget|learn|believe|feel)s?\\b",
+                    "pattern": "\\bthe\\s+(machine|system|build|template|site|tool|toolchain|debugger|adapter|panel|editor|extension|repo|platform|engine|interface)\\s+(?:can|could|will|would|should|may|might)?\\s*(want|prefer|care|hope|believe|feel)s?\\b",
                     "flags": "i"
                 }
             ]
@@ -281,11 +281,11 @@
             "message": "Hedge word",
             "patterns": [
                 {
-                    "pattern": "\\bkind of\\b",
+                    "pattern": "(?<!\\b(?:the|a|an|this|that|these|those|what|which|any|some|every|no|each|another)\\s)\\bkind of\\b",
                     "flags": "i"
                 },
                 {
-                    "pattern": "\\bsort of\\b",
+                    "pattern": "(?<!\\b(?:the|a|an|this|that|these|those|what|which|any|some|every|no|each|another)\\s)\\bsort of\\b",
                     "flags": "i"
                 },
                 {
@@ -361,36 +361,12 @@
                 {
                     "pattern": "\\baspects\\b",
                     "flags": "i"
-                },
-                {
-                    "pattern": "\\belement\\b",
-                    "flags": "i"
-                },
-                {
-                    "pattern": "\\belements\\b",
-                    "flags": "i"
-                },
-                {
-                    "pattern": "\\barea\\b",
-                    "flags": "i"
-                },
-                {
-                    "pattern": "\\bareas\\b",
-                    "flags": "i"
-                },
-                {
-                    "pattern": "\\bpart\\b",
-                    "flags": "i"
-                },
-                {
-                    "pattern": "\\bparts\\b",
-                    "flags": "i"
                 }
             ]
         },
         {
             "name": "passive-voice",
-            "weight": 3,
+            "weight": 2,
             "message": "Possible passive voice",
             "patterns": [
                 {
