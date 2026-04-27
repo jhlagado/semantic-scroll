@@ -44,7 +44,7 @@ The most interesting AI systems operate on form. They work on tokens, vectors, w
 
 Formal systems also have limits. Turing's halting problem is the famous example. No general procedure can determine for every arbitrary program whether it halts or runs forever. The limit is structural, baked into formal computation itself.
 
-Computers operate at the level of syntax. They manipulate symbols according to rules. They preserve structure. They transform sequences. Meaning sits outside that perimeter. A system can process the symbol for pain while feeling nothing. It can produce a clean explanation of grief without grieving. It can output a warning about an infinite loop where there is nothing it is like for the system to understand the loop.
+Computers operate at the level of syntax. They manipulate symbols according to rules. They preserve structure. They transform sequences. Meaning sits outside that perimeter. A system can process the symbol for pain while feeling nothing. It can produce a clean explanation of grief without grieving. It can flag an infinite loop without any inner sense of what looping means.
 
 Humans operate in syntax too, and they grasp meaning as well. A developer reads code and sees what a bug means inside a system. A reader picks up tone, intent, and implication. A person registers that a contradiction matters, beyond noticing a malformed token sequence.
 
