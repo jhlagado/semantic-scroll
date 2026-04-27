@@ -22,7 +22,7 @@ Current AI systems can model thought in striking ways. They produce language, so
 
 ## Simulation Stays in Its Lane
 
-The clearest entry point is simulation. A weather model can become extraordinarily accurate and produce no rain. A software model of a combustion engine can represent pressure, timing, heat, and exhaust flow while leaving every car stationary. A simulation of photosynthesis can track every step of the process and produce no sugar.
+The clearest entry point is simulation. A weather model can become extraordinarily accurate and produce no rain. A software model of a combustion engine can represent pressure, timing, heat, and exhaust flow while leaving every car stationary. A simulation of photosynthesis can track every step of the process without producing a gram of sugar.
 
 Simulations capture structure. They preserve relationships. They let me reason about a system. They stay descriptions of the system, however detailed they get.
 
