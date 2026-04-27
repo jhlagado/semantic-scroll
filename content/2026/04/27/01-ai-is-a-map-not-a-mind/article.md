@@ -72,7 +72,7 @@ Behavioural success therefore leaves the case open. A system may look smart, use
 
 Large Language Models intensify the confusion because they produce mind-like outputs with such fluency. They write, summarise, explain, translate, imitate, and often sound reflective. Once a machine holds up its side of a conversation, listeners almost automatically project inwardness onto it.
 
-The clue is in the name. The `M` stands for model. An LLM models linguistic output. Training runs over traces of human expression and tunes the model to continue sequences in ways that preserve coherence and plausibility. The technical achievement is significant. The description also pins down the type of object I am dealing with.
+The clue is in the name. The `M` stands for model. An LLM models linguistic output. Training runs over traces of human expression and tunes the model to continue sequences in ways that preserve coherence and plausibility. The technical achievement is significant. The description also pins down what kind of object I am dealing with.
 
 The feeling of meeting a mind in an LLM is real on my side. The system has been built to trigger exactly that response. This is a modern descendant of the ELIZA effect. Humans treat fluent output as evidence of a subject behind it.
 
