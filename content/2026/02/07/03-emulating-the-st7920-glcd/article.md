@@ -9,12 +9,11 @@ tags:
   - glcd
   - emulation
   - hardware
-series: debug80diaries
 ---
 
 # First Read, Wrong Data: Emulating the ST7920's Pipeline
 
-Written by John Hardy on February 7th, 2026
+By John Hardy
 
 The TEC-1G includes support for the ST7920 graphical LCD controller, a chip that drives 128×64 pixel displays using a parallel interface. Programs can write pixels to display buffer memory and read them back for verification or manipulation. The read path has a quirk that tripped me up: the first read after setting an address returns the data from the *previous* address, not the address you just specified.
 
@@ -88,4 +87,3 @@ The data sheet describes this behaviour, but the description is easy to overlook
 Peripheral emulation often requires modelling internal timing and sequencing, not just the logical contents of registers. The ST7920's read pipeline is invisible to code that only writes to the display—writes take effect immediately—but becomes critical for code that reads back. An emulator that supports only writes might pass basic tests and fail on more sophisticated programs.
 
 The fix was small, just a few lines of state management. Finding the bug took longer because the symptoms (reads returning zero) could have indicated many different problems. Once I understood the real chip's behaviour, the solution was obvious. The lesson is familiar: when emulation diverges from hardware, the data sheet usually contains the answer, even if it takes a second reading to find it.
-
