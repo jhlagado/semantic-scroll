@@ -2,6 +2,7 @@
 status: published
 title: "Your AI Is a Map, Not a Mind"
 summary: "This article argues that current AI systems can model thought with extraordinary power without becoming conscious subjects. It explains the difference between simulation and experience, syntax and meaning, and output and inner life for a technical audience."
+thumbnail: assets/map-not-mind.jpg
 tags:
   - ai
   - programming
@@ -13,6 +14,8 @@ tags:
 # Your AI Is a Map, Not a Mind
 
 By John Hardy
+
+![An enormous antique paper map draped over the mountains, rivers, villages and fields of the living country it depicts.](./assets/map-not-mind.jpg "An imaginary map at the scale of its territory: exhaustive in detail, yet still made of paper.")
 
 There is a metaphor doing a lot of work in current AI discussion. We talk as though the brain is hardware and the mind is software. Once that picture takes hold, the rest feels obvious. If minds are basically programs, then a sufficiently large and well-designed machine ought to be able to run one. Consciousness becomes a scale problem. Add enough memory, enough data, enough compute, enough architectural sophistication, and the software should eventually come alive.
 

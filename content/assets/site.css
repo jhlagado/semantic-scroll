@@ -369,56 +369,54 @@ th { background: color-mix(in srgb, var(--yellow) 55%, var(--paper)); text-align
   font: 650 .8rem/1.5 var(--mono);
 }
 
-.page-index .series-entries > .article-entry > :not(header):not(footer):not(h1):not(p) { display: none; }
-.page-index .series-entries > .article-entry > p { display: none; }
-.page-index .series-entries > .article-entry > p:first-of-type,
-.page-index .series-entries > .article-entry > p:nth-of-type(2) { display: block; }
-.page-index .series-entries > .article-entry > p:nth-of-type(2) { margin-bottom: 0; color: var(--ink); font: inherit; }
-.page-index .series-entries > .article-entry > h1 { font-size: clamp(1.55rem, 3.5vw, 2.3rem); }
-.page-index .series-entries > .article-entry > h1::after { content: "  ↗"; color: var(--orange); font: 700 .7em/1 var(--mono); }
-
-.page-index .series-entries > .summary {
+.page-index main .summary {
+  cursor: pointer;
   transition: transform .16s ease, box-shadow .16s ease;
 }
 
-.page-index .series-entries > .summary:hover {
+.page-index main .summary:hover {
   transform: translate(-.16rem, -.16rem);
   box-shadow: .72rem .72rem 0 var(--shadow);
 }
 
-.page-index .series-entries > .summary:focus-within {
+.page-index main .summary:focus-within {
   outline: 3px solid var(--yellow);
   outline-offset: 4px;
 }
 
-.page-index .series-entries > .summary .summary-title {
+.page-index main .summary .summary-title {
   margin: .2rem 0 .35rem;
   font-size: clamp(1.55rem, 3.5vw, 2.3rem);
 }
 
-.page-index .series-entries > .summary .summary-title::after {
+.page-index main .summary .summary-title a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.page-index main .summary .summary-title::after {
   content: " ↗";
   color: var(--entry-accent);
   font: 700 .7em/1 var(--mono);
 }
 
-.page-index .series-entries > .summary .summary-title a::after {
+.page-index main .summary .summary-title a::after {
   content: "";
   position: absolute;
   z-index: 1;
   inset: 0;
 }
 
-.page-index .series-entries > .summary .summary-title a:focus-visible {
+.page-index main .summary .summary-title a:focus-visible {
   outline: 0;
 }
 
-.page-index .series-entries > .summary .summary-meta-line a {
+.page-index main .summary .summary-meta-line a {
   position: relative;
   z-index: 2;
 }
 
-.page-index .series-entries > .summary .summary-thumb {
+.page-index main .summary .summary-thumb {
   margin: 1.2rem 0 1.35rem;
   overflow: hidden;
   background: var(--paper-deep);
@@ -426,14 +424,14 @@ th { background: color-mix(in srgb, var(--yellow) 55%, var(--paper)); text-align
   box-shadow: .3rem .3rem 0 color-mix(in srgb, var(--entry-accent) 30%, transparent);
 }
 
-.page-index .series-entries > .summary .summary-thumb img {
+.page-index main .summary .summary-thumb img {
   display: block;
   width: 100%;
   max-height: 28rem;
   object-fit: cover;
 }
 
-.page-index .series-entries > .summary .summary-text {
+.page-index main .summary .summary-text {
   margin-bottom: 0;
   font-size: 1.04rem;
 }
@@ -447,6 +445,8 @@ th { background: color-mix(in srgb, var(--yellow) 55%, var(--paper)); text-align
 .archive-years,
 .index-list { max-width: 54rem; margin: 1.5rem auto; padding: 0; list-style: none; }
 
+.summary-list { display: grid; gap: 2.2rem; }
+
 .summary-item,
 .archive-month,
 .index-list li,
@@ -459,6 +459,7 @@ th { background: color-mix(in srgb, var(--yellow) 55%, var(--paper)); text-align
 }
 
 .summary-list .summary-item {
+  margin: 0;
   padding: 0;
   background: transparent;
   border-left: 0;
