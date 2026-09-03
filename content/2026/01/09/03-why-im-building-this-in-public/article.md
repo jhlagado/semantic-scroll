@@ -4,7 +4,7 @@
 title: "Why I'm Building This in Public"
 status: published
 series: genesis
-summary: "Explains why I build this in public and how writing reshapes the technical decisions. It also sets out how I keep pace without losing voice, using the prose-lint tool to catch drift."
+summary: "Explains why I build this in public and how writing reshapes the technical decisions. It also sets out how I use deliberate review to keep pace without losing my voice."
 tags:
   - writing
   - ai
@@ -21,7 +21,7 @@ The writing is one of the tools I'm using to build the system. It affects the ch
 
 Speed matters to this experiment because the work happens in real time and the record only helps if I keep it current. That pace has a cost: it pulls me toward familiar phrasing and tidy scaffolding that drains the writing of its edge. I feel the slide when I announce a topic and leave the decision unstated, or when sentences line up into the same rhythm.
 
-The `prose-lint` script is my counterweight. It catches scene-setting lines that do no work and contrast framing that drifts into narration. It also flags tidy lists that flatten nuance. One example I keep fixing is the empty opener. Draft: This section is about speed and quality in writing. Revision: I write fast to capture decisions while they are fresh. I then slow down to keep the voice intact. After the rewrite, I run another pass and keep the decision in front.
+Deliberate review is my counterweight. I ask whether each paragraph records an observation or decision, whether the rhythm sounds like me, and whether a tidy structure has flattened the thought. One example is the empty opener. Draft: This section is about speed and quality in writing. Revision: I write fast to capture decisions while they are fresh. I then slow down to keep the voice intact. The second version keeps the decision in front.
 
 A central concern in the experiment is how AI fits into this. I want AI as a constrained collaborator with clear boundaries about authority and intent, along with what I allow to change. Those constraints preserve the shape of the work while still letting me use speed and advantage when they help. The blog that will appear here comes from the project and follows the same rules, so templates and queries show up alongside build scripts and deployment because the writing needs them. Another example came from tagging, where writing down the normalisation rule forced me to rename a handful of tags and rebuild the indexes so the archive stayed coherent and kept near-duplicates in one place.
 
