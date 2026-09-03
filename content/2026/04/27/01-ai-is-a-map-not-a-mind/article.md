@@ -15,9 +15,13 @@ tags:
 
 By John Hardy
 
-![An enormous antique paper map draped over the mountains, rivers, villages and fields of the living country it depicts.](./assets/map-not-mind.jpg "An imaginary map at the scale of its territory: exhaustive in detail, yet still made of paper.")
-
-Inspired by Jorge Luis Borges’s [“On Exactitude in Science”](https://sites.williams.edu/thea228/research/textual-research/borges-of-exactitude-in-science/), in which cartographers make a map at the scale of their empire. This illustration is in the public domain and may be copied, modified or reused for any purpose without permission or attribution.
+<figure class="article-figure">
+  <img src="./assets/map-not-mind.jpg" alt="An enormous antique paper map draped over the mountains, rivers, villages and fields of the living country it depicts.">
+  <figcaption>
+    An imaginary map at the scale of its territory: exhaustive in detail, yet still made of paper.<br>
+    Inspired by Jorge Luis Borges’s <a href="https://sites.williams.edu/thea228/research/textual-research/borges-of-exactitude-in-science/">“On Exactitude in Science”</a>, in which cartographers make a map at the scale of their empire. This illustration is in the public domain and may be copied, modified or reused for any purpose without permission or attribution.
+  </figcaption>
+</figure>
 
 There is a metaphor doing a lot of work in current AI discussion. We talk as though the brain is hardware and the mind is software. Once that picture takes hold, the rest feels obvious. If minds are basically programs, then a sufficiently large and well-designed machine ought to be able to run one. Consciousness becomes a scale problem. Add enough memory, enough data, enough compute, enough architectural sophistication, and the software should eventually come alive.
 
