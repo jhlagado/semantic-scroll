@@ -17,6 +17,8 @@ By John Hardy
 
 ![An enormous antique paper map draped over the mountains, rivers, villages and fields of the living country it depicts.](./assets/map-not-mind.jpg "An imaginary map at the scale of its territory: exhaustive in detail, yet still made of paper.")
 
+Inspired by Jorge Luis Borges’s [“On Exactitude in Science”](https://sites.williams.edu/thea228/research/textual-research/borges-of-exactitude-in-science/), in which cartographers make a map at the scale of their empire. This illustration is dedicated to the public domain under [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
+
 There is a metaphor doing a lot of work in current AI discussion. We talk as though the brain is hardware and the mind is software. Once that picture takes hold, the rest feels obvious. If minds are basically programs, then a sufficiently large and well-designed machine ought to be able to run one. Consciousness becomes a scale problem. Add enough memory, enough data, enough compute, enough architectural sophistication, and the software should eventually come alive.
 
 I think that picture is doing more harm than good. It is useful up to a point, because it helps explain some aspects of cognition in familiar engineering terms. Then it quietly overreaches and moves from being a model of thought to being a claim about what thought is. A model can describe a process with great accuracy without becoming the thing it describes.
