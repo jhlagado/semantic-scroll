@@ -8,6 +8,7 @@ tags:
   - debugging
   - memory
   - ui
+thumbnail: assets/tec1-memory-panel-2026-01-23.png
 series: debug80diaries
 ---
 

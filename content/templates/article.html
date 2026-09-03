@@ -11,7 +11,7 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="page-shell">
     <header class="site-header">
-      <div class="register-line" aria-hidden="true"><span>FIELD LOG / ENTRY</span><span>PERMALINK</span></div>
+      <div class="register-line" aria-hidden="true"><span>FIELD LOG / SEMANTIC SCROLL</span><span>ENGINEERING NOTEBOOK</span></div>
       <a class="site-identity" href="/" aria-label="Semantic Scroll home">
         <span class="site-glyph" aria-hidden="true">{ }</span>
         <span class="site-name">Semantic Scroll</span>
@@ -28,6 +28,16 @@
         <template data-query="article-page"><p>Article missing.</p></template>
         <footer class="article-meta article-meta-bottom"><template data-query="article-page" data-view="article-meta-bottom"></template></footer>
       </article>
+      <nav class="article-navigation" aria-label="Article navigation">
+        <div class="article-navigation-item article-navigation-earlier">
+          <p class="article-navigation-label">← Earlier entry</p>
+          <template data-query="article-previous" data-view="summary"><p class="article-navigation-end">Beginning of the published log</p></template>
+        </div>
+        <div class="article-navigation-item article-navigation-later">
+          <p class="article-navigation-label">Later entry →</p>
+          <template data-query="article-next" data-view="summary"><p class="article-navigation-end">Latest published entry</p></template>
+        </div>
+      </nav>
     </main>
     <footer class="site-footer">
       <p>© 2026 John Hardy · <a href="https://github.com/jhlagado/semantic-scroll">Source</a> · Built with <a href="https://github.com/jhlagado/scribere">Scribere</a></p>

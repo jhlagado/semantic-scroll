@@ -8,6 +8,7 @@ tags:
   - philosophy
   - selfpublishing
   - openprotocols
+thumbnail: assets/this-is-for-everyone.jpg
 ---
 # Owning Your Output
 By John Hardy

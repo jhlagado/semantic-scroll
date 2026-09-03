@@ -7,6 +7,7 @@ tags:
   - web
   - selfpublishing
   - domains
+thumbnail: assets/reeve-and-serfs.jpg
 ---
 # Your Address Is Your Domain
 By John Hardy

@@ -8,6 +8,7 @@ tags:
   - tooling
   - authorship
   - copyright
+thumbnail: assets/julia-still.webp
 ---
 
 # Programming in Clay
