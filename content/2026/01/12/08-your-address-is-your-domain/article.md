@@ -1,5 +1,5 @@
 ---
-title: "Your Address Is Your Domain"
+title: "Your address is your domain"
 status: published
 series: openweb
 summary: "Argues that owning the domain is the first unit of independence. It calls the reader to secure the address before building the site."
@@ -9,7 +9,7 @@ tags:
   - domains
 thumbnail: assets/reeve-and-serfs.jpg
 ---
-# Your Address Is Your Domain
+# Your address is your domain
 By John Hardy
 
 When you publish on a platform, you are borrowing an address. Your writing lives under someone else’s name on someone else’s domain, and it stays there only as long as that company allows. You can share the link, but you do not control the address it points to.

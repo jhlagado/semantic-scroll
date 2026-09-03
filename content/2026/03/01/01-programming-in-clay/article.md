@@ -1,6 +1,6 @@
 ---
 status: published
-title: "Programming in Clay"
+title: "Programming in clay"
 summary: "On the January 2025 Copyright Office advice that vibe-coded software is public domain, why chat-window prompting fails to transfer authorial intent, and what a clay-like programming interface would need to do differently."
 tags:
   - ai
@@ -11,7 +11,7 @@ tags:
 thumbnail: assets/julia-still.webp
 ---
 
-# Programming in Clay
+# Programming in clay
 
 By John Hardy
 

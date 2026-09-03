@@ -1,6 +1,6 @@
 ---
 status: published
-title: "An Elephant in the Room Too Large to See"
+title: "An elephant in the room too large to see"
 summary: "This article argues that code generated without sufficient human authorship may fall into the public domain by default. It frames that legal risk as a neglected issue inside the current rush toward AI-assisted software development."
 tags:
   - ai
@@ -11,7 +11,7 @@ tags:
 thumbnail: assets/elephant.jpeg
 ---
 
-# An Elephant in the Room Too Large to See
+# An elephant in the room too large to see
 
 ![Elephant used as the hero image for this article.](./assets/elephant.jpeg)
 

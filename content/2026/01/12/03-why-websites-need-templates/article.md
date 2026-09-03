@@ -1,14 +1,14 @@
 ---
 
 
-title: "Why Websites Need Templates"
+title: "Why websites need templates"
 status: archived
 series: templating
 summary: "Shows how templates solve duplication and keep structure consistent across pages. It sets up the stamp model as the reason this series exists."
 tags:
   - templating
 ---
-# Why Websites Need Templates
+# Why websites need templates
 By John Hardy
 
 When I load a web page in a browser, what arrives is a single document. It might be long and include navigation plus footers and sidebars around a main column of text, but to the browser it is just one block of HTML.

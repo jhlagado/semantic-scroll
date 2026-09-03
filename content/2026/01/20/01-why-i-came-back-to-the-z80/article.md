@@ -1,6 +1,6 @@
 ---
 status: published
-title: "Why I Came Back to the Z80"
+title: "Why I came back to the Z80"
 summary: "My work with the Z80 began on paper in the late 1970s and became real hardware in the early 1980s. This series documents a return to that architecture through the construction of a modern debugging environment."
 tags:
   - debug80
@@ -11,7 +11,7 @@ tags:
 thumbnail: assets/talking_electronics_10001.png
 ---
 
-# Why I Came Back to the Z80
+# Why I came back to the Z80
 
 My involvement with the Z80 predates the TEC-1 by several years. In the late 1970s, I was designing systems on paper. Most days I was working through the constraints of building a usable computer around an affordable processor. The work lived in the instruction set. The memory layout kept the constraints visible. Like many people at the time, access to hardware lagged behind understanding. The ideas came first; the opportunity to realise them came later.
 

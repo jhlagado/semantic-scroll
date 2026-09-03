@@ -1,5 +1,5 @@
 ---
-title: "Owning Your Output"
+title: "Owning your output"
 status: published
 series: openweb
 summary: "Frames self-publishing as a technical choice that keeps writing durable and under my control. It ties that choice to why I am building this system and publishing here."
@@ -10,7 +10,7 @@ tags:
   - openprotocols
 thumbnail: assets/this-is-for-everyone.jpg
 ---
-# Owning Your Output
+# Owning your output
 By John Hardy
 
 

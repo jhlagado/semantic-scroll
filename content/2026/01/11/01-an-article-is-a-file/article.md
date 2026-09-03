@@ -1,12 +1,12 @@
 ---
 
 
-title: "An Article Is a File"
+title: "An article is a file"
 status: archived
 series: contentstore
 summary: "Defines the article as a single file in a dated folder so the URL stays stable. It links that structure to reader trust in old links and a durable archive."
 ---
-# An Article Is a File
+# An article is a file
 By John Hardy
 
 I treat each article as a single Markdown file inside its own folder because I want the archive to stay inspectable and durable. A reader can open the file and see the full text in a stable shape, which keeps the record legible years later. You can also clone the archive and read it in plain text when the build changes.
@@ -17,7 +17,7 @@ Open `article.md` in any entry and you always see the same two-section structure
 
 ```markdown
 ---
-title: "The Shape of the Archive"
+title: "The shape of the archive"
 summary: "How this blog organises itself on disk instead of inside a database. The path does the work."
 series: genesis
 tags: [tooling, publishing]

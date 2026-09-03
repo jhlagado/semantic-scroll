@@ -1,7 +1,7 @@
 ---
 
 
-title: "Why I'm Building This in Public"
+title: "Why I'm building this in public"
 status: published
 series: genesis
 summary: "Explains why I build this in public and how writing reshapes the technical decisions. It also sets out how I use deliberate review to keep pace without losing my voice."
@@ -10,7 +10,7 @@ tags:
   - ai
   - automation
 ---
-# Why I'm Building This in Public
+# Why I'm building this in public
 By John Hardy
 
 I'm building this in public because writing details down changes how I think. When ideas stay private they remain vague and provisional. Writing for an imagined reader sharpens the ideas and shows the gaps as decisions harden on the page.

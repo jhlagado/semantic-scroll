@@ -1,7 +1,7 @@
 ---
 
 
-title: "A Blog That Is Also the Build System"
+title: "A blog that is also the build system"
 status: published
 series: genesis
 summary: "Sets out why the repository holds both the writing and the build so decisions stay traceable. It anchors that structure in classic web values and a minimal toolchain."
@@ -10,7 +10,7 @@ tags:
   - web
   - tooling
 ---
-# A Blog That Is Also the Build System
+# A blog that is also the build system
 By John Hardy
 
 This blog only works if it lets me publish day to day technical work without friction, with AI drafting alongside me and me keeping control of the final voice. That constraint is the reason the rest of the system exists.

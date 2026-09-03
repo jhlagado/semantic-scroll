@@ -1,12 +1,12 @@
 ---
 
 
-title: "Start Here: Building the Tool While Using It"
+title: "Start here: building the tool while using it"
 status: published
 series: genesis
 summary: "An entry map for the project that frames the live build log. It starts with the genesis series, then moves forward through the next posts in order."
 ---
-# Start Here: Building the Tool While Using It
+# Start here: building the tool while using it
 By John Hardy
 
 This project exists to test a new model of software development and content production in public. The repository is both the lab and the record, and the system I am building will publish the discoveries that come out of building it. If you want the map of how the system is built, treat this series as a lab notebook with working notes and decisions in view. I want readers to see the system forming alongside the result.

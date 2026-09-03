@@ -1,7 +1,7 @@
 ---
 
 
-title: "Indexing as Queries"
+title: "Indexing as queries"
 status: archived
 series: indexing
 summary: "Defends a declarative selection model where queries choose and templates stamp. It keeps lists debuggable and prevents hidden selection rules."
@@ -9,7 +9,7 @@ tags:
   - indexing
   - queries
 ---
-# Indexing as Queries
+# Indexing as queries
 By John Hardy
 
 I treat indexing as a query problem, not a rendering problem. Every list on the site comes from a named query that selects a set of articles and a sort order. That keeps selection declarative and repeatable, and it keeps logic out of templates.
