@@ -1,5 +1,5 @@
 ---
-status: draft
+status: archived
 title: "Simulating the HD44780 LCD"
 summary: "I added an HD44780 LCD view to the Debug80 platform surface so character displays render inside the debugger. This entry explains the small device model behind that view and how the character ROM guided the renderer."
 tags:

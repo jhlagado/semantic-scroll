@@ -2,7 +2,7 @@
 
 
 title: "Templates as Pure HTML"
-status: published
+status: archived
 series: templating
 summary: "Presents the stamp model where queries select and templates place prepared content, with a concrete example. It aims for templates that read like documents and still produce reliable pages."
 tags:

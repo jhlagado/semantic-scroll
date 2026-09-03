@@ -2,7 +2,7 @@
 
 
 title: "Why Websites Need Templates"
-status: published
+status: archived
 series: templating
 summary: "Shows how templates solve duplication and keep structure consistent across pages. It sets up the stamp model as the reason this series exists."
 tags:

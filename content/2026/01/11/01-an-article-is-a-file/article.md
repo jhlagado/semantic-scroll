@@ -2,7 +2,7 @@
 
 
 title: "An Article Is a File"
-status: published
+status: archived
 series: contentstore
 summary: "Defines the article as a single file in a dated folder so the URL stays stable. It links that structure to reader trust in old links and a durable archive."
 ---

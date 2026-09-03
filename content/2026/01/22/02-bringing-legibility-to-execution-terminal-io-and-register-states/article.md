@@ -1,5 +1,5 @@
 ---
-status: published
+status: archived
 title: "Bringing Legibility to Execution: Terminal I/O and Register States"
 summary: "Debugging is the process of making the invisible visible. This article examines how Debug80 implements terminal interaction and rich register visibility to provide a legible state of the Z80 machine."
 tags:

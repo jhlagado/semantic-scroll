@@ -1,5 +1,5 @@
 ---
-status: published
+status: archived
 title: "Mature Project: The Great Unbundling"
 summary: "Scaling a developer tool requires identifying the boundary between the 'core' and the 'periphery.' This final article in the series discusses the transition of Debug80 to a modular, decoupled ecosystem."
 tags:

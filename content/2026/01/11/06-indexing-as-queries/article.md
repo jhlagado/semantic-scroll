@@ -2,7 +2,7 @@
 
 
 title: "Indexing as Queries"
-status: published
+status: archived
 series: indexing
 summary: "Defends a declarative selection model where queries choose and templates stamp. It keeps lists debuggable and prevents hidden selection rules."
 tags:

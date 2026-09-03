@@ -4,117 +4,39 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- meta:head -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" media="print" onload="this.media='all'" />
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" />
-  </noscript>
   <link rel="icon" type="image/png" href="/assets/semantic-scroll-fav.png" />
   <link rel="stylesheet" href="/assets/site.css" />
 </head>
-<body>
+<body class="page-about">
   <a class="skip-link" href="#main">Skip to content</a>
-  <div class="corner-menu" id="corner-menu">
-    <button class="corner-toggle" type="button" aria-expanded="false" aria-controls="side-menu" aria-label="Open site menu"></button>
-    <aside class="side-menu" id="side-menu">
-      <nav class="side-menu-nav" aria-label="Site menu">
-        <a href="/">Home</a>
-        <a href="/series/">Series</a>
-        <a href="/assets/media.html">Media</a>
-        <a href="/tags/">Tags</a>
-        <a data-href="archive-root">Archive</a>
-        <a href="/about/">About</a>
-      </nav>
-    </aside>
-  </div>
-  <div class="page">
+  <div class="page-shell">
     <header class="site-header">
-      <a class="site-mark" href="/">
-        <img src="/assets/semantic-scroll.svg" alt="Semantic Scroll" width="160" height="160" />
+      <div class="register-line" aria-hidden="true"><span>FIELD LOG / ABOUT</span><span>JOHN HARDY</span></div>
+      <a class="site-identity" href="/" aria-label="Semantic Scroll home">
+        <span class="site-glyph" aria-hidden="true">{ }</span>
+        <span class="site-name">Semantic Scroll</span>
       </a>
-      <p class="site-subtitle">Writing into being.</p>
-      <nav class="site-nav">
-        <a href="/">Home</a>
-        <a href="/series/">Series</a>
-        <a href="/assets/media.html">Media</a>
-        <a href="/tags/">Tags</a>
-        <a data-href="archive-root">Archive</a>
-        <a href="/about/">About</a>
+      <p class="site-subtitle">John Hardy’s engineering notebook</p>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/">Journal</a><a href="/tags/">Topics</a><a href="/series/">Series</a><a href="/content/">Archive</a><a href="/assets/media.html">Media</a><a href="/about/">About</a><a href="/feed.xml">RSS</a>
       </nav>
     </header>
-    <main id="main">
-      <h1>About</h1>
-      <p>This site and everything published through it is written and maintained by John Hardy.</p>
-      <p>The material here exists as a working archive rather than a finished product. Articles, tools, and formats evolve together. The structure on disk and the pages on the site come from the same source. Nothing sits behind a separate content system.</p>
-      <p>All writing, images, and build tooling in this repository are released under the GNU General Public License 3.0. That allows copying, redistribution, and modification, provided that the same license remains attached to derivative work. The intent is to keep the whole system open and forkable, including the words themselves.</p>
-      <p>I have spent most of my working life building systems that sit between software, tools, and documentation. That background shows up here. This project treats writing as part of a build process rather than something layered on top of it. Files, folders, and text all carry meaning.</p>
-      <p>This page will grow over time. It exists to anchor authorship and intent in the same place as everything else: inside the content store itself.</p>
+    <main id="main" class="about-copy">
+      <p class="section-label">Notebook legend</p>
+      <h1>About Semantic Scroll</h1>
+      <p>Semantic Scroll is my working engineering diary. I use it to record the decisions, failures, measurements, and odd discoveries that would otherwise vanish between commits.</p>
+      <p>The current centre of gravity is Atom: a single-pass Z80 assembler whose assembler core is itself written in Z80. I also write about the wider Z80 toolchain, including AZM and Debug80, when the work exposes a useful engineering idea rather than merely announcing a feature.</p>
+      <p>AI belongs here as a tool and as a technical subject. I am interested in what machine-assisted programming changes about authorship, software practice, and the way we express intent. The prose remains mine to approve.</p>
+      <h2>How publication works</h2>
+      <p>Every entry is a Markdown file in a dated folder. Published entries appear in the journal, dated archive, topic pages, series pages, and RSS feed. Retired entries leave those public indexes but keep their original permalink. Draft and review entries can be built at an unlisted URL, which lets me read the finished page before I add it to the journal.</p>
+      <p>The site is static. Scribere turns the files into ordinary HTML, so the archive remains readable without client-side rendering, a database, or server-side code.</p>
+      <h2>What survives the edit</h2>
+      <p>This is a temporal diary rather than a polished product manual. An old entry can preserve what I thought at the time even after the project moves on. I retire pieces that duplicate better accounts, describe dead ends without useful residue, or give obsolete projects more prominence than they deserve.</p>
     </main>
     <footer class="site-footer">
-      <p>© 2026 John Hardy. GPL-3.0.</p>
-      <p>Made with <a href="https://github.com/jhlagado/scribere">Scribere</a>.</p>
-      <p>Published from the same repo that builds this site. <a href="https://github.com/jhlagado/semantic-scroll">GitHub</a>.</p>
+      <p>© 2026 John Hardy · <a href="https://github.com/jhlagado/semantic-scroll">Source</a> · Built with <a href="https://github.com/jhlagado/scribere">Scribere</a></p>
+      <p class="footer-note">Plain files, durable links, no server-side machinery.</p>
     </footer>
   </div>
-  <script>
-    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-      const es = new EventSource('/__reload');
-      es.onmessage = () => location.reload();
-    }
-
-    (function () {
-      const cornerMenu = document.getElementById('corner-menu');
-      if (!cornerMenu) {
-        return;
-      }
-      const toggle = cornerMenu.querySelector('.corner-toggle');
-      const menuLinks = Array.from(cornerMenu.querySelectorAll('.side-menu-nav a'));
-      if (!toggle) {
-        return;
-      }
-      const supportsHover = window.matchMedia('(hover: hover)').matches;
-      const hoverDelayMs = 420;
-      let hoverTimer = null;
-
-      function syncState() {
-        const open = cornerMenu.classList.contains('is-open') || cornerMenu.classList.contains('is-hover-open');
-        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      }
-
-      toggle.addEventListener('click', function () {
-        cornerMenu.classList.remove('is-hover-open');
-        const open = cornerMenu.classList.toggle('is-open');
-        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-
-      if (supportsHover) {
-        cornerMenu.addEventListener('mouseenter', function () {
-          clearTimeout(hoverTimer);
-          if (cornerMenu.classList.contains('is-open')) {
-            return;
-          }
-          hoverTimer = setTimeout(function () {
-            cornerMenu.classList.add('is-hover-open');
-            syncState();
-          }, hoverDelayMs);
-        });
-        cornerMenu.addEventListener('mouseleave', function () {
-          clearTimeout(hoverTimer);
-          cornerMenu.classList.remove('is-hover-open');
-          syncState();
-        });
-      }
-
-      menuLinks.forEach(function (link) {
-        link.addEventListener('click', function () {
-          cornerMenu.classList.remove('is-hover-open');
-          cornerMenu.classList.remove('is-open');
-          toggle.setAttribute('aria-expanded', 'false');
-        });
-      });
-    })();
-  </script>
 </body>
 </html>

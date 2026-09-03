@@ -1,5 +1,5 @@
 ---
-status: published
+status: archived
 title: "The VS Code Skeleton"
 summary: "Building a debugger means implementing the Debug Adapter Protocol. For Debug80, I chose an inline implementation to keep the connection between the interface and the machine model as tight as possible."
 tags:

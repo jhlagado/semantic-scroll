@@ -1,5 +1,5 @@
 ---
-status: published
+status: archived
 title: "Unbundling the TEC-1 Toolchain"
 summary: I removed the TEC-1 program loader from the core debug80 extension and moved machine content into its own repo. This entry explains why the split mattered and how the platform pack is laid out. It also shows what makes the setup runnable on day one.
 tags:

@@ -2,7 +2,7 @@
 
 
 title: "The Article Body"
-status: published
+status: archived
 series: contentstore
 summary: "Explains why the body stays plain Markdown and readable on its own. It commits to a reader surface that survives even if the build disappears."
 ---

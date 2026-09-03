@@ -1,14 +1,13 @@
 {
   "article-pages": {
     "source": "blog",
-    "status": "published",
     "sort": "date-asc"
   },
   "latest-posts": {
     "source": "blog",
     "status": "published",
     "sort": "date-desc",
-    "limit": 25
+    "limit": 6
   },
   "all-published-posts": {
     "source": "blog",

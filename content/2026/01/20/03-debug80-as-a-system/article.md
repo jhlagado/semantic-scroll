@@ -1,5 +1,5 @@
 ---
-status: published
+status: archived
 title: "Debug80 as a System"
 summary: "Debug80 integrates a JavaScript Z80 assembler with VS Code’s debugging infrastructure to create a coherent environment for building and observing Z80 programs."
 tags:

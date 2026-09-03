@@ -1,5 +1,5 @@
 ---
-status: published
+status: archived
 title: "The Caverns Saga: Organising Complex Assembly"
 summary: "Writing a small assembly routine is manageable. Writing a 2,000-line textual adventure game is a different challenge entirely. This article explores how I organised the Caverns 80 project using modular architecture and declarative rule engines."
 tags:

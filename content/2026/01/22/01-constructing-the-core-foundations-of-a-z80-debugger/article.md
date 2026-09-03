@@ -1,5 +1,5 @@
 ---
-status: published
+status: archived
 title: "Constructing the Core: Foundations of a Z80 Debugger"
 summary: "The first step in building Debug80 was establishing a stable bridge between the VS Code Debug Adapter Protocol and the Z80 execution environment. This article explores the initial DAP implementation and the integration of the asm80 assembler."
 tags:
