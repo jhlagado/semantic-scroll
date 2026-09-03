@@ -214,6 +214,25 @@ main,
   letter-spacing: .08em;
 }
 
+.topic-legend {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem 1.15rem;
+  margin: .9rem 0 0;
+  padding: 0;
+  color: var(--muted);
+  font: 700 .68rem/1.4 var(--mono);
+  letter-spacing: .025em;
+  list-style: none;
+}
+
+.topic-legend li { display: flex; align-items: center; gap: .38rem; }
+.topic-swatch { width: .8rem; height: .8rem; background: var(--blue); }
+.topic-swatch-ai { background: var(--orange); }
+.topic-swatch-z80 { background: var(--cyan); }
+.topic-swatch-web { background: var(--yellow); }
+
 main { padding-block: clamp(2rem, 4vw, 4rem); }
 
 h1, h2, h3, h4 {
@@ -288,13 +307,15 @@ th { background: color-mix(in srgb, var(--yellow) 55%, var(--paper)); text-align
 .article-entry,
 .summary {
   --entry-accent: var(--blue);
+  --entry-left-pad: clamp(3.5rem, 7vw, 5rem);
+  --entry-rule-offset: calc(var(--entry-left-pad) - .8rem);
   position: relative;
   width: 100%;
   max-width: 54rem;
   margin-inline: auto;
-  padding: clamp(1.3rem, 3vw, 2.5rem) clamp(1.3rem, 3vw, 2.5rem) clamp(1.3rem, 3vw, 2.5rem) clamp(3.5rem, 7vw, 5rem);
+  padding: clamp(1.3rem, 3vw, 2.5rem) clamp(1.3rem, 3vw, 2.5rem) clamp(1.3rem, 3vw, 2.5rem) var(--entry-left-pad);
   background:
-    linear-gradient(90deg, transparent 2.2rem, var(--red-rule) 2.2rem, var(--red-rule) calc(2.2rem + 1px), transparent calc(2.2rem + 1px)),
+    linear-gradient(90deg, transparent var(--entry-rule-offset), var(--red-rule) var(--entry-rule-offset), var(--red-rule) calc(var(--entry-rule-offset) + 1px), transparent calc(var(--entry-rule-offset) + 1px)),
     repeating-linear-gradient(0deg, transparent, transparent calc(1.6rem - 1px), color-mix(in srgb, var(--rule) 40%, transparent) calc(1.6rem - 1px), color-mix(in srgb, var(--rule) 40%, transparent) 1.6rem),
     var(--paper);
   border: 1px solid var(--rule-strong);
@@ -530,9 +551,11 @@ th { background: color-mix(in srgb, var(--yellow) 55%, var(--paper)); text-align
   .site-subtitle { margin-left: 0; }
   .site-glyph { width: 2.5rem; }
   .article-entry, .summary {
-    padding: 1.2rem 1rem 1.35rem 2.5rem;
+    --entry-left-pad: 2.5rem;
+    --entry-rule-offset: 1.65rem;
+    padding: 1.2rem 1rem 1.35rem var(--entry-left-pad);
     background:
-      linear-gradient(90deg, transparent 1.35rem, var(--red-rule) 1.35rem, var(--red-rule) calc(1.35rem + 1px), transparent calc(1.35rem + 1px)),
+      linear-gradient(90deg, transparent var(--entry-rule-offset), var(--red-rule) var(--entry-rule-offset), var(--red-rule) calc(var(--entry-rule-offset) + 1px), transparent calc(var(--entry-rule-offset) + 1px)),
       repeating-linear-gradient(0deg, transparent, transparent calc(1.55rem - 1px), color-mix(in srgb, var(--rule) 36%, transparent) calc(1.55rem - 1px), color-mix(in srgb, var(--rule) 36%, transparent) 1.55rem),
       var(--paper);
   }
