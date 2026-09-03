@@ -1,6 +1,6 @@
 ---
 status: published
-title: "Your AI Is a Map, Not a Mind"
+title: "Your AI is a Map, Not a Mind"
 summary: "This article argues that current AI systems can model thought with extraordinary power without becoming conscious subjects. It explains the difference between simulation and experience, syntax and meaning, and output and inner life for a technical audience."
 thumbnail: assets/map-not-mind.jpg
 tags:
@@ -11,7 +11,7 @@ tags:
   - philosophy
 ---
 
-# Your AI Is a Map, Not a Mind
+# Your AI is a Map, Not a Mind
 
 By John Hardy
 
