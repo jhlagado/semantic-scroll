@@ -1,7 +1,7 @@
 ---
 status: published
-title: "First Read, Wrong Data: Emulating the ST7920's Pipeline"
-summary: "The ST7920 graphical LCD controller has a read pipeline that returns stale data on the first read after setting an address. I discovered this behaviour while debugging a display routine that worked on hardware but failed in emulation. Fixing the emulator required understanding how the real chip sequences its internal operations."
+title: "First read, wrong data: the ST7920's dummy read"
+summary: "The ST7920 LCD controller requires a dummy read after its graphics address changes. A routine that worked on a real TEC-1G but failed in Debug80 showed why a peripheral emulator must model bus transactions as well as stored bytes."
 tags:
   - debug80
   - tec1g
@@ -11,79 +11,44 @@ tags:
   - hardware
 ---
 
-# First Read, Wrong Data: Emulating the ST7920's Pipeline
+# First read, wrong data: the ST7920's dummy read
 
 By John Hardy
 
-The TEC-1G includes support for the ST7920 graphical LCD controller, a chip that drives 128×64 pixel displays using a parallel interface. Programs can write pixels to display buffer memory and read them back for verification or manipulation. The read path has a quirk that tripped me up: the first read after setting an address returns the data from the *previous* address, not the address you just specified.
+A graphics routine gave me a useful emulator failure. It drew correctly on a real TEC-1G, then read the pixels back to verify them. Debug80 drew the same image but returned zero during verification. The display proved that the writes had landed; the read path was wrong.
 
-I discovered this while testing a graphics routine that drew shapes and then verified the framebuffer contents. The routine worked correctly on real hardware but failed in my emulator. The verification loop expected specific pixel patterns and found zeros instead. The writes were landing correctly (I could see the display updating) but the reads returned wrong values.
+I had treated a read from the ST7920 LCD controller as an array lookup. Once the program selected an address, the emulator returned the byte stored there. That model captured the contents of display memory while missing the transaction the controller presents on its bus.
 
-## The pipeline behaviour
+## The missing read
 
-The ST7920's data sheet explains the read pipeline in a few terse sentences. When you set the address counter with a command, the controller latches the new address but does not immediately fetch the corresponding data. The data bus still holds the previously fetched value. To read the data at the new address, you must perform a dummy read that primes the pipeline, then perform the actual read that returns the wanted value.
+The [ST7920 data sheet](https://www.displayfuture.com/Display/datasheet/controller/ST7920.pdf) requires a dummy read after changing from a write to a read operation. It also requires another dummy read whenever software issues a new address instruction. Following bytes can then be read without repeating it.
 
-The correct read sequence proceeds through four steps. First, write a command to set the address counter to address N. Second, perform a dummy read and discard the result. Third, perform the real read which returns data at address N. Fourth, subsequent reads return data at incrementing addresses starting from N+1 as the address auto-increments.
+For a program reading address N, the sequence is:
 
-The dummy read triggers an internal fetch from address N. That fetch completes during the read cycle, and the data becomes available for the next read. If you skip the dummy read, you get stale data from whatever address was previously active.
+1. Set the graphics address to N.
+2. Read once and discard the result.
+3. Read again to receive the byte at N, then continue reading subsequent bytes.
 
-## Why emulators get this wrong
+A useful emulator model is a one-byte read latch. Setting a graphics row or column marks that latch as unprimed. The first data-port read loads the byte at the selected address into the latch and returns zero. The next read returns the latched byte, advances the controller's byte phase and column, and prepares the following byte.
 
-A naive emulator models the data read as a simple array lookup: given address N, return `memory[N]`. This works for writes, which take effect immediately, but fails for reads because it ignores the pipeline delay. The real chip does not deliver data from address N until one read cycle after you request it.
+The distinction matters because the first read changes the controller's state. A direct lookup can return the right byte while still emulating the device incorrectly.
 
-My initial implementation did exactly this: the read handler received the address and returned the corresponding byte from the display buffer. Writes worked as I expected them to work. Single reads without address changes also worked correctly. Yet any code that set an address then immediately read from it returned the wrong value.
+## Proving the sequence
 
-The fix required modelling the pipeline state. The emulator now tracks two values: the current address counter and the pending read value. When code sets a new address, the pending value stays stale. The first read returns the pending value and then loads the new address into the pipeline. Subsequent reads continue through the buffer with automatic incrementing.
+I checked the behaviour on a physical TEC-1G fitted with an ST7920 display. A short Z80 program wrote a known byte to graphics RAM, selected its address, performed two reads and sent both results over the serial port. The first result was zero; the second was the byte I had written.
 
-## The implementation
-
-The TEC-1G runtime maintains a `glcdPendingRead` field alongside the display buffer. When the address counter changes, this field is not updated. When a read occurs, the emulator returns `glcdPendingRead` and then fetches the byte at the current address into `glcdPendingRead` for the next read. The address counter increments after the fetch.
-
-```typescript
-readGlcdData(): number {
-  const value = this.glcdPendingRead;
-  this.glcdPendingRead = this.glcdBuffer[this.glcdAddress];
-  this.glcdAddress = (this.glcdAddress + 1) & 0x1FFF;
-  return value;
-}
-```
-
-Setting a new address resets the pipeline state to a known value. I chose zero, which matches what I observed on hardware when reading from an uninitialised region.
+Debug80 now records whether the graphics read latch has been primed. Its regression test writes `0xaa`, returns to that graphics address and checks the two reads explicitly:
 
 ```typescript
-setGlcdAddress(address: number): void {
-  this.glcdAddress = address & 0x1FFF;
-  this.glcdPendingRead = 0x00;
-}
+const dummy = rt.ioHandlers.read(0x87);
+const value = rt.ioHandlers.read(0x87);
+
+expect(dummy).toBe(0x00);
+expect(value).toBe(0xaa);
 ```
 
-The dummy read that programs must perform consumes the zero then primes the pipeline with the actual data at the new address. Subsequent reads then return correct values from the buffer.
+That small test preserves the part most likely to disappear in a later tidy-up. Returning the requested byte immediately looks simpler and will pass any test that only writes to the display. It fails as soon as a program reads graphics RAM in the way the hardware expects.
 
-## Testing the fix
+The fault took longer to find than to fix. A zero on the read bus could have meant a bad write, a wrong address or an empty buffer. Seeing the correct image on the physical display ruled those out; the data sheet's brief mention of a dummy read then made sense.
 
-I wrote a test that exercises the pipeline behaviour explicitly:
-
-```typescript
-it('returns stale data on first read after address change', () => {
-  runtime.writeGlcdData(0xAA);  // Write 0xAA at address 0
-  runtime.setGlcdAddress(0);    // Reset address to 0
-  const dummy = runtime.readGlcdData();  // Dummy read
-  const actual = runtime.readGlcdData(); // Real read
-  expect(dummy).toBe(0x00);     // Stale/reset value
-  expect(actual).toBe(0xAA);    // Actual data
-});
-```
-
-The test captures the exact behaviour that the original routine depended on. With the pipeline modelled correctly, the verification loop in the graphics routine passes.
-
-## Hardware verification
-
-I confirmed the behaviour on a physical TEC-1G with an ST7920 display attached. A short Z80 program writes a known pattern to display memory then sets the address then performs reads then reports the values through the serial port. The first read after setting the address returned zero. The second read returned the written value. The emulator now matches the hardware behaviour.
-
-The data sheet describes this behaviour, but the description is easy to overlook. The phrase "dummy read" appears once without much context. I had read the data sheet before and missed the implication. Seeing the actual hardware behaviour made the documentation make sense retroactively.
-
-## Implications for emulator design
-
-Peripheral emulation often requires modelling internal timing and sequencing, not just the logical contents of registers. The ST7920's read pipeline is invisible to code that only writes to the display—writes take effect immediately—but becomes critical for code that reads back. An emulator that supports only writes might pass basic tests and fail on more sophisticated programs.
-
-The fix was small, just a few lines of state management. Finding the bug took longer because the symptoms (reads returning zero) could have indicated many different problems. Once I understood the real chip's behaviour, the solution was obvious. The lesson is familiar: when emulation diverges from hardware, the data sheet usually contains the answer, even if it takes a second reading to find it.
+The incident left me with a rule for emulator work: treat every peripheral read as a possible state transition until the hardware proves otherwise. The ST7920 stores ordinary bytes in graphics RAM; its bus delivers them through a read pipeline. Debug80 became accurate when it modelled both.
