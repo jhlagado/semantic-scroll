@@ -556,10 +556,10 @@ th { background: color-mix(in srgb, var(--yellow) 55%, var(--paper)); text-align
   .site-subtitle { margin-left: 0; }
   .site-glyph { width: 2.5rem; }
   .article-entry, .summary {
-    --entry-left-pad: 0;
-    padding: 1.2rem 0 1.35rem;
+    --entry-left-pad: 1rem;
+    padding: 1.2rem 1rem 1.35rem;
     background: var(--paper);
-    border: 0;
+    border: 1px solid var(--rule-strong);
     box-shadow: none;
   }
   .article-navigation { grid-template-columns: 1fr; }
