@@ -22,4 +22,4 @@ The assembler core is written in Z80 assembly. On a modern computer, that code r
 
 I wanted an assembler I could use on my laptop and on a small Z80 system. Atom supports the complete Z80 instruction set, and both the desktop and CP/M commands can produce BIN, COM and Intel HEX files.
 
-The [Atom books at Debug80](https://debug80.com/atom/) include the assembler reference and a guide to Z80 programming. The [Atom source is on GitHub](https://github.com/jhlagado/debug80/tree/main/packages/atom), under the GPL v3 licence.
+The [Atom books at Debug80](https://debug80.com/atom/) include the assembler reference and a guide to Z80 programming. [Atom’s standalone source repository is on GitHub](https://github.com/jhlagado/atom), under the GPL v3 licence.
