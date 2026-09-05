@@ -19,7 +19,7 @@ By John Hardy
   <img src="./assets/map-not-mind.jpg" alt="An enormous antique paper map draped over the mountains, rivers, villages and fields of the living country it depicts.">
   <figcaption>
     An imaginary map at the scale of its territory: exhaustive in detail, yet still made of paper.<br>
-    Inspired by Jorge Luis Borges’s <a href="https://sites.williams.edu/thea228/research/textual-research/borges-of-exactitude-in-science/">“On Exactitude in Science”</a>, in which cartographers make a map at the scale of their empire. This illustration is in the public domain and may be copied, modified or reused for any purpose without permission or attribution.
+    Inspired by Jorge Luis Borges’s <a href="https://sites.williams.edu/thea228/research/textual-research/borges-of-exactitude-in-science/">“On Exactitude in Science”</a>, in which cartographers make a map at the scale of their empire. This illustration is public domain.
   </figcaption>
 </figure>
 

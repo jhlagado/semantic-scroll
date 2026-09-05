@@ -16,7 +16,7 @@ By John Hardy
 <figure>
   <img src="./assets/atom-stream.svg" alt="Atom reads source once. Its NOBJ output contains IMAGE records with placeholder bytes, followed by PATCH records that replace those bytes at their original addresses." width="720" height="695">
   <figcaption>In Atom’s NOBJ format, IMAGE records contain the initial bytes and PATCH records carry the final replacements for unresolved references.<br>
-    This illustration is in the public domain and may be copied, modified or reused for any purpose without permission or attribution.</figcaption>
+    This illustration is public domain.</figcaption>
 </figure>
 
 I’m just putting the finishing touches to my Z80 assembler, which I call Atom.
