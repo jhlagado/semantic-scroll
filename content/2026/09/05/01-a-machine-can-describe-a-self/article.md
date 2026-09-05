@@ -1,6 +1,7 @@
 ---
 title: "Machines, Intelligence and Subjectivity"
 status: published
+thumbnail: assets/clockwork-moth.png
 summary: "A language model can solve a problem and describe an inner life. What would establish that it actually experiences anything?"
 tags:
   - ai
@@ -11,6 +12,8 @@ tags:
 # Machines, Intelligence and Subjectivity
 
 By John Hardy
+
+![An imaginary clockwork moth with transparent, metal-ribbed wings and tiny watch mechanisms in its body, resting on a worn wooden workbench.](./assets/clockwork-moth.png)
 
 I’ve been following the talk on social media about whether we’ve cracked intelligence, particularly the excitement about AGI, or artificial general intelligence. I think we already have a form of automated intelligence: these systems can solve problems and turn up useful connections that people have overlooked. What bothers me is how easily people move from recognising those abilities to talking about consciousness, as though solving a problem establishes that a computer has an experience of its own.
 
