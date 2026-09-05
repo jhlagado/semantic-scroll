@@ -12,7 +12,9 @@ tags:
 
 By John Hardy
 
-Atom runs on macOS, Windows, Linux … and CP/M.
+I’m just putting the finishing touches to my Z80 assembler, which I call Atom.
+
+It runs on macOS, Windows, Linux … and CP/M.
 
 The assembler itself is written in Z80 assembly. On modern computers, the Z80 code runs in an emulator. Under CP/M, it runs directly on the processor. The same assembly engine works in both environments.
 
