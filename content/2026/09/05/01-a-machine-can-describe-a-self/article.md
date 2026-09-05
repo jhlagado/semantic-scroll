@@ -13,7 +13,10 @@ tags:
 
 By John Hardy
 
-![An imaginary clockwork moth with transparent, metal-ribbed wings and tiny watch mechanisms in its body, resting on a worn wooden workbench.](./assets/clockwork-moth.png)
+<figure class="article-figure">
+  <img src="./assets/clockwork-moth.png" alt="An imaginary clockwork moth with transparent, metal-ribbed wings and tiny watch mechanisms in its body, resting on a worn wooden workbench." width="1536" height="1024">
+  <figcaption>This illustration is in the public domain and may be copied, modified or reused for any purpose without permission or attribution.</figcaption>
+</figure>
 
 I’ve been following the talk on social media about whether we’ve cracked intelligence, particularly the excitement about AGI, or artificial general intelligence. I think we already have a form of automated intelligence: these systems can solve problems and turn up useful connections that people have overlooked. What bothers me is how easily people move from recognising those abilities to talking about consciousness, as though solving a problem establishes that a computer has an experience of its own.
 
