@@ -307,6 +307,7 @@ th { background: color-mix(in srgb, var(--yellow) 55%, var(--paper)); text-align
 .article-entry,
 .summary {
   --entry-accent: var(--blue);
+  --entry-rule-spacing: 2.4rem;
   --entry-left-pad: clamp(3.5rem, 7vw, 5rem);
   --entry-rule-offset: calc(var(--entry-left-pad) - .8rem);
   position: relative;
@@ -316,7 +317,7 @@ th { background: color-mix(in srgb, var(--yellow) 55%, var(--paper)); text-align
   padding: clamp(1.3rem, 3vw, 2.5rem) clamp(1.3rem, 3vw, 2.5rem) clamp(1.3rem, 3vw, 2.5rem) var(--entry-left-pad);
   background:
     linear-gradient(90deg, transparent var(--entry-rule-offset), var(--red-rule) var(--entry-rule-offset), var(--red-rule) calc(var(--entry-rule-offset) + 1px), transparent calc(var(--entry-rule-offset) + 1px)),
-    repeating-linear-gradient(0deg, transparent, transparent calc(1.6rem - 1px), color-mix(in srgb, var(--rule) 40%, transparent) calc(1.6rem - 1px), color-mix(in srgb, var(--rule) 40%, transparent) 1.6rem),
+    repeating-linear-gradient(0deg, transparent, transparent calc(var(--entry-rule-spacing) - 1px), color-mix(in srgb, var(--rule) 40%, transparent) calc(var(--entry-rule-spacing) - 1px), color-mix(in srgb, var(--rule) 40%, transparent) var(--entry-rule-spacing)),
     var(--paper);
   border: 1px solid var(--rule-strong);
   border-top: .55rem solid var(--entry-accent);
@@ -559,7 +560,7 @@ th { background: color-mix(in srgb, var(--yellow) 55%, var(--paper)); text-align
     padding: 1.2rem 1rem 1.35rem var(--entry-left-pad);
     background:
       linear-gradient(90deg, transparent var(--entry-rule-offset), var(--red-rule) var(--entry-rule-offset), var(--red-rule) calc(var(--entry-rule-offset) + 1px), transparent calc(var(--entry-rule-offset) + 1px)),
-      repeating-linear-gradient(0deg, transparent, transparent calc(1.55rem - 1px), color-mix(in srgb, var(--rule) 36%, transparent) calc(1.55rem - 1px), color-mix(in srgb, var(--rule) 36%, transparent) 1.55rem),
+      repeating-linear-gradient(0deg, transparent, transparent calc(var(--entry-rule-spacing) - 1px), color-mix(in srgb, var(--rule) 36%, transparent) calc(var(--entry-rule-spacing) - 1px), color-mix(in srgb, var(--rule) 36%, transparent) var(--entry-rule-spacing)),
       var(--paper);
   }
   .article-navigation { grid-template-columns: 1fr; }
