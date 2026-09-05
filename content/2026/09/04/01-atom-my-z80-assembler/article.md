@@ -1,5 +1,5 @@
 ---
-title: "Atom: my Z80 assembler"
+title: "Atom, a new Z80 assembler"
 status: published
 summary: "Atom runs on macOS, Windows, Linux … and CP/M. The assembler itself is written in Z80 assembly, fits within 16 KiB and can assemble its own source."
 tags:
@@ -8,7 +8,7 @@ tags:
   - retrocomputing
   - tooling
 ---
-# Atom: my Z80 assembler
+# Atom, a new Z80 assembler
 
 By John Hardy
 
