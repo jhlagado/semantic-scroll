@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="695" viewBox="0 0 720 695" role="img" aria-labelledby="figTitle figDesc">
+  <title id="figTitle">Atom: a stream of bytes, then patches</title>
+  <desc id="figDesc">Atom reads source once and emits image and patch events. The NOBJ file places IMAGE records before PATCH records. Two patches replace placeholder bytes at addresses 4001 and 4006 to complete earlier instructions.</desc>
+  <defs>
+    <style>
+    :root {
+      --ink:    #111417;
+      --ink-2:  #454b52;
+      --dim:    #8797a5;
+      --rule:   #c8ccd0;
+      --fill:   #ffffff;
+      --fill-2: #eef0f1;
+      --sig:    #b4442f;
+      --sig-bg: #b4442f1a;
+    }
+    
+
+    .bx    { fill: var(--fill);   stroke: var(--ink);  stroke-width: 1.5; }
+    .bx2   { fill: var(--fill-2); stroke: var(--ink);  stroke-width: 1.5; }
+    .bxq   { fill: var(--fill-2); stroke: var(--rule); stroke-width: 1.5; }
+    .bxs   { fill: var(--sig-bg); stroke: var(--sig);  stroke-width: 2; }
+    .sig   { fill: var(--sig);    stroke: var(--sig);  stroke-width: 1.5; }
+    .none  { fill: none;          stroke: var(--ink);  stroke-width: 1.5; }
+    .rule  { fill: none; stroke: var(--rule); stroke-width: 1; }
+    .dash  { fill: none; stroke: var(--dim);  stroke-width: 1.2; stroke-dasharray: 4 3; }
+    .sline { fill: none; stroke: var(--sig);  stroke-width: 2; }
+
+    .t     { font: 13px ui-monospace, SFMono-Regular, Menlo, monospace; fill: var(--ink); }
+    .ts    { font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; fill: var(--ink-2); }
+    .tb    { font: 600 13px ui-monospace, SFMono-Regular, Menlo, monospace; fill: var(--ink); }
+    .n     { font: 13px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .ns    { font: 11px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink-2); }
+    .nb    { font: 600 13px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+    .dim   { font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; fill: var(--dim); }
+    .dimn  { font: 11px system-ui, -apple-system, "Segoe UI", sans-serif; fill: var(--dim); }
+    .cap   { font: 600 10px ui-monospace, SFMono-Regular, Menlo, monospace;
+             fill: var(--sig); letter-spacing: .12em; }
+    .on-sig { fill: var(--sig); }
+    .on-dim { fill: var(--dim); }
+    .inv   { fill: var(--fill); }
+  </style>
+    <!-- markerUnits defaults to strokeWidth, which sizes every arrowhead by the
+         weight of the line carrying it. A 2px signal arrow then gets a head a
+         third larger than the 1.5px ink arrow beside it, and in a figure that
+         uses both the heads read as mismatched rather than as emphasis. Fixed
+         in user space so one arrowhead is one size everywhere. -->
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--ink)"/>
+    </marker>
+    <marker id="arS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--sig)"/>
+    </marker>
+    <marker id="arD" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--dim)"/>
+    </marker>
+  </defs><rect width="720" height="695" fill="#fff"/>
+  <text class="cap" x="24" y="28" text-anchor="start" xml:space="preserve">ATOM / ONE SOURCE PASS</text>
+  <rect class="bxq" x="24" y="48" width="200" height="90" rx="3"/>
+  <text class="nb" x="40" y="72" text-anchor="start" xml:space="preserve">Source stream</text>
+  <text class="n" x="40" y="96" text-anchor="start" xml:space="preserve">instructions + forward labels</text>
+  <text class="n" x="40" y="120" text-anchor="start" xml:space="preserve">later: label definitions</text>
+  <line class="none" x1="224" y1="93" x2="292" y2="93" marker-end="url(#ar)"/>
+  <rect class="bxs" x="294" y="48" width="174" height="90" rx="3"/>
+  <text class="nb" x="310" y="75" text-anchor="start" xml:space="preserve">Z80 assembler</text>
+  <text class="n" x="310" y="100" text-anchor="start" xml:space="preserve">emit bytes</text>
+  <text class="n" x="310" y="122" text-anchor="start" xml:space="preserve">resolve references</text>
+  <line class="none" x1="470" y1="93" x2="534" y2="93" marker-end="url(#ar)"/>
+  <text class="nb" x="550" y="84" text-anchor="start" xml:space="preserve">IMAGE + PATCH</text>
+  <text class="n" x="550" y="106" text-anchor="start" xml:space="preserve">events to the host</text>
+  <text class="cap" x="24" y="184" text-anchor="start" xml:space="preserve">NOBJ / WRITTEN IN THIS ORDER</text>
+  <rect class="bx" x="24" y="206" width="84" height="38" rx="3"/>
+  <text class="t" x="66" y="230" text-anchor="middle" xml:space="preserve">BEGIN</text>
+  <rect class="bx" x="108" y="206" width="118" height="38" rx="3"/>
+  <text class="t" x="167" y="230" text-anchor="middle" xml:space="preserve">IMAGE</text>
+  <rect class="bx" x="226" y="206" width="118" height="38" rx="3"/>
+  <text class="t" x="285" y="230" text-anchor="middle" xml:space="preserve">IMAGE</text>
+  <rect class="bxs" x="344" y="206" width="110" height="38" rx="3"/>
+  <text class="tb" x="399" y="230" text-anchor="middle" xml:space="preserve">PATCH</text>
+  <rect class="bxs" x="454" y="206" width="110" height="38" rx="3"/>
+  <text class="tb" x="509" y="230" text-anchor="middle" xml:space="preserve">PATCH</text>
+  <rect class="bx" x="564" y="206" width="60" height="38" rx="3"/>
+  <text class="t" x="594" y="230" text-anchor="middle" xml:space="preserve">MAP</text>
+  <rect class="bx" x="624" y="206" width="72" height="38" rx="3"/>
+  <text class="t" x="660" y="230" text-anchor="middle" xml:space="preserve">COMMIT</text>
+  <text class="ns" x="24" y="271" text-anchor="start" xml:space="preserve">IMAGE bytes first; final replacement bytes follow in PATCH records.</text>
+  <text class="cap" x="24" y="317" text-anchor="start" xml:space="preserve">IMAGE / PLACEHOLDERS OCCUPY REAL BYTE POSITIONS</text>
+  <rect class="bx" x="24" y="357" width="56" height="38" rx="2"/>
+  <text class="t" x="52" y="380.5" text-anchor="middle" xml:space="preserve">C3</text>
+  <text class="dim" x="52" y="350" text-anchor="middle" xml:space="preserve">$4000</text>
+  <rect class="bxs" x="80" y="357" width="56" height="38" rx="2"/>
+  <text class="tb" x="108" y="380.5" text-anchor="middle" xml:space="preserve">??</text>
+  <text class="dim" x="108" y="350" text-anchor="middle" xml:space="preserve">$4001</text>
+  <rect class="bxs" x="136" y="357" width="56" height="38" rx="2"/>
+  <text class="tb" x="164" y="380.5" text-anchor="middle" xml:space="preserve">??</text>
+  <text class="dim" x="164" y="350" text-anchor="middle" xml:space="preserve">$4002</text>
+  <rect class="bx" x="192" y="357" width="56" height="38" rx="2"/>
+  <text class="t" x="220" y="380.5" text-anchor="middle" xml:space="preserve">3E</text>
+  <text class="dim" x="220" y="350" text-anchor="middle" xml:space="preserve">$4003</text>
+  <rect class="bx" x="248" y="357" width="56" height="38" rx="2"/>
+  <text class="t" x="276" y="380.5" text-anchor="middle" xml:space="preserve">2A</text>
+  <text class="dim" x="276" y="350" text-anchor="middle" xml:space="preserve">$4004</text>
+  <rect class="bx" x="304" y="357" width="56" height="38" rx="2"/>
+  <text class="t" x="332" y="380.5" text-anchor="middle" xml:space="preserve">CD</text>
+  <text class="dim" x="332" y="350" text-anchor="middle" xml:space="preserve">$4005</text>
+  <rect class="bxs" x="360" y="357" width="56" height="38" rx="2"/>
+  <text class="tb" x="388" y="380.5" text-anchor="middle" xml:space="preserve">??</text>
+  <text class="dim" x="388" y="350" text-anchor="middle" xml:space="preserve">$4006</text>
+  <rect class="bxs" x="416" y="357" width="56" height="38" rx="2"/>
+  <text class="tb" x="444" y="380.5" text-anchor="middle" xml:space="preserve">??</text>
+  <text class="dim" x="444" y="350" text-anchor="middle" xml:space="preserve">$4007</text>
+  <rect class="bx" x="472" y="357" width="56" height="38" rx="2"/>
+  <text class="t" x="500" y="380.5" text-anchor="middle" xml:space="preserve">76</text>
+  <text class="dim" x="500" y="350" text-anchor="middle" xml:space="preserve">$4008</text>
+  <text class="ns" x="546" y="371" text-anchor="start" xml:space="preserve">?? = placeholder</text>
+  <text class="ns" x="546" y="389" text-anchor="start" xml:space="preserve">value unresolved</text>
+  <rect class="bxs" x="80" y="437" width="190" height="54" rx="3"/>
+  <text class="tb" x="94" y="460" text-anchor="start" xml:space="preserve">PATCH $4001</text>
+  <text class="t" x="94" y="480" text-anchor="start" xml:space="preserve">replace with 08 40</text>
+  <rect class="bxs" x="332" y="437" width="190" height="54" rx="3"/>
+  <text class="tb" x="346" y="460" text-anchor="start" xml:space="preserve">PATCH $4006</text>
+  <text class="t" x="346" y="480" text-anchor="start" xml:space="preserve">replace with 20 40</text>
+  <line class="sline" x1="136" y1="435" x2="136" y2="397" marker-end="url(#arS)"/>
+  <line class="sline" x1="388" y1="435" x2="388" y2="397" marker-end="url(#arS)"/>
+  <text class="cap" x="24" y="537" text-anchor="start" xml:space="preserve">FINAL IMAGE / THE SAME POSITIONS, NOW FILLED</text>
+  <rect class="bx" x="24" y="577" width="56" height="38" rx="2"/>
+  <text class="t" x="52" y="600.5" text-anchor="middle" xml:space="preserve">C3</text>
+  <text class="dim" x="52" y="570" text-anchor="middle" xml:space="preserve">$4000</text>
+  <rect class="bxs" x="80" y="577" width="56" height="38" rx="2"/>
+  <text class="tb" x="108" y="600.5" text-anchor="middle" xml:space="preserve">08</text>
+  <text class="dim" x="108" y="570" text-anchor="middle" xml:space="preserve">$4001</text>
+  <rect class="bxs" x="136" y="577" width="56" height="38" rx="2"/>
+  <text class="tb" x="164" y="600.5" text-anchor="middle" xml:space="preserve">40</text>
+  <text class="dim" x="164" y="570" text-anchor="middle" xml:space="preserve">$4002</text>
+  <rect class="bx" x="192" y="577" width="56" height="38" rx="2"/>
+  <text class="t" x="220" y="600.5" text-anchor="middle" xml:space="preserve">3E</text>
+  <text class="dim" x="220" y="570" text-anchor="middle" xml:space="preserve">$4003</text>
+  <rect class="bx" x="248" y="577" width="56" height="38" rx="2"/>
+  <text class="t" x="276" y="600.5" text-anchor="middle" xml:space="preserve">2A</text>
+  <text class="dim" x="276" y="570" text-anchor="middle" xml:space="preserve">$4004</text>
+  <rect class="bx" x="304" y="577" width="56" height="38" rx="2"/>
+  <text class="t" x="332" y="600.5" text-anchor="middle" xml:space="preserve">CD</text>
+  <text class="dim" x="332" y="570" text-anchor="middle" xml:space="preserve">$4005</text>
+  <rect class="bxs" x="360" y="577" width="56" height="38" rx="2"/>
+  <text class="tb" x="388" y="600.5" text-anchor="middle" xml:space="preserve">20</text>
+  <text class="dim" x="388" y="570" text-anchor="middle" xml:space="preserve">$4006</text>
+  <rect class="bxs" x="416" y="577" width="56" height="38" rx="2"/>
+  <text class="tb" x="444" y="600.5" text-anchor="middle" xml:space="preserve">40</text>
+  <text class="dim" x="444" y="570" text-anchor="middle" xml:space="preserve">$4007</text>
+  <rect class="bx" x="472" y="577" width="56" height="38" rx="2"/>
+  <text class="t" x="500" y="600.5" text-anchor="middle" xml:space="preserve">76</text>
+  <text class="dim" x="500" y="570" text-anchor="middle" xml:space="preserve">$4008</text>
+  <text class="n" x="24" y="648" text-anchor="start" xml:space="preserve">The source moves forward once. Patches refer back to earlier output addresses.</text>
+  <text class="ns" x="24" y="673" text-anchor="start" xml:space="preserve">Illustrative bytes; record framing and the remainder of the image are omitted.</text>
+</svg>
