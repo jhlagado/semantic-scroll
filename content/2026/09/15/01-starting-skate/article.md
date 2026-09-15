@@ -3,7 +3,7 @@ title: "Starting Skate"
 status: published
 thumbnail: assets/lisp-to-z80.svg
 series: building-skate
-summary: "I’m applying the streaming approach used in ATOM and Nucleus to Skate, a native Scheme compiler for Z80/CP/M. The goal is to compile useful programs in limited memory and run them efficiently as Z80 machine code."
+summary: "I’m building Skate, a Scheme compiler for the Z80, targeting CP/M. It will compile Scheme programs on the machine and run them as native Z80 code."
 tags:
   - scheme
   - z80
