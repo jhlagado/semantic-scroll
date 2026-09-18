@@ -35,7 +35,7 @@ During compilation, the compiler and its working data must fit in the available 
 
 Through this series, we’ll work from small programs down to their implementation. Adding two numbers gives us a place to begin with values and arithmetic; repeating a calculation over a list introduces structured data. We can build up the language in those steps, explaining each concept as we need it and documenting the compromises along the way.
 
-I plan to release Skate’s source so readers can try the compiler and examine its implementation. Triptych’s CP/M environment already runs on macOS and in the browser, where it will be easiest to compile and run the examples. I’m also developing a hardware version based on ESP32-S3 microcontroller boards running the same environment through Z80 emulation. The programs we write in the browser will then run on a physical Triptych system too.
+I plan to release Skate’s source so readers can try the compiler and examine its implementation. Triptych’s CP/M environment already runs on macOS and in the browser, where it will be easiest to compile and run the examples. I’m also developing a hardware version based on ESP32-S3 microcontroller boards running the same environment through Z80 emulation.
 
 ---
 
