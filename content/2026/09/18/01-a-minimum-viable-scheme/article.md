@@ -42,3 +42,7 @@ For Skate to be a practical way to write CP/M programs, execution speed counts a
 We can approach the implementation one small program at a time. Even adding two numbers raises questions about how their values are stored and which instructions perform the addition. Once that is clear, a calculation repeated over a list adds a data structure to examine. Each step gives us something concrete to build on, so a reader with some programming experience should be able to follow the construction without needing a background in Scheme or compiler design.
 
 I plan to release Skate’s source so readers can try the compiler and examine its implementation. Triptych’s CP/M environment runs on several platforms: it already works as a desktop application on macOS and in the browser. The browser version will be the easiest way to compile and run the examples. I’m also developing a hardware version based on ESP32-S3 microcontroller boards, where the same CP/M environment will run through Z80 emulation. Skate will provide a way to write programs for that machine too, so the work here will carry across from examples in a browser to software running on a physical Triptych system.
+
+---
+
+Discuss this article on [Mastodon](https://jorts.horse/@jhlagado/117292024470334414), [Bluesky](https://bsky.app/profile/did:plc:ryqselzoaiie6vwxh5gkra7i/post/3mvs67hrtno2l) or [X](https://x.com/14682998/status/2100925006536392717).
