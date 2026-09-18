@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Skate: Scheme for a small machine</title>
+<desc id="desc">Planned compilation path: Scheme source passes through the Skate compiler and a linker, which adds runtime support, to produce a native Z80 CP/M program. Triptych runs on macOS and in a browser; ESP32-S3 hardware is planned.</desc>
+<defs>
+ <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#a6b5ba" stroke-opacity=".17"/></pattern>
+ <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 1L9 5L0 9" fill="none" stroke="#254950" stroke-width="1.8"/></marker>
+ <style>text {font-family: 'DejaVu Sans',sans-serif;fill:#213c42} .mono {font-family:'DejaVu Sans Mono',monospace} .minor {font-size:18px;fill:#4f686b} .label {font-size:23px;font-weight:600} .wire {fill:none;stroke:#254950;stroke-width:2.5;marker-end:url(#arrow)}</style>
+</defs>
+<rect width="1200" height="630" fill="#faf7ee"/><rect width="1200" height="630" fill="url(#grid)"/>
+<path d="M40 26H26V40 M1160 26H1174V40 M26 590V604H40 M1160 604H1174V590" stroke="#6c8589" fill="none"/>
+<rect x="54" y="51" width="9" height="91" fill="#cf6039"/>
+<text x="84" y="104" font-size="57" font-weight="700" letter-spacing="3">SKATE</text>
+<text x="86" y="140" font-size="24">Scheme for a small machine</text>
+<text x="1144" y="75" text-anchor="end" class="mono minor">BUILDING SKATE / 01</text>
+<text x="1144" y="109" text-anchor="end" class="minor">Planned compilation path</text>
+<path d="M54 168H1146" stroke="#9bacae"/>
+<text x="54" y="208" class="mono minor">COMPILE + LINK</text>
+<g fill="#fffdf7" stroke="#547379" stroke-width="2">
+ <rect x="54" y="240" width="224" height="116" rx="6"/>
+ <rect x="330" y="240" width="235" height="116" rx="6" fill="#f9e3d3" stroke="#bb603b"/>
+ <rect x="618" y="240" width="196" height="116" rx="6"/>
+ <rect x="867" y="240" width="279" height="116" rx="6" fill="#eaf0e4"/>
+</g>
+<text x="166" y="283" text-anchor="middle" class="label">Scheme source</text>
+<text x="166" y="322" text-anchor="middle" class="mono minor">(+ 2 3)</text>
+<text x="447" y="283" text-anchor="middle" class="label">Skate compiler</text>
+<text x="447" y="322" text-anchor="middle" class="minor">source → Z80 code</text>
+<text x="716" y="301" text-anchor="middle" class="label">Linker</text>
+<text x="1006" y="283" text-anchor="middle" class="label">CP/M program</text>
+<text x="1006" y="322" text-anchor="middle" class="minor">native Z80 + runtime</text>
+<path d="M278 298H321" class="wire"/><path d="M565 298H609" class="wire"/><path d="M814 298H858" class="wire"/>
+<rect x="541" y="410" width="350" height="69" rx="6" fill="#edf0ee" stroke="#547379" stroke-width="2"/>
+<text x="716" y="438" text-anchor="middle" font-size="22" font-weight="600">Runtime support</text>
+<text x="716" y="464" text-anchor="middle" class="minor">values · procedures · managed memory</text>
+<path d="M716 410V366" class="wire"/>
+<text x="54" y="429" class="mono minor">Z80 / CP/M</text>
+<text x="54" y="461" font-size="22">64 KiB address space</text>
+<path d="M54 510H1146" stroke="#9bacae"/>
+<text x="54" y="550" class="mono minor">TRIPTYCH TARGETS</text>
+<text x="54" y="582" font-size="21">macOS</text>
+<text x="296" y="582" font-size="21">Browser</text>
+<text x="616" y="582" font-size="21">ESP32-S3 hardware</text>
+<text x="878" y="582" class="minor">planned</text>
+</svg>
