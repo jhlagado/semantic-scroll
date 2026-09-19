@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Skate: Scheme within limits</title>
+<desc id="desc">A design diagram places useful Scheme features inside a Z80 CP/M machine boundary: a 64 KiB address space, an 8-bit data path and a 4 MHz processor target. Procedures, lexical scope, lists, tail calls, garbage collection, integers and floating point remain in the design. General macros sit outside the boundary as a future preprocessor. The diagram is conceptual, not a memory layout.</desc>
+<defs><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#a6b5ba" stroke-opacity=".17"/></pattern>
+<style>text{font-family:'DejaVu Sans',sans-serif;fill:#213c42}.mono{font-family:'DejaVu Sans Mono',monospace}.minor{font-size:18px;fill:#4f686b}.label{font-size:22px;font-weight:600}</style></defs>
+<rect width="1200" height="630" fill="#faf7ee"/><rect width="1200" height="630" fill="url(#grid)"/>
+<path d="M40 26H26V40 M1160 26H1174V40 M26 590V604H40 M1160 604H1174V590" stroke="#6c8589" fill="none"/>
+<rect x="54" y="51" width="9" height="91" fill="#cf6039"/>
+<text x="84" y="100" font-size="46" font-weight="700">SCHEME WITHIN LIMITS</text>
+<text x="86" y="138" font-size="23">Finding a useful language for a small machine</text>
+<text x="1144" y="75" text-anchor="end" class="mono minor">SKATE</text>
+<path d="M54 165H1146" stroke="#9bacae"/>
+<g fill="#fffdf7" stroke="#547379" stroke-width="2">
+<rect x="54" y="191" width="340" height="66" rx="5"/><rect x="430" y="191" width="340" height="66" rx="5"/><rect x="806" y="191" width="340" height="66" rx="5"/>
+</g>
+<text x="224" y="220" text-anchor="middle" class="label">64 KiB address space</text><text x="224" y="245" text-anchor="middle" class="minor">shared with CP/M</text>
+<text x="600" y="220" text-anchor="middle" class="label">8-bit data path</text><text x="600" y="245" text-anchor="middle" class="minor">wider values take more operations</text>
+<text x="976" y="220" text-anchor="middle" class="label">4 MHz target</text><text x="976" y="245" text-anchor="middle" class="minor">processing time counts too</text>
+<rect x="54" y="290" width="766" height="237" rx="6" fill="#eaf0e4" stroke="#547379" stroke-width="2.5"/>
+<text x="78" y="322" class="mono minor">Z80 / CP/M — RETAINED IN THE DESIGN</text>
+<path d="M78 340H796" stroke="#a0b0a2"/>
+<text x="84" y="380" class="label">First-class procedures</text><text x="454" y="380" class="label">Proper tail calls</text>
+<text x="84" y="423" class="label">Lexical scope · lists</text><text x="454" y="423" class="label">Garbage collection</text>
+<text x="84" y="466" class="label">Integers · floating point</text><text x="454" y="466" class="label">Native Z80 output</text>
+<text x="84" y="505" class="minor">Small compiler working set · room for programs and data</text>
+<rect x="861" y="330" width="285" height="161" rx="6" fill="#f9e3d3" stroke="#bb603b" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="1003" y="365" text-anchor="middle" class="mono minor">OUTSIDE THE COMPILER</text>
+<text x="1003" y="407" text-anchor="middle" class="label">General macros</text>
+<text x="1003" y="440" text-anchor="middle" class="minor">Future preprocessor</text>
+<text x="1003" y="467" text-anchor="middle" class="minor">not yet built</text>
+<path d="M54 552H1146" stroke="#9bacae"/>
+<text x="54" y="587" font-size="21">Keep the features that support useful programs; account for their full cost.</text>
+<text x="1146" y="611" text-anchor="end" font-size="14" fill="#4f686b">Design boundaries, not a physical memory map</text>
+</svg>
