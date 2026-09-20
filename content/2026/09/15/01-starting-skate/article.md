@@ -1,7 +1,7 @@
 ---
 title: "Starting Skate"
 status: published
-thumbnail: assets/lisp-to-z80.png
+thumbnail: assets/skate-blueprint.png
 series: building-skate
 summary: "I’m building Skate, a Scheme compiler for Z80/CP/M. Bringing Scheme to a small machine is a way to explore how an expressive language works from its procedures and lists down to instructions and storage."
 tags:
@@ -13,6 +13,14 @@ tags:
 # Starting Skate
 
 By John Hardy
+
+<figure>
+  <picture>
+    <source srcset="./assets/skate-blueprint.svg" type="image/svg+xml">
+    <img src="./assets/skate-blueprint.png" alt="Notebook-style roller-skate schematic with side and underside views. Below it, Scheme source passes through Skate to native Z80 code. A conceptual illustration rather than a fabrication plan." width="1200" height="900">
+  </picture>
+  <figcaption>A plan for Skate. This illustration is public domain.</figcaption>
+</figure>
 
 I’ve decided to build a Scheme compiler for the Z80 running CP/M. I’m calling it Skate. It follows my work on the Triptych computer project and its software, including [ATOM](https://semantic-scroll.com/content/2026/09/04/01-atom-my-z80-assembler/), my Z80 assembler. Working with these small machines has become a way to study programming from first principles. Building a language adds another level to that work: we can follow an idea expressed in a program down to the instructions that carry it out.
 
