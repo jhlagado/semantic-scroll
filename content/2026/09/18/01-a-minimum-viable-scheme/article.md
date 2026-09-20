@@ -3,7 +3,7 @@ title: "A minimum viable Scheme"
 status: published
 thumbnail: assets/skate-cpm.png
 series: building-skate
-summary: "I’ve decided to build Skate, a Scheme compiler for the Z80 running CP/M. This article sets out the search for a useful small Scheme, with native code, managed memory and examples from Structure and Interpretation of Computer Programs."
+summary: "I’m building Skate, a Scheme compiler for the Z80 running CP/M. Examples from Structure and Interpretation of Computer Programs provide a test of how much we can retain while leaving enough memory to run useful programs."
 tags:
   - scheme
   - z80
@@ -23,19 +23,17 @@ By John Hardy
   <figcaption>Skate’s planned compilation path and Triptych targets. This illustration is public domain.</figcaption>
 </figure>
 
-I’ve decided to build a Scheme compiler for the Z80 as part of my Triptych computer project. I’m calling it Skate, a play on “Scheme” and “eight” (as in 8-bit systems). Triptych runs CP/M, and my software work for it already includes ATOM, a Z80 assembler, and a few recovered adventure games I originally wrote in the early ’80s. Working with these machines again has become an education in building software from first principles: with small amounts of memory and basic hardware, it’s possible to follow a program all the way down to its instructions and storage.
+I’m building Skate, a Scheme compiler for the Z80 running CP/M, as part of my Triptych computer project. In [Starting Skate](https://semantic-scroll.com/content/2026/09/15/01-starting-skate/) I explained the appeal of bringing a more dynamic style of programming to this small machine. The question now is how much Scheme we can fit into this environment while keeping it useful for substantial programs.
 
-With Skate, that work extends into language design, and the question is how much Scheme we can fit into this environment while keeping it useful for substantial programs. In other words, I’m searching for a minimum viable Scheme. Skate should be able to run most of the example programs in the classic programming book _Structure and Interpretation of Computer Programs_. Where an example needs rewriting, we can examine the limitations of the implementation and whether the result still expresses the algorithm clearly.
+I’m searching for a minimum viable Scheme. Skate should be able to run most of the example programs in the classic programming book _Structure and Interpretation of Computer Programs_. Where an example needs rewriting, we can examine the limitations of the implementation and whether the result still expresses the algorithm clearly.
 
-Scheme is a member of the Lisp family, with a small core from which we can build quite sophisticated programs. Procedures are values alongside numbers and other data: we can pass one as an argument, return it from another procedure or store it in a list. This is what it means for procedures to be “first-class”. Skate’s basic values will also include integers for counting and indexing, floating-point numbers for fractional calculations, booleans for true and false, symbols for named data, and characters and strings for text. Lists let us assemble these values into larger structures, giving us enough to work with for numerical calculations, searching and text processing.
+Scheme is a member of the Lisp family with a small core from which we can build quite sophisticated programs. Procedures are values alongside numbers and other data: we can pass one as an argument, return it from another procedure or store it in a list. This is what it means for procedures to be “first-class”. Alongside these procedures, Skate’s basic values will cover arithmetic, logical decisions and text. Lists let us assemble values into larger structures for programs such as searches and symbolic calculations.
 
-The Z80 has a 64 KiB address space, part of which CP/M occupies. Skate will translate Scheme source into native Z80 machine code before the program runs. The generated code will link with a runtime that supports dynamically allocated objects and automatically reclaims unused memory. Compiling to machine code should give us efficient execution, but the program and its runtime must also leave enough room for useful amounts of data.
+The Z80 has a 64 KiB address space, part of which the CP/M operating system occupies. Skate will translate Scheme source into native Z80 machine code before the program runs. The generated code will link with a runtime that supports dynamically allocated objects and automatically reclaims memory the program can no longer reach. Compiling to machine code should give us efficient execution, but the program and its runtime must also leave enough room for useful amounts of data.
 
-During compilation, the compiler and its working data must fit in the available memory. I’ve already developed techniques for processing a stream of source code in a small working area, which my assembler ATOM uses. Applying that approach to Scheme will be the starting point for keeping compilation within the available space.
+During compilation the compiler and its working data must fit in the available memory. For Skate I’m adapting the source-streaming techniques developed for my assembler ATOM, which processes source in a small working area. The compiler finishes before the resulting program runs, so we can consider their memory requirements separately.
 
-Through this series, we’ll work from small programs down to their implementation. Adding two numbers gives us a place to begin with values and arithmetic; repeating a calculation over a list introduces structured data. We can build up the language in those steps, explaining each concept as we need it and documenting the compromises along the way.
-
-I plan to release Skate’s source so readers can try the compiler and examine its implementation. Triptych’s CP/M environment already runs on macOS and in the browser, where it will be easiest to compile and run the examples. I’m also developing a hardware version based on ESP32-S3 microcontroller boards running the same environment through Z80 emulation.
+Through this series we’ll work from small Scheme programs down to their implementation and document the compromises along the way. Readers will be able to try the examples in Triptych’s browser-based CP/M environment. The test is whether we can still express substantial algorithms clearly and leave enough space to run them. That’s the useful minimum I’m working towards.
 
 ---
 
