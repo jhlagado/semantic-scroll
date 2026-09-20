@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+<title>SKATE — Scheme for an eight-bit machine</title>
+<desc>A notebook-style conceptual drawing of a roller skate with a boot, chassis and wheels. Side and underside views accompany a simple Scheme source to compiler to Z80 code path. Not a fabrication drawing.</desc>
+<defs><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#728f91" stroke-opacity=".14"/></pattern><style>text{font-family:monospace;fill:#26474b}.small{font-size:17px;fill:#607779}.label{font-size:20px}.line{fill:none;stroke:#26474b;stroke-width:3;stroke-linejoin:round;stroke-linecap:round}.fine{fill:none;stroke:#819b9b;stroke-width:1.5}.accent{fill:none;stroke:#c3653c;stroke-width:2}</style></defs>
+<rect width="1200" height="900" fill="#faf7ee"/><rect width="1200" height="900" fill="url(#grid)"/>
+<rect x="48" y="48" width="1104" height="804" fill="none" stroke="#819b9b"/>
+<rect x="72" y="73" width="8" height="86" fill="#c3653c"/>
+<text x="103" y="119" font-size="54" font-weight="bold">SKATE</text><text x="105" y="153" font-size="22">Scheme for an eight-bit machine</text>
+<text x="1125" y="98" text-anchor="end" class="small">TRIPTYCH / Z80 / CP/M</text><text x="1125" y="129" text-anchor="end" class="small">CONCEPT STUDY 01</text>
+<path d="M72 180H1128" class="fine"/>
+<!-- Boot in side elevation -->
+<path d="M318 243 L448 253 L439 327 Q458 371 504 390 L639 419 Q686 430 700 458 L697 477 L281 477 L276 451 L294 403 L303 331 Z" fill="#edf0e9" stroke="#26474b" stroke-width="3"/>
+<path d="M319 244 L325 328 Q334 368 354 396 L369 444 L675 444 M306 275L443 288 M297 405L336 413 M281 465H700" class="line"/>
+<path d="M447 316L385 335 M456 340L397 357 M474 365L414 381 M497 386L438 404 M523 399L467 421" class="accent"/>
+<g fill="#faf7ee" stroke="#26474b" stroke-width="2"><circle cx="385" cy="335" r="4"/><circle cx="397" cy="357" r="4"/><circle cx="414" cy="381" r="4"/><circle cx="438" cy="404" r="4"/><circle cx="467" cy="421" r="4"/></g>
+<!-- sole and trucks -->
+<path d="M279 479H704V493H279Z M320 494L344 522H388L404 494 M567 494L589 522H628L649 494" fill="#e1e8e2" stroke="#26474b" stroke-width="3"/>
+<path d="M352 524L347 553 M607 524L602 553 M690 493L713 531" class="line"/>
+<path d="M703 526L725 519L741 544L718 554Z" fill="#c3653c" stroke="#26474b" stroke-width="2"/>
+<g fill="#faf7ee" stroke="#26474b" stroke-width="3"><circle cx="362" cy="555" r="43"/><circle cx="610" cy="555" r="43"/></g>
+<g fill="none" stroke="#819b9b" stroke-width="1.5"><circle cx="362" cy="555" r="31"/><circle cx="610" cy="555" r="31"/></g>
+<g fill="#c3653c"><circle cx="362" cy="555" r="7"/><circle cx="610" cy="555" r="7"/></g>
+<path d="M305 555H667 M362 501V612 M610 501V612" class="fine" stroke-dasharray="7 6"/>
+<!-- construction dimensions and annotations -->
+<path d="M279 508V646 M704 506V646 M279 632H704 M274 627L284 637 M699 627L709 637" class="fine"/>
+<text x="491" y="663" text-anchor="middle" class="small">SIDE ELEVATION</text>
+<path d="M327 302H208L182 275" class="accent"/><text x="96" y="244" class="label">01 / BOOT</text><text x="96" y="269" class="small">Upper + lacing</text>
+<path d="M479 486H760L787 456" class="accent"/><text x="774" y="414" class="label">02 / CHASSIS</text><text x="774" y="441" class="small">Plate + trucks</text>
+<path d="M650 563H752L774 594" class="accent"/><text x="776" y="607" class="label">03 / WHEELS</text>
+<!-- underside inset -->
+<text x="954" y="222" text-anchor="middle" class="small">UNDERSIDE</text>
+<rect x="913" y="242" width="82" height="127" rx="26" fill="#edf0e9" stroke="#26474b" stroke-width="2"/>
+<path d="M899 268H1009 M899 343H1009 M954 231V380" class="fine"/>
+<g fill="#faf7ee" stroke="#26474b" stroke-width="2"><rect x="886" y="252" width="23" height="34" rx="7"/><rect x="999" y="252" width="23" height="34" rx="7"/><rect x="886" y="326" width="23" height="34" rx="7"/><rect x="999" y="326" width="23" height="34" rx="7"/></g>
+<path d="M72 700H1128" class="fine"/>
+<text x="95" y="738" class="small">THE SOFTWARE PLAN</text>
+<text x="110" y="785" font-size="25">SCHEME SOURCE</text><path d="M333 777H416L406 771 M416 777L406 783" class="accent"/>
+<text x="454" y="785" font-size="25">SKATE</text><path d="M573 777H656L646 771 M656 777L646 783" class="accent"/>
+<text x="689" y="785" font-size="25">NATIVE Z80 CODE</text>
+<text x="95" y="829" class="small">Compile on the machine. Run under CP/M.</text>
+<text x="1125" y="829" text-anchor="end" font-size="13">CONCEPTUAL / NOT TO SCALE</text>
+</svg>
