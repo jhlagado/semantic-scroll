@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+<title id="title">Room to run — Scheme on a small machine</title>
+<desc id="desc">Conceptual engineering diagram of a 64 KiB Z80 address space: CP/M, compiled program and runtime, call stack and working storage, and a heap divided into reachable objects and reusable space. Allocation uses free space and garbage collection returns unreachable objects to it. Areas are not to scale.</desc>
+<defs><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#a6b5ba" stroke-opacity=".17"/></pattern><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#b75936" stroke-width="1.5"/></marker><style>text{font-family:'DejaVu Sans',sans-serif;fill:#213c42}.small{font-size:20px;fill:#4f686b}.label{font-size:25px;font-weight:600}.mono{font-family:'DejaVu Sans Mono',monospace}</style></defs>
+<rect width="1200" height="900" fill="#faf7ee"/><rect width="1200" height="900" fill="url(#grid)"/>
+<rect x="56" y="54" width="9" height="92" fill="#cf6039"/>
+<text x="88" y="101" font-size="48" font-weight="700">ROOM TO RUN</text>
+<text x="90" y="141" font-size="24">A dynamic language within a fixed memory budget</text>
+<text x="1140" y="77" text-anchor="end" class="mono small">SKATE</text>
+<path d="M56 176H1144" stroke="#9bacae"/>
+<text x="74" y="219" class="mono small">Z80 / 64 KiB ADDRESS SPACE</text>
+<rect x="66" y="242" width="670" height="527" rx="6" fill="#fffdf7" stroke="#547379" stroke-width="3"/>
+<path d="M67 328H735 M67 444H735 M67 548H735" stroke="#547379" stroke-width="2"/>
+<rect x="68" y="244" width="666" height="83" fill="#e3e7e5"/>
+<text x="93" y="282" class="label">CP/M</text><text x="93" y="312" class="small">Resident operating system</text>
+<text x="93" y="372" class="label">Compiled program + runtime</text><text x="93" y="408" class="small">Native instructions · memory-management routines</text>
+<text x="93" y="485" class="label">Stack + working storage</text><text x="93" y="521" class="small">Active calls · globals · temporary state</text>
+<text x="93" y="587" class="label">Heap</text>
+<rect x="93" y="610" width="348" height="127" rx="4" fill="#e5eddf" stroke="#6f8869"/>
+<text x="112" y="651" class="label">Reachable objects</text><text x="112" y="685" class="small">Lists · captured bindings</text><text x="112" y="713" class="small">Preserve while accessible</text>
+<rect x="455" y="610" width="254" height="127" rx="4" fill="#fae4d4" stroke="#bd7650"/>
+<text x="473" y="651" class="label">Reusable space</text><text x="473" y="685" class="small">Allocate new objects</text>
+<text x="790" y="291" class="mono small">DESIGN TRADEOFF</text>
+<text x="790" y="335" class="label">Runtime size</text><text x="790" y="371" class="label">Data capacity</text><text x="790" y="407" class="label">Collection time</text>
+<path d="M790 440H1126" stroke="#9bacae"/>
+<text x="790" y="482" class="small">More space for one use</text><text x="790" y="511" class="small">leaves less for another.</text>
+<path d="M709 692H1090V586H748" fill="none" stroke="#b75936" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="796" y="622" class="small">Allocate</text>
+<text x="796" y="654" class="small">from free storage</text>
+<text x="790" y="731" class="small">GC reclaims objects</text><text x="790" y="759" class="small">once unreachable.</text>
+<path d="M56 804H1144" stroke="#9bacae"/>
+<text x="56" y="841" font-size="22">How much useful work fits after the runtime's own costs?</text>
+<text x="1144" y="877" text-anchor="end" font-size="16" fill="#4f686b">Conceptual allocation · areas and order are not a physical memory map</text>
+</svg>
