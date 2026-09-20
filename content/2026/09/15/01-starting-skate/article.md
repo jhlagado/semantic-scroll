@@ -3,7 +3,7 @@ title: "Starting Skate"
 status: published
 thumbnail: assets/skate-blueprint.png
 series: building-skate
-summary: "I’m building Skate, a Scheme compiler for Z80/CP/M. Bringing Scheme to a small machine is a way to explore how an expressive language works from its procedures and lists down to instructions and storage."
+summary: "I’m building Skate, a Scheme compiler for Z80/CP/M. I’ll release the implementation in stages and explore how to make its expressive style of programming practical on a small machine."
 tags:
   - scheme
   - z80
@@ -22,13 +22,13 @@ By John Hardy
   <figcaption>A plan for Skate. This illustration is public domain.</figcaption>
 </figure>
 
-I’ve decided to build a Scheme compiler for the Z80 running CP/M. I’m calling it Skate. It follows my work on the Triptych computer project and its software, including [ATOM](https://semantic-scroll.com/content/2026/09/04/01-atom-my-z80-assembler/), my Z80 assembler. Working with these small machines has become a way to study programming from first principles. Building a language adds another level to that work: we can follow an idea expressed in a program down to the instructions that carry it out.
+I’ve decided to build Skate, a Scheme compiler for the Z80 running CP/M, as part of my Triptych computer project. After developing [ATOM](https://semantic-scroll.com/content/2026/09/04/01-atom-my-z80-assembler/), my Z80 assembler, I’m interested in exploring a more dynamic way to program on the same small machine.
 
-Scheme appeals to me because a small set of concepts gives us considerable freedom in how we organise a program. A procedure can accept another procedure as an argument or return one as its result. We can put procedures into data structures alongside other values. That makes it possible to write a general calculation and supply the particular operation separately. Lists provide a simple way to assemble and process structured data. These are useful ways to think about programming even when the machine underneath operates on bytes and addresses.
+Scheme appeals to me because we can express powerful algorithms with relatively few language features. We can pass procedures around as values and create *closures* that retain access to their surrounding variables. Automatic memory management lets us use these capabilities without taking responsibility for releasing each piece of storage ourselves, as we generally would in C or assembly language. That freedom changes how we approach a program and makes Scheme an interesting next step beyond the lower-level work I’ve been doing.
 
-The aim is a development tool that runs on the small machine itself. We should be able to edit Scheme source at the CP/M prompt and compile it into a native Z80 executable. Both the compiler and the programs it produces have to fit within a 64 KiB address space with some of that space occupied by CP/M. Preserving enough of Scheme to write useful programs within those limits is the central design problem.
+The goal is a useful Scheme that compiles to native Z80 code within the limits of an eight-bit CP/M system. Examples from the classic programming book *Structure and Interpretation of Computer Programs* will give us something substantial to work towards. There will be compromises in a machine with so little memory, but enough of Scheme should remain to make its expressive style of programming practical.
 
-In ATOM I use a streaming approach to process source in a small working area and write output progressively. Applying that approach to Skate gives us a way to compile source without keeping a complete representation of the program in memory.
+I’ll release the implementation in stages as it becomes ready so readers can try it and examine the source. Alongside those releases I’ll write about the design decisions and explain how the language works on the machine. Working through that from first principles is much of the reason for building Skate.
 
 <figure>
   <picture>
@@ -37,7 +37,3 @@ In ATOM I use a streaming approach to process source in a small working area and
   </picture>
   <figcaption>Expression nesting and Skate’s planned compilation path. This illustration is public domain.</figcaption>
 </figure>
-
-The classic programming book *Structure and Interpretation of Computer Programs* supplies a practical standard for that ambition. Its examples give us programs worth implementing and reasons to examine the language features they use. The choices become easier to judge when we can see which algorithms remain straightforward to express and which compromises get in the way.
-
-That connection between an expressive language and its implementation is the part I find most interesting. On a small machine we can account for the storage and follow the generated instructions in detail. A working compiler would give us a tool for writing CP/M programs as well as a way to understand how those language concepts become executable code.
