@@ -3,7 +3,7 @@ title: "Taking out the garbage"
 status: published
 thumbnail: assets/hero.png
 series: building-skate
-summary: "Skate reclaims list pairs that a running program can no longer reach. Its collector traces from live roots, keeps reachable pairs and returns the rest to the free list."
+summary: "Skate recovers storage that a running program can no longer reach. Its collector traces from live roots and returns unreachable objects to a free list."
 tags:
   - retrocomputing
   - scheme
@@ -24,18 +24,16 @@ By John Hardy
   <figcaption>The coloured pairs remain reachable. The grey pairs can be reclaimed. This illustration is public domain.</figcaption>
 </figure>
 
-Scheme is appealing because it lets a programmer express an algorithm through procedures and the values flowing between them, rather than spelling it out chiefly as a sequence of changes to storage. That style has its roots in lambda calculus and often feels closer to how we reason through a problem. Lists and other structures can take shape as the calculation proceeds and remain available for as long as the program can use them.
+Scheme is an appealing language because it allows a programmer to focus on an algorithm, the procedures that express it and the values flowing between them, rather than spelling it out chiefly as a sequence of changes to the underlying data storage. This style has its roots in lambda calculus and often feels closer to how we reason through a problem. Lists and other structures can take shape as the calculation proceeds and remain available for as long as the program can use them.
 
-In a language such as C, the programmer also has to arrange the lifetime of dynamically allocated data. As a structure passes between parts of a program, deciding when it is safe to free it can become a substantial part of the work. Scheme moves that bookkeeping into the runtime.
+In a lower level language such as C, the programmer also has to arrange the lifetime of allocated data. As a structure passes between parts of a program, deciding when it is safe to free that data and reuse its space can become a substantial part of the work. Scheme moves that work into the runtime.
 
-That trade becomes sharper in Skate, my attempt to make a useful Scheme for small Z80 systems. The compiled program, its runtime and its data all have to fit within a 64 KiB address space. Garbage collection lets repeated work reuse storage, but the collector itself takes up space and pauses the program while it traces live data. Getting enough Scheme onto the machine means paying for that machinery without leaving too little room or time for the program.
+This trade becomes sharper in Skate, my attempt to make a useful Scheme for small Z80 systems. The compiled program, its runtime and its data all have to fit within a 64 KiB address space. Skate uses automatic memory management to recover storage for repeated work. The collector also uses memory and processor time as it traces live data. On a small system, the challenge is to recover memory while keeping those overheads in proportion to the work the program does.
 
-A list gives us a simple example. It consists of pairs, small two-slot records. One part of each pair holds an item and the other refers to the next pair. A reference to the first pair is enough to find the entire list by following those links. When the last reference to a list disappears, its pairs still occupy memory until the runtime recovers them. It must distinguish those pairs from ones the program can still use.
+For example, a linked list consists of pairs, small two-slot records. One part of each pair holds an item and the other refers to the next pair. A reference to the first pair is enough to find the entire list by following those links. When the program can no longer reach a pair, it still occupies memory until it is recovered by the memory manager. Without that recovery, repeated work would eventually fill all of the available memory.
 
-The collector begins with *roots*: known places where the running program can still hold references. A global variable can be a root. So can a live value in an active procedure call. There is no single master root for the whole program. Collection starts from all the roots that are live at that moment and follows references from each one.
+The garbage collector starts with roots: known places where the running program can hold references, such as global variables and live values in active procedure calls. It follows references from every root through the data structures they lead to. Objects may still refer to one another after the program has lost access to them, but those links cannot keep them alive without a path from a root. Any allocated object the collector cannot reach is available for collection.
 
-The diagram shows two roots. The upper one leads to two pairs and the lower one leads to a third. One grey pair points to another, but neither can be reached from a root. A link between abandoned pairs does not keep them alive. What counts is a path *from a root*.
+Skate's garbage collector uses a simple *mark-and-sweep* algorithm. It marks the objects it reaches from the roots, then sweeps through allocated objects and returns the unmarked ones to a free list. The program can then reuse that storage.
 
-This is mark-and-sweep collection. Skate marks every pair it reaches from a root, then sweeps through the allocated pairs and returns the unmarked ones to the allocator's free list. If a program keeps every list it creates, those lists remain reachable and collection cannot make space for more. When references disappear, repeated work can use the same finite heap again.
-
-I've started with this straightforward approach because it is small enough to fit the machine and clear enough to check. There are possible ways to reduce collection time or improve memory use, but each brings its own cost. As I run more Skate programs, I expect to measure where collection actually hurts and refine the design from there.
+I'm starting with the most straightforward memory manager I can build, keeping the collector small enough to fit the machine and clear enough to check. That gives me a baseline for testing ways to reduce collection time or improve memory use. I'll need to measure what each change saves and what it costs. As I gain experience running Skate on small systems, I expect to refine the design from those measurements.
