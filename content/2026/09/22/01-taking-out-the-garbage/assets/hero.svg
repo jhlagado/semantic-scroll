@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">Tracing from two roots</title>
+  <desc id="desc">Two blue root boxes on the left point to three green reachable pair nodes. Two grey pair nodes below them are connected to each other but have no path from a root, so they can be reclaimed.</desc>
+  <defs>
+    <marker id="blue-arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L10 6 L1 11" fill="none" stroke="#4277a3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="green-arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L10 6 L1 11" fill="none" stroke="#32877b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="grey-arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L10 6 L1 11" fill="none" stroke="#879298" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+  <rect width="1200" height="680" fill="#f5f2e9"/>
+  <rect x="34" y="32" width="1132" height="616" rx="24" fill="#fbfaf6" stroke="#d6d3c8" stroke-width="2"/>
+  <text x="76" y="98" font-family="Arial, sans-serif" font-size="35" font-weight="700" fill="#233440">Roots and reachable pairs</text>
+  <text x="76" y="137" font-family="Arial, sans-serif" font-size="20" fill="#52636b">Collection follows every path from the program’s live references.</text>
+
+  <text x="79" y="194" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#4277a3">ROOTS</text>
+  <text x="404" y="194" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#32877b">REACHABLE PAIRS</text>
+
+  <rect x="76" y="216" width="228" height="85" rx="12" fill="#e1edf5" stroke="#4277a3" stroke-width="3"/>
+  <text x="190" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#214f73">Global value</text>
+  <text x="190" y="281" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#4277a3">root 1</text>
+
+  <rect x="76" y="335" width="228" height="85" rx="12" fill="#e1edf5" stroke="#4277a3" stroke-width="3"/>
+  <text x="190" y="371" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#214f73">Active call</text>
+  <text x="190" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#4277a3">root 2</text>
+
+  <path d="M305 258 H408" fill="none" stroke="#4277a3" stroke-width="4" marker-end="url(#blue-arrow)"/>
+  <path d="M305 377 H408" fill="none" stroke="#4277a3" stroke-width="4" marker-end="url(#blue-arrow)"/>
+  <path d="M568 258 H677" fill="none" stroke="#32877b" stroke-width="4" marker-end="url(#green-arrow)"/>
+
+  <rect x="420" y="221" width="148" height="73" rx="11" fill="#d9eee6" stroke="#32877b" stroke-width="3"/>
+  <text x="494" y="267" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#22695f">Pair A</text>
+  <rect x="690" y="221" width="148" height="73" rx="11" fill="#d9eee6" stroke="#32877b" stroke-width="3"/>
+  <text x="764" y="267" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#22695f">Pair B</text>
+  <rect x="420" y="340" width="148" height="73" rx="11" fill="#d9eee6" stroke="#32877b" stroke-width="3"/>
+  <text x="494" y="386" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#22695f">Pair C</text>
+
+  <line x1="76" y1="458" x2="1124" y2="458" stroke="#d6d3c8" stroke-width="2"/>
+  <text x="79" y="503" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="2" fill="#737f84">NO PATH FROM A ROOT</text>
+  <rect x="420" y="526" width="148" height="73" rx="11" fill="#e5e8e8" stroke="#879298" stroke-width="3"/>
+  <text x="494" y="572" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#5c686d">Pair D</text>
+  <rect x="690" y="526" width="148" height="73" rx="11" fill="#e5e8e8" stroke="#879298" stroke-width="3"/>
+  <text x="764" y="572" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#5c686d">Pair E</text>
+  <path d="M568 563 H677" fill="none" stroke="#879298" stroke-width="4" marker-end="url(#grey-arrow)"/>
+  <text x="878" y="569" font-family="Arial, sans-serif" font-size="21" fill="#5c686d">Can be reclaimed</text>
+</svg>
