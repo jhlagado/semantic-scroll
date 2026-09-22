@@ -37,3 +37,5 @@ The collector begins with *roots*: known places where the running program can st
 The diagram shows two roots. The upper one leads to two pairs and the lower one leads to a third. One grey pair points to another, but neither can be reached from a root. A link between abandoned pairs does not keep them alive. What counts is a path *from a root*.
 
 This is mark-and-sweep collection. Skate marks every pair it reaches from a root, then sweeps through the allocated pairs and returns the unmarked ones to the allocator's free list. If a program keeps every list it creates, those lists remain reachable and collection cannot make space for more. When references disappear, repeated work can use the same finite heap again.
+
+I've started with this straightforward approach because it is small enough to fit the machine and clear enough to check. There are possible ways to reduce collection time or improve memory use, but each brings its own cost. As I run more Skate programs, I expect to measure where collection actually hurts and refine the design from there.
