@@ -34,6 +34,6 @@ For example, a linked list consists of pairs, small two-slot records. One part o
 
 Roots are known places where the running program can hold references, for example global variables and live values in active procedure calls. The collector follows references from every root through the data structures they lead to. Objects can still refer to one another, but if no path from a root reaches them, they can be collected.
 
-Skate's garbage collector uses a simple *mark-and-sweep* algorithm. This marks the objects it reaches from the roots, then sweeps through allocated memory and returns the unmarked objects to a free list. This allows the freed storage to be used again by the program.
+Skate's garbage collector uses a simple *mark-and-sweep* algorithm. The collector marks objects it reaches from the roots, then sweeps through allocated memory and returns the unmarked objects to a free list. The program can reuse that storage.
 
 I'm starting with the most straightforward approach I can with regard to memory management. Keeping the collector small enough to fit the machine enables me to experiment with ways to reduce collection time or improve memory use. I'll measure how each change affects memory use and collection time. As I run more Skate programs on small systems, I expect those results to show which refinements are worthwhile.
