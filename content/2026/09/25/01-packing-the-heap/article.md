@@ -1,6 +1,6 @@
 ---
 title: "Building a heap out of slabs"
-status: draft
+status: published
 thumbnail: assets/packing-the-heap.png
 series: building-skate
 summary: "Skate divides its small heap into 256-byte pages. Pairs, bindings, closures, strings and vectors can then share the available memory without fixed reservations for each type."
