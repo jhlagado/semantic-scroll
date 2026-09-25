@@ -1,5 +1,5 @@
 ---
-title: "Building a heap with slabs"
+title: "Building a heap out of slabs"
 status: draft
 thumbnail: assets/packing-the-heap.png
 series: building-skate
@@ -12,7 +12,7 @@ tags:
   - memory-management
   - garbage-collection
 ---
-# Building a heap with slabs
+# Building a heap out of slabs
 
 By John Hardy
 
