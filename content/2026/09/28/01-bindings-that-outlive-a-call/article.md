@@ -82,7 +82,7 @@ When `make-adder` returns, its stack space is released. The returned closure rem
 
 ## Calling the returned procedure
 
-Calling `add-two` with `40` creates a new binding record for `x` containing that value. The call's stack map points to this new binding record and to the binding record for `n` retained by the closure. The procedure body uses these two bindings to add `2` and `40`.
+Calling `add-two` with `40` creates a new binding record for `x` containing that value. The call's stack map points to this new binding and to the captured binding for `n`. The procedure body uses these two bindings to add `2` and `40`.
 
 ![The new invocation points to captured n equals two and fresh x equals forty.](assets/closure-4.svg)
 
