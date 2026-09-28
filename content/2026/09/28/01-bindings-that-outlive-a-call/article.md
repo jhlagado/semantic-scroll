@@ -74,7 +74,7 @@ The closure points to the existing binding record for `n`. Both the active call 
 
 When `make-adder` returns, its stack space is released. The returned closure remains accessible through `add-two` and still points to the binding record for `n`, so that record remains allocated.
 
-![After return, add-two points to a closure which points to the captured binding for n.](assets/closure-3.svg)
+![Three stages of a closure: make-adder creates a closure pointing to binding n equals two, the stack frame is released while add-two keeps it reachable and a later call combines n with x equals forty.](assets/closure-3.svg)
 
 *After make-adder returns, the closure retains access to n. The earlier call frame is gone. This illustration is public domain.*
 

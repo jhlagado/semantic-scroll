@@ -1,104 +1,117 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1140" height="380" viewBox="0 0 1140 380" role="img" aria-labelledby="title desc">
-  <title id="title">A reachable closure keeps its captured binding alive after the call returns.</title>
-  <desc id="desc">A detailed memory diagram. The add-two root points to a closure object. The closure contains a procedure descriptor and a captured pointer to the heap binding n equals 2. A released call frame is shown beside a slab page whose live slots remain marked while empty slots can be reclaimed.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Making space for closures</title>
+  <desc id="desc">A three-stage diagram showing a make-adder call creating a closure, the call returning while the closure keeps its captured binding n equal to two alive, and a later call combining that captured binding with a fresh argument. A collector keeps reachable objects and returns unreachable slots to the heap.</desc>
   <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e8c27a"/>
-    </marker>
-    <marker id="small-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#79b7ab"/>
-    </marker>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1c2c31"/>
-      <stop offset="1" stop-color="#111c22"/>
-    </linearGradient>
-    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#e8c27a"/>
-      <stop offset="1" stop-color="#d98b55"/>
-    </linearGradient>
-    <pattern id="grid" width="22" height="22" patternUnits="userSpaceOnUse">
-      <path d="M 22 0 L 0 0 0 22" fill="none" stroke="#30505a" stroke-width="1" opacity=".42"/>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#a6b5ba" stroke-opacity=".16"/>
     </pattern>
+    <marker id="arrow-blue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 1L10 6L1 11" fill="none" stroke="#4277a3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 1L10 6L1 11" fill="none" stroke="#32877b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M1 1L10 6L1 11" fill="none" stroke="#b75936" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <style>
+      text { font-family: Arial, sans-serif; fill: #213c42; }
+      .mono { font-family: 'DejaVu Sans Mono', monospace; }
+      .eyebrow { font-size: 16px; font-weight: 700; letter-spacing: 2px; }
+      .title { font-size: 38px; font-weight: 700; letter-spacing: .4px; }
+      .subtitle { font-size: 19px; fill: #4f686b; }
+      .panel-title { font-size: 22px; font-weight: 700; }
+      .label { font-size: 17px; fill: #4f686b; }
+      .small { font-size: 15px; fill: #4f686b; }
+      .value { font-size: 25px; font-weight: 700; }
+      .code { font-family: 'DejaVu Sans Mono', monospace; font-size: 17px; fill: #213c42; }
+    </style>
   </defs>
 
-  <rect width="1140" height="380" rx="12" fill="url(#bg)"/>
-  <rect x="1" y="1" width="1138" height="378" rx="11" fill="none" stroke="#41616a" stroke-width="2"/>
-  <path d="M 32 62 H 1108" stroke="#41616a" stroke-width="1"/>
-  <text x="34" y="38" font-family="Arial,sans-serif" font-size="19" font-weight="700" letter-spacing=".4" fill="#f2e7cf">After the call returns, reachability keeps the environment alive</text>
-  <text x="1106" y="38" text-anchor="end" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.2" fill="#79b7ab">SKATE / CLOSURE LIFETIME</text>
+  <rect width="900" height="1200" fill="#faf7ee"/>
+  <rect width="900" height="1200" fill="url(#grid)"/>
 
-  <g>
-    <rect x="34" y="86" width="236" height="174" rx="10" fill="#24383d" stroke="#79b7ab" stroke-width="2"/>
-    <text x="54" y="110" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.4" fill="#79b7ab">PROGRAM ROOTS</text>
-    <rect x="54" y="124" width="196" height="55" rx="7" fill="#edf3ef"/>
-    <text x="70" y="147" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#213238">add-two</text>
-    <text x="70" y="165" font-family="Arial,sans-serif" font-size="12" fill="#477467">reachable binding</text>
-    <path d="M 250 151 C 278 151 282 151 310 151" fill="none" stroke="#e8c27a" stroke-width="3" marker-end="url(#arrow)"/>
-    <rect x="54" y="198" width="196" height="44" rx="7" fill="#17262b" stroke="#6b8185" stroke-width="1.5" stroke-dasharray="5 4"/>
-    <text x="70" y="217" font-family="Arial,sans-serif" font-size="12" fill="#b8c5c3">make-adder frame</text>
-    <text x="70" y="234" font-family="Arial,sans-serif" font-size="11" fill="#82999a">stack space released</text>
-    <path d="M 236 207 l 28 28 M 264 207 l -28 28" stroke="#d98b55" stroke-width="2"/>
-  </g>
+  <rect x="48" y="52" width="9" height="102" fill="#cf6039"/>
+  <text x="82" y="91" class="eyebrow" fill="#b75936">SKATE / Z80 / 64 KiB</text>
+  <text x="82" y="135" class="title">MAKING SPACE FOR CLOSURES</text>
+  <text x="82" y="168" class="subtitle">A procedure and the environment it keeps alive</text>
+  <text x="842" y="91" text-anchor="end" class="mono small">LEXICAL SCOPE</text>
+  <path d="M48 205H852" stroke="#9bacae" stroke-width="2"/>
 
-  <g>
-    <rect x="310" y="86" width="344" height="174" rx="10" fill="#24383d" stroke="#e8c27a" stroke-width="2"/>
-    <text x="332" y="110" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.4" fill="#e8c27a">HEAP OBJECT</text>
-    <text x="632" y="110" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#b8c5c3">closure</text>
-    <rect x="332" y="124" width="142" height="64" rx="7" fill="#edf3ef"/>
-    <text x="347" y="148" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#213238">procedure</text>
-    <text x="347" y="166" font-family="Arial,sans-serif" font-size="12" fill="#477467">descriptor</text>
-    <rect x="490" y="124" width="142" height="64" rx="7" fill="#f5e8c6"/>
-    <text x="505" y="148" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#4b3b25">capture slot</text>
-    <text x="505" y="166" font-family="Arial,sans-serif" font-size="12" fill="#8a6139">pointer to n</text>
-    <path d="M 474 156 H 490" fill="none" stroke="#79b7ab" stroke-width="2" marker-end="url(#small-arrow)"/>
-    <path d="M 561 188 V 214" fill="none" stroke="#e8c27a" stroke-width="3" marker-end="url(#arrow)"/>
-    <text x="332" y="224" font-family="Arial,sans-serif" font-size="12" fill="#b8c5c3">same compiled code</text>
-    <text x="632" y="224" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#b8c5c3">captured pointer, not a copy</text>
-    <path d="M 332 238 H 632" stroke="#41616a" stroke-width="1"/>
-    <text x="332" y="252" font-family="Arial,sans-serif" font-size="11" fill="#79b7ab">procedure + environment</text>
-  </g>
+  <!-- Stage 1 -->
+  <text x="62" y="247" class="eyebrow" fill="#b75936">01 / CREATE</text>
+  <text x="62" y="277" class="panel-title">The inner procedure captures n</text>
 
-  <g>
-    <path d="M 654 151 C 683 151 690 151 720 151" fill="none" stroke="#e8c27a" stroke-width="3" marker-end="url(#arrow)"/>
-    <rect x="720" y="86" width="386" height="174" rx="10" fill="#24383d" stroke="#79b7ab" stroke-width="2"/>
-    <text x="742" y="110" font-family="Arial,sans-serif" font-size="12" letter-spacing="1.4" fill="#79b7ab">HEAP / BINDING RECORD</text>
-    <text x="1084" y="110" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#b8c5c3">three bytes</text>
-    <rect x="742" y="124" width="342" height="58" rx="7" fill="url(#glow)"/>
-    <text x="762" y="149" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#3c3030">n</text>
-    <text x="810" y="149" font-family="Arial,sans-serif" font-size="15" fill="#3c3030">=</text>
-    <text x="840" y="149" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#3c3030">2</text>
-    <text x="762" y="168" font-family="Arial,sans-serif" font-size="11" fill="#5d4632">value</text>
-    <text x="875" y="168" font-family="Arial,sans-serif" font-size="11" fill="#5d4632">type</text>
-    <text x="1014" y="168" text-anchor="end" font-family="Arial,sans-serif" font-size="11" fill="#5d4632">state flags</text>
-    <path d="M 742 203 H 1084" stroke="#41616a" stroke-width="1"/>
-    <text x="742" y="222" font-family="Arial,sans-serif" font-size="12" fill="#b8c5c3">reachable through add-two</text>
-    <text x="1084" y="222" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#e8c27a">keep</text>
-    <text x="742" y="244" font-family="Arial,sans-serif" font-size="11" fill="#82999a">when the last pointer disappears, collection may reclaim it</text>
-  </g>
+  <rect x="62" y="303" width="220" height="222" rx="10" fill="#e1edf5" stroke="#4277a3" stroke-width="3"/>
+  <text x="84" y="337" class="eyebrow" fill="#4277a3">CALL STACK</text>
+  <text x="84" y="378" class="value">make-adder</text>
+  <text x="84" y="407" class="label">active call map</text>
+  <line x1="84" y1="430" x2="260" y2="430" stroke="#9fb9ca" stroke-width="2"/>
+  <text x="84" y="463" class="code">n  →  binding</text>
+  <text x="84" y="494" class="small">argument value: 2</text>
 
-  <g>
-    <rect x="34" y="292" width="1072" height="64" rx="9" fill="#17262b" stroke="#41616a" stroke-width="1.5"/>
-    <text x="54" y="317" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.3" fill="#79b7ab">SLAB PAGE / COLLECTOR</text>
-    <text x="54" y="340" font-family="Arial,sans-serif" font-size="11" fill="#b8c5c3">mark from roots</text>
-    <path d="M 150 336 H 176" stroke="#79b7ab" stroke-width="2" marker-end="url(#small-arrow)"/>
-    <g transform="translate(188 309)">
-      <rect width="432" height="31" rx="5" fill="url(#grid)" stroke="#41616a"/>
-      <rect x="7" y="7" width="28" height="17" rx="3" fill="#79b7ab"/>
-      <rect x="43" y="7" width="28" height="17" rx="3" fill="#79b7ab"/>
-      <rect x="79" y="7" width="28" height="17" rx="3" fill="#e8c27a"/>
-      <rect x="115" y="7" width="28" height="17" rx="3" fill="#79b7ab"/>
-      <rect x="151" y="7" width="28" height="17" rx="3" fill="#233a40" stroke="#557178"/>
-      <rect x="187" y="7" width="28" height="17" rx="3" fill="#233a40" stroke="#557178"/>
-      <rect x="223" y="7" width="28" height="17" rx="3" fill="#233a40" stroke="#557178"/>
-      <rect x="259" y="7" width="28" height="17" rx="3" fill="#233a40" stroke="#557178"/>
-      <rect x="295" y="7" width="28" height="17" rx="3" fill="#233a40" stroke="#557178"/>
-      <rect x="331" y="7" width="28" height="17" rx="3" fill="#233a40" stroke="#557178"/>
-      <rect x="367" y="7" width="28" height="17" rx="3" fill="#233a40" stroke="#557178"/>
-      <rect x="403" y="7" width="22" height="17" rx="3" fill="#233a40" stroke="#557178"/>
-    </g>
-    <text x="640" y="327" font-family="Arial,sans-serif" font-size="11" fill="#b8c5c3">reachable slots stay allocated</text>
-    <text x="640" y="344" font-family="Arial,sans-serif" font-size="11" fill="#82999a">empty slots return to the pool</text>
-    <path d="M 948 327 H 977" stroke="#d98b55" stroke-width="2" marker-end="url(#small-arrow)"/>
-    <text x="988" y="331" font-family="Arial,sans-serif" font-size="11" fill="#e8c27a">sweep</text>
-  </g>
+  <path d="M284 411H350" fill="none" stroke="#4277a3" stroke-width="4" marker-end="url(#arrow-blue)"/>
+
+  <rect x="350" y="326" width="198" height="176" rx="10" fill="#fae4d4" stroke="#b75936" stroke-width="3"/>
+  <text x="372" y="359" class="eyebrow" fill="#b75936">HEAP</text>
+  <text x="372" y="394" class="value">n = 2</text>
+  <text x="372" y="422" class="label">binding record</text>
+  <text x="372" y="456" class="small">three bytes</text>
+  <text x="372" y="480" class="small">shared, not copied</text>
+
+  <path d="M550 411H616" fill="none" stroke="#32877b" stroke-width="4" marker-end="url(#arrow-green)"/>
+
+  <rect x="616" y="303" width="222" height="222" rx="10" fill="#d9eee6" stroke="#32877b" stroke-width="3"/>
+  <text x="638" y="337" class="eyebrow" fill="#32877b">HEAP OBJECT</text>
+  <text x="638" y="378" class="value">closure</text>
+  <rect x="638" y="399" width="178" height="48" rx="6" fill="#fbfaf6" stroke="#77a99d" stroke-width="2"/>
+  <text x="727" y="429" text-anchor="middle" class="code">procedure descriptor</text>
+  <rect x="638" y="461" width="178" height="42" rx="6" fill="#f5d39e" stroke="#cf9c4c" stroke-width="2"/>
+  <text x="727" y="487" text-anchor="middle" class="small">capture → n</text>
+
+  <text x="450" y="563" text-anchor="middle" class="small">The closure points to the existing binding record.</text>
+
+  <!-- Stage 2 -->
+  <text x="62" y="619" class="eyebrow" fill="#b75936">02 / RETURN</text>
+  <text x="62" y="649" class="panel-title">The call ends, but the captured binding remains</text>
+
+  <rect x="62" y="678" width="220" height="148" rx="10" fill="#e5e8e8" stroke="#879298" stroke-width="3" stroke-dasharray="10 7"/>
+  <text x="84" y="713" class="eyebrow" fill="#737f84">STACK SPACE</text>
+  <text x="84" y="752" class="value" fill="#5c686d">released</text>
+  <text x="84" y="785" class="small">available for reuse</text>
+  <path d="M234 710L258 794M258 710L234 794" stroke="#b75936" stroke-width="4"/>
+
+  <path d="M284 752H404" fill="none" stroke="#879298" stroke-width="3" stroke-dasharray="8 7" marker-end="url(#arrow-orange)"/>
+
+  <rect x="404" y="678" width="434" height="148" rx="10" fill="#fbfaf6" stroke="#32877b" stroke-width="3"/>
+  <text x="430" y="713" class="eyebrow" fill="#32877b">LIVE ROOT</text>
+  <text x="430" y="752" class="value">add-two → closure → n = 2</text>
+  <text x="430" y="785" class="small">reachability keeps both heap objects available</text>
+
+  <!-- Stage 3 -->
+  <text x="62" y="908" class="eyebrow" fill="#b75936">03 / USE AND COLLECT</text>
+  <text x="62" y="938" class="panel-title">A later call combines captured and fresh state</text>
+
+  <rect x="62" y="963" width="190" height="126" rx="10" fill="#e1edf5" stroke="#4277a3" stroke-width="3"/>
+  <text x="84" y="997" class="eyebrow" fill="#4277a3">NEW CALL</text>
+  <text x="84" y="1037" class="value">x = 40</text>
+  <text x="84" y="1067" class="small">fresh binding record</text>
+
+  <path d="M254 1026H321" fill="none" stroke="#4277a3" stroke-width="4" marker-end="url(#arrow-blue)"/>
+
+  <rect x="321" y="963" width="230" height="126" rx="10" fill="#d9eee6" stroke="#32877b" stroke-width="3"/>
+  <text x="343" y="997" class="eyebrow" fill="#32877b">PROCEDURE BODY</text>
+  <text x="436" y="1040" text-anchor="middle" class="code">(+ n x)</text>
+  <text x="436" y="1070" text-anchor="middle" class="value">2 + 40 = 42</text>
+
+  <path d="M553 1026H620" fill="none" stroke="#32877b" stroke-width="4" marker-end="url(#arrow-green)"/>
+
+  <rect x="620" y="963" width="218" height="126" rx="10" fill="#fae4d4" stroke="#b75936" stroke-width="3"/>
+  <text x="642" y="997" class="eyebrow" fill="#b75936">COLLECTOR</text>
+  <text x="642" y="1037" class="value">reachable: keep</text>
+  <text x="642" y="1067" class="small">unreachable: reclaim</text>
+
+  <path d="M62 1122H838" stroke="#9bacae" stroke-width="2"/>
+  <text x="62" y="1156" class="label">A closure keeps the environment it needs.</text>
+  <text x="62" y="1182" class="small">The collector keeps it until no live reference can reach it.</text>
 </svg>
