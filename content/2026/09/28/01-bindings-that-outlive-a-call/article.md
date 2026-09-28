@@ -23,7 +23,7 @@ By John Hardy
   <figcaption>A closure keeps its captured binding available after the call that created it returns. This illustration is public domain.</figcaption>
 </figure>
 
-Skate is my attempt to build a useful small Scheme for Z80 systems. In my article [Building a heap out of slabs](https://semantic-scroll.com/content/2026/09/25/01-packing-the-heap/) I described the storage used by Scheme data objects such as pairs, bindings and closures. Closures deserve a closer look because implementing them changes the way we arrange the lifetime of a procedure's local variables.
+Skate is my attempt to build a useful Scheme for an eight-bit Z80 with a 64 KiB address space. In [Building a heap out of slabs](https://semantic-scroll.com/content/2026/09/25/01-packing-the-heap/) I described how the runtime stores pairs, bindings and closures. Closures deserve a closer look because they let a procedure carry part of its surrounding environment beyond the call that created it.
 
 Procedures (i.e. functions) are central to Scheme. They take arguments, perform calculations and return a value. They are also values themselves, so we can store them in variables, pass them as arguments and return them from other procedures.
 
