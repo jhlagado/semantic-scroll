@@ -15,6 +15,14 @@ tags:
 
 By John Hardy
 
+<figure>
+  <picture>
+    <source srcset="./assets/closure-3.svg" type="image/svg+xml">
+    <img src="./assets/closure-3.png" alt="Three stages of a closure: make-adder creates a closure pointing to binding n equals two, the stack frame is released while add-two keeps it reachable and a later call combines n with x equals forty." width="900" height="1200">
+  </picture>
+  <figcaption>A closure keeps its captured binding available after the call that created it returns. This illustration is public domain.</figcaption>
+</figure>
+
 Skate is my attempt to build a useful small Scheme for Z80 systems. In my article [Building a heap out of slabs](https://semantic-scroll.com/content/2026/09/25/01-packing-the-heap/) I described the storage used by Scheme data objects such as pairs, bindings and closures. Closures deserve a closer look because implementing them changes the way we arrange the lifetime of a procedure's local variables.
 
 Procedures (i.e. functions) are central to Scheme. They take arguments, perform calculations and return a value. They are also values themselves, so we can store them in variables, pass them as arguments and return them from other procedures.
@@ -73,10 +81,6 @@ The closure points to the existing binding record for `n`. Both the active call 
 *Before the outer call returns, its map and the new closure refer to the same binding. Only the relevant entries are shown. This illustration is public domain.*
 
 When `make-adder` returns, its stack space is released. The returned closure remains accessible through `add-two` and still points to the binding record for `n`, so that record remains allocated.
-
-![Three stages of a closure: make-adder creates a closure pointing to binding n equals two, the stack frame is released while add-two keeps it reachable and a later call combines n with x equals forty.](assets/closure-3.svg)
-
-*After make-adder returns, the closure retains access to n. The earlier call frame is gone. This illustration is public domain.*
 
 ## Calling the returned procedure
 
