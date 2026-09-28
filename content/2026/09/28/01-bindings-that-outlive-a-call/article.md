@@ -23,7 +23,7 @@ By John Hardy
   <figcaption>A closure keeps its captured binding available after the call that created it returns. This illustration is public domain.</figcaption>
 </figure>
 
-Skate is my attempt to build a useful Scheme for an eight-bit Z80 with a 64 KiB address space. In [Building a heap out of slabs](https://semantic-scroll.com/content/2026/09/25/01-packing-the-heap/) I described how the runtime stores pairs, bindings and closures. Closures deserve a closer look because they let a procedure carry part of its surrounding environment beyond the call that created it.
+Closures look simple in Scheme. A procedure can carry bindings from its surrounding environment and use them after the call that created them has returned. On a Z80 that simple idea needs a concrete runtime representation and a garbage collector that can keep the captured storage alive. In [Building a heap out of slabs](https://semantic-scroll.com/content/2026/09/25/01-packing-the-heap/) I described the heap where Skate stores pairs, bindings and closures. This article follows one closure from its first call to the point where its captured storage can be reclaimed.
 
 Procedures (i.e. functions) are central to Scheme. They take arguments, perform calculations and return a value. They are also values themselves, so we can store them in variables, pass them as arguments and return them from other procedures.
 
