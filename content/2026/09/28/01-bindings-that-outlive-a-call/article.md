@@ -1,5 +1,5 @@
 ---
-title: "Bindings that outlive a call"
+title: "Making space for closures"
 status: published
 series: building-skate
 thumbnail: assets/closure-3.png
@@ -11,7 +11,7 @@ tags:
   - closures
   - memory-management
 ---
-# Bindings that outlive a call
+# Making space for closures
 
 By John Hardy
 
