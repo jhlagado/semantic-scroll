@@ -83,7 +83,7 @@ hex byte                   24           |            00            |            
 
 Offsets 2 and 5 become bits 5 and 2: `20h + 04h = 24h`. The complete bitmap is `24 00 00`. Seventeen code bytes require three bitmap bytes, with seven unused bits at the end.
 
-This works for ordinary references to labels inside the program, such as `CALL PRINT` or `LD DE,MSG`. Moving the program up by 256 bytes increases each address by 256, so only its high byte changes, by one.
+This works for ordinary references to labels inside the program, such as `CALL PRINT` or `LD DE,MSG`. Moving the program up by one page adds 0100h to each internal address, increasing its high byte by one while leaving the low byte unchanged.
 
 Calculated values need more care. An expression such as `MSG * 2` increases by 512 instead, so its high byte changes by two. The PRL loader only adds the program’s page adjustment and cannot fix that expression correctly. The comparison tool should reject it. Fixed addresses such as the BDOS entry at 0005h stay unchanged in both assemblies and receive no relocation mark.
 
