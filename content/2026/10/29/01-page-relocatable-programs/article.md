@@ -2,7 +2,7 @@
 title: "Relocating Z80 programs one bit at a time"
 status: published
 thumbnail: assets/prl-hero.png
-summary: "A CP/M COM file can only run at 0100h. Digital Research's little-known PRL format lets the same program load at any page in memory, using a bitmap made by assembling it twice and comparing the results."
+summary: "PRL lets Z80 code load on any suitable 256-byte boundary, using an ordinary assembler and a tiny relocation routine. Bringing CP/M to the TEC-1G led me to this decades-old solution."
 tags:
   - z80
   - cpm
@@ -19,50 +19,30 @@ By John Hardy
     <source srcset="./assets/prl-hero.svg" type="image/svg+xml">
     <img src="./assets/prl-hero.png" alt="A seventeen-byte program assembled at 0000h and at 0100h. Two bytes differ by one and are marked in a bitmap. Loaded at 8000h those two bytes become 80h and every other byte is unchanged." width="1200" height="670">
   </picture>
-  <figcaption>Assembling a program twice finds every byte that holds part of an internal address. This illustration is public domain.</figcaption>
+  <figcaption>Two assemblies reveal the address bytes to adjust for this program. This illustration is public domain.</figcaption>
 </figure>
 
-I’ve been writing [TEC-OS](https://debug80.com/tec-os/), a CP/M-compatible operating system for the TEC-1G. There’s some personal history behind this. Ken Stone and I designed the original [TEC-1](https://github.com/crsjones/TEC-1), published in *Talking Electronics* magazine in 1983. Forty years later Mark Jelic developed its successor, the [TEC-1G](https://github.com/MarkJelic/TEC-1G), for the anniversary in 2023.
+Digital Research’s PRL format lets you load a Z80 program wherever there’s room on a 256-byte boundary. You can produce it with an ordinary assembler, without a separate linker. The relocation routine below takes 26 bytes. After loading, the relocation information can be discarded.
 
-The original machine was a small Z80 trainer with a hexadecimal keypad and LED display. The TEC-1G retains that character but has enough memory and peripherals to support something more substantial. Bringing CP/M to it means being able to edit source, assemble programs and run familiar utilities on the machine itself. TEC-OS keeps the operating system in ROM and uses an SD card for files, leaving as much RAM as possible for programs.
+That’s useful for drivers, resident utilities and overlays whose final address depends on what else is in memory. I’ve been programming the Z80 for roughly 45 years and somehow I’m only just discovering it.
 
-Working out how to load resident programs and drivers brought me back to a familiar Z80 problem. A program might fit comfortably in memory but still need rebuilding just to run at a different address. CP/M’s COM format makes loading wonderfully simple. Copy the file to 0100h and start executing. That becomes restrictive when several pieces of software need to remain in memory together, each with internal addresses assembled for the same location.
+I encountered PRL while bringing CP/M to the [TEC-1G](https://github.com/MarkJelic/TEC-1G) through [TEC-OS](https://debug80.com/tec-os/). Ken Stone and I designed the original [TEC-1](https://github.com/crsjones/TEC-1), published in *Talking Electronics* in 1983. Mark Jelic developed the TEC-1G for its fortieth anniversary in 2023. With the operating system in ROM and files on SD, I wanted resident programs to fit into available RAM without rebuilding each for a fixed address.
 
-MS-DOS inherited the COM format but the 8086’s segment registers made it more flexible. A program could still start at offset 0100h while DOS placed its segment elsewhere in physical memory. The Z80 has no equivalent segment registers. Moving a program generally means changing the addresses inside it.
+## The relocation problem
 
-I’d understood this limitation for years. What I somehow hadn’t encountered in roughly 45 years of Z80 programming was Digital Research’s PRL format. It supplied exactly the load-time relocation I needed, using a bitmap with one bit for each byte of program code. The loader adjusts the marked bytes and discards the bitmap afterwards.
+CP/M loads a COM file at 0100h. Its internal subroutine calls, jumps and data pointers contain absolute addresses. Copy it elsewhere and those addresses still point to the old location. Relative branches help locally but the Z80 has no relative `CALL` or general program-counter-relative data addressing.
 
-Finding it now was slightly disconcerting. I’d been thinking through a problem that had been solved back when these machines were current. The solution was small enough to suit the machine and simple enough to explain completely. Somehow I was only just getting the news.
+MS-DOS inherited COM files but the 8086’s segment registers made placement more flexible. Offset 0100h could refer to different physical locations. The Z80 has no equivalent segment registers, so the addresses inside the code need adjusting.
 
-## The COM file
+PRL means **Page Relocatable**. Used by MP/M and CP/M 3, it restricts loading to **256-byte page boundaries**. Moving by whole pages leaves each internal address’s low byte unchanged. Only the high byte needs adjusting. A routine at 0109h becomes 8009h when its program moves to 8000h. Add 7Fh to the high byte and leave 09h alone.
 
-A COM file is the simplest executable format there is. It has no header, no signature and no metadata of any kind. The file is a memory image of the program, byte for byte, and CP/M's command processor loads it at address 0100h and jumps to its first byte. That's the whole specification.
+The loader needs a list of bytes to adjust. PRL stores that list as a bitmap, one bit per code byte. Fixed addresses such as CP/M’s BDOS entry at 0005h remain untouched. The loader never decodes an instruction.
 
-The address 0100h comes from the layout of a CP/M machine. The first 256 bytes of memory, page zero, belong to the system. They hold the jump to warm boot at 0000h, the jump into the BDOS at 0005h, the default file control blocks at 005Ch and the command tail at 0080h. The program area, the transient program area or TPA, starts straight after it and runs up to the BDOS. A program finds the top of its memory by reading the address in the jump at 0005h.
+## Two assemblies, no linker
 
-Because every COM program loads at the same place, the assembler can work out every address in the program before it ever runs. If a program says `CALL PRINT` and `PRINT` ends up at 0109h, the assembler writes `CD 09 01` and that's final. The convention was strong enough that MS-DOS kept it for its own COM files, which also start 100h bytes into their memory segment.
+Assemble the same source at 0000h and 0100h, then compare the images. For ordinary internal addresses, the high byte increases by one. Fixed addresses and the rest of the code stay unchanged. This supplies the relocation information without a special assembler or a separate linking step.
 
-## Absolute addresses
-
-The weakness of a COM file is that its code is welded to 0100h. Move it anywhere else and it breaks, because the Z80 instruction set is full of absolute addresses. `JP`, `CALL`, `LD HL,nn`, `LD A,(nn)` and every `DW` in a table all name a fixed 16-bit location. When the code moves, those numbers still point at the old place.
-
-The Z80 offers very little help here. `JR` and `DJNZ` use a displacement relative to the current instruction, so they keep working wherever the code lands, but they only reach about 128 bytes in either direction and are only available as jumps. There is no relative `CALL` and no way to load data relative to the program counter. A real program can't be written from relative branches alone, so in practice Z80 code is tied to the address it was assembled for.
-
-The traditional answer is a linker. An assembler such as Microsoft's M80 or Digital Research's RMAC writes a relocatable object file, a REL file, in which every address is recorded relative to the start of its module along with the names of external symbols. The linker reads the modules, decides where each one goes, patches every address and writes out an ordinary COM file. That works well, but all the relocation happens before the program runs. The output is still welded to 0100h. Relocating a program when it loads, to wherever memory happens to be free, needs a different idea.
-
-## The PRL idea
-
-Digital Research's answer was to make the problem smaller. A PRL program can be loaded anywhere at all as long as the address is on a page boundary, a multiple of 256.
-
-If a program moves by a whole number of pages, the low byte of every address in it stays the same. A routine at 0109h moved up by 7F00h lands at 8009h. Its low byte is still 09h and only the high byte has changed, from 01h to 80h. So the loader can skip working out where the addresses are or how long they are. It only requires the set of bytes that hold the high bytes of internal addresses, and it adds the same number to each of them.
-
-That's a yes or no question for every byte, which means it takes one bit per byte to answer. A PRL file carries the program's code followed by a bitmap with one bit for each byte of code. A set bit marks a byte to adjust. The overhead is an eighth of the code size, and the loader never has to decode a Z80 instruction.
-
-## Finding the addresses
-
-The clever part is how to build the bitmap without a relocating assembler. You assemble the program twice, once at origin 0000h and once at 0100h, and compare the two images byte by byte. Most bytes come out identical. A byte that holds the high half of an internal address is exactly one greater in the second image, because the second assembly put everything one page higher. Every byte that differs gets a bit in the bitmap.
-
-Here is a small CP/M program that prints `HI` by calling a subroutine:
+Here’s a program that prints `HI` through CP/M:
 
 ```asm
 BDOS    EQU     $0005
@@ -84,11 +64,10 @@ offset   00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10
 diff     00 00 01 00 00 01 00 00 00 00 00 00 00 00 00 00 00
 ```
 
-Only two bytes differ. Offset 2 is the high byte of `MSG` in `LD DE,MSG` and offset 5 is the high byte of `PRINT` in `CALL PRINT`. Both go from 00h to 01h. The low bytes, 0Eh and 09h, are the same in both images.
 
-`JP $0000` and `JP BDOS` refer to locations in page zero that stay put whatever happens to the program. They assemble to the same bytes both times, so they get no mark and the loader leaves them alone. Telling internal addresses from fixed ones is exactly what a relocating loader has to get right, and the double assembly gets it right for free. The assembler has already worked out which values are labels in the program and which are plain numbers. Comparing the two images reads that result straight out of the output.
+Only offsets 2 and 5 differ. They hold the high bytes of `MSG` and `PRINT`. The fixed jumps to 0000h and 0005h remain identical. [Atom](https://semantic-scroll.com/content/2026/09/04/01-atom-my-z80-assembler/) produces these 17-byte images by changing the `ORG` between assemblies.
 
-The difference row subtracts the 0000h image from the 0100h image. Each `01` marks a byte to relocate. Packing those marks into bits gives the bitmap, with the earliest code byte in bit 7:
+The difference row subtracts the first image from the second. Packing the marks into bits, most significant bit first, gives:
 
 ```text
 code offsets    00 01 02 03 04 05 06 07 | 08 09 0A 0B 0C 0D 0E 0F | 10 -- -- -- -- -- -- --
@@ -97,34 +76,18 @@ binary byte             00100100         |         00000000         |         00
 hex byte                   24           |            00            |            00
 ```
 
-Offsets 2 and 5 become bits 5 and 2 of the first bitmap byte: `20h + 04h = 24h`. Seventeen bytes of code need three bitmap bytes, `24 00 00`. Only the first bit of the last byte corresponds to code. Its remaining seven bits are unused and set to zero.
 
-The comparison also catches code that can't be relocated by page. Some uses of an address can't be fixed by adding a page, such as multiplying it by two. In `LD HL,MSG * 2` the high byte differs by two between the images, so the tool that builds the bitmap reports it as an error. Taking the high byte of an address on purpose is fine. A shift right by eight gives a byte that differs by exactly one, and it gets marked like any other high byte.
+Offsets 2 and 5 become bits 5 and 2: `20h + 04h = 24h`. The complete bitmap is `24 00 00`. Seventeen code bytes require three bitmap bytes, with seven unused bits at the end.
 
-The idea goes back a long way. In 1978 Dr. Dobb's Journal described a loader that read two hex files, one assembled at 0 and one at 100h. Digital Research's LINK-80 could also write PRL files straight from REL files with its `[OP]` option. The two-assembly method still works with any assembler that can change its origin, including Atom.
+This technique requires code written for page relocation. Multiplying an internal address by two, for example, needs a different adjustment. A comparison tool should reject differences other than zero or one, though two assemblies alone cannot prove every possible address expression safe. Keep internal references straightforward and fixed hardware or system addresses constant.
 
-## The file format
+## Loading the result
 
-The CP/M 3 Programmer's Guide gives the format in its Appendix B. A PRL file has three parts:
+A PRL file contains a 256-byte header, code assembled for 0100h and the relocation bitmap. The header records the code length and any extra uninitialised storage required. Loading the code at page `p` means adding `p - 1` to each marked byte. At 8000h, `p` is 80h and the adjustment is 7Fh.
 
-```text
-0000h        header page, 256 bytes
-               0001h-0002h  length of the code
-               0004h-0005h  extra memory the program needs beyond its code
-               every other byte reserved
-0100h        the code, assembled for origin 0100h
-0100h + n    the bitmap, one bit per byte of code, bit 7 first
-```
+The origin is worth checking. The related SPR format uses code assembled for 0000h. I initially used that convention under the PRL name in TEC-OS. My own files worked but a genuine PRL would have been relocated one page out.
 
-The code in the file is the image assembled at 0100h, not the one at 0000h. If the whole file were loaded at 0000h, the code would sit exactly where a COM program does. A PRL program loaded at the usual 0100h therefore needs no relocation at all, and CP/M 3's command processor simply runs a PRL as if it were a COM file. Digital Research also had a sister format, SPR, with the same layout and the code assembled at 0000h. CP/M 3 used SPR files for its own BDOS and BIOS.
-
-The two are easy to confuse, and I did. My first version of TEC-OS stored the 0000h image under the PRL name, which is really SPR's convention. It worked perfectly with my own files and would have loaded a genuine PRL from LINK-80 one page out. The manual is explicit about the 0100h origin, and checking it before writing the loader would have saved me the fix.
-
-## Loading at any page
-
-To load a PRL program at page `p`, a loader reads the header for the code length, puts the code at `p` × 256 and adds `p - 1` to every byte whose bitmap bit is set. The 1 comes off because the code was assembled for page 1. For the example program at 8000h the loader adds 7Fh, so both marked bytes become 80h and `LD DE,MSG` and `CALL PRINT` now point into the relocated copy. `JP $0000` and `JP BDOS` keep their original addresses. The illustration at the top shows all four stages.
-
-The loop that does the work is short enough to show in full. It walks the code and the bitmap together and shifts one bit out for each byte. A marker bit takes the place of a separate counter for the eight bits in each bitmap byte:
+Here’s the 26-byte relocation loop. `HL` points to the code, `IX` to the bitmap, `BC` holds the code length and `E` holds the page adjustment:
 
 ```asm
 ; Relocate BC bytes of code at HL, adding E to each byte whose bit is set
@@ -149,8 +112,11 @@ SKIP:   INC     HL
         JR      NEXT
 ```
 
-When a fresh bitmap byte is loaded, `SCF` and `RLA` shift its top bit into carry and put a 1 into bit 0 behind the remaining seven bits. Each later `SLA D` shifts out the next bit. After the seventh, only the marker is left in D, and the next shift pushes it out and leaves D at zero. That zero sends the loop back to fetch another bitmap byte. The routine is 26 bytes long. I ran it on a Z80 emulator against the example above and a few hundred random programs and bitmaps. Some had lengths that aren't a multiple of eight, and every result matched a reference implementation.
 
-The arithmetic works modulo 256, so the loader never needs to check for overflow. Once the code is relocated the bitmap and header can be thrown away, and the program in memory is indistinguishable from one assembled for that address in the first place.
+A marker bit in `D` tracks progress through each bitmap byte. `SLA` shifts the next relocation bit into carry. Once the marker leaves `D`, the routine fetches another byte. Only marked code bytes receive the adjustment. The destination must have room for the complete image and its extra storage.
 
-That's what makes PRL so useful on a small machine. MP/M used it to run programs in whatever memory segment was free. CP/M 3 used it for resident system extensions, which load just below the BDOS at an address that depends on what else is installed. TEC-OS uses it the same way, to install resident programs below the BDOS and lower the top of memory for everything that runs after them. In each case the program is assembled once by an ordinary assembler, and the operating system picks its address at load time. That's a remarkably good deal for one bit per byte, and I think PRL should be far better known among Z80 programmers than it is.
+## Beyond CP/M
+
+The page-relocation arithmetic doesn’t depend on CP/M or on Z80 opcodes. It could also suit other 8-bit processors with 16-bit addresses, including the 6502. Its [instruction set](https://www.westerndesigncenter.com/wdc/documentation/w65c02s.pdf) includes absolute addresses and relative branches too. That’s an application of the same technique, not compatibility with CP/M executables. A loader and suitable assembly conventions would still be needed, particularly around fixed zero-page locations and address-dependent instruction sizes.
+
+In TEC-OS I use PRL to load residents below the BDOS and lower the available program area accordingly. The code fits around what’s already installed and the bitmap occupies no RAM afterwards. I think this deserves to be familiar territory for Z80 programmers. It would have saved me some work if I’d heard the news earlier.
