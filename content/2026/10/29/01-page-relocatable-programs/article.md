@@ -81,13 +81,23 @@ MSG:    DB      "HI$"
 offset   00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10
 0000h    11 0E 00 CD 09 00 C3 00 00 0E 09 C3 05 00 48 49 24
 0100h    11 0E 01 CD 09 01 C3 00 00 0E 09 C3 05 00 48 49 24
+diff     00 00 01 00 00 01 00 00 00 00 00 00 00 00 00 00 00
 ```
 
 Only two bytes differ. Offset 2 is the high byte of `MSG` in `LD DE,MSG` and offset 5 is the high byte of `PRINT` in `CALL PRINT`. Both go from 00h to 01h. The low bytes, 0Eh and 09h, are the same in both images.
 
 `JP $0000` and `JP BDOS` refer to locations in page zero that stay put whatever happens to the program. They assemble to the same bytes both times, so they get no mark and the loader leaves them alone. Telling internal addresses from fixed ones is exactly what a relocating loader has to get right, and the double assembly gets it right for free. The assembler has already worked out which values are labels in the program and which are plain numbers. Comparing the two images reads that result straight out of the output.
 
-The bitmap has a 1 at offsets 2 and 5 and a 0 everywhere else. Bit 7 of the first bitmap byte stands for the first byte of code, bit 6 for the second and so on. Seventeen bytes of code need three bitmap bytes, `24 00 00`, and the unused bits at the end of the last one are zero.
+The difference row subtracts the 0000h image from the 0100h image. Each `01` marks a byte to relocate. Packing those marks into bits gives the bitmap, with the earliest code byte in bit 7:
+
+```text
+code offsets    00 01 02 03 04 05 06 07 | 08 09 0A 0B 0C 0D 0E 0F | 10 -- -- -- -- -- -- --
+bitmap bits      0  0  1  0  0  1  0  0 |  0  0  0  0  0  0  0  0 |  0  0  0  0  0  0  0  0
+binary byte             00100100         |         00000000         |         00000000
+hex byte                   24           |            00            |            00
+```
+
+Offsets 2 and 5 become bits 5 and 2 of the first bitmap byte: `20h + 04h = 24h`. Seventeen bytes of code need three bitmap bytes, `24 00 00`. Only the first bit of the last byte corresponds to code. Its remaining seven bits are unused and set to zero.
 
 The comparison also catches code that can't be relocated by page. Some uses of an address can't be fixed by adding a page, such as multiplying it by two. In `LD HL,MSG * 2` the high byte differs by two between the images, so the tool that builds the bitmap reports it as an error. Taking the high byte of an address on purpose is fine. A shift right by eight gives a byte that differs by exactly one, and it gets marked like any other high byte.
 
