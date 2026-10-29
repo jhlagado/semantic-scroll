@@ -22,7 +22,17 @@ By John Hardy
   <figcaption>Assembling a program twice finds every byte that holds part of an internal address. This illustration is public domain.</figcaption>
 </figure>
 
-Most Z80 programmers know the CP/M COM file inside out. Far fewer have met its cousin the PRL file, which Digital Research used in MP/M and CP/M 3 for code that had to run at an address nobody knew in advance. I needed exactly that for [TEC-OS](https://debug80.com/tec-os/), the CP/M-compatible operating system I've been writing for the TEC-1G, and the more I worked with PRL the more I admired it. It solves a hard problem on an 8-bit machine with almost no machinery. There's no linker and no symbol table, and the relocation loop takes 26 bytes of Z80 code.
+I’ve been writing [TEC-OS](https://debug80.com/tec-os/), a CP/M-compatible operating system for the TEC-1G. There’s some personal history behind this. Ken Stone and I designed the original [TEC-1](https://github.com/crsjones/TEC-1), published in *Talking Electronics* magazine in 1983. Forty years later Mark Jelic developed its successor, the [TEC-1G](https://github.com/MarkJelic/TEC-1G), for the anniversary in 2023.
+
+The original machine was a small Z80 trainer with a hexadecimal keypad and LED display. The TEC-1G retains that character but has enough memory and peripherals to support something more substantial. Bringing CP/M to it means being able to edit source, assemble programs and run familiar utilities on the machine itself. TEC-OS keeps the operating system in ROM and uses an SD card for files, leaving as much RAM as possible for programs.
+
+Working out how to load resident programs and drivers brought me back to a familiar Z80 problem. A program might fit comfortably in memory but still need rebuilding just to run at a different address. CP/M’s COM format makes loading wonderfully simple. Copy the file to 0100h and start executing. That becomes restrictive when several pieces of software need to remain in memory together, each with internal addresses assembled for the same location.
+
+MS-DOS inherited the COM format but the 8086’s segment registers made it more flexible. A program could still start at offset 0100h while DOS placed its segment elsewhere in physical memory. The Z80 has no equivalent segment registers. Moving a program generally means changing the addresses inside it.
+
+I’d understood this limitation for years. What I somehow hadn’t encountered in roughly 45 years of Z80 programming was Digital Research’s PRL format. It supplied exactly the load-time relocation I needed, using a bitmap with one bit for each byte of program code. The loader adjusts the marked bytes and discards the bitmap afterwards.
+
+Finding it now was slightly disconcerting. I’d been thinking through a problem that had been solved back when these machines were current. The solution was small enough to suit the machine and simple enough to explain completely. Somehow I was only just getting the news.
 
 ## The COM file
 
