@@ -77,7 +77,9 @@ hex byte                   24           |            00            |            
 
 Offsets 2 and 5 become bits 5 and 2: `20h + 04h = 24h`. The complete bitmap is `24 00 00`. Seventeen code bytes require three bitmap bytes, with seven unused bits at the end.
 
-This technique requires code written for page relocation. Multiplying an internal address by two, for example, needs a different adjustment. A comparison tool should reject differences other than zero or one, though two assemblies alone cannot prove every possible address expression safe. Keep internal references straightforward and fixed hardware or system addresses constant.
+This works for ordinary references to labels inside the program, such as `CALL PRINT` or `LD DE,MSG`. Moving the program up by 256 bytes increases each address by 256, so only its high byte changes, by one.
+
+Calculated values need more care. An expression such as `MSG * 2` increases by 512 instead, so its high byte changes by two. The PRL loader only adds the program’s page adjustment and cannot fix that expression correctly. The comparison tool should reject it. Fixed addresses such as the BDOS entry at 0005h stay unchanged in both assemblies and receive no relocation mark.
 
 ## Loading the result
 
@@ -117,4 +119,4 @@ A marker bit in `D` tracks progress through each bitmap byte. `SLA` shifts the n
 
 The page-relocation arithmetic doesn’t depend on CP/M or on Z80 opcodes. It could also suit other 8-bit processors with 16-bit addresses, including the 6502. Its [instruction set](https://www.westerndesigncenter.com/wdc/documentation/w65c02s.pdf) includes absolute addresses and relative branches too. That’s an application of the same technique, not compatibility with CP/M executables. A loader and suitable assembly conventions would still be needed, particularly around fixed zero-page locations and address-dependent instruction sizes.
 
-In TEC-OS I use PRL to load residents below the BDOS and lower the available program area accordingly. The code fits around what’s already installed and the bitmap occupies no RAM afterwards. I think this deserves to be familiar territory for Z80 programmers. It would have saved me some work if I’d heard the news earlier.
+In TEC-OS I use PRL to load resident programs below the BDOS and lower the available program area accordingly. The code fits around what’s already installed and the bitmap occupies no RAM afterwards. I think this deserves to be familiar territory for Z80 programmers. It would have saved me some work if I’d heard the news earlier.
