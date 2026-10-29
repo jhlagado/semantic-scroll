@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="670" viewBox="0 0 1200 670" role="img" aria-labelledby="t d">
+  <title id="t">Two assemblies of a small CP/M program and the PRL bitmap made from them</title>
+  <desc id="d">A seventeen-byte program assembled at 0000h and 0100h. Bytes 2 and 5, the high bytes of the addresses of MSG and PRINT, differ by one and are marked in the bitmap. Loaded at 8000h those two bytes become 80h while JP 0000h and JP BDOS are unchanged.</desc>
+  <defs><marker id="a" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#333b43"/></marker></defs>
+  <rect width="1200" height="670" fill="#f5f0e6"/>
+  <text x="600" y="62" text-anchor="middle" font-family="Georgia, serif" font-size="32" font-weight="normal" fill="#20242a" xml:space="preserve">Finding the addresses in a page-relocatable program</text>
+  <text x="600" y="98" text-anchor="middle" font-family="Georgia, serif" font-size="19" font-weight="normal" fill="#59616b" xml:space="preserve">Assemble twice, mark the bytes that differ, then relocate by whole pages when loading</text>
+  <text x="328" y="148" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="15" font-weight="normal" fill="#59616b" xml:space="preserve">LD DE,MSG</text>
+  <path d="M 254 160 V 166 H 402 V 160" fill="none" stroke="#59616b" stroke-width="1.5"/>
+  <text x="484" y="148" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="15" font-weight="normal" fill="#59616b" xml:space="preserve">CALL PRINT</text>
+  <path d="M 410 160 V 166 H 558 V 160" fill="none" stroke="#59616b" stroke-width="1.5"/>
+  <text x="640" y="148" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="15" font-weight="normal" fill="#59616b" xml:space="preserve">JP 0000h</text>
+  <path d="M 566 160 V 166 H 714 V 160" fill="none" stroke="#59616b" stroke-width="1.5"/>
+  <text x="770" y="148" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="15" font-weight="normal" fill="#59616b" xml:space="preserve">LD C,9</text>
+  <path d="M 722 160 V 166 H 818 V 160" fill="none" stroke="#59616b" stroke-width="1.5"/>
+  <text x="900" y="148" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="15" font-weight="normal" fill="#59616b" xml:space="preserve">JP BDOS</text>
+  <path d="M 826 160 V 166 H 974 V 160" fill="none" stroke="#59616b" stroke-width="1.5"/>
+  <text x="1056" y="148" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="15" font-weight="normal" fill="#59616b" xml:space="preserve">DB "HI$"</text>
+  <path d="M 982 160 V 166 H 1130 V 160" fill="none" stroke="#59616b" stroke-width="1.5"/>
+  <text x="228" y="201" text-anchor="end" font-family="Georgia, serif" font-size="21" font-weight="normal" fill="#20242a" xml:space="preserve">ORG 0000h</text>
+  <text x="228" y="223" text-anchor="end" font-family="Arial, sans-serif" font-size="14" font-weight="normal" fill="#59616b" xml:space="preserve">first assembly</text>
+  <rect x="252" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="276" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">11</text>
+  <rect x="304" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="328" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0E</text>
+  <rect x="356" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="380" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">00</text>
+  <rect x="408" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="432" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">CD</text>
+  <rect x="460" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="484" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">09</text>
+  <rect x="512" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="536" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">00</text>
+  <rect x="564" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="588" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">C3</text>
+  <rect x="616" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="640" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">00</text>
+  <rect x="668" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="692" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">00</text>
+  <rect x="720" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="744" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0E</text>
+  <rect x="772" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="796" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">09</text>
+  <rect x="824" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="848" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">C3</text>
+  <rect x="876" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="900" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">05</text>
+  <rect x="928" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="952" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">00</text>
+  <rect x="980" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="1004" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">48</text>
+  <rect x="1032" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="1056" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">49</text>
+  <rect x="1084" y="180" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="1108" y="210" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">24</text>
+  <text x="228" y="277" text-anchor="end" font-family="Georgia, serif" font-size="21" font-weight="normal" fill="#20242a" xml:space="preserve">ORG 0100h</text>
+  <text x="228" y="299" text-anchor="end" font-family="Arial, sans-serif" font-size="14" font-weight="normal" fill="#59616b" xml:space="preserve">second assembly</text>
+  <rect x="252" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="276" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">11</text>
+  <rect x="304" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="328" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0E</text>
+  <rect x="356" y="256" width="48" height="46" rx="4" fill="#f3d3c8" stroke="#c8553d" stroke-width="3"/>
+  <text x="380" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="bold" fill="#c8553d" xml:space="preserve">01</text>
+  <rect x="408" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="432" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">CD</text>
+  <rect x="460" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="484" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">09</text>
+  <rect x="512" y="256" width="48" height="46" rx="4" fill="#f3d3c8" stroke="#c8553d" stroke-width="3"/>
+  <text x="536" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="bold" fill="#c8553d" xml:space="preserve">01</text>
+  <rect x="564" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="588" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">C3</text>
+  <rect x="616" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="640" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">00</text>
+  <rect x="668" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="692" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">00</text>
+  <rect x="720" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="744" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0E</text>
+  <rect x="772" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="796" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">09</text>
+  <rect x="824" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="848" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">C3</text>
+  <rect x="876" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="900" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">05</text>
+  <rect x="928" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="952" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">00</text>
+  <rect x="980" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="1004" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">48</text>
+  <rect x="1032" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="1056" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">49</text>
+  <rect x="1084" y="256" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="1108" y="286" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">24</text>
+  <text x="228" y="353" text-anchor="end" font-family="Georgia, serif" font-size="21" font-weight="normal" fill="#20242a" xml:space="preserve">bitmap</text>
+  <text x="228" y="375" text-anchor="end" font-family="Arial, sans-serif" font-size="14" font-weight="normal" fill="#59616b" xml:space="preserve">1 where they differ</text>
+  <rect x="252" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="276" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="304" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="328" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="356" y="332" width="48" height="46" rx="4" fill="#f3d3c8" stroke="#c8553d" stroke-width="3"/>
+  <text x="380" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="bold" fill="#c8553d" xml:space="preserve">1</text>
+  <rect x="408" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="432" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="460" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="484" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="512" y="332" width="48" height="46" rx="4" fill="#f3d3c8" stroke="#c8553d" stroke-width="3"/>
+  <text x="536" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="bold" fill="#c8553d" xml:space="preserve">1</text>
+  <rect x="564" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="588" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="616" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="640" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="668" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="692" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="720" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="744" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="772" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="796" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="824" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="848" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="876" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="900" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="928" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="952" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="980" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="1004" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="1032" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="1056" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <rect x="1084" y="332" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="1108" y="362" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0</text>
+  <text x="250" y="410" text-anchor="start" font-family="Arial, sans-serif" font-size="16" font-weight="normal" fill="#59616b" xml:space="preserve">17 bytes of code give 3 bitmap bytes, 24 00 00h, bit 7 first. The last byte is padded with zeros.</text>
+  <line x1="600" y1="432" x2="600" y2="474" stroke="#333b43" stroke-width="2" marker-end="url(#a)"/>
+  <text x="616" y="460" text-anchor="start" font-family="Arial, sans-serif" font-size="16" font-weight="normal" fill="#59616b" xml:space="preserve">loading at page 80h adds 7Fh to each marked byte</text>
+  <text x="228" y="511" text-anchor="end" font-family="Georgia, serif" font-size="21" font-weight="normal" fill="#20242a" xml:space="preserve">at 8000h</text>
+  <text x="228" y="533" text-anchor="end" font-family="Arial, sans-serif" font-size="14" font-weight="normal" fill="#59616b" xml:space="preserve">relocated</text>
+  <rect x="252" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="276" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">11</text>
+  <rect x="304" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="328" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0E</text>
+  <rect x="356" y="490" width="48" height="46" rx="4" fill="#f3d3c8" stroke="#c8553d" stroke-width="3"/>
+  <text x="380" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="bold" fill="#c8553d" xml:space="preserve">80</text>
+  <rect x="408" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="432" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">CD</text>
+  <rect x="460" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="484" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">09</text>
+  <rect x="512" y="490" width="48" height="46" rx="4" fill="#f3d3c8" stroke="#c8553d" stroke-width="3"/>
+  <text x="536" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="bold" fill="#c8553d" xml:space="preserve">80</text>
+  <rect x="564" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="588" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">C3</text>
+  <rect x="616" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="640" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">00</text>
+  <rect x="668" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="692" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">00</text>
+  <rect x="720" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="744" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">0E</text>
+  <rect x="772" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="796" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">09</text>
+  <rect x="824" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="848" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">C3</text>
+  <rect x="876" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="900" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">05</text>
+  <rect x="928" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="952" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">00</text>
+  <rect x="980" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="1004" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">48</text>
+  <rect x="1032" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="1056" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">49</text>
+  <rect x="1084" y="490" width="48" height="46" rx="4" fill="#fbf8f2" stroke="#333b43" stroke-width="1.5"/>
+  <text x="1108" y="520" text-anchor="middle" font-family="Menlo, Consolas, monospace" font-size="19" font-weight="normal" fill="#20242a" xml:space="preserve">24</text>
+  <text x="600" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#20242a" xml:space="preserve">JP 0000h and JP BDOS keep their fixed addresses because they are the same in both assemblies.</text>
+  <text x="600" y="630" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#20242a" xml:space="preserve">Only the high bytes of addresses inside the program change, so one bit per byte is enough.</text>
+</svg>
