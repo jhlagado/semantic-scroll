@@ -28,6 +28,8 @@ That’s useful for drivers, resident utilities and overlays whose final address
 
 I encountered PRL while bringing CP/M to the [TEC-1G](https://github.com/MarkJelic/TEC-1G) through [TEC-OS](https://debug80.com/tec-os/). Ken Stone and I designed the original [TEC-1](https://github.com/crsjones/TEC-1), published in *Talking Electronics* in 1983. Mark Jelic developed the TEC-1G for its fortieth anniversary in 2023. With the operating system in ROM and files on SD, I wanted resident programs to fit into available RAM without rebuilding each for a fixed address.
 
+The method is simple: assemble the program twice at starting addresses 256 bytes apart and compare the results to identify the address bytes that need adjusting. Package the program with those adjustment marks. The loader can then put it at any suitable 256-byte boundary and patch its internal addresses to match, while leaving fixed system addresses alone. Once loaded, the extra information can be discarded. The same executable can therefore fit around other programs without being rebuilt for each location.
+
 ## The relocation problem
 
 CP/M loads a COM file at 0100h. Its internal subroutine calls, jumps and data pointers contain absolute addresses. Copy it elsewhere and those addresses still point to the old location. Relative branches help locally but the Z80 has no relative `CALL` or general program-counter-relative data addressing.
