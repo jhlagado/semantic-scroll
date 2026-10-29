@@ -34,7 +34,11 @@ CP/M loads a COM file at 0100h. Its internal subroutine calls, jumps and data po
 
 MS-DOS inherited COM files but the 8086’s segment registers made placement more flexible. Offset 0100h could refer to different physical locations. The Z80 has no equivalent segment registers, so the addresses inside the code need adjusting.
 
-PRL means **Page Relocatable**. Used by MP/M and CP/M 3, it restricts loading to **256-byte page boundaries**. Moving by whole pages leaves each internal address’s low byte unchanged. Only the high byte needs adjusting. A routine at 0109h becomes 8009h when its program moves to 8000h. Add 7Fh to the high byte and leave 09h alone.
+PRL means **Page Relocatable**. Digital Research used the format in MP/M, its multiuser, multitasking relative of CP/M, and later in CP/M 3. These systems extended what the company could do with 8-bit machines. MP/M predated MS-DOS, while CP/M 3 arrived in 1983 as the IBM PC and 16-bit computing were drawing programmers away from the older systems.
+
+The useful compromise in PRL is that a program must load on a **256-byte page boundary**, such as 0100h, 0200h or 8000h. Because the distance between those addresses is a whole number of pages, moving the program leaves the low byte of each internal address unchanged. The loader therefore only has to adjust the high byte.
+
+For example, suppose a routine is at 0109h in a program assembled to start at 0100h. Loading that program at 8000h puts the routine at 8009h. The loader adds 7Fh to the address’s high byte, changing 01h to 80h, while leaving the low byte, 09h, alone.
 
 The loader needs a list of bytes to adjust. PRL stores that list as a bitmap, one bit per code byte. Fixed addresses such as CP/M’s BDOS entry at 0005h remain untouched. The loader never decodes an instruction.
 
