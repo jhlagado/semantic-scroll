@@ -61,7 +61,7 @@ PRINT:  LD      C,9
 MSG:    DB      "HI$"
 ```
 
-[Atom](https://semantic-scroll.com/content/2026/09/04/01-atom-my-z80-assembler/), my Z80 assembler, turns it into 17 bytes. These are the two images:
+Any Z80 assembler with a configurable origin can produce these two 17-byte images. Change `ORG` between assemblies:
 
 <pre aria-label="Assembly comparison. Highlighted columns 02 and 05 contain the bytes to relocate."><code>offset   00 01 <span style="background:#f2c6b8;color:#512518;font-weight:700" title="Relocation byte at offset 02">02</span> 03 04 <span style="background:#c5ddd6;color:#173e35;font-weight:700" title="Relocation byte at offset 05">05</span> 06 07 08 09 0A 0B 0C 0D 0E 0F 10
 0000h    11 0E <span style="background:#f2c6b8;color:#512518;font-weight:700" title="Relocation byte at offset 02">00</span> CD 09 <span style="background:#c5ddd6;color:#173e35;font-weight:700" title="Relocation byte at offset 05">00</span> C3 00 00 0E 09 C3 05 00 48 49 24
@@ -69,7 +69,7 @@ MSG:    DB      "HI$"
 diff     00 00 <span style="background:#f2c6b8;color:#512518;font-weight:700" title="Relocation byte at offset 02">01</span> 00 00 <span style="background:#c5ddd6;color:#173e35;font-weight:700" title="Relocation byte at offset 05">01</span> 00 00 00 00 00 00 00 00 00 00 00</code></pre>
 
 
-Only offsets 2 and 5 differ. They hold the high bytes of `MSG` and `PRINT`. The fixed jumps to 0000h and 0005h remain identical. [Atom](https://semantic-scroll.com/content/2026/09/04/01-atom-my-z80-assembler/) produces these 17-byte images by changing the `ORG` between assemblies.
+Only offsets 2 and 5 differ. They hold the high bytes of `MSG` and `PRINT`. The fixed jumps to 0000h and 0005h remain identical.
 
 The difference row subtracts the first image from the second. Packing the marks into bits, most significant bit first, gives:
 
