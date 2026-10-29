@@ -26,7 +26,7 @@ Digital Research’s PRL format lets you load a Z80 program wherever there’s r
 
 That’s useful for drivers, resident utilities and overlays whose final address depends on what else is in memory. I’ve been programming the Z80 for roughly 45 years and somehow I’m only just discovering it.
 
-I encountered PRL while bringing CP/M to the [TEC-1G](https://dev.tec-1g.com/) through [TEC-OS](https://debug80.com/tec-os/). Ken Stone and I designed the original [TEC-1](https://github.com/crsjones/TEC-1), published in *Talking Electronics* in 1983. Mark Jelic developed the TEC-1G for its fortieth anniversary in 2023. With the operating system in ROM and files on SD, I wanted resident programs to fit into available RAM without rebuilding each for a fixed address.
+I encountered PRL while bringing CP/M to the [TEC-1G](https://dev.tec-1g.com/) through TEC-OS. Ken Stone and I designed the original [TEC-1](https://github.com/crsjones/TEC-1), published in *Talking Electronics* in 1983. Mark Jelic developed the TEC-1G for its fortieth anniversary in 2023. With the operating system in ROM and files on SD, I wanted resident programs to fit into available RAM without rebuilding each for a fixed address.
 
 The method is simple: assemble the program twice at starting addresses 256 bytes apart and compare the results to identify the address bytes that need adjusting. Package the program with those adjustment marks. The loader can then put it at any suitable 256-byte boundary and patch its internal addresses to match, while leaving fixed system addresses alone. Once loaded, the extra information can be discarded. The same executable can therefore fit around other programs without being rebuilt for each location.
 
